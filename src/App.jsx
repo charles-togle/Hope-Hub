@@ -28,6 +28,12 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <div className="p-4">
+      <h1 className="text-2xl font-semibold mb-4">ShadCN UI + React + Tailwind CSS</h1>
+      <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        ShadCN Button
+      </Button>
+    </div>
     </>
   );
 }
