@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "../assets/fonts/fonts.css";
 
 
 @theme{
@@ -16,7 +17,11 @@
   --color-timer: #FF3B30;
   --color-accent-orange: #FFB24E;
   --color-accent-blue: #013D61;
+  --font-heading: 'Marcellus SC';
+  --font-content: 'Montserrat';
 }
+
+
 
 @custom-variant dark (&:is(.dark *));
 
