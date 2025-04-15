@@ -1,5 +1,6 @@
 import "./styles/global.css";
 import Sidebar from "./components/Sidebar";
+import About from "./pages/About";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
 //CONTENT COMPONENTS SHOULD BE 100VW-18VW WIDE
@@ -8,9 +9,12 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 function App() {
   const SideBarOutlet = () => {
     return (
-      <Sidebar>
-        <Outlet />
-      </Sidebar>
+      <div className="flex h-screen overflow-hidden">
+        <Sidebar />
+        <div className="flex-1 h-screen overflow-auto overflow-x-hidden">
+          <Outlet />
+        </div>
+      </div>
     );
   };
 
@@ -18,7 +22,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<SideBarOutlet />} path="/">
-          {/* Add nested routes here */}
+          <Route path="about" element={<About />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
