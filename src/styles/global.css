@@ -7,21 +7,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @theme {
-  --color-sidebar: #111C4E;
-  --color-lecture-background: #F5F5F5;
-  --color-sidebar-active: #999999;
-  --color-sub-text: #8B8989;
-  --color-blue-lines: #013D61;
-  --color-yellow-lines: #FFB24E;
-  --color-homepage-heading: #FFBC13;
-  --color-page-heading: #004AAD;
-  --color-correct: #00A82A;
-  --color-error: #FF0000;
-  --color-timer: #FF3B30;
-  --color-accent-orange: #FFB24E;
-  --color-accent-blue: #013D61;
   --font-heading: "Marcellus SC";
   --font-content: "Montserrat";
+  --color-secondary-dark-blue: #111C4E;
+  --color-primary-blue: #004AAD;
+  --color-background: #FAFAFA;
+  --color-primary-yellow: #FFBC13;
+  --color-neutral-dark-blue: #013D61;
+  --color-medium-blue: #02466D;
+  --color-accent-orange: #FFB24E;
+  --color-accent-blue: #013D61;
+  --color-text-content: white;
+  --color-accent-gray:  #999999;
+  --color-gray-background: #F5F5F5;
+  --color-correct: #00A82A;
+  --color-red: #FF0000;
+  --color-orange: #FF3B30;
 }
 
 @custom-variant dark (&:is(.dark *));
