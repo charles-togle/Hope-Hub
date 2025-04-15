@@ -1,6 +1,23 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+
+@theme{
+  --color-sidebar: #111C4E;
+  --color-lecture-background: #F5F5F5
+  --color-sidebar-active: #999999;
+  --color-sub-text: #8B8989; 
+  --color-blue-lines: #013D61
+  --color-yellow-lines: #FFB24E;
+  --color-homepage-heading: #FFBC13;
+  --color-page-heading: #004AAD;
+  --color-correct: #00A82A;
+  --color-error: #FF0000;
+  --color-timer: #FF3B30;
+  --color-accent-orange: #FFB24E;
+  --color-accent-blue: #013D61;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
