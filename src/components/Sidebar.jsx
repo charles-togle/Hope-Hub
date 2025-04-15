@@ -6,19 +6,25 @@ import QuizIcon from "../assets/icons/quiz_sidebar.png";
 import PhysicalFitnessIcon from "../assets/icons/physicalFitnessTest_sidebar.png";
 import AboutIcon from "../assets/icons/about_sidebar.png";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
   const SidebarButtons = [
-    { text: "Home", icon: HomeIcon },
-    { text: "Health Calculators", icon: CalculatorIcon },
-    { text: "Lextures", icon: LecturesIcon },
-    { text: "Quiz / Activities", icon: QuizIcon },
-    { text: "Physical Fitness Test", icon: PhysicalFitnessIcon },
-    { text: "About", icon: AboutIcon },
+    { text: "Home", icon: HomeIcon, route: "" },
+    { text: "Health Calculators", icon: CalculatorIcon, route: "" },
+    { text: "Lectures", icon: LecturesIcon, route: "" },
+    { text: "Quiz / Activities", icon: QuizIcon, route: "" },
+    { text: "Physical Fitness Test", icon: PhysicalFitnessIcon, route: "" },
+    { text: "About", icon: AboutIcon, route: "/about" },
   ];
 
   const [active, setActive] = useState(-1);
+  const navigate = useNavigate();
 
+  const handleClick = (index, route) => {
+    navigate(route);
+    setActive(index)
+  };
   return (
     <aside
       id="sidebar"
@@ -38,7 +44,7 @@ export default function Sidebar() {
             } flex flex-row items-center w-8/10 hover:brightness-50 hover:contrast-125`}
             key={index}
             type="button"
-            onClick={() => setActive(index)}
+            onClick= {() => handleClick(index, item.route)}
           >
             <img src={item.icon} className="w-2/10 mr-5" />
             <p className="w-5/10 pb-3 text-text-content text-center border-b-3 border-t-white font-heading">
@@ -47,11 +53,17 @@ export default function Sidebar() {
           </button>
         ))}
       </div>
-      <div id="design-line" className="h-fit w-full absolute top-[20vmin] lg:block sm:hidden">
+      <div
+        id="design-line"
+        className="h-fit w-full absolute top-[20vmin] lg:block sm:hidden"
+      >
         <div className="bg-white w-[50%] h-2"></div>
         <div className="bg-transparent w-[45%] h-2 border-b-2 border-r-2 border-white"></div>
       </div>
-      <div id="design-line" className="h-fit w-full absolute bottom-[calc(17vw*0.45)] left-[14vmin] rotate-270">
+      <div
+        id="design-line"
+        className="h-fit w-full absolute bottom-[calc(17vw*0.45)] left-[14vmin] rotate-270"
+      >
         <div className="bg-white w-[50%] h-2"></div>
         <div className="bg-transparent w-[45%] h-2 border-b-2 border-r-2 border-white lg:block sm:hidden"></div>
       </div>
