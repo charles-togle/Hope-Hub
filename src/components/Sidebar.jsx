@@ -1,5 +1,5 @@
 import SidebarLogo from "../assets/logos/hopehub_logo_v1.png";
-import SidebarLogoSmall from "../assets/logos/logo_small_sidebar.png"
+import SidebarLogoSmall from "../assets/logos/logo_small_sidebar.png";
 import HomeIcon from "../assets/icons/home_sidebar.png";
 import CalculatorIcon from "../assets/icons/calculator_sidebar.png";
 import LecturesIcon from "../assets/icons/lecture_sidebar.png";
@@ -36,13 +36,19 @@ export default function Sidebar() {
       id="sidebar"
       className={`w-[7vw] h-screen overflow-hidden bg-secondary-dark-blue relative border-r-4
        border-r-secondary-dark-blue flex flex-col items-center 
-       transition-all duration-400 hover:w-[18vw] ${isWide ? "" : "border-r-0!"}`}
-       onMouseEnter={()=>handleOnMouseEnter()}
-       onMouseLeave={()=>handleOnMouseEnter()}
+       transition-all duration-400 hover:w-[18vw] ${
+         isWide ? "" : "border-r-0!"
+       }`}
+      onMouseEnter={() => handleOnMouseEnter()}
+      onMouseLeave={() => handleOnMouseEnter()}
     >
       <div id="logo" className={`${isWide ? "bg-white pt-4" : ""}`}>
-        {!isWide && <hr className="mt-5 absolute top-0 w-[60%] right-0"/>}
-        <img src={isWide ? SidebarLogo : SidebarLogoSmall} alt="" className={`${isWide ? "" : "pt-15 pr-2 pl-2"}`}/>
+        {!isWide && <hr className="mt-5 absolute top-0 w-[60%] right-0" />}
+        <img
+          src={isWide ? SidebarLogo : SidebarLogoSmall}
+          alt=""
+          className={`${isWide ? "" : "pt-15 pr-2 pl-2"}`}
+        />
       </div>
       <div
         id="sidebar-button"
@@ -85,14 +91,18 @@ export default function Sidebar() {
 
       <div
         id="design-line"
-        className={`${isWide ? "" : "hidden!"} h-fit w-full absolute top-[20vmin] lg:block sm:hidden`}
+        className={`${
+          isWide ? "" : "hidden!"
+        } h-fit w-full absolute top-[20vmin] lg:block sm:hidden`}
       >
         <div className="bg-white w-[50%] h-1"></div>
         <div className="bg-transparent w-[45%] h-1 border-b-2 border-r-2 border-white"></div>
       </div>
       <div
         id="design-line"
-        className={`${isWide ? "" : "hidden!"} h-fit w-full absolute bottom-[calc(17vw*0.45)] left-[14vmin] rotate-270`}
+        className={`${
+          isWide ? "" : "hidden!"
+        } h-fit w-full absolute bottom-[calc(17vw*0.45)] left-[14vmin] rotate-270`}
       >
         <div className="bg-white w-[50%] h-1"></div>
         <div className="bg-transparent w-[45%] h-1 border-b-2 border-r-2 border-white lg:block sm:hidden"></div>
