@@ -13,7 +13,7 @@ export default function Sidebar() {
   const SidebarButtons = [
     { text: "Home", icon: HomeIcon, route: "" },
     { text: "Health Calculators", icon: CalculatorIcon, route: "" },
-    { text: "Lectures", icon: LecturesIcon, route: "" },
+    { text: "Lectures", icon: LecturesIcon, route: "/lectures" },
     { text: "Quiz / Activities", icon: QuizIcon, route: "" },
     { text: "Physical Fitness Test", icon: PhysicalFitnessIcon, route: "" },
     { text: "About", icon: AboutIcon, route: "/about" },
