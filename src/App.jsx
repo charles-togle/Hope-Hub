@@ -2,7 +2,7 @@ import "./styles/global.css";
 import Sidebar from "./components/Sidebar";
 import About from "./pages/About";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
-
+import Lectures from "./pages/Lectures";
 
 function App() {
   const SideBarOutlet = () => {
@@ -21,6 +21,7 @@ function App() {
       <Routes>
         <Route element={<SideBarOutlet />} path="/">
           <Route path="about" element={<About />}></Route>
+          <Route path="lectures" element={<Lectures />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
