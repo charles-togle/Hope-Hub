@@ -15,23 +15,23 @@ export default function About() {
   const Contacts = [
     {
       type: "Email",
-      text: "Lorem ipsum dolor sit amet consectetur.",
+      text: "HopeHub@sample.com",
       icon: EmailIcon,
     },
     {
       type: "Facebook",
-      text: "Lorem ipsum dolor sit amet consectetur.",
+      text: "The Hope Hub",
       icon: FacebookIcon,
     },
     {
       type: "Contact",
-      text: "Lorem ipsum dolor sit amet consectetur.",
+      text: "Maureen Del Rosario",
       icon: ContactIcon,
     },
 
     {
       type: "Instagram",
-      text: "Lorem ipsum dolor sit amet consectetur.",
+      text: "The Hope Hub",
       icon: InstagramIcon,
     },
   ];
