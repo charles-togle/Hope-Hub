@@ -1,3 +1,6 @@
+//USE INDEX / TITLE FOR RETRIEVING LESSON DETAILS
+
+
 export const Lessons = [
   {
     title: "This is a sample title",
