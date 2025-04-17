@@ -38,8 +38,9 @@ export default function Lectures() {
             id="buttons"
             className="rounded-sm bg-secondary-dark-blue w-fit h-fit flex flex-nowrap"
           >
-            {LectureFilters.map((filter) => (
+            {LectureFilters.map((filter, index) => (
               <button
+                key={index}
                 onClick={() => handleFilterChange(filter)}
                 className={`${
                   filter === activeFilter
@@ -56,20 +57,23 @@ export default function Lectures() {
           id="lecture-introductions"
           className="flex justify-center space-y-3 flex-col items-center overflow-auto mt-[2%]"
         >
-          {activeLessons.length !== 0 ? activeLessons.map((lesson, index) => (
-            <LectureIntroduction
-              index={index + 1}
-              title={lesson.title}
-              introduction={lesson.introduction}
-              status={lesson.status}
-            ></LectureIntroduction>
-          )) : 
-          <p className="font-content font-bold text-2xl pt-15">No Available Data</p>
-            
-          }
+          {activeLessons.length !== 0 ? (
+            activeLessons.map((lesson, index) => (
+              <LectureIntroduction
+                key={index}
+                index={index + 1}
+                title={lesson.title}
+                introduction={lesson.introduction}
+                status={lesson.status}
+              ></LectureIntroduction>
+            ))
+          ) : (
+            <p className="font-content font-bold text-2xl pt-15">
+              No Available Data
+            </p>
+          )}
         </div>
       </div>
     </div>
   );
 }
-
