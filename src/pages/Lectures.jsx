@@ -16,10 +16,10 @@ export default function Lectures() {
     });
   };
   return (
-    <div id="lectures" className="h-screen bg-background">
+    <div id="lectures" className="h-screen bg-background overflow-y-scroll">
       <PageHeading
         text="Lectures & Video Lessons"
-        className="sticky top-0 bg-background z-2"
+        className="bg-background z-2"
       ></PageHeading>
       <div
         id="lectures-container"
@@ -27,7 +27,7 @@ export default function Lectures() {
       >
         <div
           id="buttons-wrapper"
-          className="sticky top-[25%] pt-[3%] pb-[2%] self-start w-full flex flex-row-reverse justify-between bg-background z-10"
+          className="sticky top-0 pt-[3%] pb-[2%] self-start w-full flex flex-row-reverse justify-between bg-background z-10"
         >
           <p className="font-content text-sm w-[60%] text-wrap">
             <strong>Note: </strong>You can only take the quiz after reading or
@@ -56,14 +56,17 @@ export default function Lectures() {
           id="lecture-introductions"
           className="flex justify-center space-y-3 flex-col items-center overflow-auto mt-[2%]"
         >
-          {activeLessons.map((lesson, index) => (
+          {activeLessons.length !== 0 ? activeLessons.map((lesson, index) => (
             <LectureIntroduction
               index={index + 1}
               title={lesson.title}
               introduction={lesson.introduction}
               status={lesson.status}
             ></LectureIntroduction>
-          ))}
+          )) : 
+          <p className="font-content font-bold text-2xl pt-15">No Available Data</p>
+            
+          }
         </div>
       </div>
     </div>
