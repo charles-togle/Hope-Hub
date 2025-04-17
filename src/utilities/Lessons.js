@@ -7,6 +7,8 @@ export const Lessons = [
       aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
       in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
     status: "Pending",
+    pdf: "https://pdf.com",
+    videoLecture: "https://youtube.com",
   },
   {
     title: "This is a sample title",
@@ -16,6 +18,8 @@ export const Lessons = [
         aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
         in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
     status: "Done",
+    pdf: "https://pdf.com",
+    videoLecture: "https://youtube.com",
   },
   {
     title: "This is a sample title",
@@ -25,6 +29,8 @@ export const Lessons = [
         aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
         in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
     status: "Pending",
+    pdf: "https://pdf.com",
+    videoLecture: "https://youtube.com",
   },
   {
     title: "This is a sample title",
@@ -34,6 +40,8 @@ export const Lessons = [
         aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
         in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
     status: "Incomplete",
+    pdf: "https://pdf.com",
+    videoLecture: "https://youtube.com",
   },
   {
     title: "This is a sample title",
@@ -43,6 +51,8 @@ export const Lessons = [
         aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
         in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
     status: "Pending",
+    pdf: "https://pdf.com",
+    videoLecture: "https://youtube.com",
   },
   {
     title: "This is a sample title",
@@ -52,5 +62,7 @@ export const Lessons = [
         aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
         in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
     status: "Pending",
+    pdf: "https://pdf.com",
+    videoLecture: "https://youtube.com",
   },
 ];
