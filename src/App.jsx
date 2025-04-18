@@ -4,16 +4,27 @@ import About from "./pages/About";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import Lectures from "./pages/LecturesIntroduction";
 import LecturePage from "./pages/LecturePage";
+import PhysicalFitnessDataProvider from "./providers/PhyscalFitnessDataProvider";
+import { PhysicalFitnessTest } from "./pages/PhysicalFitnessTest";
+import PhysicalActivityReadinessQuestionnaire from "./pages/PhysicalActivityReadinessQuestionnaire";
 
 function App() {
   const SideBarOutlet = () => {
     return (
       <div className="flex h-screen overflow-hidden">
         <Sidebar />
-        <div className="flex-1 h-screen overflow-y-scroll overflow-x-hidden justify-center">
+        <div className="flex-1 h-screen overflow-x-hidden justify-center">
           <Outlet />
         </div>
       </div>
+    );
+  };
+
+  const PhysicalFitnessWrapper = () => {
+    return (
+      <PhysicalFitnessDataProvider>
+        <Outlet />
+      </PhysicalFitnessDataProvider>
     );
   };
 
@@ -21,12 +32,13 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<SideBarOutlet />} path="/">
-          <Route path="about" element={<About />}></Route>
-          <Route path="lectures" element={<Lectures />}></Route>
-          <Route
-            path="lectures/lecture/:lessonNumber"
-            element={<LecturePage />}
-          ></Route>
+          <Route path="about" element={<About />} />
+          <Route path="lectures" element={<Lectures />} />
+          <Route path="lectures/lecture/:lessonNumber" element={<LecturePage />} />
+          <Route path="physical-fitness-test" element={<PhysicalFitnessWrapper />}>
+            <Route path="parq" element={<PhysicalActivityReadinessQuestionnaire />} />
+            <Route path="test/:testIndex" element={<PhysicalFitnessTest />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
