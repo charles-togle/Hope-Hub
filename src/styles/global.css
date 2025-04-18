@@ -183,6 +183,6 @@
 
 @layer utilities {
   .apply-drop-shadow > div {
-    @apply drop-shadow-md p-4 bg-white;
+    @apply drop-shadow-md p-7 bg-white;
   }
 }
