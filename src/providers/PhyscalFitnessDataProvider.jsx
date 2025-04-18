@@ -1,3 +1,4 @@
+import { PhysicalFitnessTestContext } from "@/hooks/usePhysicalFitnessData";
 import { useState } from "react";
 
 export const PhysicalFitnessDataProvider = ({ children }) => {
@@ -5,14 +6,15 @@ export const PhysicalFitnessDataProvider = ({ children }) => {
     name: "",
     gender: "",
     email: "",
+    isPARQFinished: false
   });
 
   return (
-    <physicalFitnessTestContext.Provider
+    <PhysicalFitnessTestContext.Provider
       value={{ physicalFitnessData, setPhysicalFitnessData }}
     >
       {children}
-    </physicalFitnessTestContext.Provider>
+    </PhysicalFitnessTestContext.Provider>
   );
 };
 
