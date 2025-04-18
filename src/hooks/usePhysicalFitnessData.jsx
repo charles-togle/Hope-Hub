@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { createContext } from "react";
 
-export const physicalFitnessTestContext = createContext();
+export const PhysicalFitnessTestContext = createContext();
 
 export const usePhysicalFitnessData = () => {
-    const context = useContext(physicalFitnessTestContext)
+    const context = useContext(PhysicalFitnessTestContext)
 
     if(!context){
         throw new Error("usePhysicalFitnessData must be used within a provider");
