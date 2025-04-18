@@ -11,13 +11,11 @@ export default function LecturePage() {
   const { lessonNumber } = useParams();
   const selectedLessonNumber = lessonNumber;
 
-  if (selectedLessonNumber - 1 >= Lessons.length) {
-    return (
-        <ErrorMessage text={"Error 404"} subText={"Page not found"}/>
-    );
+  if (selectedLessonNumber > Lessons.length) {
+    return <ErrorMessage text={"Error 404"} subText={"Page not found"} />;
   }
 
-  const lessonDetails = Lessons[selectedLessonNumber - 1];
+  const lessonDetails = Lessons.find((lesson) => lesson.key === Number(selectedLessonNumber));
   const { pdf, introduction, title, videoLecture } = lessonDetails;
 
   return (

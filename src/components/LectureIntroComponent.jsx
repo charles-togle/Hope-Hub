@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 export default function LectureIntroduction({
-  index,
+  lectureKey,
   title,
   introduction,
   status,
@@ -16,7 +16,7 @@ const navigate = useNavigate();
   };
 
   const handleClick = () => {
-    navigate(`lecture/${index}`)
+    navigate(`lecture/${lectureKey}`)
   }
 
   return (
@@ -27,7 +27,7 @@ const navigate = useNavigate();
           className="flex flex-row justify-between pb-5 items-center"
         >
           <p className="text-primary-blue font-content font-bold text-lg">
-            Lecture #{index}:{" "}
+            Lecture #{lectureKey}:{" "}
             <span className="text-black ml-3 font-normal">{title}</span>
           </p>
           <p

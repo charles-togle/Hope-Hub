@@ -3,6 +3,7 @@
 
 export const Lessons = [
   {
+    key: 1,
     title: "This is a sample title",
     introduction: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
       sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
@@ -14,6 +15,7 @@ export const Lessons = [
     videoLecture: "https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4",
   },
   {
+    key: 2,
     title: "This is a sample title",
     introduction: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
@@ -25,6 +27,7 @@ export const Lessons = [
     videoLecture: "https://youtube.com",
   },
   {
+    key: 3,
     title: "This is a sample title",
     introduction: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
@@ -36,6 +39,7 @@ export const Lessons = [
     videoLecture: "https://youtube.com",
   },
   {
+    key: 4,
     title: "This is a sample title",
     introduction: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
@@ -47,6 +51,7 @@ export const Lessons = [
     videoLecture: "https://youtube.com",
   },
   {
+    key: 5,
     title: "This is a sample title",
     introduction: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
@@ -58,6 +63,7 @@ export const Lessons = [
     videoLecture: "https://youtube.com",
   },
   {
+    key: 6,
     title: "This is a sample title",
     introduction: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
