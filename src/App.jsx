@@ -2,7 +2,7 @@ import "./styles/global.css";
 import Sidebar from "./components/Sidebar";
 import About from "./pages/About";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
-import Lectures from "./pages/Lectures";
+import Lectures from "./pages/LecturesIntroduction";
 import LecturePage from "./pages/LecturePage";
 
 function App() {

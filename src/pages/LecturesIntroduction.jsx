@@ -1,5 +1,5 @@
 import PageHeading from "@/components/PageHeading";
-import LectureIntroduction from "@/components/LectureIntroduction";
+import LectureIntroduction from "@/components/LectureIntroComponent";
 import { useState } from "react";
 import { Lessons } from "@/utilities/Lessons";
 
@@ -60,8 +60,8 @@ export default function Lectures() {
           {activeLessons.length !== 0 ? (
             activeLessons.map((lesson, index) => (
               <LectureIntroduction
+                lectureKey={lesson.key}
                 key={index}
-                index={index + 1}
                 title={lesson.title}
                 introduction={lesson.introduction}
                 status={lesson.status}
