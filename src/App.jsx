@@ -4,7 +4,7 @@ import About from "./pages/About";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import Lectures from "./pages/LecturesIntroduction";
 import LecturePage from "./pages/LecturePage";
-import PhysicalFitnessDataProvider from "./providers/PhyscalFitnessDataProvider";
+import PhysicalFitnessDataProvider from "./providers/PhysicalFitnessDataProvider";
 import { PhysicalFitnessTest } from "./pages/PhysicalFitnessTest";
 import PhysicalActivityReadinessQuestionnaire from "./pages/PhysicalActivityReadinessQuestionnaire";
 
