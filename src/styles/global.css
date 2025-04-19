@@ -24,6 +24,7 @@
   --color-green: #00A82A;
   --color-red: #FF0000;
   --color-orange: #FF3B30;
+  --color-gray: #8B8989;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -177,5 +178,11 @@
   
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .apply-drop-shadow > div {
+    @apply drop-shadow-md p-7 bg-white;
   }
 }
