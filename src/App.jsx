@@ -13,7 +13,7 @@ function App() {
     return (
       <div className="flex h-screen overflow-hidden">
         <Sidebar />
-        <div className="flex-1 h-screen overflow-x-hidden justify-center">
+        <div className="flex-1 h-screen overflow-x-hidden justify-center relative">
           <Outlet />
         </div>
       </div>
