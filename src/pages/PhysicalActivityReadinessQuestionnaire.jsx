@@ -1,11 +1,28 @@
 import PageHeading from '@/components/PageHeading';
 import { usePhysicalFitnessData } from '@/hooks/usePhysicalFitnessData';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function PhysicalActivityReadinessQuestionnaire() {
   const { physicalFitnessData, setPhysicalFitnessData } =
     usePhysicalFitnessData();
   const [areAllAnswersYes, setAreAllAnswersYes] = useState(false);
+  const [areAllAnswered, setAreAllAnswered] = useState(false);
+  const [areAllUserDataFilled, setAreAllUserDataFilled] = useState(false);
+  const [answers, setAnswers] = useState(Array(6).fill(null));
+
+  useEffect(() => {
+    if (areAllAnswered && areAllAnswersYes && areAllUserDataFilled) {
+      setPhysicalFitnessData((prev) => ({
+        ...prev,
+        isPARQFinished: false,
+      }));
+    }
+  }, [
+    areAllAnswered,
+    areAllAnswersYes,
+    setPhysicalFitnessData,
+    areAllUserDataFilled,
+  ]);
 
   const questions = [
     'Has your doctor ever said that you have a heart condition and that you should only do physical activity recommended by a doctor?',
@@ -16,13 +33,49 @@ export default function PhysicalActivityReadinessQuestionnaire() {
     'Do you know of any other reason why you should not do physical activity? if yes ? please include reason.',
   ];
 
+  const handleAnswerChange = (index, value) => {
+    const currentAnswers = [...answers];
+    currentAnswers[index] = value;
+    const allYes = currentAnswers.every((answer) => answer === 'Yes');
+    const allAnswered = currentAnswers.some((answer) => answer !== null);
+    setAnswers(currentAnswers);
+    setAreAllAnswersYes(allYes);
+    setAreAllAnswered(allAnswered);
+  };
+
+  const handleSubmit = () => {
+    if (areAllAnswered && areAllAnswersYes && areAllUserDataFilled) {
+      const updatedData = {
+        ...physicalFitnessData,
+        isPARQFinished: true,
+      };
+      console.log('Data sent to backend:', updatedData);
+      setPhysicalFitnessData(updatedData);
+    } else {
+      console.log('Conditions not met:', {
+        areAllAnswered,
+        areAllAnswersYes,
+        areAllUserDataFilled,
+      });
+    }
+  };
+
+  const isNullOrWhiteSpace = (input) => {
+    return !input || input.trim().length === 0;
+  };
+
   const handleInformationChange = (keyName, value) => {
     setPhysicalFitnessData((prev) => ({
       ...prev,
       [keyName]: value,
     }));
-    console.log(physicalFitnessData);
+    setAreAllUserDataFilled(() =>
+      ['name', 'gender', 'email'].every(
+        (key) => physicalFitnessData[key] !== !isNullOrWhiteSpace,
+      ),
+    );
   };
+
   return (
     <div
       id="physical-fitness-test-parq"
@@ -39,7 +92,7 @@ export default function PhysicalActivityReadinessQuestionnaire() {
         <hr className="border-1 border-primary-yellow yellow w-[20%] self-start mt-2" />
         <div
           id="physical-fitness-test-parq-content"
-          className="apply-drop-shadow w-full flex flex-col justify-center items-center mt-10 font-content text-lg space-y-10"
+          className="apply-drop-shadow w-full flex flex-col justify-center items-center mt-10 font-content text-lg space-y-5"
         >
           <div id="instructions" className="w-[95%]">
             <p>Directions</p>
@@ -61,14 +114,15 @@ export default function PhysicalActivityReadinessQuestionnaire() {
             </ol>
           </div>
           <div
-            id="instructions"
+            id="information"
             className="w-[95%] min-h-10 flex flex-col space-y-2"
           >
             <label>
               <p>
                 Full Name:
                 <span className="text-accent-gray">
-                  {' '}(Surname, First Name, M.I.)
+                  {' '}
+                  (Surname, First Name, M.I.)
                 </span>
               </p>
               <input
@@ -115,7 +169,7 @@ export default function PhysicalActivityReadinessQuestionnaire() {
               />
             </label>
           </div>
-          <div id="instructions" className="w-[95%] min-h-10">
+          <div id="questions" className="w-[95%] min-h-10">
             <p>PHYSICAL ACTIVITY READINESS QUESTIONNAIRE (PAR-Q)</p>
             <hr className="mb-7" />
             <ol className="list-decimal ml-7">
@@ -124,15 +178,42 @@ export default function PhysicalActivityReadinessQuestionnaire() {
                   {question}
                   <div className="flex flex-col mt-2">
                     <label>
-                      <input type="radio" name={`radioQuestion${index}`} /> Yes
+                      <input
+                        type="radio"
+                        name={`radioQuestion${index}`}
+                        value={'Yes'}
+                        onChange={(e) =>
+                          handleAnswerChange(index, e.target.value)
+                        }
+                      />
+                      Yes
                     </label>
                     <label>
-                      <input type="radio" name={`radioQuestion${index}`} /> No
+                      <input
+                        type="radio"
+                        name={`radioQuestion${index}`}
+                        value={'No'}
+                        onChange={(e) =>
+                          handleAnswerChange(index, e.target.value)
+                        }
+                      />
+                      No
                     </label>
                   </div>
                 </li>
               ))}
             </ol>
+          </div>
+          <div
+            id="button-container"
+            className="w-[95%] drop-shadow-none! border-0! flex justify-end p-0! mb-5"
+          >
+            <button
+              className="px-10 py-3 bg-secondary-dark-blue text-white"
+              onClick={() => handleSubmit()}
+            >
+              Submit
+            </button>
           </div>
         </div>
       </div>
