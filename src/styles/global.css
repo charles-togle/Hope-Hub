@@ -185,4 +185,10 @@
   .apply-drop-shadow > div {
     @apply drop-shadow-md p-7 bg-white;
   }
+  .parent-container{
+    @apply h-screen bg-background;
+  }
+  .content-container{
+    @apply w-[80%] mr-auto  ml-auto pt-[5%] flex flex-col items-center justify-center;
+  }
 }
