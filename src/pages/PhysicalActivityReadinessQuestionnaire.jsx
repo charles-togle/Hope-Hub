@@ -161,7 +161,7 @@ export default function PhysicalActivityReadinessQuestionnaire() {
                 Full Name:
                 <span className="text-accent-gray">
                   {' '}
-                  (Surname, First Name, M.I.)
+                  (Surname, First Name, M.I. ex. Dela Cruz, Juan A.)
                 </span>
               </p>
               <input
@@ -198,7 +198,13 @@ export default function PhysicalActivityReadinessQuestionnaire() {
               </label>
             </div>
             <label>
-              <p>Email:</p>
+              <p>
+                Email:{' '}
+                <span className="text-accent-gray">
+                  {' '}
+                  (ex. juan_delacruz@email.com)
+                </span>
+              </p>
               <input
                 type="email"
                 onChange={(e) =>
@@ -213,13 +219,21 @@ export default function PhysicalActivityReadinessQuestionnaire() {
                 onChange={(e) =>
                   handleInformationChange('category', e.target.value)
                 }
-                className='border-1 border-[#8B8989]! w-full font-content px-1 rounded-sm mt-0.5'
+                className="border-1 border-[#8B8989]! w-full font-content px-1 rounded-sm mt-0.5"
               >
                 <option disabled> --Select one option--</option>
-                <option value="elementary-boy">Boy (Elementary 5-12 yrs old)</option>
-                <option value="elementary-girl">Girl (Elementary 5-12 yrs old)</option>
-                <option value="secondary-boy">Boy (High School 13-18 yrs old)</option>
-                <option value="secondary-girl">Girl (High School 13-18 yrs old)</option>
+                <option value="elementary-boy">
+                  Boy (Elementary 5-12 yrs old)
+                </option>
+                <option value="elementary-girl">
+                  Girl (Elementary 5-12 yrs old)
+                </option>
+                <option value="secondary-boy">
+                  Boy (High School 13-18 yrs old)
+                </option>
+                <option value="secondary-girl">
+                  Girl (High School 13-18 yrs old)
+                </option>
               </select>
             </label>
           </div>
