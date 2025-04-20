@@ -1,6 +1,12 @@
 export const PhysicalFitnessData = {
-    name: "",
-    gender: "",
-    email: "",
-    isPARQFinished: false
-}
+  name: '',
+  gender: '',
+  email: '',
+  categort: '',
+  isPARQFinished: false,
+  zipperTest: '',
+  sitAndReach: '',
+  stepTest: '',
+  pushUp: '',
+  basicPlank: '',
+};
