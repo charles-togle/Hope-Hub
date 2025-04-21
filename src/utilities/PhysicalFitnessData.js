@@ -2,11 +2,26 @@ export const PhysicalFitnessData = {
   name: '',
   gender: '',
   email: '',
-  categort: '',
+  category: '',
   isPARQFinished: false,
-  zipperTest: '',
-  sitAndReach: '',
-  stepTest: '',
-  pushUp: '',
-  basicPlank: '',
+  zipperTest: {
+    record: 0,
+    clasification: '',
+  },
+  sitAndReach: {
+    record: 0,
+    clasification: '',
+  },
+  stepTest: {
+    record: 0,
+    clasification: '',
+  },
+  pushUp: {
+    record: 0,
+    clasification: '',
+  },
+  basicPlank: {
+    reps: 0,
+    clasification: '',
+  },
 };
