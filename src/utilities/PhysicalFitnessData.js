@@ -24,4 +24,5 @@ export const PhysicalFitnessData = {
     reps: 0,
     clasification: '',
   },
+  finishedTestIndex: [],
 };
