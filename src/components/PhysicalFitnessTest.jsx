@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PhysicalFitnessTestList } from '@/utilities/PhysicalFitnessTestList';
 import { Fragment } from 'react';
+import { usePhysicalFitnessData } from '@/hooks/usePhysicalFitnessData';
+import ErrorMessage from './utilities/ErrorMessage';
 
 const InstructionsGroup = ({ text, array, id }) => (
   <div id={id}>
@@ -17,7 +19,6 @@ const InstructionsGroup = ({ text, array, id }) => (
 
 export default function PhysicalFitnessTest({ index }) {
   const [category, setCategory] = useState('');
-  // const [tip, setTips] = useState([]);
   const restTimerRef = useRef(null);
   const [testResults, setTestResults] = useState({
     reps: 0,
@@ -38,6 +39,10 @@ export default function PhysicalFitnessTest({ index }) {
     videoInstruction,
   } = testDetails;
   const testName = title;
+  const { physicalFitnessData, setPhysicalFitnessData } =
+    usePhysicalFitnessData();
+  const [userSkippedURL, setUserSkippedURL] = useState(false);
+
   const startTimer = () => {
     if (!restTimerRef.current) {
       restTimerRef.current = setInterval(() => {
@@ -69,6 +74,16 @@ export default function PhysicalFitnessTest({ index }) {
       restTimerRef.current = null;
     }
   };
+
+  //verify if the user skipped using URL
+  useEffect(() => {
+    if (index !== '0') {
+      if (!physicalFitnessData.finishedTestIndex.includes(Number(index) - 1)) {
+        setUserSkippedURL(true);
+      }
+    }
+  }, [index, physicalFitnessData]);
+
   useEffect(() => {
     handleCategory('elementary-girl');
   }, []);
@@ -128,8 +143,8 @@ export default function PhysicalFitnessTest({ index }) {
       });
       classificationDetails = testDetails.classification;
     }
-    if(!classificationDetails){
-      setCategory("No Classification Available")
+    if (!classificationDetails) {
+      setCategory('No Classification Available');
       return;
     }
     classificationDetails.forEach((item) => {
@@ -149,6 +164,12 @@ export default function PhysicalFitnessTest({ index }) {
   useEffect(() => {
     console.log(repResultClassification);
   }, [repResultClassification]);
+
+  if(userSkippedURL){
+    return(
+      <ErrorMessage text={"Error 404"} subText={"Bad Request"}></ErrorMessage>
+    )
+  }
   return (
     <div id="test-container" className="grid grid-cols-[65%_35%] gap-5">
       <div
