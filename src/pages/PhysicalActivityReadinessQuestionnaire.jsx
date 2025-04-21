@@ -2,7 +2,7 @@ import PageHeading from '@/components/PageHeading';
 import { usePhysicalFitnessData } from '@/hooks/usePhysicalFitnessData';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AlertMessage } from '@/components/AlertMessage';
+import { AlertMessage } from '@/components/utilities/AlertMessage';
 
 export default function PhysicalActivityReadinessQuestionnaire() {
   const { physicalFitnessData, setPhysicalFitnessData } =
