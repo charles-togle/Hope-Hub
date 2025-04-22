@@ -6,23 +6,42 @@ export const PhysicalFitnessData = {
   isPARQFinished: false,
   zipperTest: {
     record: 0,
+    sets: 0,
+    timeStarted: '',
+    timeEnd: '',
     clasification: '',
   },
   sitAndReach: {
     record: 0,
+    sets: 0,
+    timeStarted: '',
+    timeEnd: '',
     clasification: '',
   },
   stepTest: {
     record: 0,
+    sets: 0,
+    timeStarted: '',
+    timeEnd: '',
     clasification: '',
   },
   pushUp: {
     record: 0,
+    sets: 0,
+    timeStarted: '',
+    timeEnd: '',
     clasification: '',
   },
   basicPlank: {
-    reps: 0,
+    record: 0,
+    sets: 0,
+    timeStarted: '',
+    timeEnd: '',
     clasification: '',
   },
-  finishedTestIndex: [],
+  finishedTestIndex: Array(5).fill(-1),
 };
+
+
+
+
