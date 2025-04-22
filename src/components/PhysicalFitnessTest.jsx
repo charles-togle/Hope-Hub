@@ -40,8 +40,7 @@ export default function PhysicalFitnessTest({
   });
 
   const [restTimeRemaining, setRestTimeRemaining] = useState(600);
-  const { setPhysicalFitnessData } =
-    usePhysicalFitnessData();
+  const { setPhysicalFitnessData } = usePhysicalFitnessData();
   const testDetails = PhysicalFitnessTestList[index];
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -89,9 +88,6 @@ export default function PhysicalFitnessTest({
     }
   };
 
-
-
-
   useEffect(() => {
     handleCategory('elementary-girl');
   }, []);
@@ -102,7 +98,7 @@ export default function PhysicalFitnessTest({
       stopTimer();
     };
   }, []);
-  
+
   //do this if timer is 0
   useEffect(() => {
     if (restTimeRemaining === 0) {
@@ -115,9 +111,15 @@ export default function PhysicalFitnessTest({
     switch (type) {
       case 'Reps':
         key = 'reps';
+        if (value.toString().startsWith('0') && value.length > 1) {
+          console.log(value)
+        }
         break;
       case 'Sets':
         key = 'sets';
+        if (value.toString().startsWith('0') && value.length > 1) {
+          value = parseInt(value, 10).toString();
+        }
         break;
       case 'Time Started':
         key = 'timeStarted';
@@ -126,16 +128,17 @@ export default function PhysicalFitnessTest({
         key = 'timeEnded';
         break;
     }
+    
     console.log(key, value);
     setTestResults((prev) => {
       const updatedTestResults = {
         ...prev,
-        [key]: value,
+        [key]: value.toString(),
       };
       if (key === 'reps') {
         handleInterpretation(updatedTestResults);
       }
-
+  
       return updatedTestResults;
     });
   };
@@ -201,22 +204,31 @@ export default function PhysicalFitnessTest({
         : [];
 
       updatedFinishedTestIndex[Number(index)] = Number(index);
-      return {
+      const updatedPhysicalFitnessData = {
         ...prev,
         [testDetails.key]: {
-          record: Number(testResults.reps),
-          sets: Number(testResults.sets),
+          record: testResults.reps,
+          sets: testResults.sets,
           timeStarted: testResults.timeStarted,
           timeEnd: testResults.timeEnded,
           classification: testResults.classification,
         },
         finishedTestIndex: updatedFinishedTestIndex,
       };
+
+      setDataToStorage('physicalFitnessData', updatedPhysicalFitnessData);
+      return updatedPhysicalFitnessData;
     });
     if (physicalFitnessData.finishedTestIndex.length >= Number(index)) {
       navigate(`/physical-fitness-test/test/${Number(index) + 1}`);
-      setDataToStorage('physicalFitnessData', physicalFitnessData)
-      console.log(getDataFromStorage('physicalFitnessData'))
+      console.log(getDataFromStorage('physicalFitnessData'));
+      setTestResults({
+        reps: '',
+        sets: '',
+        timeStarted: currentTime,
+        timeEnded: '',
+        classification: 'No data available',
+      });
     }
   };
 
@@ -347,12 +359,14 @@ export default function PhysicalFitnessTest({
                             ? '999'
                             : undefined
                         }
-                        defaultValue={
-                          label === 'Time End'
-                            ? ''
+                        value={
+                          label === 'Reps'
+                            ? testResults.reps
+                            : label === 'Sets'
+                            ? testResults.sets
                             : label === 'Time Started'
-                            ? currentTime
-                            : ''
+                            ? testResults.timeStarted
+                            : testResults.timeEnded
                         }
                         disabled={label === 'Time Started'}
                         name={label}

@@ -35,6 +35,7 @@ export function PhysicalFitnessTestPage() {
         !finishedTestIndex.includes(currentTestIndex - 1) ||
         finishedTestIndex.length <= currentTestIndex
       ) {
+        console.log(finishedTestIndex)
         setIsBadRequest(true);
       }
       setIsDataReady(true);

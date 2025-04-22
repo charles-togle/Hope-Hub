@@ -3,6 +3,8 @@ import { usePhysicalFitnessData } from '@/hooks/usePhysicalFitnessData';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AlertMessage } from '@/components/utilities/AlertMessage';
+import { setDataToStorage } from '@/utilities/setDataToStorage';
+
 
 export default function PhysicalActivityReadinessQuestionnaire() {
   const { physicalFitnessData, setPhysicalFitnessData } =
@@ -62,9 +64,9 @@ export default function PhysicalActivityReadinessQuestionnaire() {
         ...physicalFitnessData,
         isPARQFinished: true,
       };
-      console.log('Data sent to backend:', updatedData);
       setPhysicalFitnessData(updatedData);
-      navigate('/physical-fitness-test/test/1');
+      setDataToStorage('physicalFitnessData', updatedData)      
+      navigate('/physical-fitness-test/test/0');
     } else {
       console.log('Conditions not met:', {
         areAllAnswered,
@@ -169,6 +171,7 @@ export default function PhysicalActivityReadinessQuestionnaire() {
                 onChange={(e) =>
                   handleInformationChange('name', e.target.value)
                 }
+                defaultValue={physicalFitnessData?.name}
                 className="border-1 border-[#8B8989] w-full font-content px-1 rounded-sm mt-0.5"
               />
             </label>
@@ -207,6 +210,7 @@ export default function PhysicalActivityReadinessQuestionnaire() {
               </p>
               <input
                 type="email"
+                defaultValue={physicalFitnessData?.email}
                 onChange={(e) =>
                   handleInformationChange('email', e.target.value)
                 }
@@ -216,6 +220,7 @@ export default function PhysicalActivityReadinessQuestionnaire() {
             <label>
               <p>Age:</p>
               <select
+                defaultValue={physicalFitnessData?.email}
                 onChange={(e) =>
                   handleInformationChange('category', e.target.value)
                 }
@@ -277,7 +282,7 @@ export default function PhysicalActivityReadinessQuestionnaire() {
             className="w-[95%] drop-shadow-none! border-0! flex justify-end p-0! mb-5"
           >
             <button
-              className="px-10 py-3 bg-secondary-dark-blue text-white"
+              className="px-10 py-3 bg-secondary-dark-blue text-white hover:brightness-70"
               onClick={() => handleSubmit()}
             >
               Submit
