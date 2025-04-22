@@ -1,8 +1,24 @@
+import { useEffect } from 'react';
+
 export function AlertMessage({
   text,
   onConfirm = () => {},
   onCancel = () => {},
 }) {
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onCancel();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown); // Cleanup on unmount
+    };
+  }, [onCancel, onConfirm]);
+
   return (
     <div
       id="modal"
