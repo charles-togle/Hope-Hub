@@ -1,8 +1,24 @@
+import { useEffect } from 'react';
+
 export function AlertMessage({
   text,
   onConfirm = () => {},
   onCancel = () => {},
 }) {
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onCancel();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown); // Cleanup on unmount
+    };
+  }, [onCancel, onConfirm]);
+
   return (
     <div
       id="modal"
@@ -14,7 +30,7 @@ export function AlertMessage({
       ></div>
       <div
         id="modal-content"
-        className="bg-secondary-dark-blue w-[40%] h-[35%] z-2 flex flex-col justify-start items-center relative p-10 text-center rounded-md drop-shadow-sm"
+        className="bg-secondary-dark-blue w-[40%] h-fit z-2 flex flex-col justify-start items-center relative p-10 text-center rounded-md drop-shadow-sm"
       >
         <p className="text-white text-2xl font-semibold">WARNING</p>
         <hr className="w-full mb-5" />

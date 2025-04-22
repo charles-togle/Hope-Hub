@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import Lectures from "./pages/LecturesIntroduction";
 import LecturePage from "./pages/LecturePage";
 import PhysicalFitnessDataProvider from "./providers/PhysicalFitnessDataProvider";
-import { PhysicalFitnessTest } from "./pages/PhysicalFitnessTest";
+import { PhysicalFitnessTestPage } from "./pages/PhysicalFitnessTestPage";
 import PhysicalActivityReadinessQuestionnaire from "./pages/PhysicalActivityReadinessQuestionnaire";
 
 function App() {
@@ -37,7 +37,7 @@ function App() {
           <Route path="lectures/lecture/:lessonNumber" element={<LecturePage />} />
           <Route path="physical-fitness-test" element={<PhysicalFitnessWrapper />}>
             <Route path="parq" element={<PhysicalActivityReadinessQuestionnaire />} />
-            <Route path="test/:testIndex" element={<PhysicalFitnessTest />} />
+            <Route path="test/:testIndex" element={<PhysicalFitnessTestPage />} />
           </Route>
         </Route>
       </Routes>
