@@ -23,7 +23,7 @@ export const PhysicalFitnessTestList = [
       { min: 31, max: 4.9, interpretation: 'Good' },
       { min: 0.1, max: 1.9, interpretation: 'Fair' },
       { exact: 0, interpretation: 'Needs Improvement' },
-      { max: -0.1, interpretation: 'Poor' }, // negative overlap = gap
+      { exact: -1, interpretation: 'Poor' }, // negative overlap = gap
     ],
     videoInstructions: 'https://video.com',
   },
