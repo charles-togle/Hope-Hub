@@ -39,7 +39,7 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="lectures" element={<Lectures />} />
           <Route
-            path="lectures/lecture/:lessonNumber"
+            path="lectures/lecture/:lessonNumber/:lectureType"
             element={<LecturePage />}
           />
           <Route
