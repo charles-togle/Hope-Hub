@@ -152,7 +152,7 @@ export default function PhysicalFitnessTest({
 
   const handleInterpretation = (updatedTestResults) => {
     const reps = updatedTestResults.reps;
-    let classificationDetails = testDetails.Classification?.[category];
+    let classificationDetails = testDetails.classification?.[category];
     if (!classificationDetails) {
       setCategory((prev) => {
         let data = prev.slice(-4);
