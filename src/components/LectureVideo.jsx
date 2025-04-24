@@ -1,3 +1,6 @@
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 export default function LectureVideo({
   lectureNumber,
   title,
@@ -5,22 +8,93 @@ export default function LectureVideo({
   quizLink,
   videoLink,
 }) {
+  const [progressSeconds, setProgressSeconds] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isDone, setIsDone] = useState(false);
+  const intervalRef = useRef(null);
+  const videoRef = useRef(null);
+  const navigate = useNavigate();
+
+  const startOrToggleProgress = () => {
+    if (intervalRef.current === null) {
+      intervalRef.current = setInterval(() => {
+        if (videoRef.current) {
+          setProgressSeconds(Math.floor(videoRef.current.currentTime));
+        }
+      }, 1000);
+      console.log('Progress started');
+    } else {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+      console.log('Progress paused');
+    }
+  };
+
+  const stopProgress = () => {
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
+    console.log('Progress stopped');
+  };
+
+  const handleSeeked = () => {
+    if (videoRef.current) {
+      const actualTime = Math.floor(videoRef.current.currentTime);
+      setProgressSeconds(actualTime);
+      console.log('Seeked to', actualTime, 'seconds');
+    }
+  };
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current && intervalRef.current === null) {
+      const actualTime = Math.floor(videoRef.current.currentTime);
+      setProgressSeconds(actualTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (videoRef.current && !isNaN(videoRef.current.duration)) {
+      setDuration(Math.floor(videoRef.current.duration));
+    }
+  };
+
+  useEffect(() => {
+    console.log(progressSeconds);
+    if (!isDone && progressSeconds >= duration - 1 && duration > 0) {
+      setIsDone(true);
+    }
+  }, [progressSeconds, duration, isDone]);
+
+  useEffect(()=>{
+    console.log(isDone);
+    // navigate("/")
+    //action if video done
+  }, [isDone, navigate])
+
+
+
   return (
     <div id="video-lecture" className="w-full">
       <h2 className="bg-neutral-light-blue py-3 px-5 font-content font-medium text-xl">
-        Lecture #{lectureNumber}:{" "}
+        Lecture #{lectureNumber}:{' '}
         <span className="font-normal ml-3">{title}</span>
       </h2>
       <div
         id="lecture-content"
         className="flex flex-col min-h-full justify-center p-10 mb-10 bg-background"
       >
-        <iframe
+        <video
           src={videoLink}
-          frameborder="0"
-          allowFullScreen
+          controls
+          onPlay={startOrToggleProgress}
+          onPause={stopProgress}
+          onSeeked={handleSeeked}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleLoadedMetadata}
+          ref={videoRef}
           className="h-120"
-        ></iframe>
+        >
+          Your browser does not support the video tag.
+        </video>
         <div
           id="lecture-description"
           className=" flex items-center h-fit mt-10 relative font-content"
