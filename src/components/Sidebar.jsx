@@ -14,8 +14,8 @@ export default function Sidebar() {
     { text: "Home", icon: HomeIcon, route: "" },
     { text: "Health Calculators", icon: CalculatorIcon, route: "" },
     { text: "Lectures", icon: LecturesIcon, route: "/lectures" },
-    { text: "Quiz / Activities", icon: QuizIcon, route: "" },
-    { text: "Physical Fitness Test", icon: PhysicalFitnessIcon, route: "" },
+    { text: "Quizzes/Activities", icon: QuizIcon, route: "/quizzes-and-activities" },
+    { text: "Physical Fitness Test", icon: PhysicalFitnessIcon, route: "physical-fitness-test/parq" },
     { text: "About", icon: AboutIcon, route: "/about" },
   ];
   const [active, setActive] = useState(-1);

@@ -38,14 +38,19 @@ export default function About() {
   return (
     <div id="about" className="h-screen bg-background">
       <PageHeading text="About Us"></PageHeading>
-      <div id="about-content" className="pt-[5%] pb-[5%] pr-[5%] pl-[5%] flex flex-col">
-        <img src={Logo} alt="" className="w-2/3 m-auto"/>
-        <hr className="mt-7 mb-7 w-full border-1 border-primary-yellow m-auto"/>
+      <div id="about-content" className="w-[80%] pt-[5%] pb-[5%] mr-auto ml-auto flex flex-col">
+        <img src={Logo} alt="" className="w-2/3 m-auto" />
+        <hr className="mt-7 mb-7 w-full border-1 border-primary-yellow m-auto" />
         <h2 className="text-3xl font-content font-medium mb-5">The Hope Hub</h2>
         <p className="text-lg font-content font-normal">{AboutText}</p>
-        <hr className="mt-7 mb-7 w-[50%] border-1 border-primary-yellow m-auto"/>
-        <div id="contacts" className="relative pt-15 grid grid-cols-2 font-content">
-          <h2 className="absolute top-0 left-0 font-medium text-3xl">Contact Us:</h2>
+        <hr className="mt-7 mb-7 w-[50%] border-1 border-primary-yellow m-auto" />
+        <div
+          id="contacts"
+          className="relative pt-15 grid grid-cols-2 font-content"
+        >
+          <h2 className="absolute top-0 left-0 font-medium text-3xl">
+            Contact Us:
+          </h2>
           {Contacts.map((item, index) => (
             <div
               id="contact"
