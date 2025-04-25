@@ -1,10 +1,13 @@
 import { Lessons } from '@/utilities/Lessons';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import PageHeading from '@/components/PageHeading';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import LecturePDF from '@/components/LecturePDF';
 import LectureVideo from '@/components/LectureVideo';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
+import { LectureProgress } from '@/utilities/LectureProgress';
+import { setDataToStorage } from '@/utilities/setDataToStorage';
+import { getDataFromStorage } from '@/utilities/getDataFromStorage';
 
 export default function LecturePage() {
   const { lessonNumber, lectureType } = useParams();
@@ -18,8 +21,18 @@ export default function LecturePage() {
       return false;
     }
   });
+
   const navigate = useNavigate();
   const selectedLessonNumber = lessonNumber;
+
+  useEffect(() => {
+    if (getDataFromStorage('LectureProgress') !== null) {
+      console.log('meron');
+    } else {
+      setDataToStorage('LectureProgress', LectureProgress());
+      console.log('Lagyan ko');
+    }
+  }, []);
 
   useEffect(() => {
     if (lectureType !== 'video' && lectureType !== 'lecture') {
@@ -27,10 +40,13 @@ export default function LecturePage() {
     }
   }, [lectureType]);
 
-  useEffect(()=>{
-    navigate(`/lectures/lecture/${selectedLessonNumber}/${isVideo ? "video" : "lecture"}`)
-  }, [isVideo, navigate, lectureType, selectedLessonNumber])
-
+  useEffect(() => {
+    navigate(
+      `/lectures/lecture/${selectedLessonNumber}/${
+        isVideo ? 'video' : 'lecture'
+      }`,
+    );
+  }, [isVideo, navigate, lectureType, selectedLessonNumber]);
 
   if (selectedLessonNumber > Lessons.length || isError) {
     return <ErrorMessage text={'Error 404'} subText={'Page not found'} />;
@@ -53,19 +69,15 @@ export default function LecturePage() {
           onClick={() => {
             setIsVideo((prev) => !prev);
           }}
-          className="w-fit self-start px-5 mb-3 border-2 border-accent-blue py-2 text-xl font-content bg-white hover:bg-accent-blue hover:text-white transition-all"
+          className="w-fit self-start px-5 mb-3 border-2 border-accent-blue py-2 text-xl font-content bg-secondary-dark-blue text-white hover:bg-accent-blue hover:text-white transition-all"
         >
           {isVideo ? 'READ DOCUMENT' : 'WATCH VIDEO LECTURE'}
         </button>
-        {isVideo ? (
-          <LectureVideo
-            lectureNumber={selectedLessonNumber}
-            title={title}
-            introduction={introduction}
-            videoLink={videoLecture}
-            quizLink={''}
-          />
-        ) : (
+        <div
+          className={`${
+            isVideo ? 'hidden' : 'block'
+          } transition-opacity duration-300`}
+        >
           <LecturePDF
             lectureNumber={selectedLessonNumber}
             title={title}
@@ -73,7 +85,20 @@ export default function LecturePage() {
             pdfLink={pdf}
             quizLink={''}
           />
-        )}
+        </div>
+        <div
+          className={`${
+            isVideo ? 'block' : 'hidden'
+          } transition-opacity duration-300`}
+        >
+          <LectureVideo
+            lectureNumber={selectedLessonNumber}
+            title={title}
+            introduction={introduction}
+            videoLink={videoLecture}
+            quizLink={''}
+          />
+        </div>
       </div>
     </div>
   );

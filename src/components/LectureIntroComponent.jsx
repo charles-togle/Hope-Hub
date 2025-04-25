@@ -16,19 +16,19 @@ const navigate = useNavigate();
   };
 
   const handleClick = () => {
-    navigate(`lecture/${lectureKey}`)
+    navigate(`lecture/${lectureKey}/lecture`)
   }
 
   return (
     <div id="lecture-introduction" className="border-3 border-black rounded-md" onClick={() => handleClick()}>
-      <div id="content" className="flex flex-col  py-5 px-5">
+      <div id="content" className="flex flex-col  pb-5">
         <div
           id="heading"
-          className="flex flex-row justify-between pb-5 items-center"
+          className="flex flex-row justify-between py-5 px-5 items-center bg-secondary-dark-blue mb-3"
         >
-          <p className="text-primary-blue font-content font-bold text-lg">
+          <p className="text-white font-content font-bold text-lg">
             Lecture #{lectureKey}:{" "}
-            <span className="text-black ml-3 font-normal">{title}</span>
+            <span className="text-white ml-3 font-normal">{title}</span>
           </p>
           <p
             className={`${getStatusClass()} mr-5 font-content text-white w-[12%] min-w-fit px-2 text-center text-md py-1 font-medium`}
@@ -36,8 +36,7 @@ const navigate = useNavigate();
             {status}
           </p>
         </div>
-        <hr className="border-2 border-b-black mb-5" />
-        <div id="introduction">
+        <div id="introduction" className="px-5">
           <p>Introduction</p>
           <ul className="list-disc px-10">
             <li> {introduction}</li>

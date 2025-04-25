@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export default function LectureVideo({
   lectureNumber,
@@ -7,13 +6,15 @@ export default function LectureVideo({
   introduction,
   quizLink,
   videoLink,
+  onVideoFinish = () => {
+    console.log('Video Finished');
+  },
 }) {
   const [progressSeconds, setProgressSeconds] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isDone, setIsDone] = useState(false);
   const intervalRef = useRef(null);
   const videoRef = useRef(null);
-  const navigate = useNavigate();
 
   const startOrToggleProgress = () => {
     if (intervalRef.current === null) {
@@ -64,13 +65,10 @@ export default function LectureVideo({
     }
   }, [progressSeconds, duration, isDone]);
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(isDone);
-    // navigate("/")
-    //action if video done
-  }, [isDone, navigate])
-
-
+    () => onVideoFinish();
+  }, [isDone, onVideoFinish]);
 
   return (
     <div id="video-lecture" className="w-full">
