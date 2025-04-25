@@ -11,6 +11,7 @@ import QuizzesAndActivities from './pages/QuizzesAndActivities';
 import Quiz from './pages/Quiz';
 import Activity from './pages/Activity';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import HealthCalculator from './pages/HealthCalculators/HealthCalculator';
 
 function App() {
   const SideBarOutlet = () => {
@@ -37,6 +38,7 @@ function App() {
       <Routes>
         <Route element={<SideBarOutlet />} path="/">
           <Route path="about" element={<About />} />
+          <Route path="HealthCalculator" element={<HealthCalculator />} />
           <Route path="lectures" element={<Lectures />} />
           <Route
             path="lectures/lecture/:lessonNumber/:lectureType"
