@@ -11,6 +11,7 @@ import QuizzesAndActivities from './pages/QuizzesAndActivities';
 import Quiz from './pages/Quiz';
 import Activity from './pages/Activity';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import LectureProgressProvider from './providers/LectureProvider';
 
 function App() {
   const SideBarOutlet = () => {
@@ -32,16 +33,27 @@ function App() {
     );
   };
 
+  const LectureWrapper = () => {
+    return (
+      <LectureProgressProvider>
+        <Outlet />
+      </LectureProgressProvider>
+    );
+  };
+
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<SideBarOutlet />} path="/">
           <Route path="about" element={<About />} />
-          <Route path="lectures" element={<Lectures />} />
-          <Route
-            path="lectures/lecture/:lessonNumber/:lectureType"
-            element={<LecturePage />}
-          />
+          <Route path="lectures" element={<LectureWrapper />}>
+            <Route index element={<Lectures />} />
+            <Route
+              path="lecture/:lessonNumber/:lectureType"
+              element={<LecturePage />}
+            />
+          </Route>
+
           <Route
             path="physical-fitness-test"
             element={<PhysicalFitnessWrapper />}
