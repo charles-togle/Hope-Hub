@@ -49,7 +49,7 @@ export default function PhysicalFitnessTest({
     instructionsForPartner,
     instructionsForTester,
     instructionsScoring,
-    videoInstruction,
+    videoInstructions,
   } = testDetails || {};
   const testName = title;
 
@@ -126,6 +126,7 @@ export default function PhysicalFitnessTest({
         let data = prev.slice(-4);
         data = data === 'irls' ? 'Girls' : 'Boys';
         return data;
+        
       });
       classificationDetails = testDetails.classification;
     }
@@ -235,7 +236,7 @@ export default function PhysicalFitnessTest({
             ></Timer>
           </div>
           <iframe
-            src={videoInstruction}
+            src={videoInstructions}
             className="col-span-2 mt-10 mb-5 w-full aspect-video border-1 border-black rounded-sm"
           ></iframe>
           <div id="instructions" className="col-span-2 text-sm font-medium">

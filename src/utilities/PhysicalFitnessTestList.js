@@ -25,7 +25,7 @@ export const PhysicalFitnessTestList = [
       { exact: 0, interpretation: 'Needs Improvement' },
       { exact: -1, interpretation: 'Poor' }, // negative overlap = gap
     ],
-    videoInstructions: 'https://video.com',
+    videoInstructions: 'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
   },
   {
     title: 'Sit and Reach',
@@ -54,7 +54,7 @@ export const PhysicalFitnessTestList = [
       { min: 16, max: 30.9, interpretation: 'Fair' },
       { min: 0, max: 15.9, interpretation: 'Needs Improvement' },
     ],
-    videoInstructions: 'https://video.com',
+    videoInstructions: 'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
   },
   {
     title: '3-Minute Step Test',
@@ -80,7 +80,7 @@ export const PhysicalFitnessTestList = [
     instructionsScoring: [
       'Record the 60-second pulse rate immediately after the activity.',
     ],
-    videoInstructions: 'https://video.com',
+    videoInstructions: 'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
   },
   {
     title: 'Push-Up',
@@ -99,7 +99,7 @@ export const PhysicalFitnessTestList = [
     ],
     instructionsScoring: ['Record the number of push-ups made'],
 
-    Classification: {
+    classification: {
       elementaryBoys: [
         { min: 21, interpretation: 'Excellent' },
         { min: 16, max: 20, interpretation: 'Very Good' },
@@ -133,7 +133,7 @@ export const PhysicalFitnessTestList = [
         { exact: 0, interpretation: 'Poor' },
       ],
     },
-    videoInstructions: 'https://video.com',
+    videoInstructions: 'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
   },
   {
     title: 'Basic Plank',
@@ -164,6 +164,6 @@ export const PhysicalFitnessTestList = [
       { min: 16, max: 30, interpretation: 'Fair' },
       { min: 1, max: 15, interpretation: 'Needs Improvement' },
     ],
-    videoInstructions: 'https://video.com',
+    videoInstructions: 'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
   },
 ];
