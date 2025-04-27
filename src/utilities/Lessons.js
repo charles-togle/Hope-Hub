@@ -24,7 +24,8 @@ export const Lessons = [
         in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
     videoStatus: 0,
     pdf: 'https://pdf.com',
-    videoLecture: 'https://youtube.com',
+    videoLecture:
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },
   {
     key: 3,
@@ -35,7 +36,8 @@ export const Lessons = [
         aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
         in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
     pdf: 'https://pdf.com',
-    videoLecture: 'https://youtube.com',
+    videoLecture:
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },
   {
     key: 4,
@@ -46,7 +48,8 @@ export const Lessons = [
         aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
         in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
     pdf: 'https://pdf.com',
-    videoLecture: 'https://youtube.com',
+    videoLecture:
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },
   {
     key: 5,
@@ -57,7 +60,8 @@ export const Lessons = [
         aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
         in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
     pdf: 'https://pdf.com',
-    videoLecture: 'https://youtube.com',
+    videoLecture:
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },
   {
     key: 6,
@@ -68,6 +72,7 @@ export const Lessons = [
         aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
         in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
     pdf: 'https://pdf.com',
-    videoLecture: 'https://youtube.com',
+    videoLecture:
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },
 ];

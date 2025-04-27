@@ -13,32 +13,25 @@ export default function Lectures() {
   const [activeFilter, setActiveFilter] = useState('All');
   const storedProgress = useRef(null);
   const LectureFilters = ['All', 'Done', 'Pending', 'Incomplete'];
-  const handleFilterChange = useCallback(
-    (filter) => {
-      const mergedLessons = Lessons.map((lesson) => {
-        const progress = lectureProgress.find(
-          (progress) => progress.key === lesson.key,
-        );
-        return {
-          ...lesson,
-          status: progress ? progress.status : 'Incomplete',
-        };
-      });
+  const handleFilterChange = useCallback((filter) => {
+    const mergedLessons = Lessons.map((lesson) => {
+      const progress = storedProgress.current.find(
+        (progress) => progress.key === lesson.key,
+      );
+      return {
+        ...lesson,
+        status: progress ? progress.status : 'Incomplete',
+      };
+    });
 
-      const filteredLessons = mergedLessons.filter((lesson) => {
-        if (filter === 'All') return true;
-        return lesson.status === filter;
-      });
+    const filteredLessons = mergedLessons.filter((lesson) => {
+      if (filter === 'All') return true;
+      return lesson.status === filter;
+    });
 
-      setActiveFilter(filter);
-      setActiveLessons(filteredLessons);
-    },
-    [lectureProgress],
-  );
-
-  useEffect(() => {
-    handleFilterChange('All');
-  }, [handleFilterChange]);
+    setActiveFilter(filter);
+    setActiveLessons(filteredLessons);
+  }, []);
 
   useEffect(() => {
     storedProgress.current = getDataFromStorage('LectureProgress');
@@ -53,6 +46,10 @@ export default function Lectures() {
     }
     setDataLoaded(true);
   }, [setLectureProgress, dataLoaded, lectureProgress]);
+
+  useEffect(() => {
+    handleFilterChange('All');
+  }, [handleFilterChange]);
   return (
     <div id="lectures" className="h-screen bg-background overflow-y-scroll">
       <PageHeading
