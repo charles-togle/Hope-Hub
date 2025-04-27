@@ -10,7 +10,6 @@ export default function LecturePDF({
     console.log('end');
   },
 }) {
-  
   return (
     <div
       id="video-lecture"
@@ -29,18 +28,16 @@ export default function LecturePDF({
           id="lecture-description"
           className="w-[30%] flex flex-col relative font-content"
         >
-          <div id="introduction" className="flex flex-row gap-15">
-            <p className="">Introduction</p>
-            <div
-              id="timer-group"
-              className="text-sm w-full flex flex-col items-center"
-            >
-              <Timer
-                className={'w-50 mt-0! text-sm text-wrap'}
-                time={600}
-                onEnd={() => onTimerEnd()}
-              ></Timer>
-            </div>
+          <div
+            id="introduction"
+            className="flex flex-row flex-wrap space-x-5 mb-3 justify-start"
+          >
+            <p>Introduction</p>
+            <Timer
+              className="flex flex-row items-center w-30 justify-between"
+              time={600}
+              onEnd={() => onTimerEnd()}
+            ></Timer>
           </div>
           <ul className=" pt-3 pb-15">
             <li className="ml-5 list-disc">{introduction}</li>

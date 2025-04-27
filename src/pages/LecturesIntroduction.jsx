@@ -1,20 +1,58 @@
-import PageHeading from "@/components/PageHeading";
-import LectureIntroduction from "@/components/LectureIntroComponent";
-import { useState } from "react";
-import { Lessons } from "@/utilities/Lessons";
+import PageHeading from '@/components/PageHeading';
+import LectureIntroduction from '@/components/LectureIntroComponent';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { Lessons } from '@/utilities/Lessons';
+import getDataFromStorage from '@/utilities/getDataFromStorage';
+import setDataToStorage from '@/utilities/setDataToStorage';
+import useLectureProgress from '@/hooks/useLectureProgress';
 
 export default function Lectures() {
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const { lectureProgress, setLectureProgress } = useLectureProgress();
   const [activeLessons, setActiveLessons] = useState(Lessons);
-  const [activeFilter, setActiveFilter] = useState("All");
-  const LectureFilters = ["All", "Done", "Pending", "Incomplete"];
-  const handleFilterChange = (filter) => {
-    setActiveFilter(filter);
-    const lessons = [...Lessons];
-    setActiveLessons(() => {
-      if (filter === "All") return Lessons;
-      return lessons.filter((lesson) => lesson.status === filter);
-    });
-  };
+  const [activeFilter, setActiveFilter] = useState('All');
+  const storedProgress = useRef(null);
+  const LectureFilters = ['All', 'Done', 'Pending', 'Incomplete'];
+  const handleFilterChange = useCallback(
+    (filter) => {
+      const mergedLessons = Lessons.map((lesson) => {
+        const progress = lectureProgress.find(
+          (progress) => progress.key === lesson.key,
+        );
+        return {
+          ...lesson,
+          status: progress ? progress.status : 'Incomplete',
+        };
+      });
+
+      const filteredLessons = mergedLessons.filter((lesson) => {
+        if (filter === 'All') return true;
+        return lesson.status === filter;
+      });
+
+      setActiveFilter(filter);
+      setActiveLessons(filteredLessons);
+    },
+    [lectureProgress],
+  );
+
+  useEffect(() => {
+    handleFilterChange('All');
+  }, [handleFilterChange]);
+
+  useEffect(() => {
+    storedProgress.current = getDataFromStorage('LectureProgress');
+    if (
+      !storedProgress.current ||
+      Object.keys(storedProgress.current).length === 0
+    ) {
+      setDataToStorage('LectureProgress', lectureProgress);
+      setLectureProgress(lectureProgress);
+    } else if (!dataLoaded) {
+      setLectureProgress(storedProgress.current);
+    }
+    setDataLoaded(true);
+  }, [setLectureProgress, dataLoaded, lectureProgress]);
   return (
     <div id="lectures" className="h-screen bg-background overflow-y-scroll">
       <PageHeading
@@ -44,8 +82,8 @@ export default function Lectures() {
                 onClick={() => handleFilterChange(filter)}
                 className={`${
                   filter === activeFilter
-                    ? "bg-primary-yellow rounded-sm text-secondary-dark-blue!"
-                    : ""
+                    ? 'bg-primary-yellow rounded-sm text-secondary-dark-blue!'
+                    : ''
                 } text-white font-content py-2 px-5`}
               >
                 {filter}

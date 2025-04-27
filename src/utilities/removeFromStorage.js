@@ -1,3 +1,5 @@
-export const removeFromStorage = (value) => {
+const removeFromStorage = (value) => {
     localStorage.removeItem(value);
 }
+
+export default removeFromStorage

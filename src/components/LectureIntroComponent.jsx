@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 export default function LectureIntroduction({
   lectureKey,
@@ -6,28 +6,31 @@ export default function LectureIntroduction({
   introduction,
   status,
 }) {
-
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const getStatusClass = () => {
-    if (status === "Incomplete") return "bg-red";
-    if (status === "Done") return "bg-green";
-    if (status === "Pending") return "bg-accent-orange";
-    return ""; // Default class if no match
+    if (status === 'Incomplete') return 'bg-red';
+    if (status === 'Done') return 'bg-green';
+    if (status === 'Pending') return 'bg-accent-orange';
+    return ''; // Default class if no match
   };
 
   const handleClick = () => {
-    navigate(`lecture/${lectureKey}/lecture`)
-  }
+    navigate(`lecture/${lectureKey}/lecture`);
+  };
 
   return (
-    <div id="lecture-introduction" className="border-3 border-black rounded-md" onClick={() => handleClick()}>
+    <div
+      id="lecture-introduction"
+      className="border-3 border-black rounded-md"
+      onClick={() => handleClick()}
+    >
       <div id="content" className="flex flex-col  pb-5">
         <div
           id="heading"
           className="flex flex-row justify-between py-5 px-5 items-center bg-secondary-dark-blue mb-3"
         >
           <p className="text-white font-content font-bold text-lg">
-            Lecture #{lectureKey}:{" "}
+            Lecture #{lectureKey}:{' '}
             <span className="text-white ml-3 font-normal">{title}</span>
           </p>
           <p
