@@ -12,7 +12,11 @@ import { useNavigate } from 'react-router-dom';
 export default function Sidebar() {
   const SidebarButtons = [
     { text: 'Home', icon: HomeIcon, route: 'home' },
-    { text: 'Health Calculators', icon: CalculatorIcon, route: '' },
+    {
+      text: 'Health Calculators',
+      icon: CalculatorIcon,
+      route: '/health-calculators',
+    },
     { text: 'Lectures', icon: LecturesIcon, route: '/lectures' },
     {
       text: 'Quizzes/Activities',
