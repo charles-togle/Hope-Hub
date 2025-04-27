@@ -5,10 +5,9 @@ import { useEffect, useState } from 'react';
 import LecturePDF from '@/components/LecturePDF';
 import LectureVideo from '@/components/LectureVideo';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
-import { LectureProgress } from '@/utilities/LectureProgress';
-import { setDataToStorage } from '@/utilities/setDataToStorage';
-import { getDataFromStorage } from '@/utilities/getDataFromStorage';
-
+import setDataToStorage from '@/utilities/setDataToStorage';
+import useLectureProgress from '@/hooks/useLectureProgress';
+import getDataFromStorage from '@/utilities/getDataFromStorage';
 export default function LecturePage() {
   const { lessonNumber, lectureType } = useParams();
   const [isError, setIsError] = useState(false);
@@ -24,15 +23,7 @@ export default function LecturePage() {
 
   const navigate = useNavigate();
   const selectedLessonNumber = lessonNumber;
-
-  useEffect(() => {
-    if (getDataFromStorage('LectureProgress') !== null) {
-      console.log('meron');
-    } else {
-      setDataToStorage('LectureProgress', LectureProgress());
-      console.log('Lagyan ko');
-    }
-  }, []);
+  const { lectureProgress, setLectureProgress } = useLectureProgress();
 
   useEffect(() => {
     if (lectureType !== 'video' && lectureType !== 'lecture') {
@@ -48,6 +39,24 @@ export default function LecturePage() {
     );
   }, [isVideo, navigate, lectureType, selectedLessonNumber]);
 
+  useEffect(() => {
+    const storedProgress = getDataFromStorage('LectureProgress');
+    console.log(storedProgress);
+    if (storedProgress) {
+      const lectureToUpdate = storedProgress.find(
+        (progress) => progress.key === Number(selectedLessonNumber),
+      );
+      if (lectureToUpdate.status !== 'Done') {
+        lectureToUpdate.status = 'Pending';
+        const updatedProgress = [...storedProgress, lectureToUpdate];
+        setDataToStorage('LectureProgress', updatedProgress);
+        console.log(updatedProgress);
+      }
+    } else {
+      setDataToStorage('LectureProgress', lectureProgress);
+    }
+  }, [selectedLessonNumber, lectureProgress]);
+
   if (selectedLessonNumber > Lessons.length || isError) {
     return <ErrorMessage text={'Error 404'} subText={'Page not found'} />;
   }
@@ -56,6 +65,19 @@ export default function LecturePage() {
     (lesson) => lesson.key === Number(selectedLessonNumber),
   );
   const { pdf, introduction, title, videoLecture } = lessonDetails;
+
+  const handleLectureFinish = () => {
+    const lectureToUpdate = lectureProgress.find(
+      (lecture) => lecture.key === Number(selectedLessonNumber),
+    );
+
+    lectureToUpdate.status = 'Done';
+    setLectureProgress((prev) => ({
+      ...prev,
+      lectureToUpdate,
+    }));
+    setDataToStorage('LectureProgress', lectureProgress);
+  };
 
   return (
     <div id="lecture-page" className="h-fit min-h-screen bg-gray-background">
@@ -84,6 +106,7 @@ export default function LecturePage() {
             introduction={introduction}
             pdfLink={pdf}
             quizLink={''}
+            onTimerEnd={() => handleLectureFinish()}
           />
         </div>
         <div
@@ -97,6 +120,7 @@ export default function LecturePage() {
             introduction={introduction}
             videoLink={videoLecture}
             quizLink={''}
+            onVideoFinish={() => handleLectureFinish()}
           />
         </div>
       </div>
