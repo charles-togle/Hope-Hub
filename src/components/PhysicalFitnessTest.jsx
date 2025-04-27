@@ -4,8 +4,8 @@ import { PhysicalFitnessTestList } from '@/utilities/PhysicalFitnessTestList';
 import { Fragment } from 'react';
 import { usePhysicalFitnessData } from '@/hooks/usePhysicalFitnessData';
 import { AlertMessage } from './utilities/AlertMessage';
-import { setDataToStorage } from '@/utilities/setDataToStorage';
-import { getDataFromStorage } from '@/utilities/getDataFromStorage';
+import setDataToStorage from '@/utilities/setDataToStorage';
+import getDataFromStorage from '@/utilities/getDataFromStorage';
 import { Timer } from '@/components/utilities/Timer';
 
 const InstructionsGroup = ({ text, array, id }) => (
@@ -228,7 +228,11 @@ export default function PhysicalFitnessTest({
           </div>
           <div id="timer" className="relative">
             <p className="absolute">Exercise Timer:</p>
-            <Timer onEnd={()=>setIsTimeout(true)} time={600}></Timer>
+            <Timer
+              className="mt-7 flex flex-row justify-start items-center space-x-5"
+              onEnd={() => setIsTimeout(true)}
+              time={600}
+            ></Timer>
           </div>
           <iframe
             src={videoInstruction}
