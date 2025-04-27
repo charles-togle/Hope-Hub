@@ -32,8 +32,9 @@ export default function HealthCalculator() {
         className="w-[80%] flex justify-center flex-col items-center mr-auto ml-auto mt-16"
       >
         <div className="grid grid-cols-2 gap-y-3 gap-x-10 relative mb-10 w-full">
-          {HealthCalculatorButtons.map((button) => (
+          {HealthCalculatorButtons.map((button, index) => (
             <HealthCalculatorButton
+              key={index}
               text={button.text}
               linkTo={button.linkTo}
               className={button.className}

@@ -1,4 +1,5 @@
 import { Timer } from '@/components/utilities/Timer';
+import { useNavigate } from 'react-router-dom';
 
 export default function LecturePDF({
   lectureNumber,
@@ -6,10 +7,13 @@ export default function LecturePDF({
   title,
   quizLink,
   pdfLink,
+  isLectureDone = false,
   onTimerEnd = () => {
     console.log('end');
   },
 }) {
+  const navigate = useNavigate();
+
   return (
     <div
       id="video-lecture"
@@ -35,11 +39,13 @@ export default function LecturePDF({
             <p>Introduction</p>
             <Timer
               className="flex flex-row items-center w-30 justify-between"
-              time={600}
-              onEnd={() => onTimerEnd()}
+              time={5}
+              onEnd={() => {
+                onTimerEnd();
+              }}
             ></Timer>
           </div>
-          <ul className=" pt-3 pb-15">
+          <ul className="pt-3 pb-5">
             <li className="ml-5 list-disc">{introduction}</li>
           </ul>
           <div
@@ -50,8 +56,15 @@ export default function LecturePDF({
               Finished Learning? Test your knowledge and take the quiz!
             </p>
             <button
-              onClick={() => console.log(quizLink)}
-              className="w-full py-2 text-lg text-white bg-accent-blue hover:brightness-90"
+              onClick={() => {
+                if (!isLectureDone) {
+                  navigate('not-found');
+                  return;
+                }
+                console.log(quizLink);
+              }}
+              disabled={isLectureDone ? undefined : true}
+              className="w-full py-2 text-lg text-white bg-accent-blue hover:brightness-90 disabled:brightness-50"
             >
               TAKE QUIZ
             </button>

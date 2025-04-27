@@ -24,7 +24,7 @@ export default function PhysicalFitnessTest({
   setIsTimeout,
   physicalFitnessData,
 }) {
-  const [currentTime] = useState(
+  const [currentTime, setCurrentTime] = useState(
     `${String(new Date().getHours()).padStart(2, '0')}:${String(
       new Date().getMinutes(),
     ).padStart(2, '0')}`,
@@ -56,22 +56,19 @@ export default function PhysicalFitnessTest({
   const handleCategory = (value) => {
     switch (value) {
       case 'elementary-boy':
-        setCategory('elementaryBoys');
-        break;
+        return 'elementaryBoys';
       case 'elementary-girl':
-        setCategory('elementaryGirls');
-        break;
+        return 'elementaryGirls';
       case 'secondary-boy':
-        setCategory('secondaryBoys');
-        break;
+        return 'secondaryBoys';
       case 'secondary-girl':
-        setCategory('secondaryGirls');
-        break;
+        return 'secondaryGirls';
     }
   };
 
   useEffect(() => {
-    handleCategory('elementary-girl');
+    const storedData = getDataFromStorage('physicalFitnessData');
+    setCategory(handleCategory(storedData.category));
   }, []);
 
   const handleResultChange = (type, value) => {
@@ -79,15 +76,9 @@ export default function PhysicalFitnessTest({
     switch (type) {
       case 'Reps':
         key = 'reps';
-        if (value.toString().startsWith('0') && value.length > 1) {
-          console.log(value);
-        }
         break;
       case 'Sets':
         key = 'sets';
-        if (value.toString().startsWith('0') && value.length > 1) {
-          value = parseInt(value, 10).toString();
-        }
         break;
       case 'Time Started':
         key = 'timeStarted';
@@ -120,36 +111,48 @@ export default function PhysicalFitnessTest({
 
   const handleInterpretation = (updatedTestResults) => {
     const reps = updatedTestResults.reps;
+    const storedData = getDataFromStorage('physicalFitnessData');
+    setCategory(handleCategory(storedData.category));
     let classificationDetails = testDetails.classification?.[category];
+    if (testName === 'Push-Up') {
+      classificationDetails =
+        testDetails.classification?.[handleCategory(storedData.category)];
+    }
     if (!classificationDetails) {
       setCategory((prev) => {
         let data = prev.slice(-4);
         data = data === 'irls' ? 'Girls' : 'Boys';
         return data;
-        
       });
       classificationDetails = testDetails.classification;
     }
     if (!classificationDetails) {
       setClassification('No information available');
       return;
-    }
-    classificationDetails.forEach((item) => {
-      if (reps === item.exact) {
-        setClassification(item.interpretation);
-        return;
-      } else if (item.min <= reps && item.max >= reps) {
-        setClassification(item.interpretation);
+    } else if (Array.isArray(classificationDetails)) {
+      classificationDetails.forEach((item) => {
+        if (reps === item.exact) {
+          setClassification(item.interpretation);
+          return;
+        } else if (item.min <= reps && item.max >= reps) {
+          setClassification(item.interpretation);
 
-        return;
-      } else if (!item.max && item.min <= reps) {
-        setClassification(item.interpretation);
-        return;
-      }
-    });
+          return;
+        } else if (!item.max && item.min <= reps) {
+          setClassification(item.interpretation);
+          return;
+        }
+      });
+    }
   };
 
   const handleSubmit = () => {
+    setCurrentTime(
+      `${String(new Date().getHours()).padStart(2, '0')}:${String(
+        new Date().getMinutes(),
+      ).padStart(2, '0')}`,
+    );
+
     const hasEmptyField = Object.values(testResults).some(
       (value) => value.toString() === '' || value.toString().trim() === '',
     );
@@ -190,7 +193,6 @@ export default function PhysicalFitnessTest({
     });
     if (physicalFitnessData.finishedTestIndex.length >= Number(index)) {
       navigate(`/physical-fitness-test/test/${Number(index) + 1}`);
-      console.log(getDataFromStorage('physicalFitnessData'));
       setTestResults({
         reps: '',
         sets: '',
@@ -283,7 +285,9 @@ export default function PhysicalFitnessTest({
             </div>
             <hr className="w-[50%] border-1 border-black" />
             <div id="data" className="flex flex-col relative ml-3">
-              <h2 className="absolute font-semibold text-lg">{testName}</h2>
+              <h2 className="absolute font-semibold text-lg pointer-events-none">
+                {testName}
+              </h2>
               <div
                 id="inputs"
                 className="mt-7 ml-2 grid grid-cols-2 divide-x divide-black"

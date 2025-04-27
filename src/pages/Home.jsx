@@ -43,7 +43,7 @@ export default function Home() {
           alt="umak students doing dance"
           className="w-full mb-10"
         />
-        <p className="mb-2 font-medium">With us, you are home</p>
+        <p className="mb-2 text-lg">With us, you are home</p>
         <h2 className="text-primary-yellow font-heading text-6xl">
           Welcome to Hope Hub Web!
         </h2>
@@ -68,6 +68,22 @@ export default function Home() {
           </p>
         </div>
       </section>
+      <footer className="flex flex-row bg-[#121212] w-full items-center p-5">
+        <p className="text-primary-blue font-content w-fit pl-10 text-3xl font-semibold italic">
+          Discover your health <br />
+          strenghten your body <br /> unlock your potential
+        </p>
+        <hr className="h-full border-1 border-primary-yellow mr-10 ml-10" />
+        <div className="w-6/10 flex flex-col">
+          <p className="text-white text-center mt-5">
+            The Hope Hub, we believe in the Power of Physical Education to
+            inspire change and create a lasting impact on well-being. Whether
+            you're teaching the next generation of students or building your own
+            fitness knowledge, we're here to guide you every step of the way.{' '}
+          </p>
+          <div className="text-white mt-20">Placeholder</div>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function LectureVideo({
   lectureNumber,
@@ -6,6 +7,7 @@ export default function LectureVideo({
   introduction,
   quizLink,
   videoLink,
+  isLectureDone = false,
   onVideoFinish = () => {
     console.log('Video Finished');
   },
@@ -16,6 +18,7 @@ export default function LectureVideo({
   const [isSaved, setIsSaved] = useState(false);
   const intervalRef = useRef(null);
   const videoRef = useRef(null);
+  const navigate = useNavigate();
 
   const startOrToggleProgress = () => {
     if (intervalRef.current === null) {
@@ -108,7 +111,13 @@ export default function LectureVideo({
               Done Learning? Test your knowledge and take the quiz!
             </p>
             <button
-              onClick={() => console.log(quizLink)}
+              onClick={() => {
+                if (!isLectureDone) {
+                  navigate('not-found');
+                  return;
+                }
+                console.log(quizLink);
+              }}
               className="w-full py-2 text-lg text-white bg-accent-blue hover:brightness-90"
             >
               TAKE QUIZ
