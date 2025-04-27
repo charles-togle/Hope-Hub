@@ -3,12 +3,14 @@
 export const Lessons = [
   {
     key: 1,
-    title: 'This is a sample title',
-    introduction: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
-      enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-      aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
-      in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
+    title: 'Personal Safety Protocol',
+    introduction: `Personal safety during exercise is a crucial consideration, 
+    especially when engaging in physical activity in extreme weather conditions.
+     Whether it's the scorching heat of summer or the freezing temperatures of winter, 
+     both environments can significantly impact the body’s performance and increase the 
+     risk of injury or illness. This topic explores the importance of implementing proper
+     safety protocols, recognizing weather-related risks, and adopting preventive strategies
+     to maintain health and performance during exercise in both hot and cold conditions.`,
     videoStatus: 0,
     pdf: 'https://file.garden/Z-9MLal_RynAMoBV/PDFs/PERSONAL%20SAFETY%20PROTOCOLS_PDF.pdf',
     videoLecture:
@@ -16,62 +18,18 @@ export const Lessons = [
   },
   {
     key: 2,
-    title: 'This is a sample title',
-    introduction: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
-        enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
-        in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
+    title: 'Physiological Indicators',
+    introduction: `Physiological indicators are key measurements that show how the body responds to physical activity, helping us monitor and improve our fitness and overall health. These indicators include heart rate, resting heart rate, maximum heart rate, heart rate reserve, and target heart rate. By understanding and tracking these values, we can determine how hard the body is working during exercise, adjust the intensity of workouts, and ensure we are training safely and effectively. Physiological indicators also play a vital role in setting fitness goals and evaluating progress over time.`,
     videoStatus: 0,
-    pdf: 'https://pdf.com',
+    pdf: 'https://file.garden/Z-9MLal_RynAMoBV/PDFs/LESSON%202_PHYSIOLOGICAL%20INDICATORS.pdf',
     videoLecture:
       'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },
   {
     key: 3,
-    title: 'This is a sample title',
-    introduction: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
-        enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
-        in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
-    pdf: 'https://pdf.com',
-    videoLecture:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
-  },
-  {
-    key: 4,
-    title: 'This is a sample title',
-    introduction: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
-        enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
-        in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
-    pdf: 'https://pdf.com',
-    videoLecture:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
-  },
-  {
-    key: 5,
-    title: 'This is a sample title',
-    introduction: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
-        enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
-        in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
-    pdf: 'https://pdf.com',
-    videoLecture:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
-  },
-  {
-    key: 6,
-    title: 'This is a sample title',
-    introduction: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
-        enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
-        in voluptate velit esse cillum dolore eu fugiat nulla pariatur. `,
-    pdf: 'https://pdf.com',
+    title: 'The FITT Principle',
+    introduction: `The FITT Principle is a simple yet powerful framework for building a safe and effective fitness routine. It stands for Frequency, Intensity, Time, and Type—four key factors that help guide how often, how hard, how long, and what kind of exercise a person should do. Understanding FITT allows individuals to create personalized workout plans that match their fitness level and goals. `,
+    pdf: 'https://file.garden/Z-9MLal_RynAMoBV/PDFs/LESSON%202_PHYSIOLOGICAL%20INDICATORS.pdf',
     videoLecture:
       'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },

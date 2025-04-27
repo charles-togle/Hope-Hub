@@ -11,6 +11,7 @@ import getDataFromStorage from '@/utilities/getDataFromStorage';
 export default function LecturePage() {
   const { lessonNumber, lectureType } = useParams();
   const [isError, setIsError] = useState(false);
+  const [isLectureDone, setIsLectureDone] = useState(false);
   const [isVideo, setIsVideo] = useState(() => {
     if (lectureType === 'video') {
       return true;
@@ -42,18 +43,31 @@ export default function LecturePage() {
   useEffect(() => {
     const storedProgress = getDataFromStorage('LectureProgress');
     if (storedProgress) {
-      const updatedProgress = storedProgress.map((progress) =>
-        progress.key === Number(selectedLessonNumber)
-          ? { ...progress, status: 'Pending' }
-          : progress,
+      const currentLecture = storedProgress.find(
+        (progress) => progress.key === Number(selectedLessonNumber),
       );
-      setDataToStorage('LectureProgress', updatedProgress);
-      console.log('Updated Progress:', updatedProgress);
+
+      if (currentLecture && currentLecture.status === 'Done') {
+        setIsLectureDone(true);
+      }
+      const updatedProgress = storedProgress.map((progress) => {
+        if (
+          progress.key === Number(selectedLessonNumber) &&
+          progress.status === 'Incomplete'
+        ) {
+          return { ...progress, status: 'Pending' };
+        }
+        return progress;
+      });
+
+      if (JSON.stringify(storedProgress) !== JSON.stringify(updatedProgress)) {
+        setDataToStorage('LectureProgress', updatedProgress);
+        setLectureProgress(updatedProgress);
+      }
     } else {
       setDataToStorage('LectureProgress', lectureProgress);
-      console.log('Initialized LectureProgress:', lectureProgress);
     }
-  }, [selectedLessonNumber, lectureProgress]);
+  }, [selectedLessonNumber, setLectureProgress, lectureProgress]);
 
   if (selectedLessonNumber > Lessons.length || isError) {
     return <ErrorMessage text={'Error 404'} subText={'Page not found'} />;
@@ -65,6 +79,8 @@ export default function LecturePage() {
   const { pdf, introduction, title, videoLecture } = lessonDetails;
 
   const handleLectureFinish = () => {
+    if (isLectureDone) return;
+
     const lectureToUpdate = lectureProgress.find(
       (lecture) => lecture.key === Number(selectedLessonNumber),
     );
@@ -78,8 +94,7 @@ export default function LecturePage() {
     );
     setLectureProgress(updatedProgress);
     setDataToStorage('LectureProgress', updatedProgress);
-
-    console.log('Updated Progress:', updatedProgress);
+    setIsLectureDone(true);
   };
 
   return (
@@ -110,6 +125,7 @@ export default function LecturePage() {
             pdfLink={pdf}
             quizLink={''}
             onTimerEnd={() => handleLectureFinish()}
+            isLectureDone={isLectureDone}
           />
         </div>
         <div
@@ -124,6 +140,7 @@ export default function LecturePage() {
             videoLink={videoLecture}
             quizLink={''}
             onVideoFinish={() => handleLectureFinish()}
+            isLectureDone={isLectureDone}
           />
         </div>
       </div>

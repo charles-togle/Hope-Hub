@@ -13,7 +13,28 @@ export default function Lectures() {
   const [activeFilter, setActiveFilter] = useState('All');
   const storedProgress = useRef(null);
   const LectureFilters = ['All', 'Done', 'Pending', 'Incomplete'];
+
+  useEffect(() => {
+    storedProgress.current = getDataFromStorage('LectureProgress');
+    if (
+      !storedProgress.current ||
+      Object.keys(storedProgress.current).length === 0
+    ) {
+      setDataToStorage('LectureProgress', lectureProgress);
+      setLectureProgress(lectureProgress);
+    } else if (!dataLoaded) {
+      setLectureProgress(storedProgress.current);
+    }
+    setDataLoaded(true);
+  }, [setLectureProgress, dataLoaded, lectureProgress]);
+
   const handleFilterChange = useCallback((filter) => {
+    if (
+      !storedProgress.current ||
+      Object.keys(storedProgress.current).length === 0
+    ) {
+      return;
+    }
     const mergedLessons = Lessons.map((lesson) => {
       const progress = storedProgress.current.find(
         (progress) => progress.key === lesson.key,
@@ -34,20 +55,6 @@ export default function Lectures() {
   }, []);
 
   useEffect(() => {
-    storedProgress.current = getDataFromStorage('LectureProgress');
-    if (
-      !storedProgress.current ||
-      Object.keys(storedProgress.current).length === 0
-    ) {
-      setDataToStorage('LectureProgress', lectureProgress);
-      setLectureProgress(lectureProgress);
-    } else if (!dataLoaded) {
-      setLectureProgress(storedProgress.current);
-    }
-    setDataLoaded(true);
-  }, [setLectureProgress, dataLoaded, lectureProgress]);
-
-  useEffect(() => {
     handleFilterChange('All');
   }, [handleFilterChange]);
   return (
@@ -58,17 +65,12 @@ export default function Lectures() {
       ></PageHeading>
       <div
         id="lectures-container"
-        className="w-[80%] flex flex-col items-center mr-auto ml-auto relative"
+        className="w-[80%] flex flex-col items-center mr-auto ml-auto relative mb-10"
       >
         <div
           id="buttons-wrapper"
-          className="sticky top-0 pt-[3%] pb-[2%] self-start w-full flex flex-row-reverse justify-between bg-background z-10"
+          className="sticky top-0 pt-[3%] pb-[2%] self-start w-full flex flex-row items-center justify-between bg-background z-10"
         >
-          <p className="font-content text-sm w-[60%] text-wrap">
-            <strong>Note: </strong>You can only take the quiz after reading or
-            watching the lecture. (Lecture will be automatically marked as done
-            after taking the quiz.)
-          </p>
           <div
             id="buttons"
             className="rounded-sm bg-secondary-dark-blue w-fit h-fit flex flex-nowrap"
@@ -87,10 +89,15 @@ export default function Lectures() {
               </button>
             ))}
           </div>
+          <p className="font-content text-sm w-6/10 text-wrap self-start">
+            <strong>Note: </strong>You can only take the quiz after reading or
+            watching the lecture. (Lecture will be automatically marked as done
+            after taking the quiz.)
+          </p>
         </div>
         <div
           id="lecture-introductions"
-          className="flex justify-center space-y-3 flex-col items-center overflow-auto mt-[2%]"
+          className="flex justify-center space-y-3 flex-col items-center overflow-auto mt-5"
         >
           {activeLessons.length !== 0 ? (
             activeLessons.map((lesson, index) => (
