@@ -41,19 +41,17 @@ export default function LecturePage() {
 
   useEffect(() => {
     const storedProgress = getDataFromStorage('LectureProgress');
-    console.log(storedProgress);
     if (storedProgress) {
-      const lectureToUpdate = storedProgress.find(
-        (progress) => progress.key === Number(selectedLessonNumber),
+      const updatedProgress = storedProgress.map((progress) =>
+        progress.key === Number(selectedLessonNumber)
+          ? { ...progress, status: 'Pending' }
+          : progress,
       );
-      if (lectureToUpdate.status !== 'Done') {
-        lectureToUpdate.status = 'Pending';
-        const updatedProgress = [...storedProgress, lectureToUpdate];
-        setDataToStorage('LectureProgress', updatedProgress);
-        console.log(updatedProgress);
-      }
+      setDataToStorage('LectureProgress', updatedProgress);
+      console.log('Updated Progress:', updatedProgress);
     } else {
       setDataToStorage('LectureProgress', lectureProgress);
+      console.log('Initialized LectureProgress:', lectureProgress);
     }
   }, [selectedLessonNumber, lectureProgress]);
 
@@ -70,13 +68,18 @@ export default function LecturePage() {
     const lectureToUpdate = lectureProgress.find(
       (lecture) => lecture.key === Number(selectedLessonNumber),
     );
+    if (!lectureToUpdate) {
+      console.error('Lecture not found!');
+      return;
+    }
+    const updatedLecture = { ...lectureToUpdate, status: 'Done' };
+    const updatedProgress = lectureProgress.map((lecture) =>
+      lecture.key === Number(selectedLessonNumber) ? updatedLecture : lecture,
+    );
+    setLectureProgress(updatedProgress);
+    setDataToStorage('LectureProgress', updatedProgress);
 
-    lectureToUpdate.status = 'Done';
-    setLectureProgress((prev) => ({
-      ...prev,
-      lectureToUpdate,
-    }));
-    setDataToStorage('LectureProgress', lectureProgress);
+    console.log('Updated Progress:', updatedProgress);
   };
 
   return (
