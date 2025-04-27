@@ -45,10 +45,8 @@ export function Timer({
   }, [onEnd, timer]);
 
   return (
-    <div
-      className={`${className} mt-7 flex flex-row justify-start items-center space-x-5`}
-    >
-      <img src={timerIcon} alt="rest-timer" className="w-1/10" />
+    <div className={`${className}`}>
+      <img src={timerIcon} alt="rest-timer" className="w-[15%]" />
       <p className="text-wrap text-sm">
         {Math.floor(timer / 60)} : {String(timer % 60).padStart(2, '0')} mins
       </p>
