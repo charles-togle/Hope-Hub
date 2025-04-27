@@ -13,6 +13,7 @@ export default function LectureVideo({
   const [progressSeconds, setProgressSeconds] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isDone, setIsDone] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const intervalRef = useRef(null);
   const videoRef = useRef(null);
 
@@ -23,25 +24,21 @@ export default function LectureVideo({
           setProgressSeconds(Math.floor(videoRef.current.currentTime));
         }
       }, 1000);
-      console.log('Progress started');
     } else {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
-      console.log('Progress paused');
     }
   };
 
   const stopProgress = () => {
     clearInterval(intervalRef.current);
     intervalRef.current = null;
-    console.log('Progress stopped');
   };
 
   const handleSeeked = () => {
     if (videoRef.current) {
       const actualTime = Math.floor(videoRef.current.currentTime);
       setProgressSeconds(actualTime);
-      console.log('Seeked to', actualTime, 'seconds');
     }
   };
 
@@ -59,16 +56,17 @@ export default function LectureVideo({
   };
 
   useEffect(() => {
-    console.log(progressSeconds);
     if (!isDone && progressSeconds >= duration - 1 && duration > 0) {
       setIsDone(true);
     }
   }, [progressSeconds, duration, isDone]);
 
   useEffect(() => {
-    console.log(isDone);
-    () => onVideoFinish();
-  }, [isDone, onVideoFinish]);
+    if (isDone && !isSaved) {
+      onVideoFinish();
+      setIsSaved(true);
+    }
+  }, [isDone, onVideoFinish, isSaved]);
 
   return (
     <div id="video-lecture" className="w-full">
