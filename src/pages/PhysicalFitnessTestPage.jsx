@@ -6,7 +6,7 @@ import { AlertMessage } from '@/components/utilities/AlertMessage';
 import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
 import { usePhysicalFitnessData } from '@/hooks/usePhysicalFitnessData';
-import  getDataFromStorage  from '@/utilities/getDataFromStorage';
+import getDataFromStorage from '@/utilities/getDataFromStorage';
 
 export function PhysicalFitnessTestPage() {
   const { testIndex } = useParams();
@@ -35,7 +35,7 @@ export function PhysicalFitnessTestPage() {
         !finishedTestIndex.includes(currentTestIndex - 1) ||
         finishedTestIndex.length <= currentTestIndex
       ) {
-        console.log(finishedTestIndex)
+        console.log(finishedTestIndex);
         setIsBadRequest(true);
       }
       setIsDataReady(true);
@@ -62,9 +62,9 @@ export function PhysicalFitnessTestPage() {
     return <div></div>;
   }
 
-  if (isBadRequest) {
-    return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
-  }
+  // if (isBadRequest) {
+  //   return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
+  // }
 
   if (isTimeout) {
     return (
