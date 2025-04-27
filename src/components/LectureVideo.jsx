@@ -1,26 +1,96 @@
+import { useEffect, useRef, useState } from 'react';
+
 export default function LectureVideo({
   lectureNumber,
   title,
   introduction,
   quizLink,
   videoLink,
+  onVideoFinish = () => {
+    console.log('Video Finished');
+  },
 }) {
+  const [progressSeconds, setProgressSeconds] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isDone, setIsDone] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const intervalRef = useRef(null);
+  const videoRef = useRef(null);
+
+  const startOrToggleProgress = () => {
+    if (intervalRef.current === null) {
+      intervalRef.current = setInterval(() => {
+        if (videoRef.current) {
+          setProgressSeconds(Math.floor(videoRef.current.currentTime));
+        }
+      }, 1000);
+    } else {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  const stopProgress = () => {
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
+  };
+
+  const handleSeeked = () => {
+    if (videoRef.current) {
+      const actualTime = Math.floor(videoRef.current.currentTime);
+      setProgressSeconds(actualTime);
+    }
+  };
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current && intervalRef.current === null) {
+      const actualTime = Math.floor(videoRef.current.currentTime);
+      setProgressSeconds(actualTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (videoRef.current && !isNaN(videoRef.current.duration)) {
+      setDuration(Math.floor(videoRef.current.duration));
+    }
+  };
+
+  useEffect(() => {
+    if (!isDone && progressSeconds >= duration - 1 && duration > 0) {
+      setIsDone(true);
+    }
+  }, [progressSeconds, duration, isDone]);
+
+  useEffect(() => {
+    if (isDone && !isSaved) {
+      onVideoFinish();
+      setIsSaved(true);
+    }
+  }, [isDone, onVideoFinish, isSaved]);
+
   return (
     <div id="video-lecture" className="w-full">
       <h2 className="bg-neutral-light-blue py-3 px-5 font-content font-medium text-xl">
-        Lecture #{lectureNumber}:{" "}
+        Lecture #{lectureNumber}:{' '}
         <span className="font-normal ml-3">{title}</span>
       </h2>
       <div
         id="lecture-content"
         className="flex flex-col min-h-full justify-center p-10 mb-10 bg-background"
       >
-        <iframe
+        <video
           src={videoLink}
-          frameborder="0"
-          allowFullScreen
+          controls
+          onPlay={startOrToggleProgress}
+          onPause={stopProgress}
+          onSeeked={handleSeeked}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleLoadedMetadata}
+          ref={videoRef}
           className="h-120"
-        ></iframe>
+        >
+          Your browser does not support the video tag.
+        </video>
         <div
           id="lecture-description"
           className=" flex items-center h-fit mt-10 relative font-content"

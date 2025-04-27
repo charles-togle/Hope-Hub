@@ -3,7 +3,7 @@ import { usePhysicalFitnessData } from '@/hooks/usePhysicalFitnessData';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AlertMessage } from '@/components/utilities/AlertMessage';
-import { setDataToStorage } from '@/utilities/setDataToStorage';
+import  setDataToStorage  from '@/utilities/setDataToStorage';
 
 
 export default function PhysicalActivityReadinessQuestionnaire() {

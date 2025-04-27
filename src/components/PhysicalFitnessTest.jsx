@@ -1,12 +1,12 @@
-import testTimer from '@/assets/icons/timer_pft.png';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PhysicalFitnessTestList } from '@/utilities/PhysicalFitnessTestList';
 import { Fragment } from 'react';
 import { usePhysicalFitnessData } from '@/hooks/usePhysicalFitnessData';
 import { AlertMessage } from './utilities/AlertMessage';
-import { setDataToStorage } from '@/utilities/setDataToStorage';
-import { getDataFromStorage } from '@/utilities/getDataFromStorage';
+import setDataToStorage from '@/utilities/setDataToStorage';
+import getDataFromStorage from '@/utilities/getDataFromStorage';
+import { Timer } from '@/components/utilities/Timer';
 
 const InstructionsGroup = ({ text, array, id }) => (
   <div id={id}>
@@ -30,7 +30,6 @@ export default function PhysicalFitnessTest({
     ).padStart(2, '0')}`,
   );
   const [category, setCategory] = useState('');
-  const restTimerRef = useRef(null);
   const [testResults, setTestResults] = useState({
     reps: '',
     sets: '',
@@ -38,8 +37,6 @@ export default function PhysicalFitnessTest({
     timeEnded: '',
     classification: 'No data available',
   });
-
-  const [restTimeRemaining, setRestTimeRemaining] = useState(600);
   const { setPhysicalFitnessData } = usePhysicalFitnessData();
   const testDetails = PhysicalFitnessTestList[index];
   const [showAlert, setShowAlert] = useState(false);
@@ -52,17 +49,9 @@ export default function PhysicalFitnessTest({
     instructionsForPartner,
     instructionsForTester,
     instructionsScoring,
-    videoInstruction,
+    videoInstructions,
   } = testDetails || {};
   const testName = title;
-
-  const startTimer = () => {
-    if (!restTimerRef.current) {
-      restTimerRef.current = setInterval(() => {
-        setRestTimeRemaining((prev) => Math.max(prev - 1, 0));
-      }, 1000);
-    }
-  };
 
   const handleCategory = (value) => {
     switch (value) {
@@ -81,30 +70,9 @@ export default function PhysicalFitnessTest({
     }
   };
 
-  const stopTimer = () => {
-    if (restTimerRef.current) {
-      clearInterval(restTimerRef.current);
-      restTimerRef.current = null;
-    }
-  };
-
   useEffect(() => {
     handleCategory('elementary-girl');
   }, []);
-  //starting timer on mount
-  useEffect(() => {
-    startTimer();
-    return () => {
-      stopTimer();
-    };
-  }, []);
-
-  //do this if timer is 0
-  useEffect(() => {
-    if (restTimeRemaining === 0) {
-      setIsTimeout(true);
-    }
-  }, [setIsTimeout, restTimeRemaining]);
 
   const handleResultChange = (type, value) => {
     let key = '';
@@ -112,7 +80,7 @@ export default function PhysicalFitnessTest({
       case 'Reps':
         key = 'reps';
         if (value.toString().startsWith('0') && value.length > 1) {
-          console.log(value)
+          console.log(value);
         }
         break;
       case 'Sets':
@@ -128,7 +96,7 @@ export default function PhysicalFitnessTest({
         key = 'timeEnded';
         break;
     }
-    
+
     console.log(key, value);
     setTestResults((prev) => {
       const updatedTestResults = {
@@ -138,7 +106,7 @@ export default function PhysicalFitnessTest({
       if (key === 'reps') {
         handleInterpretation(updatedTestResults);
       }
-  
+
       return updatedTestResults;
     });
   };
@@ -158,6 +126,7 @@ export default function PhysicalFitnessTest({
         let data = prev.slice(-4);
         data = data === 'irls' ? 'Girls' : 'Boys';
         return data;
+        
       });
       classificationDetails = testDetails.classification;
     }
@@ -260,16 +229,14 @@ export default function PhysicalFitnessTest({
           </div>
           <div id="timer" className="relative">
             <p className="absolute">Exercise Timer:</p>
-            <div className="mt-7 flex flex-row justify-start items-center space-x-5">
-              <img src={testTimer} alt="rest-timer" className="w-8" />
-              <p className="text-nowrap">
-                {Math.floor(restTimeRemaining / 60)} :{' '}
-                {String(restTimeRemaining % 60).padStart(2, '0')} mins
-              </p>
-            </div>
+            <Timer
+              className="mt-7 flex flex-row justify-start items-center space-x-5"
+              onEnd={() => setIsTimeout(true)}
+              time={600}
+            ></Timer>
           </div>
           <iframe
-            src={videoInstruction}
+            src={videoInstructions}
             className="col-span-2 mt-10 mb-5 w-full aspect-video border-1 border-black rounded-sm"
           ></iframe>
           <div id="instructions" className="col-span-2 text-sm font-medium">

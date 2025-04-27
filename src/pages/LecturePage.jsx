@@ -1,22 +1,86 @@
-import { Lessons } from "@/utilities/Lessons";
-import { useParams } from "react-router-dom";
-import PageHeading from "@/components/PageHeading";
-import { useState } from "react";
-import LecturePDF from "@/components/LecturePDF";
-import LectureVideo from "@/components/LectureVideo";
-import ErrorMessage from "@/components/utilities/ErrorMessage";
-
+import { Lessons } from '@/utilities/Lessons';
+import { useParams, useNavigate } from 'react-router-dom';
+import PageHeading from '@/components/PageHeading';
+import { useEffect, useState } from 'react';
+import LecturePDF from '@/components/LecturePDF';
+import LectureVideo from '@/components/LectureVideo';
+import ErrorMessage from '@/components/utilities/ErrorMessage';
+import setDataToStorage from '@/utilities/setDataToStorage';
+import useLectureProgress from '@/hooks/useLectureProgress';
+import getDataFromStorage from '@/utilities/getDataFromStorage';
 export default function LecturePage() {
-  const [isVideo, setIsVideo] = useState(false);
-  const { lessonNumber } = useParams();
-  const selectedLessonNumber = lessonNumber;
+  const { lessonNumber, lectureType } = useParams();
+  const [isError, setIsError] = useState(false);
+  const [isVideo, setIsVideo] = useState(() => {
+    if (lectureType === 'video') {
+      return true;
+    } else if (lectureType === 'lecture') {
+      return false;
+    } else {
+      return false;
+    }
+  });
 
-  if (selectedLessonNumber > Lessons.length) {
-    return <ErrorMessage text={"Error 404"} subText={"Page not found"} />;
+  const navigate = useNavigate();
+  const selectedLessonNumber = lessonNumber;
+  const { lectureProgress, setLectureProgress } = useLectureProgress();
+
+  useEffect(() => {
+    if (lectureType !== 'video' && lectureType !== 'lecture') {
+      setIsError(true);
+    }
+  }, [lectureType]);
+
+  useEffect(() => {
+    navigate(
+      `/lectures/lecture/${selectedLessonNumber}/${
+        isVideo ? 'video' : 'lecture'
+      }`,
+    );
+  }, [isVideo, navigate, lectureType, selectedLessonNumber]);
+
+  useEffect(() => {
+    const storedProgress = getDataFromStorage('LectureProgress');
+    if (storedProgress) {
+      const updatedProgress = storedProgress.map((progress) =>
+        progress.key === Number(selectedLessonNumber)
+          ? { ...progress, status: 'Pending' }
+          : progress,
+      );
+      setDataToStorage('LectureProgress', updatedProgress);
+      console.log('Updated Progress:', updatedProgress);
+    } else {
+      setDataToStorage('LectureProgress', lectureProgress);
+      console.log('Initialized LectureProgress:', lectureProgress);
+    }
+  }, [selectedLessonNumber, lectureProgress]);
+
+  if (selectedLessonNumber > Lessons.length || isError) {
+    return <ErrorMessage text={'Error 404'} subText={'Page not found'} />;
   }
 
-  const lessonDetails = Lessons.find((lesson) => lesson.key === Number(selectedLessonNumber));
+  const lessonDetails = Lessons.find(
+    (lesson) => lesson.key === Number(selectedLessonNumber),
+  );
   const { pdf, introduction, title, videoLecture } = lessonDetails;
+
+  const handleLectureFinish = () => {
+    const lectureToUpdate = lectureProgress.find(
+      (lecture) => lecture.key === Number(selectedLessonNumber),
+    );
+    if (!lectureToUpdate) {
+      console.error('Lecture not found!');
+      return;
+    }
+    const updatedLecture = { ...lectureToUpdate, status: 'Done' };
+    const updatedProgress = lectureProgress.map((lecture) =>
+      lecture.key === Number(selectedLessonNumber) ? updatedLecture : lecture,
+    );
+    setLectureProgress(updatedProgress);
+    setDataToStorage('LectureProgress', updatedProgress);
+
+    console.log('Updated Progress:', updatedProgress);
+  };
 
   return (
     <div id="lecture-page" className="h-fit min-h-screen bg-gray-background">
@@ -30,27 +94,38 @@ export default function LecturePage() {
           onClick={() => {
             setIsVideo((prev) => !prev);
           }}
-          className="w-fit self-start px-5 mb-3 border-2 border-accent-blue py-2 text-xl font-content bg-white hover:bg-accent-blue hover:text-white transition-all"
+          className="w-fit self-start px-5 mb-3 border-2 border-accent-blue py-2 text-xl font-content bg-secondary-dark-blue text-white hover:bg-accent-blue hover:text-white transition-all"
         >
-          {isVideo ? "READ DOCUMENT" : "WATCH VIDEO LECTURE"}
+          {isVideo ? 'READ DOCUMENT' : 'WATCH VIDEO LECTURE'}
         </button>
-        {isVideo ? (
-          <LectureVideo
-            lectureNumber={selectedLessonNumber}
-            title={title}
-            introduction={introduction}
-            videoLink={videoLecture}
-            quizLink={""}
-          />
-        ) : (
+        <div
+          className={`${
+            isVideo ? 'hidden' : 'block'
+          } transition-opacity duration-300`}
+        >
           <LecturePDF
             lectureNumber={selectedLessonNumber}
             title={title}
             introduction={introduction}
             pdfLink={pdf}
-            quizLink={""}
+            quizLink={''}
+            onTimerEnd={() => handleLectureFinish()}
           />
-        )}
+        </div>
+        <div
+          className={`${
+            isVideo ? 'block' : 'hidden'
+          } transition-opacity duration-300`}
+        >
+          <LectureVideo
+            lectureNumber={selectedLessonNumber}
+            title={title}
+            introduction={introduction}
+            videoLink={videoLecture}
+            quizLink={''}
+            onVideoFinish={() => handleLectureFinish()}
+          />
+        </div>
       </div>
     </div>
   );
