@@ -1,0 +1,29 @@
+aside:hover {
+  width: 18vw;
+  transition: all;
+  transition-duration: 400ms;
+}
+
+aside button {
+  transform: translateX(25%);
+}
+
+aside:hover button {
+  transform: translateX(0);
+}
+
+aside button > p {
+  transform: translateX(-50%);
+  transition: all;
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
+  opacity: 0;
+  text-wrap: nowrap;
+}
+
+aside:hover button>p {
+  display: block;
+  width: 60%;
+  transform: translateX(0%);
+  opacity: 1;
+}
