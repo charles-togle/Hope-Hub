@@ -83,7 +83,7 @@ export function PhysicalFitnessTestPage() {
         <PhysicalFitnessTest
           physicalFitnessData={physicalFitnessData}
           index={testIndex}
-          // setIsTimeout={setIsTimeout}
+          setIsTimeout={setIsTimeout}
           setIsBadRequest={setIsBadRequest}
         />
       </div>
