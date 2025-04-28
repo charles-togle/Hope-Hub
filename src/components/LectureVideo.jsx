@@ -90,19 +90,23 @@ export default function LectureVideo({
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={handleLoadedMetadata}
           ref={videoRef}
-          className="h-120"
+          className="h-full lg:h-120"
         >
           Your browser does not support the video tag.
         </video>
         <div
           id="lecture-description"
-          className=" flex items-center h-fit mt-10 relative font-content"
+          className=" flex flex-col items-center h-fit mt-10 relative font-content lg:flex-row"
         >
-          <p className="absolute top-0">Introduction</p>
-          <ul className="w-full pt-10">
-            <li className="ml-10 list-disc text-left">{introduction}</li>
+          <p className="absolute top-0 left-0 text-accent-blue text-lg font-medium">
+            Introduction
+          </p>
+          <ul className="w-full pt-7 lg:pt-10">
+            <li className="ml-7 text-sm list-disc text-left lg:text-base">
+              {introduction}
+            </li>
           </ul>
-          <hr className="h-45 border-1 border-black mr-10 ml-10" />
+          <hr className="w-full m-5 border-1 border-black lg:w-0 lg:h-45 lg:mt-0 lg:mb-0 lg:mr-10 lg:ml-10" />
           <div
             id="button-group"
             className="flex justify-center items-center flex-col"
@@ -118,7 +122,8 @@ export default function LectureVideo({
                 }
                 console.log(quizLink);
               }}
-              className="w-full py-2 text-lg text-white bg-accent-blue hover:brightness-90"
+              disabled={isLectureDone ? undefined : true}
+              className="w-[45%] py-2 text-lg text-white bg-secondary-dark-blue hover:brightness-90 disabled:brightness-50 lg:w-full lg:py-5"
             >
               TAKE QUIZ
             </button>
