@@ -4,11 +4,11 @@ aside:hover {
   transition-duration: 400ms;
 }
 
-aside button > img {
-  transform: translateX(75%);
+aside button {
+  transform: translateX(25%);
 }
 
-aside:hover button>img {
+aside:hover button {
   transform: translateX(0);
 }
 

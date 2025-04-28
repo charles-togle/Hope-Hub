@@ -61,15 +61,15 @@ export default function Sidebar() {
     >
       <div
         id="logo"
-        className={`transition-all duration-400 ease-out flex justify-baseline ${
-          isWide ? 'bg-white pt-4' : 'pt-10 '
+        className={`fulltransition-all w-full duration-400 ease-out flex justify-center ${
+          isWide ? 'bg-white' : ''
         }`}
       >
         {!isWide && <hr className="mt-5 absolute top-0 w-[60%] right-0" />}
         <img
           src={isWide ? SidebarLogo : SidebarLogoSmall}
           alt=""
-          className={`transition-all duration-400`}
+          className={`transition-all duration-400 w-fit h-40 object-contain`}
         />
       </div>
 
