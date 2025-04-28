@@ -19,7 +19,7 @@ function App() {
   const SideBarOutlet = () => {
     return (
       <div className="flex h-screen overflow-hidden">
-        <Sidebar />
+        {/* <Sidebar /> */}
         <div className="flex-1 h-screen overflow-x-hidden justify-center relative">
           <Outlet />
         </div>
