@@ -8,6 +8,7 @@ import PhysicalFitnessIcon from '../assets/icons/physicalFitnessTest_sidebar.png
 import AboutIcon from '../assets/icons/about_sidebar.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '@/styles/sidebar.css';
 
 export default function Sidebar() {
   const SidebarButtons = [
@@ -28,8 +29,14 @@ export default function Sidebar() {
       icon: PhysicalFitnessIcon,
       route: 'physical-fitness-test/parq',
     },
+    {
+      text: 'Discover More',
+      icon: PhysicalFitnessIcon,
+      route: 'physical-fitness-test/parq',
+    },
     { text: 'About', icon: AboutIcon, route: '/about' },
   ];
+
   const [active, setActive] = useState(-1);
   const navigate = useNavigate();
   const [isWide, setIsWide] = useState(false);
@@ -46,78 +53,52 @@ export default function Sidebar() {
   return (
     <aside
       id="sidebar"
-      className={`w-[7vw] h-screen overflow-hidden bg-secondary-dark-blue relative border-r-4
-       border-r-secondary-dark-blue flex flex-col items-center 
-       transition-all duration-400 hover:w-[18vw] ${
-         isWide ? '' : 'border-r-0!'
-       }`}
+      className="hidden w-[7vw] h-screen overflow-hidden bg-secondary-dark-blue relative border-r-4
+      border-r-secondary-dark-blue lg:flex flex-col items-center 
+      transition-all duration-400"
       onMouseEnter={() => handleOnMouseEnter()}
       onMouseLeave={() => handleOnMouseEnter()}
     >
-      <div id="logo" className={`${isWide ? 'bg-white pt-4' : ''}`}>
+      <div
+        id="logo"
+        className={`transition-all duration-400 ease-out flex justify-baseline ${
+          isWide ? 'bg-white pt-4' : 'pt-10 '
+        }`}
+      >
         {!isWide && <hr className="mt-5 absolute top-0 w-[60%] right-0" />}
         <img
           src={isWide ? SidebarLogo : SidebarLogoSmall}
           alt=""
-          className={`${isWide ? '' : 'pt-15 pr-2 pl-2'}`}
+          className={`transition-all duration-400`}
         />
-      </div>
-      <div
-        id="sidebar-button"
-        className="flex items-center justify-evenly flex-col h-full"
-      >
-        {SidebarButtons.map((item, index) => (
-          <button
-            className={`${
-              index === active
-                ? 'contast-125 brightness-50 after:content-[.]'
-                : ''
-            } ${
-              isWide ? '' : 'justify-center'
-            } flex flex-row items-center w-8/10 hover:brightness-50 hover:contrast-125 relative`}
-            key={index}
-            type="button"
-            onClick={() => handleClick(index, item.route)}
-          >
-            <img
-              src={item.icon}
-              className={`${isWide ? 'w-2/10 mr-5' : 'w-3/10'}`}
-            />
-            <p
-              className={`${
-                isWide ? 'block' : 'hidden'
-              } w-5/10 pb-3 text-text-content text-center border-b-3 border-t-white font-heading`}
-            >
-              {item.text}
-            </p>
-            <p
-              className={`${index === active ? 'block' : 'hidden'} ${
-                isWide ? '' : 'right-0!'
-              } absolute text-white contrast-125 right-2 text-2xl`}
-            >
-              •
-            </p>
-          </button>
-        ))}
       </div>
 
       <div
-        id="design-line"
-        className={`${
-          isWide ? '' : 'hidden!'
-        } h-fit w-full absolute top-[20vmin] lg:block sm:hidden`}
+        id="sidebar-button"
+        className="flex flex-col items-center justify-evenly h-full w-full"
       >
-        <div className="bg-white w-[50%] h-1"></div>
-        <div className="bg-transparent w-[45%] h-1 border-b-2 border-r-2 border-white"></div>
-      </div>
-      <div
-        id="design-line"
-        className={`${
-          isWide ? '' : 'hidden!'
-        } h-fit w-full absolute bottom-[calc(17vw*0.45)] left-[14vmin] rotate-270`}
-      >
-        <div className="bg-white w-[50%] h-1"></div>
-        <div className="bg-transparent w-[45%] h-1 border-b-2 border-r-2 border-white lg:block sm:hidden"></div>
+        {SidebarButtons.map((item, index) => (
+          <button
+            key={index}
+            type="button"
+            onClick={() => handleClick(index, item.route)}
+            className={`transition-all duration-300 ${
+              index === active ? 'contrast-125 brightness-50' : ''
+            } flex items-center w-8/10 hover:brightness-50 hover:contrast-125 relative`}
+          >
+            <img
+              src={item.icon}
+              className="transition-all duration-200 ease-out mr-5 w-8"
+              alt={`${item.text} Icon`}
+            />
+            <p className=" text-text-content font-heading text-center border-b-2 border-white pb-4 w-[60%]">
+              {item.text}
+            </p>
+            {index === active && (
+              <span className="absolute right-2 text-white text-2xl">•</span>
+            )}
+          </button>
+        ))}
       </div>
     </aside>
   );
