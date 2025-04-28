@@ -8,6 +8,9 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  server: {
+    host: true
+  },
   plugins: [react()],
   css: {
     postcss: {
