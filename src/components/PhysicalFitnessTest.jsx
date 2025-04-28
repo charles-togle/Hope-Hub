@@ -10,7 +10,7 @@ import { Timer } from '@/components/utilities/Timer';
 
 const InstructionsGroup = ({ text, array, id }) => (
   <div id={id}>
-    <h3 className="text-sm font-semibold">{text}</h3>
+    <h3 className="text-base font-semibold">{text}</h3>
     <ol className="list-decimal ml-6">
       {array.map((item, index) => (
         <li key={`${text} ${index}`}>{item}</li>
@@ -120,6 +120,9 @@ export default function PhysicalFitnessTest({
     }
     if (!classificationDetails) {
       setCategory((prev) => {
+        if (!prev) {
+          return handleCategory(storedData.category);
+        }
         let data = prev.slice(-4);
         data = data === 'irls' ? 'Girls' : 'Boys';
         return data;
@@ -214,11 +217,11 @@ export default function PhysicalFitnessTest({
       )}
       <div
         id="test-contents"
-        className="w-[85%] mr-auto ml-auto grid grid-cols-[65%_35%] gap-5"
+        className="w-[95%] mt-20 gap-5 mr-auto ml-auto lg:grid lg:grid-cols-[65%_35%] lg:w-[85%] lg:mt-0"
       >
         <div
           id="test-instructions"
-          className="grid grid-cols-[60%_40%] border-2 border-black row-span-2 relative p-10 font-content rounded-2xl"
+          className="p-5 pb-10 grid grid-cols-[60%_40%] border-2 border-black row-span-2 relative font-content rounded-2xl lg:p-10"
         >
           <div
             id="name"
@@ -229,10 +232,13 @@ export default function PhysicalFitnessTest({
             </h1>
             <hr className="w-[50%] border-1 border-black" />
           </div>
-          <div id="timer" className="relative">
-            <p className="absolute">Exercise Timer:</p>
+          <div
+            id="timer"
+            className="absolute -top-20 flex pl-5 flex-row w-full justify-center gap-5 items-center lg:relative lg:top-0 lg:block lg:w-auto lg:p-0"
+          >
+            <p className="text-lg font-bold italic">Timeout in:</p>
             <Timer
-              className="mt-7 flex flex-row justify-start items-center space-x-5"
+              className="flex flex-row justify-start items-center space-x-5 lg:relative lg:right-0 lg:w-[50%] lg:mt-2"
               onEnd={() => setIsTimeout(true)}
               time={600}
             ></Timer>
@@ -274,7 +280,7 @@ export default function PhysicalFitnessTest({
           {/* right side container*/}
           <div
             id="results"
-            className="border-2 border-black rounded-2xl p-10 relative font-content"
+            className="p-5 mt-5 mb-5 overflow-x-hidden border-2 border-black rounded-2xl relative font-content lg:p-10 lg:mb-0 lg:mt-0"
           >
             <div
               id="heading"
@@ -297,7 +303,7 @@ export default function PhysicalFitnessTest({
                     <Fragment key={`${index} ${label}`}>
                       <label
                         htmlFor={label}
-                        className="p-1 lg:text-lg md:text-sm sm: text-xs"
+                        className="p-1 lg:text-lg md:text-sm sm:text-xs"
                       >
                         {label}:{' '}
                       </label>
@@ -342,7 +348,7 @@ export default function PhysicalFitnessTest({
                         disabled={label === 'Time Started'}
                         name={label}
                         id={label}
-                        className="px-2 w-[85%] place-self-center h-fit border-1 border-black text-center font-content rounded-sm"
+                        className="w-[85%] place-self-center h-fit border-1 border-black text-center font-content rounded-sm lg:px-2 "
                       />
                     </Fragment>
                   ),
@@ -366,13 +372,13 @@ export default function PhysicalFitnessTest({
           </div>
           <div
             id="interpretation-and-tips"
-            className="border-2 border-black p-10 rounded-2xl relative"
+            className="border-2 p-5 border-black rounded-2xl relative lg:p-10 overflow-x-hidden"
           >
             <div
               id="heading"
               className="flex flex-row items-center justify-between"
             >
-              <h1 className="text-3xl font-md mb-3 font-bold">
+              <h1 className="text-3xl font-md mb-3 font-bold font-content pr-2">
                 Interpretation
               </h1>
               <hr className="w-[50%] border-1 border-black -mr-10" />

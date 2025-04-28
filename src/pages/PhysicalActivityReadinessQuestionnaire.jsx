@@ -8,7 +8,7 @@ import setDataToStorage from '@/utilities/setDataToStorage';
 export default function PhysicalActivityReadinessQuestionnaire() {
   const { physicalFitnessData, setPhysicalFitnessData } =
     usePhysicalFitnessData();
-  const [areAllAnswersYes, setAreAllAnswersYes] = useState(false);
+  const [areAllAnswersNo, setAreAllAnswersNo] = useState(false);
   const [areAllAnswered, setAreAllAnswered] = useState(false);
   const [areAllUserDataFilled, setAreAllUserDataFilled] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
@@ -19,7 +19,7 @@ export default function PhysicalActivityReadinessQuestionnaire() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   useEffect(() => {
-    if (areAllAnswered && areAllAnswersYes && areAllUserDataFilled) {
+    if (areAllAnswered && areAllAnswersNo && areAllUserDataFilled) {
       setPhysicalFitnessData((prev) => ({
         ...prev,
         isPARQFinished: false,
@@ -27,7 +27,7 @@ export default function PhysicalActivityReadinessQuestionnaire() {
     }
   }, [
     areAllAnswered,
-    areAllAnswersYes,
+    areAllAnswersNo,
     setPhysicalFitnessData,
     areAllUserDataFilled,
   ]);
@@ -44,10 +44,10 @@ export default function PhysicalActivityReadinessQuestionnaire() {
   const handleAnswerChange = (index, value) => {
     const currentAnswers = [...answers];
     currentAnswers[index] = value;
-    const allYes = currentAnswers.every((answer) => answer === 'Yes');
+    const allNo = currentAnswers.every((answer) => answer === 'No');
     const allAnswered = currentAnswers.every((answer) => answer !== null);
     setAnswers(currentAnswers);
-    setAreAllAnswersYes(allYes);
+    setAreAllAnswersNo(allNo);
     setAreAllAnswered(allAnswered);
   };
 
@@ -55,7 +55,7 @@ export default function PhysicalActivityReadinessQuestionnaire() {
     setErrorMessage('');
     if (
       areAllAnswered &&
-      areAllAnswersYes &&
+      areAllAnswersNo &&
       areAllUserDataFilled &&
       isEmailValid
     ) {
@@ -69,12 +69,12 @@ export default function PhysicalActivityReadinessQuestionnaire() {
     } else {
       console.log('Conditions not met:', {
         areAllAnswered,
-        areAllAnswersYes,
+        areAllAnswersNo,
         areAllUserDataFilled,
       });
       if (!areAllAnswered) {
         setErrorMessage('Make sure to answer all questions');
-      } else if (!areAllAnswersYes) {
+      } else if (!areAllAnswersNo) {
         setErrorMessage(
           'You currently cannot take the Physical Fitness Test, try again a different time',
         );
@@ -124,20 +124,23 @@ export default function PhysicalActivityReadinessQuestionnaire() {
       <PageHeading text="Physical Fitness Test"></PageHeading>
       <div
         id="physical-fitness-test-parq-container"
-        className="w-[80%] mr-auto  ml-auto pt-[5%] flex flex-col items-center justify-center"
+        className="content-container"
       >
-        <h2 id="heading" className="font-heading text-3xl self-start! w-full">
+        <h2
+          id="heading"
+          className="font-heading text-2xl text-center w-full lg:text-4xl lg:self-start! lg:text-left"
+        >
           Physical Activity Readiness Questionnaire (PAR-Q)
         </h2>
-        <hr className="border-1 border-primary-yellow yellow w-[20%] self-start mt-2" />
+        <hr className="border-1 border-primary-yellow yellow w-[50%] self-start mt-2 lg:w-[20%] " />
         <div
           id="physical-fitness-test-parq-content"
-          className="apply-drop-shadow w-full flex flex-col justify-center items-center mt-10 font-content text-lg space-y-5"
+          className="apply-drop-shadow w-full flex flex-col justify-center items-center mt-5 font-content text-lg space-y-5 lg:mt-10"
         >
           <div id="instructions" className="w-[95%]">
             <p>Directions</p>
             <hr className="mb-7" />
-            <ol className="list-decimal ml-7">
+            <ol className="list-decimal ml-7 text-sm lg:text-base">
               <li>
                 Take the Physical Activity Readiness Questionnaire (PAR-Q).
               </li>
@@ -155,7 +158,7 @@ export default function PhysicalActivityReadinessQuestionnaire() {
           </div>
           <div
             id="information"
-            className="w-[95%] min-h-10 flex flex-col space-y-2"
+            className="w-[95%] min-h-10 flex flex-col space-y-2 text-sm lg:text-base"
           >
             <label>
               <p>
@@ -241,19 +244,22 @@ export default function PhysicalActivityReadinessQuestionnaire() {
               </select>
             </label>
           </div>
-          <div id="questions" className="w-[95%] min-h-10">
-            <p>PHYSICAL ACTIVITY READINESS QUESTIONNAIRE (PAR-Q)</p>
+          <div id="questions" className="w-[95%] min-h-10 text-sm lg:text-base">
+            <p className="text-base">
+              PHYSICAL ACTIVITY READINESS QUESTIONNAIRE (PAR-Q)
+            </p>
             <hr className="mb-7" />
             <ol className="list-decimal ml-7">
               {questions.map((question, index) => (
                 <li key={index} className="mb-4">
                   {question}
                   <div className="flex flex-col mt-2">
-                    <label>
+                    <label className="mb-2 lg:mb-0">
                       <input
                         type="radio"
                         name={`radioQuestion${index}`}
                         value={'Yes'}
+                        className="mr-2"
                         onChange={(e) =>
                           handleAnswerChange(index, e.target.value)
                         }
@@ -265,6 +271,7 @@ export default function PhysicalActivityReadinessQuestionnaire() {
                         type="radio"
                         name={`radioQuestion${index}`}
                         value={'No'}
+                        className="mr-2"
                         onChange={(e) =>
                           handleAnswerChange(index, e.target.value)
                         }
