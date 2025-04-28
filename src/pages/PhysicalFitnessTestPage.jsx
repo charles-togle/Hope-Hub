@@ -79,7 +79,10 @@ export function PhysicalFitnessTestPage() {
   return (
     <div id="physical-fitness-test-container">
       <PageHeading text="Physical Fitness Test" />
-      <div id="physical-fitness-content" className="content-container w-full! mb-10">
+      <div
+        id="physical-fitness-content"
+        className="content-container w-full! mb-10"
+      >
         <PhysicalFitnessTest
           physicalFitnessData={physicalFitnessData}
           index={testIndex}
