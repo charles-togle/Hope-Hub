@@ -102,7 +102,7 @@ export default function LecturePage() {
       <PageHeading text="Lecture & Video Lessons"></PageHeading>
       <div
         id="content"
-        className="w-[80%] h-fit flex flex-col mr-auto ml-auto mt-5 items-center relative"
+        className="w-[90%] h-fit flex flex-col mr-auto ml-auto mt-5 items-center relative lg:w-[80%]"
       >
         <button
           id="switch"

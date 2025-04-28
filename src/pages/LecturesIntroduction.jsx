@@ -58,22 +58,25 @@ export default function Lectures() {
     handleFilterChange('All');
   }, [handleFilterChange]);
   return (
-    <div id="lectures" className="h-screen bg-background overflow-y-scroll">
+    <div
+      id="lectures"
+      className="overflow-x-hidden h-screen bg-background overflow-y-scroll"
+    >
       <PageHeading
         text="Lectures & Video Lessons"
         className="bg-background z-2"
       ></PageHeading>
       <div
         id="lectures-container"
-        className="w-[80%] flex flex-col items-center mr-auto ml-auto relative mb-10"
+        className="w-[90%] flex flex-col items-center mr-auto ml-auto relative mb-10 lg:w-[80%]"
       >
         <div
           id="buttons-wrapper"
-          className="sticky top-0 pt-[3%] pb-[2%] self-start w-full flex flex-row items-center justify-between bg-background z-10"
+          className="sticky top-0 pt-[3%] pb-[2%] self-start w-full flex flex-col-reverse items-center justify-between flex-wrap bg-background z-10 lg:flex-nowrap lg:flex-row"
         >
           <div
             id="buttons"
-            className="rounded-sm bg-secondary-dark-blue w-fit h-fit flex flex-nowrap"
+            className="rounded-sm bg-secondary-dark-blue w-full h-fit flex justify-between flex-nowrap lg:w-fit"
           >
             {LectureFilters.map((filter, index) => (
               <button
@@ -83,13 +86,13 @@ export default function Lectures() {
                   filter === activeFilter
                     ? 'bg-primary-yellow rounded-sm text-secondary-dark-blue!'
                     : ''
-                } text-white font-content py-2 px-5`}
+                } text-white text-center font-content py-2 min-w-1/8 px-2 text-sm lg:w-auto lg:px-5`}
               >
                 {filter}
               </button>
             ))}
           </div>
-          <p className="font-content text-sm w-6/10 text-wrap self-start">
+          <p className="font-content text-xs w-full text-wrap self-start mb-5 lg:text-base lg:w-6/10 lg:mb-0 lg:pl-5">
             <strong>Note: </strong>You can only take the quiz after reading or
             watching the lecture. (Lecture will be automatically marked as done
             after taking the quiz.)
