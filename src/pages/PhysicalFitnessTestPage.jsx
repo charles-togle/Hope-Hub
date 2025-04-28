@@ -79,11 +79,11 @@ export function PhysicalFitnessTestPage() {
   return (
     <div id="physical-fitness-test-container">
       <PageHeading text="Physical Fitness Test" />
-      <div id="physical-fitness-content" className="content-container w-full!">
+      <div id="physical-fitness-content" className="content-container w-full! mb-10">
         <PhysicalFitnessTest
           physicalFitnessData={physicalFitnessData}
           index={testIndex}
-          setIsTimeout={setIsTimeout}
+          // setIsTimeout={setIsTimeout}
           setIsBadRequest={setIsBadRequest}
         />
       </div>
