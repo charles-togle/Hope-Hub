@@ -31,7 +31,7 @@ export default function LectureIntroduction({
         >
           <p className="text-white font-content font-bold text-sm lg:text-lg">
             Lecture #{lectureKey}:{' '}
-            <span className="text-white ml-3 font-normal">{title}</span>
+            <span className="font-semibold text-white ml-3">{title}</span>
           </p>
           <p
             className={`${getStatusClass()} ml-1.5 mr-1.5 font-content text-white w-[12%] min-w-fit text-center text-md py-1 font-medium px-2 lg:mr-5`}
@@ -43,8 +43,8 @@ export default function LectureIntroduction({
           id="introduction"
           className="px-3 font-content text-xs lg:text-base lg:px-5"
         >
-          <p>Introduction</p>
-          <ul className="list-disc px-5 lg:px-10">
+          <p className="font-bold">Introduction</p>
+          <ul className="list-disc text-justify mt-2 px-5 lg:px-10">
             <li> {introduction}</li>
           </ul>
         </div>

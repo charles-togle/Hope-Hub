@@ -19,14 +19,20 @@ export function PhysicalFitnessTestPage() {
 
   useEffect(() => {
     const dataFromStorage = getDataFromStorage('physicalFitnessData');
+    console.log(dataFromStorage);
     if (dataFromStorage && Object.keys(dataFromStorage).length > 0) {
       setPhysicalFitnessData(dataFromStorage);
 
       let finishedTestIndex = [];
       let currentTestIndex = 0;
+
       if (dataFromStorage) {
         finishedTestIndex = dataFromStorage.finishedTestIndex;
         currentTestIndex = Number(testIndex);
+        console.log(finishedTestIndex.length, currentTestIndex);
+      }
+      if (finishedTestIndex.length === currentTestIndex) {
+        navigate('/physical-fitness-test/summary');
       }
       if (testIndex === 0) {
         setIsDataReady(true);
@@ -43,7 +49,7 @@ export function PhysicalFitnessTestPage() {
       console.log('No data in storage or empty object');
       setIsBadRequest(true);
     }
-  }, [setPhysicalFitnessData, testIndex]);
+  }, [setPhysicalFitnessData, testIndex, physicalFitnessData.length, navigate]);
 
   const handleTimeoutConfirm = () => {
     if (testIndex === '0') {
@@ -58,12 +64,12 @@ export function PhysicalFitnessTestPage() {
     navigate('/physical-fitness-test/parq');
   };
 
-  if (!isDataReady && !isBadRequest) {
-    return <div></div>;
+  if (isDataReady && isBadRequest) {
+    // return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
+    // return <div></div>;
   }
 
   // if (isBadRequest) {
-  //   return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
   // }
 
   if (isTimeout) {
@@ -79,17 +85,19 @@ export function PhysicalFitnessTestPage() {
   return (
     <div id="physical-fitness-test-container">
       <PageHeading text="Physical Fitness Test" />
-      <div
-        id="physical-fitness-content"
-        className="content-container w-full! mb-10"
-      >
-        <PhysicalFitnessTest
-          physicalFitnessData={physicalFitnessData}
-          index={testIndex}
-          setIsTimeout={setIsTimeout}
-          setIsBadRequest={setIsBadRequest}
-        />
-      </div>
+      {isDataReady && (
+        <div
+          id="physical-fitness-content"
+          className="content-container w-full! mb-10"
+        >
+          <PhysicalFitnessTest
+            physicalFitnessData={physicalFitnessData}
+            index={testIndex}
+            setIsTimeout={setIsTimeout}
+            setIsBadRequest={setIsBadRequest}
+          />
+        </div>
+      )}
     </div>
   );
 }

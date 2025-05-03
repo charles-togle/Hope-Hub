@@ -42,7 +42,7 @@ export default function LecturePDF({
             <p>Introduction</p>
             <Timer
               className="flex flex-row items-center w-30 justify-between"
-              time={5}
+              time={600}
               onEnd={() => {
                 onTimerEnd();
               }}
