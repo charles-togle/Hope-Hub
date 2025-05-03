@@ -32,7 +32,7 @@ const TableHeading = ({ headings }) => (
 
 const TableSummary = ({ summary }) => (
   <div id="summary">
-    <div className="flex flex-row font-heading space-x-2 text-2xl">
+    <div className="flex flex-row font-heading space-x-2 text-lg">
       <p>{summary.number}.</p>
       <p>{summary.title}</p>
     </div>
@@ -94,7 +94,7 @@ export function PhysicalFitnessTestSummary() {
     <section id="physical-fitness-test-summary" className="parent-container">
       <PageHeading text={'Physical Fitness Test'}></PageHeading>
       <div id="summary-content" className="content-container">
-        <div id="push-ups" className="w-full flex flex-col space-y-5">
+        <div className="w-full flex flex-col space-y-5 mb-10">
           {dataResults.map((summary, index) => (
             <Fragment key={`${summary.title} ${index}`}>
               {(() => {
@@ -107,10 +107,10 @@ export function PhysicalFitnessTestSummary() {
                 return (
                   heading && (
                     <Fragment>
-                      <h1 className="text-3xl font-heading mb-0 font-medium">
+                      <h1 className="text-3xl font-heading -ml-5 mb-0 font-medium">
                         {heading}
                       </h1>
-                      <hr className="w-1/3 border-1 border-primary-yellow mb-4" />
+                      <hr className="w-1/3 border-1 border-primary-yellow mb-4 -ml-5" />
                     </Fragment>
                   )
                 );
