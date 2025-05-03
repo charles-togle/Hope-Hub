@@ -1,11 +1,11 @@
 export const PhysicalFitnessTestList = [
-  { 
-    title: 'Zipper Test',
-    key: 'zipperTest',
+  {
+    title: 'Zipper Test (Right hand)',
+    key: 'zipperTestRight',
     equipment: ['Ruler'],
     instructionsForTester: [
       'Stand erect.',
-      'Raise your right arm, bend your elbow, and reach down across your back as far as possible, to test the right shoulder.',
+      'Raise your right arm, bend your elbow, and reach down across your back as far as possible.',
       'Extend your left arm down and behind your back, bend your elbow up across your back, and try to reach/cross your fingers over those of your right hand as if to pull a zipper or scratch between the shoulder blades.',
       'To test the left shoulder, repeat the previous steps with the left hand over the left shoulder.',
     ],
@@ -25,11 +25,40 @@ export const PhysicalFitnessTestList = [
       { exact: 0, interpretation: 'Needs Improvement' },
       { exact: -1, interpretation: 'Poor' }, // negative overlap = gap
     ],
-    videoInstructions: 'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+    videoInstructions:
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
   },
   {
-    title: 'Sit and Reach',
-    key: 'sitAndReach',
+    title: 'Zipper Test (Left hand)',
+    key: 'zipperTestLeft',
+    equipment: ['Ruler'],
+    instructionsForTester: [
+      'Stand erect.',
+      'Raise your left arm, bend your elbow, and reach down across your back as far as possible.',
+      'Extend your right arm down and behind your back, bend your elbow up across your back, and try to reach/cross your fingers over those of your left hand as if to pull a zipper or scratch between the shoulder blades.',
+    ],
+    instructionsForPartner: [
+      'Observe whether the fingers touched or overlapped each other, If not, measure the gap between the middle fingers of both hands.',
+      'Record the distance in centimeters.',
+    ],
+    instructionsScoring: [
+      'Record zipper test to the nearest 0.1 centimeter',
+      'Record -1 if the fingers did not touch and 0 if the fingers barely touched',
+    ],
+    classification: [
+      { min: 6, interpretation: 'Excellent' },
+      { min: 4, max: 5.9, interpretation: 'Very Good' },
+      { min: 31, max: 4.9, interpretation: 'Good' },
+      { min: 0.1, max: 1.9, interpretation: 'Fair' },
+      { exact: 0, interpretation: 'Needs Improvement' },
+      { exact: -1, interpretation: 'Poor' }, // negative overlap = gap
+    ],
+    videoInstructions:
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+  },
+  {
+    title: 'Sit and Reach (First Attempt)',
+    key: 'sitAndReachFirst',
     equipment: ['Tape measure or meter stick'],
     instructionsForTester: [
       'Sit on the floor with back, head and shoulders flat on the wall. Feet are 12 inches apart.',
@@ -54,7 +83,57 @@ export const PhysicalFitnessTestList = [
       { min: 16, max: 30.9, interpretation: 'Fair' },
       { min: 0, max: 15.9, interpretation: 'Needs Improvement' },
     ],
-    videoInstructions: 'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+    videoInstructions:
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+  },
+  {
+    title: 'Sit and Reach (Second Attempt)',
+    key: 'sitAndReachSecond',
+    equipment: ['Tape measure or meter stick'],
+    instructionsForTester: [
+      'Sit on the floor with back, head and shoulders flat on the wall. Feet are 12 inches apart.',
+      'Interlock thumbs and position the tip of the fingers on the floor without bending the elbows.',
+      'After the partner has positioned the zero point of the tape measure/meter stick, (at the top of the middle fingers), the tester starts the test by sliding the hands slowly forward without jerking, trying to reach the farthest distance possible without bending the knees. ',
+      'Bouncing or jerking movement is not allowed.',
+      'Do it twice.',
+    ],
+    instructionsForPartner: [
+      'As the tester assumes the (b) procedure, position the zero point of the tape measure at the tip of the middle fingers of the tester.',
+      'See to it that the knees are not bent as the performer slides the farthest distance that he could.',
+      'Record the farthest distance reached in centimeters.',
+    ],
+    instructionsScoring: [
+      'Measure the reach distance in centimeters from the baseline (zero point on the Sit and Reach box).',
+      'Scores above the baseline are positive; those not reaching it are recorded as negative.',
+    ],
+    classification: [
+      { min: 61, interpretation: 'Excellent' },
+      { min: 46, max: 60.9, interpretation: 'Very Good' },
+      { min: 31, max: 45.9, interpretation: 'Good' },
+      { min: 16, max: 30.9, interpretation: 'Fair' },
+      { min: 0, max: 15.9, interpretation: 'Needs Improvement' },
+    ],
+    videoInstructions:
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+  },
+  {
+    title: 'Pre 3-Minute Step Test',
+    key: 'preStepTest',
+    equipment: [
+      'Stopwatch or timer',
+      'Drum, clapper, clicker, metronome with speaker or any similar device',
+    ],
+    instructionsForTester: [
+      'Stand at least one foot away from the step or bench with trunk erect and eyes looking straight ahead. ',
+    ],
+    instructionsForPartner: [
+      'Allow the performer to locate his/her pulse.',
+      'Give the signal to count the pulse beat.',
+      'Let the performer count his/her pulse beat for 10 seconds and multiply it by 6.',
+    ],
+    instructionsScoring: ['Record the resting pulse of the tester'],
+    videoInstructions:
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
   },
   {
     title: '3-Minute Step Test',
@@ -80,7 +159,8 @@ export const PhysicalFitnessTestList = [
     instructionsScoring: [
       'Record the 60-second pulse rate immediately after the activity.',
     ],
-    videoInstructions: 'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+    videoInstructions:
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
   },
   {
     title: 'Push-Up',
@@ -133,7 +213,8 @@ export const PhysicalFitnessTestList = [
         { exact: 0, interpretation: 'Poor' },
       ],
     },
-    videoInstructions: 'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+    videoInstructions:
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
   },
   {
     title: 'Basic Plank',
@@ -164,6 +245,7 @@ export const PhysicalFitnessTestList = [
       { min: 16, max: 30, interpretation: 'Fair' },
       { min: 1, max: 15, interpretation: 'Needs Improvement' },
     ],
-    videoInstructions: 'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+    videoInstructions:
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
   },
 ];

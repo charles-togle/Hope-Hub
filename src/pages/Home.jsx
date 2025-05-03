@@ -2,7 +2,13 @@ import Banner from '@/assets/banner_home.svg';
 import HomePageHero from '@/assets/images/gym_homepage.png';
 import Banner2 from '@/assets/images/gym_banner_home.jpg';
 import GymPicture from '@/assets/images/gym3_homepage.png';
+import { useNavigate } from 'react-router-dom';
 export default function Home() {
+  const navigate = useNavigate();
+  const handleStart = () => {
+    navigate('/lectures');
+  };
+
   return (
     <div
       id="home"
@@ -33,7 +39,10 @@ export default function Home() {
             <p className="text-sm lg:text-xl font-semibold italic">
               --Kobe Bryant--
             </p>
-            <button className="py-1 px-2 text-sm mt-3 bg-secondary-dark-blue text-white mr-auto ml-auto rounded-lg hover:brightness-85 lg:text-base lg:px-6 lg:py-3  lg:mt-10 ">
+            <button
+              className="py-1 px-2 text-sm mt-3 bg-secondary-dark-blue text-white mr-auto ml-auto rounded-lg hover:brightness-85 lg:text-base lg:px-6 lg:py-3  lg:mt-10 "
+              onClick={() => handleStart()}
+            >
               Start your Journey
             </button>
           </div>

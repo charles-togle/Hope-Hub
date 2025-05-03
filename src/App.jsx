@@ -14,6 +14,7 @@ import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import HealthCalculator from './pages/HealthCalculators/HealthCalculator';
 import LectureProgressProvider from './providers/LectureProvider';
 import Home from './pages/Home';
+import { PhysicalFitnessTestSummary } from './pages/PhysicalFitnessTestSummary';
 
 function App() {
   const SideBarOutlet = () => {
@@ -69,6 +70,10 @@ function App() {
               path="test/:testIndex"
               element={<PhysicalFitnessTestPage />}
             />
+            <Route
+              path="summary"
+              element={<PhysicalFitnessTestSummary />}
+            ></Route>
           </Route>
           <Route path="quizzes-and-activities">
             <Route index element={<QuizzesAndActivities />} />

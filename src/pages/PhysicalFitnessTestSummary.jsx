@@ -1,0 +1,226 @@
+import PageHeading from '@/components/PageHeading';
+import ErrorMessage from '@/components/utilities/ErrorMessage';
+import { Fragment, useEffect, useState } from 'react';
+
+const TableColumn = ({ columnContent }) => (
+  <tr>
+    {columnContent.map((content, index) => (
+      <td
+        className={`${
+          index === 0 ? 'border-l-0!' : ''
+        } text-center font-content w-15 h-15 border-l-4 border-t-4 border-secondary-dark-blue`}
+      >
+        {content}
+      </td>
+    ))}
+  </tr>
+);
+
+const TableHeading = ({ headings }) => (
+  <tr>
+    {headings.map((heading, index) => (
+      <th
+        className={`${
+          index === 0 ? 'border-l-0!' : ''
+        } h-20 text-center font-content border-l-4 text-white bg-secondary-dark-blue border-white`}
+      >
+        {heading}
+      </th>
+    ))}
+  </tr>
+);
+
+const TableSummary = ({ summary }) => (
+  <div id="summary">
+    <div className="flex flex-row font-heading space-x-2 text-2xl">
+      <p>{summary.number}.</p>
+      <p>{summary.title}</p>
+    </div>
+    <hr className="w-20 border-1 border-primary-yellow mb-3" />
+    <div
+      id="table-container"
+      className="rounded-md overflow-hidden border-5 border-secondary-dark-blue h-fit w-full"
+    >
+      <table className="w-full h-full">
+        <tbody>
+          <tr className={`${summary.hasParentHeading ? '' : 'hidden'}`}>
+            <th
+              className="text-center font-bold font-content h-10  border-b-4 border-white"
+              colSpan={summary.headings.length}
+            >
+              {summary.parentHeading}
+            </th>
+          </tr>
+          <TableHeading headings={summary.headings} />
+          <TableColumn columnContent={summary.content} />
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
+
+export function PhysicalFitnessTestSummary() {
+  const [isDataReady, setIsDataReady] = useState(false);
+  const [dataGathered, setDataGathered] = useState('');
+  const [dataResults, setDataResults] = useState([]);
+
+  useEffect(() => {
+    if (isDataReady) {
+      return;
+    }
+    const stringData = localStorage.getItem('physicalFitnessData');
+    setDataGathered(JSON.parse(stringData));
+    if (dataGathered) {
+      setDataResults(getSummary(dataGathered));
+      setIsDataReady(true);
+    }
+  }, [dataGathered, isDataReady]);
+  console.log(dataResults);
+  console.log(JSON.parse(localStorage.getItem('physicalFitnessData')));
+
+  if (!dataGathered) {
+    return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
+  }
+
+  if (!isDataReady) {
+    return (
+      <div className="w-full flex justify-center items-center h-screen font-content text-2xl">
+        Loading..
+      </div>
+    );
+  }
+
+  return (
+    <section id="physical-fitness-test-summary" className="parent-container">
+      <PageHeading text={'Physical Fitness Test'}></PageHeading>
+      <div id="summary-content" className="content-container">
+        <div id="push-ups" className="w-full flex flex-col space-y-5">
+          {dataResults.map((summary, index) => (
+            <Fragment key={`${summary.title} ${index}`}>
+              {(() => {
+                const sectionHeadings = {
+                  0: 'A. Cardiovascular Endurance',
+                  1: 'B. Strength',
+                  3: 'C. Flexibility',
+                };
+                const heading = sectionHeadings[index];
+                return (
+                  heading && (
+                    <Fragment>
+                      <h1 className="text-3xl font-heading mb-0 font-medium">
+                        {heading}
+                      </h1>
+                      <hr className="w-1/3 border-1 border-primary-yellow mb-4" />
+                    </Fragment>
+                  )
+                );
+              })()}
+              <TableSummary summary={summary} />
+            </Fragment>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function handleData({
+  data,
+  hasParentHeading = false,
+  parentHeading = '',
+  number,
+  unit = '',
+}) {
+  console.log(hasParentHeading, data.title);
+  return {
+    hasParentHeading: hasParentHeading,
+    parentHeading: [parentHeading],
+    title: data.title,
+    number: number.toString(),
+    headings: ['Reps', 'Sets', 'Classification', 'Time Started', 'Time Ended'],
+    content: [
+      `${data.record} ${unit}`,
+      data.sets.toString(),
+      data.classification,
+      data.timeStarted,
+      data.timeEnd,
+    ],
+  };
+}
+
+function customHandleData({
+  title,
+  hasParentHeading = false,
+  parentHeading = '',
+  headings = [],
+  content = [],
+  number,
+}) {
+  return {
+    hasParentHeading: hasParentHeading,
+    parentHeading: parentHeading,
+    title: title,
+    number: number,
+    headings: headings,
+    content: content,
+  };
+}
+
+const getSummary = (dataGathered) => {
+  let dataResults = [];
+  dataResults.push(
+    customHandleData({
+      title: '3 Minute Step Test',
+      hasParentHeading: true,
+      parentHeading: ['Heart Rate per Minute'],
+      headings: ['Before the Activity', 'After the Activity'],
+      content: [
+        `${dataGathered.preStepTest.record} Beats per Minute`,
+        `${dataGathered.stepTest.record} Beats per Minute`,
+      ],
+      number: 1,
+    }),
+  );
+
+  dataResults.push(handleData({ data: dataGathered.pushUp, number: 2 }));
+  dataResults.push(
+    handleData({ data: dataGathered.basicPlank, unit: 'Second(s)', number: 3 }),
+  );
+  dataResults.push(
+    handleData({
+      data: dataGathered.zipperTestRight,
+      hasParentHeading: true,
+      unit: 'cm',
+      parentHeading: 'Overlap/Gap (centimeters)',
+      number: 4,
+    }),
+  );
+  dataResults.push(
+    handleData({
+      data: dataGathered.zipperTestLeft,
+      hasParentHeading: true,
+      unit: 'cm',
+      parentHeading: 'Overlap/Gap (centimeters)',
+      number: 5,
+    }),
+  );
+  dataResults.push(
+    handleData({
+      data: dataGathered.sitAndReachFirst,
+      hasParentHeading: true,
+      unit: 'cm',
+      parentHeading: 'Score (centimeters)',
+      number: 6,
+    }),
+  );
+  dataResults.push(
+    handleData({
+      data: dataGathered.sitAndReachSecond,
+      hasParentHeading: true,
+      unit: 'cm',
+      parentHeading: 'Score (centimeters)',
+      number: 7,
+    }),
+  );
+  return dataResults;
+};

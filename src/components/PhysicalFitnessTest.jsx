@@ -182,6 +182,7 @@ export default function PhysicalFitnessTest({
       const updatedPhysicalFitnessData = {
         ...prev,
         [testDetails.key]: {
+          title: testName,
           record: testResults.reps,
           sets: testResults.sets,
           timeStarted: testResults.timeStarted,
@@ -280,7 +281,7 @@ export default function PhysicalFitnessTest({
           {/* right side container*/}
           <div
             id="results"
-            className="p-5 mt-5 mb-5 overflow-x-hidden border-2 border-black rounded-2xl relative font-content lg:p-10 lg:mb-0 lg:mt-0"
+            className="p-5 mt-5 mb-5 overflow-x-hidden border-2 border-black rounded-2xl relative font-content lg:p-10 lg:mb-5 lg:mt-0"
           >
             <div
               id="heading"
@@ -291,12 +292,12 @@ export default function PhysicalFitnessTest({
             </div>
             <hr className="w-[50%] border-1 border-black" />
             <div id="data" className="flex flex-col relative ml-3">
-              <h2 className="absolute font-semibold text-lg pointer-events-none">
+              <h2 className="font-semibold text-lg pointer-events-none">
                 {testName}
               </h2>
               <div
                 id="inputs"
-                className="mt-7 ml-2 grid grid-cols-2 divide-x divide-black"
+                className="ml-2 grid grid-cols-2 divide-x divide-black"
               >
                 {['Reps', 'Sets', 'Time Started', 'Time End'].map(
                   (label, index) => (
