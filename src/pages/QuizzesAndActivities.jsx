@@ -111,7 +111,7 @@ function Card({ task }) {
         </div>
         <div className="flex justify-between items-center py-4 pl-10 pr-15 h-[25vh]">
           <Results status={task.status} details={task.details} />
-          <div class="w-[3px] h-full bg-primary-yellow"></div>
+          <div className="w-[3px] h-full bg-primary-yellow"></div>
           <Overview content={task.content} />
         </div>
       </div>
