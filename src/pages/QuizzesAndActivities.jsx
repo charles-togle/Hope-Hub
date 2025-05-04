@@ -124,7 +124,7 @@ function Results({ status, details }) {
     Done: details
       ? Object.entries(details).map(([key, value]) => {
           return (
-            <h4>
+            <h4 key={key}>
               <strong>
                 <i>{key}:</i>
               </strong>
