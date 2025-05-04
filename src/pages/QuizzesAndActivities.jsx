@@ -168,7 +168,7 @@ function Overview({ content }) {
   return (
     <div className="font-content text-base w-[62%]">
       <h4 className="text-primary-blue">Introduction: </h4>
-      <ul class="list-disc list-outside pl-5">
+      <ul className="list-disc list-outside pl-5">
         <li>{content}</li>
       </ul>
     </div>
