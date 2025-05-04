@@ -182,6 +182,14 @@
 }
 
 @layer utilities {
+  .filter {
+    @apply bg-secondary-dark-blue rounded-sm text-white font-content px-5 flex items-center justify-center;
+  }
+
+  .filter-active {
+    @apply bg-primary-yellow text-secondary-dark-blue font-content;
+  }
+
   .apply-drop-shadow > div {
     @apply bg-white p-7 drop-shadow-md;
   }
