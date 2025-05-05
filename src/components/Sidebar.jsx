@@ -6,6 +6,7 @@ import LecturesIcon from '../assets/icons/lecture_sidebar.png';
 import QuizIcon from '../assets/icons/quiz_sidebar.png';
 import PhysicalFitnessIcon from '../assets/icons/physicalFitnessTest_sidebar.png';
 import AboutIcon from '../assets/icons/about_sidebar.png';
+import ProfileIcon from '../assets/icons/profile_sidebar.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '@/styles/sidebar.css';
@@ -32,9 +33,10 @@ export default function Sidebar() {
     {
       text: 'Discover More',
       icon: PhysicalFitnessIcon,
-      route: 'physical-fitness-test/parq',
+      route: '/discover-more',
     },
     { text: 'About', icon: AboutIcon, route: '/about' },
+    { text: 'Profile', icon: ProfileIcon, route: '/profile' },
   ];
 
   const [active, setActive] = useState(-1);
@@ -64,6 +66,7 @@ export default function Sidebar() {
         className={`fulltransition-all w-full duration-400 ease-out flex justify-center ${
           isWide ? 'bg-white' : ''
         }`}
+        onClick={() => navigate('/home')}
       >
         {!isWide && <hr className="mt-5 absolute top-0 w-[60%] right-0" />}
         <img
@@ -78,26 +81,30 @@ export default function Sidebar() {
         className="flex flex-col items-center justify-evenly h-full w-full"
       >
         {SidebarButtons.map((item, index) => (
-          <button
-            key={index}
-            type="button"
-            onClick={() => handleClick(index, item.route)}
-            className={`transition-all duration-300 ${
-              index === active ? 'contrast-125 brightness-50' : ''
-            } flex items-center w-8/10 hover:brightness-50 hover:contrast-125 relative`}
+          <div
+            className={`${isWide ? '' : ''} ${
+              index === active ? 'brightness-75' : ''
+            } w-full bg-secondary-dark-blue pt-2 pb-2 hover:brightness-75 `}
+            key={`${item}-${index}`}
           >
-            <img
-              src={item.icon}
-              className="transition-all duration-200 ease-out mr-5 w-8"
-              alt={`${item.text} Icon`}
-            />
-            <p className=" text-text-content font-heading text-center border-b-2 border-white pb-4 w-[60%]">
-              {item.text}
-            </p>
-            {index === active && (
-              <span className="absolute right-2 text-white text-2xl">•</span>
-            )}
-          </button>
+            <button
+              type="button"
+              onClick={() => handleClick(index, item.route)}
+              className={`transition-all duration-500  flex items-center w-full relative`}
+            >
+              <img
+                src={item.icon}
+                className="transition-all duration-500 mr-5 w-8"
+                alt={`${item.text} Icon`}
+              />
+              <p className=" text-text-content font-heading text-left  border-white p w-[60%]">
+                {item.text}
+              </p>
+              {index === active && (
+                <span className="absolute right-2 text-white text-2xl">•</span>
+              )}
+            </button>
+          </div>
         ))}
       </div>
     </aside>

@@ -1,6 +1,7 @@
 import PageHeading from '@/components/PageHeading';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
 import { Fragment, useEffect, useState } from 'react';
+import supabase from '@/client/supabase';
 
 const TableColumn = ({ columnContent }) => (
   <tr>
@@ -9,6 +10,7 @@ const TableColumn = ({ columnContent }) => (
         className={`${
           index === 0 ? 'border-l-0!' : ''
         } text-center font-content w-15 h-15 border-l-4 border-t-4 border-secondary-dark-blue`}
+        key={`data ${index}`}
       >
         {content}
       </td>
@@ -23,6 +25,7 @@ const TableHeading = ({ headings }) => (
         className={`${
           index === 0 ? 'border-l-0!' : ''
         } h-20 text-center font-content border-l-4 text-white bg-secondary-dark-blue border-white`}
+        key={heading}
       >
         {heading}
       </th>
@@ -59,71 +62,6 @@ const TableSummary = ({ summary }) => (
   </div>
 );
 
-export function PhysicalFitnessTestSummary() {
-  const [isDataReady, setIsDataReady] = useState(false);
-  const [dataGathered, setDataGathered] = useState('');
-  const [dataResults, setDataResults] = useState([]);
-
-  useEffect(() => {
-    if (isDataReady) {
-      return;
-    }
-    const stringData = localStorage.getItem('physicalFitnessData');
-    setDataGathered(JSON.parse(stringData));
-    if (dataGathered) {
-      setDataResults(getSummary(dataGathered));
-      setIsDataReady(true);
-    }
-  }, [dataGathered, isDataReady]);
-  console.log(dataResults);
-  console.log(JSON.parse(localStorage.getItem('physicalFitnessData')));
-
-  if (!dataGathered) {
-    return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
-  }
-
-  if (!isDataReady) {
-    return (
-      <div className="w-full flex justify-center items-center h-screen font-content text-2xl">
-        Loading..
-      </div>
-    );
-  }
-
-  return (
-    <section id="physical-fitness-test-summary" className="parent-container">
-      <PageHeading text={'Physical Fitness Test'}></PageHeading>
-      <div id="summary-content" className="content-container">
-        <div className="w-full flex flex-col space-y-5 mb-10">
-          {dataResults.map((summary, index) => (
-            <Fragment key={`${summary.title} ${index}`}>
-              {(() => {
-                const sectionHeadings = {
-                  0: 'A. Cardiovascular Endurance',
-                  1: 'B. Strength',
-                  3: 'C. Flexibility',
-                };
-                const heading = sectionHeadings[index];
-                return (
-                  heading && (
-                    <Fragment>
-                      <h1 className="text-3xl font-heading -ml-5 mb-0 font-medium">
-                        {heading}
-                      </h1>
-                      <hr className="w-1/3 border-1 border-primary-yellow mb-4 -ml-5" />
-                    </Fragment>
-                  )
-                );
-              })()}
-              <TableSummary summary={summary} />
-            </Fragment>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function handleData({
   data,
   hasParentHeading = false,
@@ -131,7 +69,6 @@ function handleData({
   number,
   unit = '',
 }) {
-  console.log(hasParentHeading, data.title);
   return {
     hasParentHeading: hasParentHeading,
     parentHeading: [parentHeading],
@@ -167,6 +104,7 @@ function customHandleData({
 }
 
 const getSummary = (dataGathered) => {
+  console.log(dataGathered);
   let dataResults = [];
   dataResults.push(
     customHandleData({
@@ -224,3 +162,82 @@ const getSummary = (dataGathered) => {
   );
   return dataResults;
 };
+
+async function getPhysicalFitnessData(userId, column) {
+  const { data, error } = await supabase
+    .from('physical_fitness_test')
+    .select(column)
+    .eq('user_id', userId);
+
+  if (data) {
+    return data[0][column];
+  } else {
+    return error;
+  }
+}
+
+export function PhysicalFitnessTestSummary() {
+  const [isDataReady, setIsDataReady] = useState(false);
+  const [dataResults, setDataResults] = useState([]);
+
+  useEffect(() => {
+    if (isDataReady) {
+      return;
+    }
+
+    async function getDataFromDatabase() {
+      const data = await getPhysicalFitnessData(1, 'pre_test_summary');
+      if (data) {
+        setDataResults(getSummary(data));
+        setIsDataReady(true);
+      }
+    }
+
+    getDataFromDatabase();
+  }, [isDataReady]);
+
+  if (!isDataReady) {
+    return (
+      <div className="w-full flex justify-center items-center h-screen font-content text-2xl">
+        Loading..
+      </div>
+    );
+  }
+
+  if (!dataResults) {
+    return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
+  }
+
+  return (
+    <section id="physical-fitness-test-summary" className="parent-container">
+      <PageHeading text={'Physical Fitness Test'}></PageHeading>
+      <div id="summary-content" className="content-container">
+        <div className="w-full flex flex-col space-y-5 mb-10">
+          {dataResults.map((summary, index) => (
+            <Fragment key={`${summary.title} ${index}`}>
+              {(() => {
+                const sectionHeadings = {
+                  0: 'A. Cardiovascular Endurance',
+                  1: 'B. Strength',
+                  3: 'C. Flexibility',
+                };
+                const heading = sectionHeadings[index];
+                return (
+                  heading && (
+                    <Fragment>
+                      <h1 className="text-3xl font-heading -ml-5 mb-0 font-medium">
+                        {heading}
+                      </h1>
+                      <hr className="w-1/3 border-1 border-primary-yellow mb-4 -ml-5" />
+                    </Fragment>
+                  )
+                );
+              })()}
+              <TableSummary summary={summary} />
+            </Fragment>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
