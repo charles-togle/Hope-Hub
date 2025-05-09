@@ -12,7 +12,7 @@ aside {
 aside button {
   transform: translateX(35%);
   transition: all;
-  transition-duration: 500ms;
+  transition-duration: 300ms;
 }
 
 aside:hover button {
@@ -22,7 +22,7 @@ aside:hover button {
 aside button > p {
   transform: translateX(100%);
   transition: all;
-  transition-duration: 500ms;
+  transition-duration: 300ms;
   transition-timing-function: ease-out;
   opacity: 0;
   text-wrap: nowrap;

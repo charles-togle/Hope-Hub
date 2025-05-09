@@ -34,21 +34,21 @@ const TableHeading = ({ headings }) => (
 );
 
 const TableSummary = ({ summary }) => (
-  <div id="summary">
-    <div className="flex flex-row font-heading space-x-2 text-lg">
+  <div id='summary'>
+    <div className='flex flex-row font-heading space-x-2 text-lg'>
       <p>{summary.number}.</p>
       <p>{summary.title}</p>
     </div>
-    <hr className="w-20 border-1 border-primary-yellow mb-3" />
+    <hr className='w-20 border-1 border-primary-yellow mb-3' />
     <div
-      id="table-container"
-      className="rounded-md overflow-hidden border-5 border-secondary-dark-blue h-fit w-full"
+      id='table-container'
+      className='rounded-md overflow-hidden border-5 border-secondary-dark-blue h-fit w-full'
     >
-      <table className="w-full h-full">
+      <table className='w-full h-full'>
         <tbody>
           <tr className={`${summary.hasParentHeading ? '' : 'hidden'}`}>
             <th
-              className="text-center font-bold font-content h-10  border-b-4 border-white"
+              className='text-center font-bold font-content h-10  border-b-4 border-white'
               colSpan={summary.headings.length}
             >
               {summary.parentHeading}
@@ -62,7 +62,7 @@ const TableSummary = ({ summary }) => (
   </div>
 );
 
-function handleData({
+function handleData ({
   data,
   hasParentHeading = false,
   parentHeading = '',
@@ -85,7 +85,7 @@ function handleData({
   };
 }
 
-function customHandleData({
+function customHandleData ({
   title,
   hasParentHeading = false,
   parentHeading = '',
@@ -103,7 +103,7 @@ function customHandleData({
   };
 }
 
-const getSummary = (dataGathered) => {
+const getSummary = dataGathered => {
   console.log(dataGathered);
   let dataResults = [];
   dataResults.push(
@@ -163,7 +163,7 @@ const getSummary = (dataGathered) => {
   return dataResults;
 };
 
-async function getPhysicalFitnessData(userId, column) {
+async function getPhysicalFitnessData (userId, column) {
   const { data, error } = await supabase
     .from('physical_fitness_test')
     .select(column)
@@ -176,7 +176,7 @@ async function getPhysicalFitnessData(userId, column) {
   }
 }
 
-export function PhysicalFitnessTestSummary() {
+export function PhysicalFitnessTestSummary () {
   const [isDataReady, setIsDataReady] = useState(false);
   const [dataResults, setDataResults] = useState([]);
 
@@ -185,7 +185,7 @@ export function PhysicalFitnessTestSummary() {
       return;
     }
 
-    async function getDataFromDatabase() {
+    async function getDataFromDatabase () {
       const data = await getPhysicalFitnessData(1, 'pre_test_summary');
       if (data) {
         setDataResults(getSummary(data));
@@ -198,7 +198,7 @@ export function PhysicalFitnessTestSummary() {
 
   if (!isDataReady) {
     return (
-      <div className="w-full flex justify-center items-center h-screen font-content text-2xl">
+      <div className='w-full flex justify-center items-center h-screen font-content text-2xl'>
         Loading..
       </div>
     );
@@ -209,10 +209,10 @@ export function PhysicalFitnessTestSummary() {
   }
 
   return (
-    <section id="physical-fitness-test-summary" className="parent-container">
+    <section id='physical-fitness-test-summary' className='parent-container'>
       <PageHeading text={'Physical Fitness Test'}></PageHeading>
-      <div id="summary-content" className="content-container">
-        <div className="w-full flex flex-col space-y-5 mb-10">
+      <div id='summary-content' className='content-container'>
+        <div className='w-full flex flex-col space-y-5 mb-10'>
           {dataResults.map((summary, index) => (
             <Fragment key={`${summary.title} ${index}`}>
               {(() => {
@@ -225,10 +225,10 @@ export function PhysicalFitnessTestSummary() {
                 return (
                   heading && (
                     <Fragment>
-                      <h1 className="text-3xl font-heading -ml-5 mb-0 font-medium">
+                      <h1 className='text-3xl font-heading -ml-5 mb-0 font-medium'>
                         {heading}
                       </h1>
-                      <hr className="w-1/3 border-1 border-primary-yellow mb-4 -ml-5" />
+                      <hr className='w-1/3 border-1 border-primary-yellow mb-4 -ml-5' />
                     </Fragment>
                   )
                 );
