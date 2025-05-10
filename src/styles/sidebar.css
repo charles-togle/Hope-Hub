@@ -1,21 +1,28 @@
 aside:hover {
   width: 18vw;
   transition: all;
-  transition-duration: 400ms;
+  transition-duration: 500ms;
+}
+
+aside {
+  transition: all;
+  transition-duration: 500ms;
 }
 
 aside button {
-  transform: translateX(25%);
+  transform: translateX(35%);
+  transition: all;
+  transition-duration: 300ms;
 }
 
 aside:hover button {
-  transform: translateX(0);
+  transform: translateX(10%);
 }
 
 aside button > p {
-  transform: translateX(-50%);
+  transform: translateX(100%);
   transition: all;
-  transition-duration: 200ms;
+  transition-duration: 300ms;
   transition-timing-function: ease-out;
   opacity: 0;
   text-wrap: nowrap;
@@ -23,7 +30,7 @@ aside button > p {
 
 aside:hover button>p {
   display: block;
-  width: 60%;
+  width: 80%;
   transform: translateX(0%);
   opacity: 1;
 }
