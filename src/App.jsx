@@ -19,6 +19,7 @@ import Login from './pages/Auth/login';
 import Register from './pages/Auth/Register';
 import ForgotPassword from './pages/Auth/ForgotPassword';
 import ChangePassword from './pages/Auth/ChangePassword';
+import DiscoverMore from './pages/DiscoverMore';
 
 function App () {
   const SideBarOutlet = () => {
@@ -66,6 +67,10 @@ function App () {
               element={<LecturePage />}
             />
           </Route>
+          <Route
+            path='discover-more'
+            element={<DiscoverMore></DiscoverMore>}
+          ></Route>
           <Route
             path='physical-fitness-test'
             element={<PhysicalFitnessWrapper />}
