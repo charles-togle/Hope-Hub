@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '@/styles/sidebar.css';
 
-export default function Sidebar() {
+export default function Sidebar () {
   const SidebarButtons = [
     { text: 'Home', icon: HomeIcon, route: 'home' },
     {
@@ -49,36 +49,36 @@ export default function Sidebar() {
   };
 
   const handleOnMouseEnter = () => {
-    setIsWide((prev) => !prev);
+    setIsWide(prev => !prev);
   };
 
   return (
     <aside
-      id="sidebar"
-      className="hidden w-[7vw] h-screen overflow-hidden bg-secondary-dark-blue relative border-r-4
+      id='sidebar'
+      className='hidden w-[7vw] h-screen overflow-hidden bg-secondary-dark-blue relative border-r-4
       border-r-secondary-dark-blue lg:flex flex-col items-center 
-      transition-all duration-400"
+      transition-all duration-400'
       onMouseEnter={() => handleOnMouseEnter()}
       onMouseLeave={() => handleOnMouseEnter()}
     >
       <div
-        id="logo"
+        id='logo'
         className={`fulltransition-all w-full duration-400 ease-out flex justify-center ${
           isWide ? 'bg-white' : ''
         }`}
         onClick={() => navigate('/home')}
       >
-        {!isWide && <hr className="mt-5 absolute top-0 w-[60%] right-0" />}
+        {!isWide && <hr className='mt-5 absolute top-0 w-[60%] right-0' />}
         <img
           src={isWide ? SidebarLogo : SidebarLogoSmall}
-          alt=""
+          alt=''
           className={`transition-all duration-400 w-fit h-40 object-contain`}
         />
       </div>
 
       <div
-        id="sidebar-button"
-        className="flex flex-col items-center justify-evenly h-full w-full"
+        id='sidebar-button'
+        className='flex flex-col items-center justify-evenly h-full w-full'
       >
         {SidebarButtons.map((item, index) => (
           <div
@@ -88,20 +88,20 @@ export default function Sidebar() {
             key={`${item}-${index}`}
           >
             <button
-              type="button"
+              type='button'
               onClick={() => handleClick(index, item.route)}
               className={`transition-all duration-500  flex items-center w-full relative`}
             >
               <img
                 src={item.icon}
-                className="transition-all duration-500 mr-5 w-8"
+                className='transition-all duration-500 mr-5 w-8'
                 alt={`${item.text} Icon`}
               />
-              <p className=" text-text-content font-heading text-left  border-white p w-[60%]">
+              <p className='text-sm text-text-content font-heading text-left  border-white p w-[60%] lg:text-base '>
                 {item.text}
               </p>
               {index === active && (
-                <span className="absolute right-2 text-white text-2xl">•</span>
+                <span className='absolute right-2 text-white text-2xl'>•</span>
               )}
             </button>
           </div>

@@ -15,13 +15,17 @@ import HealthCalculator from './pages/HealthCalculators/HealthCalculator';
 import LectureProgressProvider from './providers/LectureProvider';
 import Home from './pages/Home';
 import { PhysicalFitnessTestSummary } from './pages/PhysicalFitnessTestSummary';
+import Login from './pages/Auth/login';
+import Register from './pages/Auth/Register';
+import ForgotPassword from './pages/Auth/ForgotPassword';
+import ChangePassword from './pages/Auth/ChangePassword';
 
-function App() {
+function App () {
   const SideBarOutlet = () => {
     return (
-      <div className="flex h-screen overflow-hidden">
+      <div className='flex h-screen overflow-hidden'>
         <Sidebar />
-        <div className="flex-1 h-screen overflow-x-hidden justify-center relative">
+        <div className='flex-1 h-screen overflow-x-hidden justify-center relative'>
           <Outlet />
         </div>
       </div>
@@ -44,43 +48,53 @@ function App() {
     );
   };
 
+  const AuthWrapper = () => {
+    return <Outlet />;
+  };
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<SideBarOutlet />} path="/">
-          <Route path="home" element={<Home />}></Route>
-          <Route path="about" element={<About />} />
-          <Route path="health-calculators" element={<HealthCalculator />} />
-          <Route path="lectures" element={<LectureWrapper />}>
+        <Route element={<SideBarOutlet />} path='/'>
+          <Route path='home' element={<Home />}></Route>
+          <Route path='about' element={<About />} />
+          <Route path='health-calculators' element={<HealthCalculator />} />
+          <Route path='lectures' element={<LectureWrapper />}>
             <Route index element={<Lectures />} />
             <Route
-              path="lecture/:lessonNumber/:lectureType"
+              path='lecture/:lessonNumber/:lectureType'
               element={<LecturePage />}
             />
           </Route>
           <Route
-            path="physical-fitness-test"
+            path='physical-fitness-test'
             element={<PhysicalFitnessWrapper />}
           >
             <Route
-              path="parq"
+              path='parq'
               element={<PhysicalActivityReadinessQuestionnaire />}
             />
             <Route
-              path="test/:testIndex"
+              path='test/:testIndex'
               element={<PhysicalFitnessTestPage />}
             />
             <Route
-              path="summary"
+              path='summary'
               element={<PhysicalFitnessTestSummary />}
             ></Route>
           </Route>
-          <Route path="quizzes-and-activities">
+          <Route path='quizzes-and-activities'>
             <Route index element={<QuizzesAndActivities />} />
-            <Route path="quiz/:quizId" element={<Quiz />} />
-            <Route path="activity/:activityId" element={<Activity />} />
+            <Route path='quiz/:quizId' element={<Quiz />} />
+            <Route path='activity/:activityId' element={<Activity />} />
           </Route>
-          <Route path="*" element={<NotFound />} />
+          <Route path='auth' element={<AuthWrapper />}>
+            <Route path='login' element={<Login />}></Route>
+            <Route path='register' element={<Register />}></Route>
+            <Route path='forgot-password' element={<ForgotPassword />}></Route>
+            <Route path='change-password' element={<ChangePassword />}></Route>
+          </Route>
+          <Route path='*' element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>

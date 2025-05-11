@@ -15,6 +15,7 @@
   --color-primary-yellow: #FFBC13;
   --color-neutral-dark-blue: #013D61;
   --color-neutral-light-blue: #E4E9FF;
+  --color-accent-light-blue: #6596F7;
   --color-medium-blue: #02466D;
   --color-accent-orange: #FFB24E;
   --color-accent-blue: #013D61;
@@ -183,13 +184,14 @@
 
 @layer utilities {
   .filter {
-    @apply bg-secondary-dark-blue rounded-sm text-white font-content px-5 flex items-center justify-center;
+    @apply bg-secondary-dark-blue font-content flex items-center justify-center
+    rounded-sm px-5 text-white;
   }
-
+  
   .filter-active {
     @apply bg-primary-yellow text-secondary-dark-blue font-content;
   }
-
+  
   .apply-drop-shadow > div {
     @apply bg-white p-7 drop-shadow-md;
   }
