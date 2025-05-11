@@ -74,7 +74,7 @@ export default function QuizzesAndActivities() {
             })}
           </ul>
         </div>
-        {Quizzes.map((task, index) => {
+        {Quizzes.map((task) => {
           return (
             (task.status === activeFilter || activeFilter === 'All') && (
               <Card key={task.type + task.number} task={task} />
