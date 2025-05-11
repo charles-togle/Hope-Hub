@@ -5,6 +5,7 @@ export default function FormInput ({
   value,
   type = 'text',
   placeholder = '',
+  disabled = false,
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -17,7 +18,10 @@ export default function FormInput ({
         value={value}
         onChange={e => setValue(e.target.value)}
         placeholder={placeholder}
-        className='w-full border-b-1 border-accent-gray pb-3 pt-3 pr-10 pl-5 font-content text-base rounded-sm shadow-md bg-white placeholder:text-accent-gray placeholder:font-content '
+        className={`w-full border-b-1 border-accent-gray pb-3 pt-3 pr-10 pl-5 font-content text-base 
+          rounded-sm shadow-md bg-white placeholder:text-accent-gray placeholder:font-content 
+          disabled:brightness-90 not-valid:border-1 not-valid:border-red`}
+        disabled={disabled}
       />
       {type === 'password' && (
         <>

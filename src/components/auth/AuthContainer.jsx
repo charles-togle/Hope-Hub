@@ -1,10 +1,10 @@
 import AuthBG from '@/assets/images/auth_bg.png';
-import PageHeadingAuth from '@/components/auth/PageHeading';
+import PageHeading from '@/components/auth/PageHeading';
 
 export default function AuthContainer ({ children }) {
   return (
     <section id='auth-container relative'>
-      <PageHeadingAuth className={'border-0'}></PageHeadingAuth>
+      <PageHeading className={'border-0'}></PageHeading>
       <img
         src={AuthBG}
         alt=''

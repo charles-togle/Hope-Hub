@@ -13,7 +13,9 @@ export default function Register () {
   const [classCode, setClassCode] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isEducator, setEducator] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handlePasswordChange = value => {
     setPassword(value);
@@ -34,8 +36,23 @@ export default function Register () {
   };
 
   const handleRegister = async () => {
+    setErrorMessage('');
     if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match');
+      return;
+    }
+
+    const fields = [email, password, confirmPassword, name, classCode];
+    const areAllFieldsFilled = fields.every(field =>
+      field === classCode
+        ? isEducator
+          ? true
+          : field.trim() !== ''
+        : field.trim() !== '',
+    );
+
+    if (!areAllFieldsFilled) {
+      setErrorMessage('Please fill up all fields');
       return;
     }
 
@@ -46,8 +63,26 @@ export default function Register () {
 
     if (error) {
       setErrorMessage(error.message);
-    } else {
-      setErrorMessage('');
+      return;
+    }
+
+    const userId = data.user.id;
+
+    if (!error) {
+      const { data, error } = await supabase.from('profile').insert({
+        uuid: userId,
+        full_name: name,
+        email: email,
+        class_code: classCode,
+        user_type: isEducator ? 'teacher' : 'student',
+      });
+      if (error) {
+        setErrorMessage(error.message);
+      } else {
+        setSuccessMessage(
+          'Account created successfully! Please check your email to verify your account.',
+        );
+      }
     }
   };
 
@@ -74,26 +109,42 @@ export default function Register () {
           ></FormInput>
           <FormInput
             value={classCode}
-            placeholder='Class Code'
+            placeholder={
+              isEducator ? 'You can create a class later' : 'Enter class code'
+            }
+            disabled={isEducator}
             setValue={setClassCode}
           ></FormInput>
           <FormInput
             value={password}
             placeholder='Password'
-            setValue={handlePasswordChange} // Use custom handler
+            setValue={handlePasswordChange}
             type='password'
           ></FormInput>
           <FormInput
             value={confirmPassword}
             placeholder='Confirm Password'
-            setValue={handleConfirmPasswordChange} // Use custom handler
+            setValue={handleConfirmPasswordChange}
             type='password'
           ></FormInput>
+          <div className='flex gap-3 text-accent-gray items-center font-content'>
+            <input
+              type='checkbox'
+              id='educator'
+              onChange={() => setEducator(prev => !prev)}
+            />
+            <label htmlFor='educator'>I am an educator</label>
+          </div>
         </InputContainer>
-        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}{' '}
-        {/* Display error message */}
+        {errorMessage && (
+          <p className='text-red font-content font-semibold'>{errorMessage}</p>
+        )}
+        {successMessage && (
+          <p className='text-green font-content font-semibold'>
+            {successMessage}
+          </p>
+        )}
         <FormButton text='Sign Up' onClick={handleRegister}></FormButton>{' '}
-        {/* Attach handleRegister */}
       </FormContainer>
     </AuthContainer>
   );

@@ -4,13 +4,16 @@ import FormHeading from '@/components/auth/FormHeading';
 import FormInput from '@/components/auth/FormInput';
 import InputContainer from '../../components/auth/InputContainer';
 import FormButton from '../../components/auth/FormButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import supabase from '@/client/supabase';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login () {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     setErrorMessage('');
@@ -23,7 +26,7 @@ export default function Login () {
       if (error) {
         setErrorMessage(error.message);
       } else {
-        setErrorMessage('');
+        setSuccessMessage('Login Success');
       }
     } catch (err) {
       console.error('Unexpected error during login:', err);
@@ -57,12 +60,22 @@ export default function Login () {
             {errorMessage}
           </p>
         )}
+        {successMessage && (
+          <p className='text-green font-content font-semibold'>
+            {successMessage}
+          </p>
+        )}
         <div className='flex flex-row justify-between font-content text-sm'>
           <div className='text-accent-gray flex gap-4 pl-2'>
             <input type='checkbox' id='remember-me' />
             <label htmlFor='remember-me'>Remember me</label>
           </div>
-          <p className='text-accent-light-blue'>Forgot Password? </p>
+          <button
+            className='text-accent-light-blue cursor-pointer'
+            onClick={() => navigate('/auth/forgot-password')}
+          >
+            Forgot Password?
+          </button>
         </div>
         <FormButton text='Login' onClick={handleLogin}></FormButton>
       </FormContainer>

@@ -18,6 +18,7 @@ import { PhysicalFitnessTestSummary } from './pages/PhysicalFitnessTestSummary';
 import Login from './pages/Auth/login';
 import Register from './pages/Auth/Register';
 import ForgotPassword from './pages/Auth/ForgotPassword';
+import ChangePassword from './pages/Auth/ChangePassword';
 
 function App () {
   const SideBarOutlet = () => {
@@ -91,6 +92,7 @@ function App () {
             <Route path='login' element={<Login />}></Route>
             <Route path='register' element={<Register />}></Route>
             <Route path='forgot-password' element={<ForgotPassword />}></Route>
+            <Route path='change-password' element={<ChangePassword />}></Route>
           </Route>
           <Route path='*' element={<NotFound />} />
         </Route>
