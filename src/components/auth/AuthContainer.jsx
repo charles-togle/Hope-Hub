@@ -1,4 +1,4 @@
-import AuthBG from '@/assets/images/auth_bg.png';
+import AuthBG from '@/assets/images/generic_bg.png';
 import PageHeading from '@/components/auth/PageHeading';
 
 export default function AuthContainer ({ children }) {

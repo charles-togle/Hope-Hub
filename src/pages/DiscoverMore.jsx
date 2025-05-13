@@ -4,7 +4,8 @@ import Search from '@/components/youtube/Search';
 import VideoList from '@/components/youtube/VideoList';
 import VideoPlayer from '@/components/youtube/VideoPlayer';
 import Pagination from '@/components/youtube/Pagination';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import BackgroundImage from '@/assets/images/generic_bg.png';
 
 export default function DiscoverMore () {
   const [videos, setVideos] = useState([]);
@@ -27,6 +28,28 @@ export default function DiscoverMore () {
     setPrevPageToken(response.data.prevPageToken || null);
   };
 
+  const fetchVideoDurations = async videos => {
+    const videoIds = videos.map(video => video.id.videoId).join(',');
+    const response = await youtube.get('/videos', {
+      params: {
+        id: videoIds,
+        part: 'contentDetails',
+      },
+    });
+
+    const durations = response.data.items.reduce((acc, item) => {
+      acc[item.id] = item.contentDetails.duration;
+      return acc;
+    }, {});
+
+    console.log(durations);
+
+    return videos.map(video => ({
+      ...video,
+      duration: durations[video.id.videoId] || 'N/A',
+    }));
+  };
+
   const handleSearch = async (query, pageToken = '') => {
     const fullQuery = `${query} fitness`;
 
@@ -39,7 +62,9 @@ export default function DiscoverMore () {
       },
     });
 
-    setVideos(response.data.items);
+    const videosWithDurations = await fetchVideoDurations(response.data.items);
+
+    setVideos(videosWithDurations);
     setNextPageToken(response.data.nextPageToken || null);
     setPrevPageToken(response.data.prevPageToken || null);
   };
@@ -48,29 +73,55 @@ export default function DiscoverMore () {
     setSelectedVideo(video);
     fetchRelatedVideos(video.id.videoId);
   };
+
+  useEffect(() => {
+    const searchAndPlayFirstVideo = async () => {
+      const response = await youtube.get('/search', {
+        params: {
+          q: 'fit',
+          type: 'video',
+        },
+      });
+
+      const firstVideo = response.data.items[0];
+      if (firstVideo) {
+        const videosWithDurations = await fetchVideoDurations(
+          response.data.items,
+        );
+        setSelectedVideo(videosWithDurations[0]);
+        setVideos(videosWithDurations);
+        setNextPageToken(response.data.nextPageToken || null);
+        setPrevPageToken(response.data.prevPageToken || null);
+      }
+    };
+
+    searchAndPlayFirstVideo();
+  }, []); // Run only once when the component mounts
+
   return (
-    <section id='discover-more' className='parent-container p-6 bg-gray-100'>
+    <section
+      id='discover-more'
+      className='parent-container h-fit relative bg-transparent! '
+    >
       <PageHeading text='Discover More'></PageHeading>
-      <div className='content-container bg-white shadow-md border-2 mt-5 border-accent-blue rounded-lg p-6 w-[90%]!'>
-        <h1 className='text-2xl text-left w-full font-bold mb-4 text-primary-yellow'>
-          YouTube Search
-        </h1>
-        <Search onSearch={handleSearch} />
-        <div className='mt-6'>
-          <div className='w-full'>
+      <div className='h-screen overflow-hidden  mt-5 '>
+        <div className='content-container  shadow-md border-3 border-accent-blue rounded-lg p-6 w-full!  bg-transparent! relative'>
+          <img src={BackgroundImage} className='fixed top-0 -z-1' alt='' />
+          <Search onSearch={handleSearch} />
+          <div className='grid grid-cols-[65%_35%] grid-rows-2'>
             <VideoPlayer video={selectedVideo} />
+            <div className='h-90'>
+              <VideoList videos={videos} onVideoSelect={handleVideoSelect} />
+              {videos.length > 0 && ( // Only show Pagination if videos are available
+                <Pagination
+                  onPrev={() => handleSearch(searchQuery, prevPageToken)}
+                  onNext={() => handleSearch(searchQuery, nextPageToken)}
+                  hasPrev={!!prevPageToken}
+                  hasNext={!!nextPageToken}
+                />
+              )}
+            </div>
           </div>
-          <div className='mt-6'>
-            <VideoList videos={videos} onVideoSelect={handleVideoSelect} />
-          </div>
-          {videos.length > 0 && ( // Only show Pagination if videos are available
-            <Pagination
-              onPrev={() => handleSearch(searchQuery, prevPageToken)}
-              onNext={() => handleSearch(searchQuery, nextPageToken)}
-              hasPrev={!!prevPageToken}
-              hasNext={!!nextPageToken}
-            />
-          )}
         </div>
       </div>
     </section>
