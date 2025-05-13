@@ -15,7 +15,7 @@ import HealthCalculator from './pages/HealthCalculators/HealthCalculator';
 import LectureProgressProvider from './providers/LectureProvider';
 import Home from './pages/Home';
 import { PhysicalFitnessTestSummary } from './pages/PhysicalFitnessTestSummary';
-import Login from './pages/Auth/login';
+import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import ForgotPassword from './pages/Auth/ForgotPassword';
 import ChangePassword from './pages/Auth/ChangePassword';
