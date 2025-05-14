@@ -23,7 +23,7 @@ export default function ForgotPassword () {
     }
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'http://localhost:5173/auth/change-password',
+      redirectTo: 'https://hope-hub-dcvm.vercel.app/auth/change-password',
     });
     if (error) {
       setErrorMessage(error.message);
