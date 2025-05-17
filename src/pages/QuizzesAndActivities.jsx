@@ -1,42 +1,7 @@
 import PageHeading from '@/components/PageHeading';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
-const Quizzes = [
-  {
-    type: 'Quiz',
-    number: 1,
-    title: 'Placeholder of the title',
-    status: 'Done',
-    details: {
-      Score: '9/10',
-      Ranking: '1',
-      ['Date Taken']: 'April 14, 2025',
-      ['Start-time']: '8:39PM',
-      ['End-time']: '9:10PM',
-    },
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    type: 'Quiz',
-    number: 2,
-    title: 'Placeholder of the title',
-    status: 'Pending',
-    details: {},
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    type: 'Quiz',
-    number: 3,
-    title: 'Placeholder of the title',
-    status: 'Locked',
-    details: {},
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-  },
-];
+import { QuizzesAndActivitiesData } from '@/utilities/QuizAndActivities';
 
 export default function QuizzesAndActivities() {
   const [activeFilter, setActiveFilter] = useState('All');
@@ -56,7 +21,7 @@ export default function QuizzesAndActivities() {
           id="header"
           className="flex justify-between sticky top-0 z-10 w-full py-8 bg-background"
         >
-          <h2 className="font-heading text-3xl text-primary-blue border-primary-yellow border-b-3 pb-2">
+          <h2 className="font-heading-small text-3xl text-primary-blue border-primary-yellow border-b-3 pb-2">
             Dashboard
           </h2>{' '}
           <ul className="flex rounded-sm bg-secondary-dark-blue">
@@ -74,7 +39,7 @@ export default function QuizzesAndActivities() {
             })}
           </ul>
         </div>
-        {Quizzes.map((task, index) => {
+        {QuizzesAndActivitiesData.map((task) => {
           return (
             (task.status === activeFilter || activeFilter === 'All') && (
               <Card key={task.type + task.number} task={task} />
