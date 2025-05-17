@@ -12,6 +12,13 @@ import Quiz from './pages/Quiz';
 import Activity from './pages/Activity';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import HealthCalculator from './pages/HealthCalculators/HealthCalculator';
+import BMI from './pages/HealthCalculators/BMI';
+import BMR from './pages/HealthCalculators/BMR';
+import BodyFatPercentage from './pages/HealthCalculators/BodyFatPercentage';
+import Calorie from './pages/HealthCalculators/Calorie';
+import IBW from './pages/HealthCalculators/IBW';
+import TDEE from './pages/HealthCalculators/TDEE';
+import WaterIntake from './pages/HealthCalculators/WaterIntake';
 import LectureProgressProvider from './providers/LectureProvider';
 import Home from './pages/Home';
 import { PhysicalFitnessTestSummary } from './pages/PhysicalFitnessTestSummary';
@@ -74,6 +81,14 @@ function App () {
           <Route path='home' element={<Home />}></Route>
           <Route path='about' element={<About />} />
           <Route path='health-calculators' element={<HealthCalculator />} />
+          <Route path="health-calculators/bmi" element={<BMI />} />
+          <Route path="health-calculators/BMR" element={<BMR />} />
+          <Route path="health-calculators/BodyFatPercentage" element={<BodyFatPercentage />} />
+          <Route path="health-calculators/calorie" element={<Calorie />} />
+          <Route path="health-calculators/ibw" element={<IBW />} />
+          <Route path="health-calculators/TDEE" element={<TDEE />} />
+          <Route path="health-calculators/WaterIntake" element={<WaterIntake />} />
+
           <Route path='lectures' element={<LectureWrapper />}>
             <Route index element={<Lectures />} />
             <Route

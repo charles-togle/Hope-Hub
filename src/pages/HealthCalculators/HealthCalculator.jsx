@@ -1,6 +1,7 @@
 import React from 'react';
 import PageHeading from '@/components/PageHeading';
-import HealthCalculatorButton from '@/components/HealthCalculatorButtons';
+import HealthCalculatorButton from '@/components/health-calculators/HealthCalculatorButtons';
+import HealthCalculatorLayout from '@/components/health-calculators/HealthCalculatorsLayout';
 import { Link } from 'react-router-dom';
 
 export default function HealthCalculator() {
@@ -11,22 +12,18 @@ export default function HealthCalculator() {
     feugiat commodo nascetur. Eu quis in mattis morbi velit habitant feugiat.`;
 
   const HealthCalculatorButtons = [
-    { text: 'Body Mass Index (BMI) Calculator', className: '', linkTo: '' },
-    { text: 'Calorie Calculator', className: '', linkTo: '' },
-    { text: 'Calorie Calculator', className: '', linkTo: '' },
-    { text: 'Ideal Body Weight (IBW) Calculator', className: '', linkTo: '' },
-    { text: 'Body Fat Percentage Calculator', className: '', linkTo: '' },
-    {
-      text: 'Daily Caloric Needs (TDEE) Calculator',
-      className: '',
-      linkTo: '',
-    },
-    { text: 'Water Intake Calculator', className: '', linkTo: '' },
+    { text: 'Body Mass Index (BMI) Calculator', className: '', linkTo: 'BMI' },
+    { text: 'Body Fat Percentage Calculator', className: '', linkTo: 'BodyFatPercentage' },
+    { text: 'Calorie Calculator', className: '', linkTo: 'Calorie' },
+    { text: 'Daily Caloric Needs (TDEE) Calculator', className: '', linkTo: 'TDEE' },
+    { text: 'Basal Metabolic Rate (BMR) Calculator', className: '', linkTo: 'BMR' },
+    { text: 'Water Intake Calculator', className: '', linkTo: 'WaterIntake', },
+    { text: 'Ideal Body Weight (IBW) Calculator', className: '', linkTo: 'IBW' },
   ];
 
   return (
     <div id="health-calculator">
-      <PageHeading text="Health Calculators"></PageHeading>
+      <PageHeading text="Fitness & Health Calculators"></PageHeading>
       <div
         id="health-calculators-content"
         className="w-[80%] flex justify-center flex-col items-center mr-auto ml-auto mt-16"
