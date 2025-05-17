@@ -98,7 +98,7 @@ function App () {
               element={<PhysicalFitnessTestPage />}
             />
             <Route
-              path='summary'
+              path='summary/:testType'
               element={<PhysicalFitnessTestSummary />}
             ></Route>
           </Route>
