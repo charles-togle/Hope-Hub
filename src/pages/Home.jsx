@@ -3,44 +3,44 @@ import HomePageHero from '@/assets/images/gym_homepage.png';
 import Banner2 from '@/assets/images/gym_banner_home.jpg';
 import GymPicture from '@/assets/images/gym3_homepage.png';
 import { useNavigate } from 'react-router-dom';
-export default function Home() {
+export default function Home () {
   const navigate = useNavigate();
   const handleStart = () => {
-    navigate('/lectures');
+    navigate('/auth/login');
   };
 
   return (
     <div
-      id="home"
-      className="flex items-center w-full font-content h-full flex-col pt-5"
+      id='home'
+      className='flex items-center w-full font-content h-full flex-col pt-5'
     >
-      <section id="hero" className="relative w-full flex items-center flex-col">
-        <img src={Banner} alt="home-banner" className="w-[95%] lg:w-[85%]" />
-        <div className="absolute  aspect-square border-2 border-primary-yellow lg:w-40 lg:right-275 lg:top-50 -z-1"></div>
-        <div className="absolute border-2 border-secondary-dark-blue lg:w-70 lg:h-40 lg:top-55 lg:right-110 -z-1"></div>
-        <div className="absolute aspect-square border-2 border-primary-yellow lg:w-40 lg:top-25 lg:right-60 -z-1"></div>
-        <div className="hidden absolute border-2 border-primary-yellow w-70 h-50 top-170 right-250 -z-1 lg:block"></div>
-        <div className="hidden absolute border-2 border-secondary-dark-blue w-40 h-30 top-200 right-135 -z-1 lg:block"></div>
-        <div className="hidden absolute border-2 border-primary-yellow w-40 h-30 top-170 right-50 -z-1 lg:block"></div>
+      <section id='hero' className='relative w-full flex items-center flex-col'>
+        <img src={Banner} alt='home-banner' className='w-[95%] lg:w-[85%]' />
+        <div className='absolute  aspect-square border-2 border-primary-yellow lg:w-40 lg:right-275 lg:top-50 -z-1'></div>
+        <div className='absolute border-2 border-secondary-dark-blue lg:w-70 lg:h-40 lg:top-55 lg:right-110 -z-1'></div>
+        <div className='absolute aspect-square border-2 border-primary-yellow lg:w-40 lg:top-25 lg:right-60 -z-1'></div>
+        <div className='hidden absolute border-2 border-primary-yellow w-70 h-50 top-170 right-250 -z-1 lg:block'></div>
+        <div className='hidden absolute border-2 border-secondary-dark-blue w-40 h-30 top-200 right-135 -z-1 lg:block'></div>
+        <div className='hidden absolute border-2 border-primary-yellow w-40 h-30 top-170 right-50 -z-1 lg:block'></div>
         <div
-          id="content"
-          className="w-[95%] flex flex-row justify-center gap-5 mt-10 mb-10 lg:mt-25 lg:mb-25 lg:gap-30 "
+          id='content'
+          className='w-[95%] flex flex-row justify-center gap-5 mt-10 mb-10 lg:mt-25 lg:mb-25 lg:gap-30 '
         >
-          <img src={HomePageHero} alt="" className="w-[60%] h-fit lg:w-[40%]" />
-          <div className="flex flex-col justify-center items-start">
-            <h1 className="font-heading text-lg text-primary-blue lg:text-4xl">
+          <img src={HomePageHero} alt='' className='w-[60%] h-fit lg:w-[40%]' />
+          <div className='flex flex-col justify-center items-start'>
+            <h1 className='font-heading text-lg text-primary-blue lg:text-4xl'>
               Fuel your future <br /> with movement
             </h1>
-            <hr className="w-2/3 border-1 border-primary-yellow mt-2 mb-3" />
-            <p className="text-xs lg:text-xl">
+            <hr className='w-2/3 border-1 border-primary-yellow mt-2 mb-3' />
+            <p className='text-xs lg:text-xl'>
               “Great things come <br /> from hard work and <br /> perseverance.
               No excuses.”
             </p>
-            <p className="text-sm lg:text-xl font-semibold italic">
+            <p className='text-sm lg:text-xl font-semibold italic'>
               --Kobe Bryant--
             </p>
             <button
-              className="py-1 px-2 text-sm mt-3 bg-secondary-dark-blue text-white mr-auto ml-auto rounded-lg hover:brightness-85 lg:text-base lg:px-6 lg:py-3  lg:mt-10 "
+              className='py-1 px-2 text-sm mt-3 bg-secondary-dark-blue text-white mr-auto ml-auto rounded-lg hover:brightness-85 lg:text-base lg:px-6 lg:py-3  lg:mt-10 '
               onClick={() => handleStart()}
             >
               Start your Journey
@@ -48,25 +48,25 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="w-full flex justify-center flex-col items-center pb-10">
+      <section className='w-full flex justify-center flex-col items-center pb-10'>
         <img
           src={Banner2}
-          alt="umak students doing dance"
-          className="h-50 w-full mb-5 lg:h-auto lg:mb-10"
+          alt='umak students doing dance'
+          className='h-50 w-full mb-5 lg:h-auto lg:mb-10'
         />
-        <p className="text-base mb-2 lg:text-lg">With us, you are home</p>
-        <h2 className="text-4xl pr-3 pl-3 text-primary-yellow font-heading text-center lg:p-0 lg:text-6xl ">
+        <p className='text-base mb-2 lg:text-lg'>With us, you are home</p>
+        <h2 className='text-4xl pr-3 pl-3 text-primary-yellow font-heading text-center lg:p-0 lg:text-6xl '>
           Welcome to Hope Hub Web!
         </h2>
-        <p className="text-center w-[90%] mt-5 mb-10">
+        <p className='text-center w-[90%] mt-5 mb-10'>
           The Hope Hub, we believe in the Power of Physical Education to inspire
           change and create a lasting impact on well-being. Whether you're
           teaching the next generation of students or building your own fitness
           knowledge, we're here to guide you every step of the way.
         </p>
-        <div className="lg:flex lg:flex-row lg:justify-center lg:items-center lg:space-x-15">
-          <img src={GymPicture} alt="" />
-          <p className="mt-10 text-justify lg:mt-0 lg:w-4/10 pr-2 pl-2 lg:p-0 lg:text-center">
+        <div className='lg:flex lg:flex-row lg:justify-center lg:items-center lg:space-x-15'>
+          <img src={GymPicture} alt='' />
+          <p className='mt-10 text-justify lg:mt-0 lg:w-4/10 pr-2 pl-2 lg:p-0 lg:text-center'>
             The Hope Hub is dedicated to supporting both teachers and students
             in the field of Physical Education and Health. This platform
             provides resources designed to enhance learning experience and
@@ -79,20 +79,20 @@ export default function Home() {
           </p>
         </div>
       </section>
-      <footer className="flex flex-row bg-[#121212] w-full items-center p-5">
-        <p className="text-primary-blue font-content w-fit pl-10 text-3xl font-semibold italic">
+      <footer className='flex flex-row bg-[#121212] w-full items-center p-5'>
+        <p className='text-primary-blue font-content w-fit pl-10 text-3xl font-semibold italic'>
           Discover your health <br />
           strenghten your body <br /> unlock your potential
         </p>
-        <hr className="h-full border-1 border-primary-yellow mr-10 ml-10" />
-        <div className="w-6/10 flex flex-col">
-          <p className="text-white text-center mt-5">
+        <hr className='h-full border-1 border-primary-yellow mr-10 ml-10' />
+        <div className='w-6/10 flex flex-col'>
+          <p className='text-white text-center mt-5'>
             The Hope Hub, we believe in the Power of Physical Education to
             inspire change and create a lasting impact on well-being. Whether
             you're teaching the next generation of students or building your own
             fitness knowledge, we're here to guide you every step of the way.{' '}
           </p>
-          <div className="text-white mt-20">Placeholder</div>
+          <div className='text-white mt-20'>Placeholder</div>
         </div>
       </footer>
     </div>

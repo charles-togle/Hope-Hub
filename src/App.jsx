@@ -20,6 +20,7 @@ import Register from './pages/Auth/Register';
 import ForgotPassword from './pages/Auth/ForgotPassword';
 import ChangePassword from './pages/Auth/ChangePassword';
 import DiscoverMore from './pages/DiscoverMore';
+import StudentDashboard from './pages/Profiles/StudentDashboard';
 
 function App () {
   const SideBarOutlet = () => {
@@ -51,6 +52,19 @@ function App () {
 
   const AuthWrapper = () => {
     return <Outlet />;
+  };
+
+  const ProfileWrapper = () => {
+    const isAdmin = false;
+
+    if (isAdmin) {
+      return (
+        // <div></div> admin here
+        <></>
+      );
+    } else {
+      return <StudentDashboard />;
+    }
   };
 
   return (
@@ -99,6 +113,7 @@ function App () {
             <Route path='forgot-password' element={<ForgotPassword />}></Route>
             <Route path='change-password' element={<ChangePassword />}></Route>
           </Route>
+          <Route path='profile' element={<ProfileWrapper />}></Route>
           <Route path='*' element={<NotFound />} />
         </Route>
       </Routes>

@@ -2,6 +2,7 @@ import PageHeading from '@/components/PageHeading';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
 import { Fragment, useEffect, useState } from 'react';
 import supabase from '@/client/supabase';
+import { useUserId } from '@/hooks/useId';
 
 const TableColumn = ({ columnContent }) => (
   <tr>
@@ -167,7 +168,7 @@ async function getPhysicalFitnessData (userId, column) {
   const { data, error } = await supabase
     .from('physical_fitness_test')
     .select(column)
-    .eq('user_id', userId);
+    .eq('uuid', userId);
 
   if (data) {
     return data[0][column];
@@ -179,6 +180,7 @@ async function getPhysicalFitnessData (userId, column) {
 export function PhysicalFitnessTestSummary () {
   const [isDataReady, setIsDataReady] = useState(false);
   const [dataResults, setDataResults] = useState([]);
+  const userId = useUserId();
 
   useEffect(() => {
     if (isDataReady) {
@@ -186,7 +188,12 @@ export function PhysicalFitnessTestSummary () {
     }
 
     async function getDataFromDatabase () {
-      const data = await getPhysicalFitnessData(1, 'pre_test_summary');
+      //handle pre test or post test
+      const resolvedUserId = await Promise.resolve(userId);
+      const data = await getPhysicalFitnessData(
+        resolvedUserId,
+        'pre_physical_fitness_test',
+      );
       if (data) {
         setDataResults(getSummary(data));
         setIsDataReady(true);

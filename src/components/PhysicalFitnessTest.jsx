@@ -7,8 +7,8 @@ import { AlertMessage } from './utilities/AlertMessage';
 import setDataToStorage from '@/utilities/setDataToStorage';
 import getDataFromStorage from '@/utilities/getDataFromStorage';
 import { Timer } from '@/components/utilities/Timer';
-import { ResultSection } from './subcomponents/ResultSection';
-import { TipsAndInterpretation } from './subcomponents/TipsAndInterperetation';
+import { ResultSection } from './physical-fitness-test/ResultSection';
+import { TipsAndInterpretation } from './physical-fitness-test/TipsAndInterperetation';
 
 const InstructionsGroup = ({ text, array, id }) => (
   <div id={id}>
