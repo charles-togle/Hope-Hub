@@ -6,6 +6,7 @@ import getDataFromStorage from '@/utilities/getDataFromStorage';
 import setDataToStorage from '@/utilities/setDataToStorage';
 import useLectureProgress from '@/hooks/useLectureProgress';
 import supabase from '@/client/supabase';
+import { useId } from 'react';
 
 export default function Lectures () {
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -14,7 +15,7 @@ export default function Lectures () {
   const [activeFilter, setActiveFilter] = useState('All');
   const [storedProgress, setStoredProgress] = useState(null);
   const LectureFilters = ['All', 'Done', 'Pending', 'Incomplete'];
-  const userId = '5c4ffb4f-420c-448c-8abe-7f9b319060a9';
+  const userId = useId();
 
   const insertInitialProgress = async () => {
     const { data, error } = await supabase

@@ -78,7 +78,7 @@ export default function DiscoverMore () {
     const searchAndPlayFirstVideo = async () => {
       const response = await youtube.get('/search', {
         params: {
-          q: 'fit',
+          q: 'fitness tips',
           type: 'video',
         },
       });
