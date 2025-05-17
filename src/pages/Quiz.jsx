@@ -2,11 +2,11 @@ import { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { QuizzesData } from '@/utilities/QuizAndActivities';
 import PageHeading from '@/components/PageHeading';
-import Timer from '@/components/subcomponents/Timer';
+import Timer from '@/components/quiz/Timer';
 import QuizBackground from '@/assets/images/quiz_bg.png';
 import { Input } from '@/components/ui/input';
 import { shuffleArray } from '@/utilities/utils';
-import CustomButton from '@/components/subcomponents/CustomButton';
+import CustomButton from '@/components/quiz/CustomButton';
 import { IdentificationRefContext } from '@/contexts/IdentificationRefContext';
 import QuizProvider from '@/providers/QuizProvider';
 
