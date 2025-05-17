@@ -7,7 +7,7 @@ export default function CustomButton({ className, onClick, ...props }) {
     <button
       className={`${className} cursor-pointer`}
       onClick={() => {
-        setIsDisabled(!isDisabled);
+        setIsDisabled(true);
         onClick();
       }}
       disabled={isDisabled || props.disabled}
