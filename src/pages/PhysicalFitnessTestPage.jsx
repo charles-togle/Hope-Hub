@@ -16,6 +16,7 @@ export function PhysicalFitnessTestPage () {
   const [isTimeout, setIsTimeout] = useState(false);
   const [isDataReady, setIsDataReady] = useState(false);
   const [isTaken, setIsTaken] = useState(false);
+  const [testType, setTestType] = useState('');
   const { physicalFitnessData, setPhysicalFitnessData } =
     usePhysicalFitnessData();
   const navigate = useNavigate();
@@ -30,60 +31,42 @@ export function PhysicalFitnessTestPage () {
         .select('pre_physical_fitness_test, post_physical_fitness_test')
         .eq('uuid', resolvedUserId)
         .single();
+      const preTestFinishedTests =
+        existing.pre_physical_fitness_test.finishedTestIndex;
+      const postTestFinishedTests =
+        existing.post_physical_fitness_test.finishedTestIndex;
+      const max =
+        preTestFinishedTests.length - 1 || postTestFinishedTests.length - 1;
       if (fetchError) {
         console.error('Fetch error:', fetchError.message);
         return;
       }
       if (
         existing &&
-        existing.pre_physical_fitness_test &&
-        existing.post_physical_fitness_test
+        preTestFinishedTests.includes(max) &&
+        postTestFinishedTests.includes(max)
       ) {
         setIsTaken(true);
+        return;
+      }
+      if (existing && !preTestFinishedTests.includes(max)) {
+        setTestType('pre_physical_fitness_test');
+        return;
+      }
+      if (existing && !postTestFinishedTests.includes(max)) {
+        setTestType('post_physical_fitness_test');
+        return;
       }
     };
     checkIfTestTaken();
   }, [userId]);
 
-  async function insertToDatabase (physicalFitnessData) {
-    const resolvedUserId = await Promise.resolve(userId);
-    const { data: existing, error: fetchError } = await supabase
-      .from('physical_fitness_test')
-      .select('pre_physical_fitness_test, post_physical_fitness_test')
-      .eq('uuid', resolvedUserId)
-      .single();
-    if (fetchError) {
-      console.error('Fetch error:', fetchError.message);
-      return;
-    }
-    // Only check for pre/post here for insert logic, not for isTaken
-    if (existing && existing.pre_physical_fitness_test) {
-      const { data, error } = await supabase
-        .from('physical_fitness_test')
-        .update({ post_physical_fitness_test: physicalFitnessData })
-        .eq('uuid', resolvedUserId);
-      if (error) {
-        console.error(
-          'Update post_physical_fitness_test error:',
-          error.message,
-        );
-      } else {
-        console.log('Updated post_physical_fitness_test:', data);
-      }
-    } else {
-      const { data, error } = await supabase
-        .from('physical_fitness_test')
-        .upsert({
-          uuid: resolvedUserId,
-          pre_physical_fitness_test: physicalFitnessData,
-        });
-      if (error) {
-        console.error('Upsert pre_physical_fitness_test error:', error.message);
-      } else {
-        console.log('Upserted pre_physical_fitness_test:', data);
-      }
-    }
-  }
+  //remove item from localStorage everytime it is unmounted
+  // useEffect(()=>{
+  //   return () => {
+  //     localStorage.removeItem('physicalFitnessdata')
+  //   }
+  // },[])
 
   useEffect(() => {
     const dataFromStorage = getDataFromStorage('physicalFitnessData');
@@ -98,10 +81,7 @@ export function PhysicalFitnessTestPage () {
         finishedTestIndex = dataFromStorage.finishedTestIndex;
         currentTestIndex = Number(testIndex);
         console.log(finishedTestIndex.length, currentTestIndex);
-      }
-      if (finishedTestIndex.length === currentTestIndex) {
-        insertToDatabase(dataFromStorage);
-        navigate('/physical-fitness-test/summary');
+        console.log(finishedTestIndex);
       }
       if (testIndex === 0) {
         setIsDataReady(true);
@@ -120,6 +100,18 @@ export function PhysicalFitnessTestPage () {
     }
   }, [setPhysicalFitnessData, testIndex, physicalFitnessData.length, navigate]);
 
+  useEffect(() => {
+    const finishedTestIndex = physicalFitnessData.finishedTestIndex || [];
+    if (finishedTestIndex.includes(finishedTestIndex.length - 1)) {
+      localStorage.removeItem('physicalFitnessData');
+      navigate(
+        `/physical-fitness-test/summary/${
+          testType === 'pre_physical_fitness_data' ? 'pre-test' : 'post-test'
+        }`,
+      );
+    }
+  }, [physicalFitnessData.finishedTestIndex, navigate]);
+
   const handleTimeoutConfirm = () => {
     if (testIndex === '0') {
       setIsTimeout(false);
@@ -134,7 +126,11 @@ export function PhysicalFitnessTestPage () {
   };
 
   if (isDataReady && isBadRequest) {
-    // return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
+    return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
+  }
+
+  if (isBadRequest) {
+    return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
   }
 
   if (isTimeout) {
@@ -169,6 +165,7 @@ export function PhysicalFitnessTestPage () {
             index={testIndex}
             setIsTimeout={setIsTimeout}
             setIsBadRequest={setIsBadRequest}
+            testType={testType}
           />
         </div>
       )}
