@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { AlertMessage } from '@/components/utilities/AlertMessage';
 import setDataToStorage from '@/utilities/setDataToStorage';
 
-export default function PhysicalActivityReadinessQuestionnaire() {
+export default function PhysicalActivityReadinessQuestionnaire () {
   const { physicalFitnessData, setPhysicalFitnessData } =
     usePhysicalFitnessData();
   const [areAllAnswersNo, setAreAllAnswersNo] = useState(false);
@@ -20,7 +20,7 @@ export default function PhysicalActivityReadinessQuestionnaire() {
 
   useEffect(() => {
     if (areAllAnswered && areAllAnswersNo && areAllUserDataFilled) {
-      setPhysicalFitnessData((prev) => ({
+      setPhysicalFitnessData(prev => ({
         ...prev,
         isPARQFinished: false,
       }));
@@ -44,8 +44,8 @@ export default function PhysicalActivityReadinessQuestionnaire() {
   const handleAnswerChange = (index, value) => {
     const currentAnswers = [...answers];
     currentAnswers[index] = value;
-    const allNo = currentAnswers.every((answer) => answer === 'No');
-    const allAnswered = currentAnswers.every((answer) => answer !== null);
+    const allNo = currentAnswers.every(answer => answer === 'No');
+    const allAnswered = currentAnswers.every(answer => answer !== null);
     setAnswers(currentAnswers);
     setAreAllAnswersNo(allNo);
     setAreAllAnswered(allAnswered);
@@ -87,7 +87,7 @@ export default function PhysicalActivityReadinessQuestionnaire() {
     }
   };
 
-  const isNullOrWhiteSpace = (input) => {
+  const isNullOrWhiteSpace = input => {
     return !input || input.trim().length === 0;
   };
 
@@ -98,21 +98,21 @@ export default function PhysicalActivityReadinessQuestionnaire() {
     } else {
       setIsEmailValid(true);
     }
-    setPhysicalFitnessData((prev) => ({
+    setPhysicalFitnessData(prev => ({
       ...prev,
       [keyName]: value,
     }));
     setAreAllUserDataFilled(() =>
       ['name', 'gender', 'email', 'category'].every(
-        (key) => physicalFitnessData[key] !== !isNullOrWhiteSpace,
+        key => physicalFitnessData[key] !== !isNullOrWhiteSpace,
       ),
     );
   };
 
   return (
     <div
-      id="physical-fitness-test-parq"
-      className="w-full min-h-screen max-h-fit"
+      id='physical-fitness-test-parq'
+      className='w-full min-h-screen max-h-fit'
     >
       {isError && (
         <AlertMessage
@@ -121,26 +121,26 @@ export default function PhysicalActivityReadinessQuestionnaire() {
           onCancel={() => setIsError(false)}
         ></AlertMessage>
       )}
-      <PageHeading text="Physical Fitness Test"></PageHeading>
+      <PageHeading text='Physical Fitness Test'></PageHeading>
       <div
-        id="physical-fitness-test-parq-container"
-        className="content-container"
+        id='physical-fitness-test-parq-container'
+        className='content-container'
       >
         <h2
-          id="heading"
-          className="font-heading text-2xl text-center w-full lg:text-4xl lg:self-start! lg:text-left"
+          id='heading'
+          className='font-heading text-2xl text-center w-full lg:text-4xl lg:self-start! lg:text-left'
         >
           Physical Activity Readiness Questionnaire (PAR-Q)
         </h2>
-        <hr className="border-1 border-primary-yellow yellow w-[50%] self-start mt-2 lg:w-[20%] " />
+        <hr className='border-1 border-primary-yellow yellow w-[50%] self-start mt-2 lg:w-[20%] ' />
         <div
-          id="physical-fitness-test-parq-content"
-          className="apply-drop-shadow w-full flex flex-col justify-center items-center mt-5 font-content text-lg space-y-5 lg:mt-10"
+          id='physical-fitness-test-parq-content'
+          className='apply-drop-shadow w-full flex flex-col justify-center items-center mt-5 font-content text-lg space-y-5 lg:mt-10'
         >
-          <div id="instructions" className="w-[95%]">
+          <div id='instructions' className='w-[95%]'>
             <p>Directions</p>
-            <hr className="mb-7" />
-            <ol className="list-decimal ml-7 text-sm lg:text-base">
+            <hr className='mb-7' />
+            <ol className='list-decimal ml-7 text-sm lg:text-base'>
               <li>
                 Take the Physical Activity Readiness Questionnaire (PAR-Q).
               </li>
@@ -157,34 +157,32 @@ export default function PhysicalActivityReadinessQuestionnaire() {
             </ol>
           </div>
           <div
-            id="information"
-            className="w-[95%] min-h-10 flex flex-col space-y-2 text-sm lg:text-base"
+            id='information'
+            className='w-[95%] min-h-10 flex flex-col space-y-2 text-sm lg:text-base'
           >
             <label>
               <p>
                 Full Name:
-                <span className="text-accent-gray">
+                <span className='text-accent-gray'>
                   {' '}
                   (Surname, First Name, M.I. ex. Dela Cruz, Juan A.)
                 </span>
               </p>
               <input
-                type="text"
-                onChange={(e) =>
-                  handleInformationChange('name', e.target.value)
-                }
+                type='text'
+                onChange={e => handleInformationChange('name', e.target.value)}
                 defaultValue={physicalFitnessData?.name}
-                className="border-1 border-[#8B8989] w-full font-content px-1 rounded-sm mt-0.5"
+                className='border-1 border-[#8B8989] w-full font-content px-1 rounded-sm mt-0.5'
               />
             </label>
-            <div className="flex flex-row space-x-5">
+            <div className='flex flex-row space-x-5'>
               <p>Gender</p>
               <label>
                 <input
-                  type="radio"
-                  name="gender"
-                  value="Male"
-                  onChange={(e) =>
+                  type='radio'
+                  name='gender'
+                  value='Male'
+                  onChange={e =>
                     handleInformationChange('gender', e.target.value)
                   }
                 />
@@ -192,10 +190,10 @@ export default function PhysicalActivityReadinessQuestionnaire() {
               </label>
               <label>
                 <input
-                  type="radio"
-                  name="gender"
-                  value="Female"
-                  onChange={(e) =>
+                  type='radio'
+                  name='gender'
+                  value='Female'
+                  onChange={e =>
                     handleInformationChange('gender', e.target.value)
                   }
                 />
@@ -205,62 +203,60 @@ export default function PhysicalActivityReadinessQuestionnaire() {
             <label>
               <p>
                 Email:{' '}
-                <span className="text-accent-gray">
+                <span className='text-accent-gray'>
                   {' '}
                   (ex. juan_delacruz@email.com)
                 </span>
               </p>
               <input
-                type="email"
+                type='email'
                 defaultValue={physicalFitnessData?.email}
-                onChange={(e) =>
-                  handleInformationChange('email', e.target.value)
-                }
-                className="border-1 border-[#8B8989] w-full font-content px-1 rounded-sm mt-0.5 not-valid:border-red"
+                onChange={e => handleInformationChange('email', e.target.value)}
+                className='border-1 border-[#8B8989] w-full font-content px-1 rounded-sm mt-0.5 not-valid:border-red'
               />
             </label>
             <label>
               <p>Age:</p>
               <select
                 defaultValue={physicalFitnessData?.email}
-                onChange={(e) =>
+                onChange={e =>
                   handleInformationChange('category', e.target.value)
                 }
-                className="border-1 border-[#8B8989]! w-full font-content px-1 rounded-sm mt-0.5"
+                className='border-1 border-[#8B8989]! w-full font-content px-1 rounded-sm mt-0.5'
               >
                 <option disabled> --Select one option--</option>
-                <option value="elementary-boy">
+                <option value='elementaryBoys'>
                   Boy (Elementary 5-12 yrs old)
                 </option>
-                <option value="elementary-girl">
+                <option value='elementaryGirls'>
                   Girl (Elementary 5-12 yrs old)
                 </option>
-                <option value="secondary-boy">
+                <option value='secondaryBots'>
                   Boy (High School 13-18 yrs old)
                 </option>
-                <option value="secondary-girl">
+                <option value='secondaryGirls'>
                   Girl (High School 13-18 yrs old)
                 </option>
               </select>
             </label>
           </div>
-          <div id="questions" className="w-[95%] min-h-10 text-sm lg:text-base">
-            <p className="text-base">
+          <div id='questions' className='w-[95%] min-h-10 text-sm lg:text-base'>
+            <p className='text-base'>
               PHYSICAL ACTIVITY READINESS QUESTIONNAIRE (PAR-Q)
             </p>
-            <hr className="mb-7" />
-            <ol className="list-decimal ml-7">
+            <hr className='mb-7' />
+            <ol className='list-decimal ml-7'>
               {questions.map((question, index) => (
-                <li key={index} className="mb-4">
+                <li key={index} className='mb-4'>
                   {question}
-                  <div className="flex flex-col mt-2">
-                    <label className="mb-2 lg:mb-0">
+                  <div className='flex flex-col mt-2'>
+                    <label className='mb-2 lg:mb-0'>
                       <input
-                        type="radio"
+                        type='radio'
                         name={`radioQuestion${index}`}
                         value={'Yes'}
-                        className="mr-2"
-                        onChange={(e) =>
+                        className='mr-2'
+                        onChange={e =>
                           handleAnswerChange(index, e.target.value)
                         }
                       />
@@ -268,11 +264,11 @@ export default function PhysicalActivityReadinessQuestionnaire() {
                     </label>
                     <label>
                       <input
-                        type="radio"
+                        type='radio'
                         name={`radioQuestion${index}`}
                         value={'No'}
-                        className="mr-2"
-                        onChange={(e) =>
+                        className='mr-2'
+                        onChange={e =>
                           handleAnswerChange(index, e.target.value)
                         }
                       />
@@ -284,11 +280,11 @@ export default function PhysicalActivityReadinessQuestionnaire() {
             </ol>
           </div>
           <div
-            id="button-container"
-            className="w-[95%] drop-shadow-none! border-0! flex justify-end p-0! mb-5"
+            id='button-container'
+            className='w-[95%] drop-shadow-none! border-0! flex justify-end p-0! mb-5'
           >
             <button
-              className="px-10 py-3 bg-secondary-dark-blue text-white hover:brightness-70"
+              className='px-10 py-3 bg-secondary-dark-blue text-white hover:brightness-70'
               onClick={() => handleSubmit()}
             >
               Submit

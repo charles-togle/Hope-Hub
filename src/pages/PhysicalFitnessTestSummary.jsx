@@ -3,6 +3,7 @@ import ErrorMessage from '@/components/utilities/ErrorMessage';
 import { Fragment, useEffect, useState } from 'react';
 import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useId';
+import { useParams } from 'react-router-dom';
 
 const TableColumn = ({ columnContent }) => (
   <tr>
@@ -178,9 +179,40 @@ async function getPhysicalFitnessData (userId, column) {
 }
 
 export function PhysicalFitnessTestSummary () {
+  const { testType } = useParams();
   const [isDataReady, setIsDataReady] = useState(false);
   const [dataResults, setDataResults] = useState([]);
+  const [isBadRequest, setIsBadRequest] = useState(false);
   const userId = useUserId();
+
+  let columnName = '';
+  if (testType === 'pre-test') {
+    columnName = 'pre_physical_fitness_test';
+  } else if (testType === 'post-test') {
+    columnName = 'post_physical_fitness_test';
+  } else {
+    columnName = 'pre_physical_fitness_test';
+  }
+
+  useEffect(() => {
+    async function checkConstraints () {
+      const resolvedUserId = await Promise.resolve(userId);
+      const { data: existing, error: fetchError } = await supabase
+        .from('physical_fitness_test')
+        .select(columnName)
+        .eq('uuid', resolvedUserId)
+        .single();
+      console.log(existing);
+      const finishedTests = existing[columnName].finishedTestIndex;
+      const max = existing[columnName].finishedTestIndex.length - 1;
+      if (existing && !finishedTests.includes(max)) {
+        setIsBadRequest(true);
+      } else if (fetchError) {
+        setIsBadRequest(true);
+      }
+    }
+    checkConstraints();
+  });
 
   useEffect(() => {
     if (isDataReady) {
@@ -190,10 +222,7 @@ export function PhysicalFitnessTestSummary () {
     async function getDataFromDatabase () {
       //handle pre test or post test
       const resolvedUserId = await Promise.resolve(userId);
-      const data = await getPhysicalFitnessData(
-        resolvedUserId,
-        'pre_physical_fitness_test',
-      );
+      const data = await getPhysicalFitnessData(resolvedUserId, columnName);
       if (data) {
         setDataResults(getSummary(data));
         setIsDataReady(true);
@@ -202,6 +231,10 @@ export function PhysicalFitnessTestSummary () {
 
     getDataFromDatabase();
   }, [isDataReady]);
+
+  if (isBadRequest) {
+    return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
+  }
 
   if (!isDataReady) {
     return (

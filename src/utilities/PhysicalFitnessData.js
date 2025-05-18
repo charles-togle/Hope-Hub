@@ -7,5 +7,5 @@ export const PhysicalFitnessData = {
   email: '',
   category: '',
   isPARQFinished: false,
-  finishedTestIndex: numberOfTests,
+  finishedTestIndex: Array.from({ length: numberOfTests }, () => -1),
 };
