@@ -5,14 +5,20 @@ import Container from '@/components/dashboard/Container';
 import { LogOut } from 'lucide-react';
 import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useId';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function StudentDashboard () {
   const [preTestFinished, setPreTestFinished] = useState(false);
   const [postTestFinished, setPostTestFinished] = useState(false);
+  const [profilePictureFile, setProfilePictureFile] = useState(null);
   const userID = useUserId();
   const navigate = useNavigate();
+  const memoizedFile = useMemo(
+    () => profilePictureFile,
+    [profilePictureFile?.name, profilePictureFile?.size],
+  );
+
   let sampleProgress = {
     completed: 7,
     incomplete: 10,
@@ -45,6 +51,28 @@ export default function StudentDashboard () {
     isPostTestFinished().then(setPostTestFinished);
   }, []);
 
+  useEffect(() => {
+    async function retrieveProfile () {
+      const resolvedUserId = await Promise.resolve(userID);
+      if (!resolvedUserId) {
+        setProfilePictureFile(null);
+        return;
+      }
+      const filePath = `${resolvedUserId}/profilePicture`;
+      const { data, error } = await supabase.storage
+        .from('profile-pictures')
+        .download(filePath);
+      if (error) {
+        setProfilePictureFile(null);
+        return;
+      }
+      if (data) {
+        setProfilePictureFile(data);
+      }
+    }
+    retrieveProfile();
+  }, [userID]);
+
   const isPreTestFinished = async () => {
     return await checkIfFinished('pre_physical_fitness_test');
   };
@@ -61,6 +89,28 @@ export default function StudentDashboard () {
   const handlePreTestClick = () => {
     if (preTestFinished) {
       navigate('/physical-fitness-test/summary/pre-test');
+    }
+  };
+
+  const onProfileChange = async (file, fileName = 'profilePicture') => {
+    const resolvedUserId = await Promise.resolve(userID);
+    const bucketName = 'profile-pictures';
+    const folderName = resolvedUserId;
+    const filePath = `${folderName}/${fileName}`;
+    const supabaseClient = supabase;
+
+    // Delete existing file first
+    await supabaseClient.storage.from(bucketName).remove([filePath]);
+
+    // Then upload new one
+    const { data, error } = await supabaseClient.storage
+      .from(bucketName)
+      .upload(filePath, file, { contentType: file.type, upsert: true });
+
+    if (error) {
+      console.error('Profile picture upload error:', error.message);
+    } else {
+      console.log('Profile picture uploaded:', data);
     }
   };
 
@@ -90,14 +140,14 @@ export default function StudentDashboard () {
             className='w-full text-center grid grid-cols-2 gap-5'
           >
             <button
-              className='p-7 bg-neutral-dark-blue text-white font-content rounded-md hover:brightness-90 cursor-pointer disabled:brightness-80'
+              className='p-7 bg-neutral-dark-blue text-white font-content rounded-md hover:brightness-90 cursor-pointer disabled:brightness-80 disabled:cursor-not-allowed'
               disabled={!preTestFinished}
               onClick={() => handlePreTestClick()}
             >
               VIEW PFT - PRE TEST RECORD
             </button>
             <button
-              className='p-7 bg-neutral-dark-blue text-white font-content rounded-md hover:brightness-90 cursor-pointer disabled:brightness-80 d'
+              className='p-7 bg-neutral-dark-blue text-white font-content rounded-md hover:brightness-90 cursor-pointer disabled:brightness-80 disabled:cursor-not-allowed'
               disabled={!postTestFinished}
               onClick={() => handlePostTestClick()}
             >
@@ -110,7 +160,10 @@ export default function StudentDashboard () {
           className='sticky w-full h-full top-0 bg-white max-h-[80vh] flex flex-col items-center justify-start'
         >
           <Container className='h-full mt-0! flex flex-col items-center pt-5 space-y-5 relative'>
-            <ProfilePicture />
+            <ProfilePicture
+              onProfileChange={onProfileChange}
+              initialFile={memoizedFile}
+            />
             <div
               id='profile-details'
               className='w-full flex flex-col items-center space-y-2'

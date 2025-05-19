@@ -1,7 +1,11 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { UserCircle, Pencil } from 'lucide-react';
 
-export default function ProfilePicture ({ initialImage }) {
+export default function ProfilePicture ({
+  initialImage,
+  initialFile,
+  onProfileChange,
+}) {
   const [image, setImage] = useState(initialImage || null);
   const inputRef = useRef();
 
@@ -9,12 +13,30 @@ export default function ProfilePicture ({ initialImage }) {
     inputRef.current.click();
   };
 
+  useEffect(() => {
+    if (initialFile instanceof Blob) {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        setImage(ev.target.result);
+      };
+      reader.readAsDataURL(initialFile);
+    } else if (typeof initialImage === 'string' && initialImage.length > 0) {
+      setImage(initialImage);
+    } else {
+      setImage(null);
+    }
+  }, [initialFile, initialImage]);
+
   const handleImageChange = e => {
+    console.log(e.target.files[0]);
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = ev => {
         setImage(ev.target.result);
+        if (onProfileChange) {
+          onProfileChange(file, 'profilePicture');
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -40,7 +62,7 @@ export default function ProfilePicture ({ initialImage }) {
           type='file'
           accept='image/*'
           ref={inputRef}
-          onChange={handleImageChange}
+          onChange={e => handleImageChange(e)}
           className='hidden'
         />
         {/* Pen icon overlay on hover */}
