@@ -252,6 +252,9 @@ export function PhysicalFitnessTestSummary () {
     <section id='physical-fitness-test-summary' className='parent-container'>
       <PageHeading text={'Physical Fitness Test'}></PageHeading>
       <div id='summary-content' className='content-container'>
+        <h1 className='w-full text-left text-4xl font-heading -ml-20 mb-5 font-medium text-primary-blue'>
+          {testType === 'pre-test' ? 'Pre Test' : 'Post Test'} Record
+        </h1>
         <div className='w-full flex flex-col space-y-5 mb-10'>
           {dataResults.map((summary, index) => (
             <Fragment key={`${summary.title} ${index}`}>
