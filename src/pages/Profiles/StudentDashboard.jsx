@@ -12,6 +12,13 @@ export default function StudentDashboard () {
   const [preTestFinished, setPreTestFinished] = useState(false);
   const [postTestFinished, setPostTestFinished] = useState(false);
   const [profilePictureFile, setProfilePictureFile] = useState(null);
+  const [lectureProgress, setLectureProgress] = useState({
+    completed: 0,
+    incomplete: 0,
+    pending: 0,
+    total: 10,
+  });
+
   const userID = useUserId();
   const navigate = useNavigate();
   const memoizedFile = useMemo(
@@ -28,6 +35,42 @@ export default function StudentDashboard () {
     ...sampleProgress,
     total: Object.values(sampleProgress).reduce((acc, value) => acc + value, 0),
   };
+
+  const getLectureProgress = async () => {
+    const resolvedUserId = await Promise.resolve(userID);
+    const { data, error } = await supabase
+      .from('lecture_progress')
+      .select('lecture_progress')
+      .eq('uuid', resolvedUserId)
+      .single();
+
+    if (error) {
+      console.error('error fetching lecture progress: ', error.message);
+      return;
+    }
+
+    const lectures = data.lecture_progress || [];
+    let completed = 0;
+    let incomplete = 0;
+    let pending = 0;
+
+    lectures.forEach(item => {
+      if (item.status === 'Done') completed += 1;
+      else if (item.status === 'Incomplete') incomplete += 1;
+      else if (item.status === 'Pending') pending += 1;
+    });
+
+    setLectureProgress({
+      completed,
+      incomplete,
+      pending,
+      total: lectures.length,
+    });
+  };
+
+  useEffect(() => {
+    getLectureProgress();
+  }, [userID]);
 
   const checkIfFinished = async column => {
     const resolvedUserId = await Promise.resolve(userID);
@@ -71,7 +114,7 @@ export default function StudentDashboard () {
       }
     }
     retrieveProfile();
-  }, [userID]);
+  }, []);
 
   const isPreTestFinished = async () => {
     return await checkIfFinished('pre_physical_fitness_test');
@@ -126,7 +169,7 @@ export default function StudentDashboard () {
           <Banner name={studentName}></Banner>
           <div id='statistics' className='grid grid-cols-2 gap-5'>
             <div id='lectures'>
-              <Statistics progress={sampleProgress} type='Lectures' />
+              <Statistics progress={lectureProgress} type='Lectures' />
             </div>
             <div id='quizzes'>
               <Statistics progress={sampleProgress} type='Quizzes' />
