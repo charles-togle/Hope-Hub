@@ -37,6 +37,13 @@ export default function StudentDashboard () {
     total: Object.values(sampleProgress).reduce((acc, value) => acc + value, 0),
   };
 
+  useEffect(() => {
+    if (userID === undefined) return;
+    if (userID === null) {
+      navigate('/auth/login');
+    }
+  }, [userID]);
+
   const getLectureProgress = async () => {
     const resolvedUserId = await Promise.resolve(userID);
     if (resolvedUserId === null) return;
@@ -205,6 +212,10 @@ export default function StudentDashboard () {
       </div>
     );
   }
+
+  const handleLogout = async () => {
+    supabase.auth.signOut().then(navigate('/auth/login'));
+  };
   return (
     <section className='StudentDashboard parent-container'>
       <div className='content-container grid! grid-cols-[75%_25%] w-[93%]! gap-x-10 pt-10! relative'>
@@ -266,7 +277,10 @@ export default function StudentDashboard () {
                 Student
               </p>
             </div>
-            <button className='font-bold text-red text-xl absolute bottom-1 mb-10 flex items-center gap-2 hover:brightness-75'>
+            <button
+              className='font-bold text-red text-xl absolute bottom-1 mb-10 flex items-center gap-2 hover:brightness-75'
+              onClick={() => handleLogout()}
+            >
               <LogOut className='w-6 h-6' /> Logout
             </button>
           </Container>
