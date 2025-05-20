@@ -2,7 +2,7 @@ import PageHeading from '@/components/PageHeading';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
 import { Fragment, useEffect, useState } from 'react';
 import supabase from '@/client/supabase';
-import { useUserId } from '@/hooks/useId';
+import { useUserId } from '@/hooks/useUserId';
 import { useParams } from 'react-router-dom';
 
 export function PhysicalFitnessTestSummary () {

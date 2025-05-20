@@ -10,7 +10,7 @@ import { Timer } from '@/components/utilities/Timer';
 import { ResultSection } from './physical-fitness-test/ResultSection';
 import { TipsAndInterpretation } from './physical-fitness-test/TipsAndInterperetation';
 import supabase from '@/client/supabase';
-import { useUserId } from '@/hooks/useId';
+import { useUserId } from '@/hooks/useUserId';
 
 const InstructionsGroup = ({ text, array, id }) => (
   <div id={id}>

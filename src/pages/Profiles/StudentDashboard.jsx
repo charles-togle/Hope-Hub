@@ -4,7 +4,7 @@ import ProfilePicture from '@/components/dashboard/ProfilePicture';
 import Container from '@/components/dashboard/Container';
 import { LogOut } from 'lucide-react';
 import supabase from '@/client/supabase';
-import { useUserId } from '@/hooks/useId';
+import { useUserId } from '@/hooks/useUserId';
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ export default function StudentDashboard () {
     pending: 0,
     total: 10,
   });
+  const [isDataReady, setIsDataReady] = useState(false);
 
   const userID = useUserId();
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ export default function StudentDashboard () {
 
   const getLectureProgress = async () => {
     const resolvedUserId = await Promise.resolve(userID);
+    if (resolvedUserId === null) return;
     const { data, error } = await supabase
       .from('lecture_progress')
       .select('lecture_progress')
@@ -46,6 +48,7 @@ export default function StudentDashboard () {
 
     if (error) {
       console.error('error fetching lecture progress: ', error.message);
+      setIsDataReady(true);
       return;
     }
 
@@ -66,20 +69,82 @@ export default function StudentDashboard () {
       pending,
       total: lectures.length,
     });
+    setIsDataReady(true);
   };
 
   useEffect(() => {
+    if (isDataReady) return;
     getLectureProgress();
-  }, [userID]);
+  }, [userID, isDataReady]);
+
+  useEffect(() => {
+    if (!isDataReady) return;
+    isPreTestFinished().then(setPreTestFinished);
+    isPostTestFinished().then(setPostTestFinished);
+  }, [isDataReady]);
+
+  useEffect(() => {
+    if (!isDataReady) return;
+
+    async function retrieveProfile () {
+      try {
+        const resolvedUserId = await Promise.resolve(userID);
+        if (!resolvedUserId || typeof resolvedUserId !== 'string') {
+          setProfilePictureFile(null);
+          return;
+        }
+
+        const folder = resolvedUserId;
+        const fileName = 'profilePicture';
+        const { data: files, error: listError } = await supabase.storage
+          .from('profile-pictures')
+          .list(folder);
+
+        if (listError) {
+          console.error('Error listing files:', listError.message);
+          setProfilePictureFile(null);
+          return;
+        }
+
+        const fileExists = files?.some(file => file.name === fileName);
+
+        if (!fileExists) {
+          setProfilePictureFile(null);
+          return;
+        }
+
+        const filePath = `${folder}/${fileName}`;
+        const { data, error } = await supabase.storage
+          .from('profile-pictures')
+          .download(filePath);
+
+        if (error || !data) {
+          setProfilePictureFile(null);
+          return;
+        }
+        setProfilePictureFile(data);
+      } catch (err) {
+        console.error('Unexpected error while retrieving profile:', err);
+        setProfilePictureFile(null);
+      }
+    }
+
+    retrieveProfile();
+  }, [isDataReady]);
 
   const checkIfFinished = async column => {
     const resolvedUserId = await Promise.resolve(userID);
+    if (resolvedUserId === null) return;
     const { data: existing, error: fetchError } = await supabase
       .from('physical_fitness_test')
       .select(column)
       .eq('uuid', resolvedUserId)
       .single();
 
+    if (fetchError) {
+      console.error('error fetching data', fetchError.message);
+      return;
+    }
     if (existing[column] && existing[column].finishedTestIndex) {
       const { finishedTestIndex } = existing[column];
       return (
@@ -88,33 +153,6 @@ export default function StudentDashboard () {
       );
     }
   };
-
-  useEffect(() => {
-    isPreTestFinished().then(setPreTestFinished);
-    isPostTestFinished().then(setPostTestFinished);
-  }, []);
-
-  useEffect(() => {
-    async function retrieveProfile () {
-      const resolvedUserId = await Promise.resolve(userID);
-      if (!resolvedUserId) {
-        setProfilePictureFile(null);
-        return;
-      }
-      const filePath = `${resolvedUserId}/profilePicture`;
-      const { data, error } = await supabase.storage
-        .from('profile-pictures')
-        .download(filePath);
-      if (error) {
-        setProfilePictureFile(null);
-        return;
-      }
-      if (data) {
-        setProfilePictureFile(data);
-      }
-    }
-    retrieveProfile();
-  }, []);
 
   const isPreTestFinished = async () => {
     return await checkIfFinished('pre_physical_fitness_test');
@@ -158,6 +196,15 @@ export default function StudentDashboard () {
   };
 
   const studentName = 'Charles Nathaniel Togle';
+  if (!isDataReady) {
+    return (
+      <div className='w-full flex items-center justify-center h-screen'>
+        <div className='font-content font-medium text-xl text-center w-full'>
+          Loading...
+        </div>
+      </div>
+    );
+  }
   return (
     <section className='StudentDashboard parent-container'>
       <div className='content-container grid! grid-cols-[75%_25%] w-[93%]! gap-x-10 pt-10! relative'>
