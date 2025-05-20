@@ -5,6 +5,113 @@ import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useId';
 import { useParams } from 'react-router-dom';
 
+export function PhysicalFitnessTestSummary () {
+  const { testType } = useParams();
+  const [isDataReady, setIsDataReady] = useState(false);
+  const [dataResults, setDataResults] = useState([]);
+  const [isBadRequest, setIsBadRequest] = useState(false);
+  const userId = useUserId();
+
+  let columnName = '';
+  if (testType === 'pre-test') {
+    columnName = 'pre_physical_fitness_test';
+  } else if (testType === 'post-test') {
+    columnName = 'post_physical_fitness_test';
+  } else {
+    columnName = 'pre_physical_fitness_test';
+  }
+
+  useEffect(() => {
+    async function checkConstraints () {
+      const resolvedUserId = await Promise.resolve(userId);
+      const { data: existing, error: fetchError } = await supabase
+        .from('physical_fitness_test')
+        .select(columnName)
+        .eq('uuid', resolvedUserId)
+        .single();
+      console.log(existing);
+      const finishedTests = existing[columnName].finishedTestIndex;
+      const max = existing[columnName].finishedTestIndex.length - 1;
+      if (existing && !finishedTests.includes(max)) {
+        setIsBadRequest(true);
+      } else if (fetchError) {
+        setIsBadRequest(true);
+      }
+    }
+    checkConstraints();
+  });
+
+  useEffect(() => {
+    if (isDataReady) {
+      return;
+    }
+
+    async function getDataFromDatabase () {
+      //handle pre test or post test
+      const resolvedUserId = await Promise.resolve(userId);
+      const data = await getPhysicalFitnessData(resolvedUserId, columnName);
+      if (data) {
+        setDataResults(getSummary(data));
+        setIsDataReady(true);
+      }
+    }
+
+    getDataFromDatabase();
+  }, [isDataReady]);
+
+  if (isBadRequest) {
+    return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
+  }
+
+  if (!isDataReady) {
+    return (
+      <div className='w-full flex justify-center items-center h-screen font-content text-2xl'>
+        Loading..
+      </div>
+    );
+  }
+
+  if (!dataResults) {
+    return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
+  }
+
+  return (
+    <section id='physical-fitness-test-summary' className='parent-container'>
+      <PageHeading text={'Physical Fitness Test'}></PageHeading>
+      <div id='summary-content' className='content-container'>
+        <h1 className='w-full text-left text-4xl font-heading -ml-20 mb-5 font-medium text-primary-blue'>
+          {testType === 'pre-test' ? 'Pre Test' : 'Post Test'} Record
+        </h1>
+        <div className='w-full flex flex-col space-y-5 mb-10'>
+          {dataResults.map((summary, index) => (
+            <Fragment key={`${summary.title} ${index}`}>
+              {(() => {
+                const sectionHeadings = {
+                  0: 'A. Cardiovascular Endurance',
+                  1: 'B. Strength',
+                  3: 'C. Flexibility',
+                };
+                const heading = sectionHeadings[index];
+                return (
+                  heading && (
+                    <Fragment>
+                      <h1 className='text-3xl font-heading -ml-5 mb-0 font-medium'>
+                        {heading}
+                      </h1>
+                      <hr className='w-1/3 border-1 border-primary-yellow mb-4 -ml-5' />
+                    </Fragment>
+                  )
+                );
+              })()}
+              <TableSummary summary={summary} />
+            </Fragment>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 const TableColumn = ({ columnContent }) => (
   <tr>
     {columnContent.map((content, index) => (
@@ -176,111 +283,4 @@ async function getPhysicalFitnessData (userId, column) {
   } else {
     return error;
   }
-}
-
-export function PhysicalFitnessTestSummary () {
-  const { testType } = useParams();
-  const [isDataReady, setIsDataReady] = useState(false);
-  const [dataResults, setDataResults] = useState([]);
-  const [isBadRequest, setIsBadRequest] = useState(false);
-  const userId = useUserId();
-
-  let columnName = '';
-  if (testType === 'pre-test') {
-    columnName = 'pre_physical_fitness_test';
-  } else if (testType === 'post-test') {
-    columnName = 'post_physical_fitness_test';
-  } else {
-    columnName = 'pre_physical_fitness_test';
-  }
-
-  useEffect(() => {
-    async function checkConstraints () {
-      const resolvedUserId = await Promise.resolve(userId);
-      const { data: existing, error: fetchError } = await supabase
-        .from('physical_fitness_test')
-        .select(columnName)
-        .eq('uuid', resolvedUserId)
-        .single();
-      console.log(existing);
-      const finishedTests = existing[columnName].finishedTestIndex;
-      const max = existing[columnName].finishedTestIndex.length - 1;
-      if (existing && !finishedTests.includes(max)) {
-        setIsBadRequest(true);
-      } else if (fetchError) {
-        setIsBadRequest(true);
-      }
-    }
-    checkConstraints();
-  });
-
-  useEffect(() => {
-    if (isDataReady) {
-      return;
-    }
-
-    async function getDataFromDatabase () {
-      //handle pre test or post test
-      const resolvedUserId = await Promise.resolve(userId);
-      const data = await getPhysicalFitnessData(resolvedUserId, columnName);
-      if (data) {
-        setDataResults(getSummary(data));
-        setIsDataReady(true);
-      }
-    }
-
-    getDataFromDatabase();
-  }, [isDataReady]);
-
-  if (isBadRequest) {
-    return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
-  }
-
-  if (!isDataReady) {
-    return (
-      <div className='w-full flex justify-center items-center h-screen font-content text-2xl'>
-        Loading..
-      </div>
-    );
-  }
-
-  if (!dataResults) {
-    return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
-  }
-
-  return (
-    <section id='physical-fitness-test-summary' className='parent-container'>
-      <PageHeading text={'Physical Fitness Test'}></PageHeading>
-      <div id='summary-content' className='content-container'>
-        <h1 className='w-full text-left text-4xl font-heading -ml-20 mb-5 font-medium text-primary-blue'>
-          {testType === 'pre-test' ? 'Pre Test' : 'Post Test'} Record
-        </h1>
-        <div className='w-full flex flex-col space-y-5 mb-10'>
-          {dataResults.map((summary, index) => (
-            <Fragment key={`${summary.title} ${index}`}>
-              {(() => {
-                const sectionHeadings = {
-                  0: 'A. Cardiovascular Endurance',
-                  1: 'B. Strength',
-                  3: 'C. Flexibility',
-                };
-                const heading = sectionHeadings[index];
-                return (
-                  heading && (
-                    <Fragment>
-                      <h1 className='text-3xl font-heading -ml-5 mb-0 font-medium'>
-                        {heading}
-                      </h1>
-                      <hr className='w-1/3 border-1 border-primary-yellow mb-4 -ml-5' />
-                    </Fragment>
-                  )
-                );
-              })()}
-              <TableSummary summary={summary} />
-            </Fragment>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
 }
