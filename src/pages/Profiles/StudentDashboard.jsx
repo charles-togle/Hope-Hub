@@ -14,7 +14,7 @@ export default function StudentDashboard () {
   const [profilePictureFile, setProfilePictureFile] = useState(null);
   const [lectureProgress, setLectureProgress] = useState({
     completed: 0,
-    incomplete: 10,
+    incomplete: 0,
     pending: 0,
     total: 10,
   });
@@ -45,6 +45,7 @@ export default function StudentDashboard () {
       .single();
 
     if (error) {
+      console.error('error fetching lecture progress: ', error.message);
       return;
     }
 
@@ -56,7 +57,7 @@ export default function StudentDashboard () {
     lectures.forEach(item => {
       if (item.status === 'Done') completed += 1;
       else if (item.status === 'Incomplete') incomplete += 1;
-      else if (item.status === 'Pending') pending += 1; // If you have a "Pending" status, otherwise this will count all others as pending
+      else if (item.status === 'Pending') pending += 1;
     });
 
     setLectureProgress({
@@ -69,7 +70,7 @@ export default function StudentDashboard () {
 
   useEffect(() => {
     getLectureProgress();
-  }, []);
+  }, [userID]);
 
   const checkIfFinished = async column => {
     const resolvedUserId = await Promise.resolve(userID);
