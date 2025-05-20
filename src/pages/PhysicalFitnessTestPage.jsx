@@ -8,7 +8,7 @@ import ErrorMessage from '@/components/utilities/ErrorMessage';
 import { usePhysicalFitnessData } from '@/hooks/usePhysicalFitnessData';
 import getDataFromStorage from '@/utilities/getDataFromStorage';
 import supabase from '@/client/supabase';
-import { useUserId } from '@/hooks/useId';
+import { useUserId } from '@/hooks/useUserId';
 
 export function PhysicalFitnessTestPage () {
   const { testIndex } = useParams();
