@@ -2,7 +2,8 @@ import { RadialBarChart, RadialBar, PolarAngleAxis } from 'recharts';
 import Container from './Container';
 
 export default function Statistics ({ progress, type }) {
-  const percentage = Math.round((progress.completed / progress.total) * 100);
+  let percentage = Math.round((progress.completed / progress.total) * 100);
+  if (isNaN(percentage)) percentage = 0;
   const chartData = [{ name: 'Progress', value: percentage, fill: 'green' }];
 
   return (

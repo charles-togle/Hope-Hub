@@ -26,17 +26,24 @@ export function PhysicalFitnessTestPage () {
     // Check if both pre and post physical fitness test already exist for this user
     const checkIfTestTaken = async () => {
       const resolvedUserId = await Promise.resolve(userId);
+      if (!resolvedUserId) {
+        setIsBadRequest(true);
+        setIsDataReady(true);
+        return;
+      }
       const { data: existing, error: fetchError } = await supabase
         .from('physical_fitness_test')
         .select('pre_physical_fitness_test, post_physical_fitness_test')
         .eq('uuid', resolvedUserId)
         .single();
+
       const preTestFinishedTests =
         existing.pre_physical_fitness_test.finishedTestIndex;
       const postTestFinishedTests =
         existing.post_physical_fitness_test.finishedTestIndex;
       const max =
         preTestFinishedTests.length - 1 || postTestFinishedTests.length - 1;
+
       if (fetchError) {
         console.error('Fetch error:', fetchError.message);
         return;
@@ -70,7 +77,6 @@ export function PhysicalFitnessTestPage () {
 
   useEffect(() => {
     const dataFromStorage = getDataFromStorage('physicalFitnessData');
-    console.log(dataFromStorage);
     if (dataFromStorage && Object.keys(dataFromStorage).length > 0) {
       setPhysicalFitnessData(dataFromStorage);
 
@@ -80,8 +86,6 @@ export function PhysicalFitnessTestPage () {
       if (dataFromStorage) {
         finishedTestIndex = dataFromStorage.finishedTestIndex;
         currentTestIndex = Number(testIndex);
-        console.log(finishedTestIndex.length, currentTestIndex);
-        console.log(finishedTestIndex);
       }
       if (testIndex === 0) {
         setIsDataReady(true);
@@ -90,7 +94,6 @@ export function PhysicalFitnessTestPage () {
         !finishedTestIndex.includes(currentTestIndex - 1) ||
         finishedTestIndex.length <= currentTestIndex
       ) {
-        console.log(finishedTestIndex);
         setIsBadRequest(true);
       }
       setIsDataReady(true);

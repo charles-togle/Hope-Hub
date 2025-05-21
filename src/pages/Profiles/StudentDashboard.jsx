@@ -12,6 +12,15 @@ export default function StudentDashboard () {
   const [preTestFinished, setPreTestFinished] = useState(false);
   const [postTestFinished, setPostTestFinished] = useState(false);
   const [profilePictureFile, setProfilePictureFile] = useState(null);
+  const [lectureProgress, setLectureProgress] = useState({
+    completed: 0,
+    incomplete: 0,
+    pending: 0,
+    total: 10,
+  });
+  const [isDataReady, setIsDataReady] = useState(false);
+  const [studentName, setStudentName] = useState('');
+
   const userID = useUserId();
   const navigate = useNavigate();
   const memoizedFile = useMemo(
@@ -114,7 +123,43 @@ export default function StudentDashboard () {
     }
   };
 
-  const studentName = 'Charles Nathaniel Togle';
+  useEffect(() => {
+    if (!isDataReady) return;
+    async function fetchStudentName () {
+      const resolvedUserId = await Promise.resolve(userID);
+      if (!resolvedUserId) {
+        setStudentName('');
+        return;
+      }
+      const { data, error } = await supabase
+        .from('profile')
+        .select('full_name')
+        .eq('uuid', resolvedUserId)
+        .single();
+      if (error || !data) {
+        setStudentName('');
+      } else {
+        setStudentName(data.full_name || '');
+      }
+    }
+    fetchStudentName();
+  }, [isDataReady, userID]);
+
+  if (!isDataReady) {
+    return (
+      <div className='w-full flex items-center justify-center h-screen'>
+        <div className='font-content font-medium text-xl text-center w-full'>
+          Loading...
+        </div>
+      </div>
+    );
+  }
+
+  const handleLogout = async () => {
+    supabase.auth.signOut().then(navigate('/auth/login'));
+    localStorage.removeItem('lecture_progress');
+    localStorage.removeItem('physical_fitness_data');
+  };
   return (
     <section className='StudentDashboard parent-container'>
       <div className='content-container grid! grid-cols-[75%_25%] w-[93%]! gap-x-10 pt-10! relative'>
