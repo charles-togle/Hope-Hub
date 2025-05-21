@@ -24,6 +24,11 @@ export function PhysicalFitnessTestSummary () {
   useEffect(() => {
     async function checkConstraints () {
       const resolvedUserId = await Promise.resolve(userId);
+      if (!resolvedUserId) {
+        setIsBadRequest(true);
+        setIsDataReady(true);
+        return;
+      }
       const { data: existing, error: fetchError } = await supabase
         .from('physical_fitness_test')
         .select(columnName)
@@ -46,10 +51,10 @@ export function PhysicalFitnessTestSummary () {
       return;
     }
 
+    if(!userId) return
     async function getDataFromDatabase () {
       //handle pre test or post test
-      const resolvedUserId = await Promise.resolve(userId);
-      const data = await getPhysicalFitnessData(resolvedUserId, columnName);
+      const data = await getPhysicalFitnessData(userId, columnName);
       if (data) {
         setDataResults(getSummary(data));
         setIsDataReady(true);
@@ -57,7 +62,7 @@ export function PhysicalFitnessTestSummary () {
     }
 
     getDataFromDatabase();
-  }, [isDataReady]);
+  }, [isDataReady, userId]);
 
   if (isBadRequest) {
     return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;

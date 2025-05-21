@@ -72,6 +72,7 @@ function App () {
       <Routes>
         <Route element={<SideBarOutlet />} path='/'>
           <Route index element={<Home />}></Route>
+          <Route path='home' element={<Home />}></Route>
           <Route path='about' element={<About />} />
           <Route path='health-calculators' element={<HealthCalculator />} />
           <Route path='lectures' element={<LectureWrapper />}>

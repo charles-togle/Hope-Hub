@@ -19,6 +19,7 @@ export default function StudentDashboard () {
     total: 10,
   });
   const [isDataReady, setIsDataReady] = useState(false);
+  const [studentName, setStudentName] = useState('');
 
   const userID = useUserId();
   const navigate = useNavigate();
@@ -36,21 +37,12 @@ export default function StudentDashboard () {
     ...sampleProgress,
     total: Object.values(sampleProgress).reduce((acc, value) => acc + value, 0),
   };
-
-  useEffect(() => {
-    if (userID === undefined) return;
-    if (userID === null) {
-      navigate('/auth/login');
-    }
-  }, [userID]);
-
   const getLectureProgress = async () => {
-    const resolvedUserId = await Promise.resolve(userID);
-    if (resolvedUserId === null) return;
+    if (!userID) return;
     const { data, error } = await supabase
       .from('lecture_progress')
       .select('lecture_progress')
-      .eq('uuid', resolvedUserId)
+      .eq('uuid', userID)
       .single();
 
     if (error) {
@@ -92,60 +84,51 @@ export default function StudentDashboard () {
 
   useEffect(() => {
     if (!isDataReady) return;
-
     async function retrieveProfile () {
-      try {
-        const resolvedUserId = await Promise.resolve(userID);
-        if (!resolvedUserId || typeof resolvedUserId !== 'string') {
-          setProfilePictureFile(null);
-          return;
-        }
-
-        const folder = resolvedUserId;
-        const fileName = 'profilePicture';
-        const { data: files, error: listError } = await supabase.storage
-          .from('profile-pictures')
-          .list(folder);
-
-        if (listError) {
-          console.error('Error listing files:', listError.message);
-          setProfilePictureFile(null);
-          return;
-        }
-
-        const fileExists = files?.some(file => file.name === fileName);
-
-        if (!fileExists) {
-          setProfilePictureFile(null);
-          return;
-        }
-
-        const filePath = `${folder}/${fileName}`;
-        const { data, error } = await supabase.storage
-          .from('profile-pictures')
-          .download(filePath);
-
-        if (error || !data) {
-          setProfilePictureFile(null);
-          return;
-        }
-        setProfilePictureFile(data);
-      } catch (err) {
-        console.error('Unexpected error while retrieving profile:', err);
+      if (!userID || typeof userID !== 'string') {
         setProfilePictureFile(null);
+        return;
       }
+      const folder = userID;
+      const fileName = 'profilePicture';
+      const { data: files, error: listError } = await supabase.storage
+        .from('profile-pictures')
+        .list(folder);
+
+      if (listError) {
+        console.error('Error listing files:', listError.message);
+        setProfilePictureFile(null);
+        return;
+      }
+
+      const fileExists = files?.some(file => file.name === fileName);
+
+      if (!fileExists) {
+        setProfilePictureFile(null);
+        return;
+      }
+
+      const filePath = `${folder}/${fileName}`;
+      const { data, error } = await supabase.storage
+        .from('profile-pictures')
+        .download(filePath);
+
+      if (error || !data) {
+        setProfilePictureFile(null);
+        return;
+      }
+      setProfilePictureFile(data);
     }
 
     retrieveProfile();
   }, [isDataReady]);
 
   const checkIfFinished = async column => {
-    const resolvedUserId = await Promise.resolve(userID);
-    if (resolvedUserId === null) return;
+    if (!userID) return;
     const { data: existing, error: fetchError } = await supabase
       .from('physical_fitness_test')
       .select(column)
-      .eq('uuid', resolvedUserId)
+      .eq('uuid', userID)
       .single();
 
     if (fetchError) {
@@ -181,9 +164,9 @@ export default function StudentDashboard () {
   };
 
   const onProfileChange = async (file, fileName = 'profilePicture') => {
-    const resolvedUserId = await Promise.resolve(userID);
+    if (!userID) return;
     const bucketName = 'profile-pictures';
-    const folderName = resolvedUserId;
+    const folderName = userID;
     const filePath = `${folderName}/${fileName}`;
     const supabaseClient = supabase;
 
@@ -202,7 +185,27 @@ export default function StudentDashboard () {
     }
   };
 
-  const studentName = 'Charles Nathaniel Togle';
+  useEffect(() => {
+    if (!isDataReady) return;
+    async function fetchStudentName () {
+      if (!userID) {
+        setStudentName('');
+        return;
+      }
+      const { data, error } = await supabase
+        .from('profile')
+        .select('full_name')
+        .eq('uuid', userID)
+        .single();
+      if (error || !data) {
+        setStudentName('');
+      } else {
+        setStudentName(data.full_name || '');
+      }
+    }
+    fetchStudentName();
+  }, [isDataReady, userID]);
+
   if (!isDataReady) {
     return (
       <div className='w-full flex items-center justify-center h-screen'>
@@ -215,6 +218,8 @@ export default function StudentDashboard () {
 
   const handleLogout = async () => {
     supabase.auth.signOut().then(navigate('/auth/login'));
+    localStorage.removeItem('lectureProgress');
+    localStorage.removeItem('physicalFitnessData');
   };
   return (
     <section className='StudentDashboard parent-container'>

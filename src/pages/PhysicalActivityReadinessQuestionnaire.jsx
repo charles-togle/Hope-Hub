@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AlertMessage } from '@/components/utilities/AlertMessage';
 import setDataToStorage from '@/utilities/setDataToStorage';
-
+import { useUserId } from '@/hooks/useUserId';
+import supabase from '@/client/supabase';
 export default function PhysicalActivityReadinessQuestionnaire () {
   const { physicalFitnessData, setPhysicalFitnessData } =
     usePhysicalFitnessData();
@@ -17,6 +18,7 @@ export default function PhysicalActivityReadinessQuestionnaire () {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const userId = useUserId();
 
   useEffect(() => {
     if (areAllAnswered && areAllAnswersNo && areAllUserDataFilled) {
@@ -51,7 +53,7 @@ export default function PhysicalActivityReadinessQuestionnaire () {
     setAreAllAnswered(allAnswered);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setErrorMessage('');
     if (
       areAllAnswered &&
@@ -65,13 +67,50 @@ export default function PhysicalActivityReadinessQuestionnaire () {
       };
       setPhysicalFitnessData(updatedData);
       setDataToStorage('physicalFitnessData', updatedData);
+
+      if (!userId) {
+        setErrorMessage('User not found.');
+        setIsError(true);
+        return;
+      }
+      // Fetch existing test record
+      const { data: existing, error: fetchError } = await supabase
+        .from('physical_fitness_test')
+        .select('pre_physical_fitness_test, post_physical_fitness_test')
+        .eq('uuid', userId)
+        .single();
+      let testType = '';
+      if (fetchError) {
+        setErrorMessage('Error fetching test record: ' + fetchError.message);
+        setIsError(true);
+        return;
+      }
+      const preFinished =
+        existing?.pre_physical_fitness_test?.finishedTestIndex || [];
+      const postFinished =
+        existing?.post_physical_fitness_test?.finishedTestIndex || [];
+      const max = Math.max(preFinished.length, postFinished.length);
+      if (!preFinished.includes(max - 1)) {
+        testType = 'pre_physical_fitness_test';
+      } else if (!postFinished.includes(max - 1)) {
+        testType = 'post_physical_fitness_test';
+      } else {
+        setErrorMessage('You have already completed all tests.');
+        setIsError(true);
+        return;
+      }
+      // Insert or update the test data
+      const { error: updateError } = await supabase
+        .from('physical_fitness_test')
+        .update({ [testType]: updatedData })
+        .eq('uuid', userId);
+      if (updateError) {
+        setErrorMessage('Error saving test data: ' + updateError.message);
+        setIsError(true);
+        return;
+      }
       navigate('/physical-fitness-test/test/0');
     } else {
-      console.log('Conditions not met:', {
-        areAllAnswered,
-        areAllAnswersNo,
-        areAllUserDataFilled,
-      });
       if (!areAllAnswered) {
         setErrorMessage('Make sure to answer all questions');
       } else if (!areAllAnswersNo) {
@@ -224,8 +263,8 @@ export default function PhysicalActivityReadinessQuestionnaire () {
                 }
                 className='border-1 border-[#8B8989]! w-full font-content px-1 rounded-sm mt-0.5'
               >
-                <option disabled> --Select one option--</option>
-                <option value='elementaryBoys'>
+                <option disabled>--Select one option--</option>
+                <option selected value='elementaryBoys'>
                   Boy (Elementary 5-12 yrs old)
                 </option>
                 <option value='elementaryGirls'>

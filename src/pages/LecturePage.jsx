@@ -1,29 +1,47 @@
 import { Lessons } from '@/utilities/Lessons';
 import { useParams, useNavigate } from 'react-router-dom';
 import PageHeading from '@/components/PageHeading';
-import { useEffect, useState, useId } from 'react';
+import { useEffect, useState } from 'react';
 import LecturePDF from '@/components/LecturePDF';
 import LectureVideo from '@/components/LectureVideo';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
-import setDataToStorage from '@/utilities/setDataToStorage';
-import getDataFromStorage from '@/utilities/getDataFromStorage';
-import useLectureProgress from '@/hooks/useLectureProgress';
 import supabase from '@/client/supabase';
+import { useUserId } from '@/hooks/useUserId';
+import LectureProgress from '@/utilities/LectureProgress';
 
 export default function LecturePage () {
   const { lessonNumber, lectureType } = useParams();
   const navigate = useNavigate();
-  // const userId = useId();
-  const userId = '5c4ffb4f-420c-448c-8abe-7f9b319060a9';
+  const userId = useUserId();
   const [isError, setIsError] = useState(false);
   const [isLectureDone, setIsLectureDone] = useState(false);
   const [isVideo, setIsVideo] = useState(lectureType === 'video');
-  const { lectureProgress, setLectureProgress } = useLectureProgress();
+  const [lectureProgress, setLectureProgress] = useState([]);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const selectedLessonNumber = Number(lessonNumber);
 
   const lessonDetails = Lessons.find(
     lesson => lesson.key === selectedLessonNumber,
   );
+
+  // Fetch lecture progress from DB on mount
+  useEffect(() => {
+    if (!userId) return;
+    const fetchProgress = async () => {
+      const { data, error } = await supabase
+        .from('lecture_progress')
+        .select('lecture_progress')
+        .eq('uuid', userId)
+        .single();
+      if (error || !data || !data.lecture_progress) {
+        setLectureProgress(LectureProgress());
+      } else {
+        setLectureProgress(data.lecture_progress);
+      }
+      setDataLoaded(true);
+    };
+    fetchProgress();
+  }, [userId]);
 
   // Guard: invalid lectureType or out of bounds lesson
   useEffect(() => {
@@ -44,38 +62,13 @@ export default function LecturePage () {
     );
   }, [isVideo, selectedLessonNumber, navigate]);
 
-  // Sync progress between localStorage and Supabase
+  // Mark as pending if not done, and update DB
   useEffect(() => {
-    const storedProgress = getDataFromStorage('LectureProgress');
-
-    // Helper: update both local and remote progress
-    const updateProgress = async updatedProgress => {
-      setDataToStorage('LectureProgress', updatedProgress);
-      setLectureProgress(updatedProgress);
-      const { data, error } = await supabase
-        .from('lecture_progress')
-        .update({ lecture_progress: updatedProgress })
-        .eq('uuid', userId)
-        .select();
-      if (error) console.error('Update error:', error.message);
-      else {
-        console.log(data);
-      }
-    };
-
-    // Helper: insert new user progress
-    const insertInitialProgress = async () => {
-      const { data, error } = await supabase
-        .from('lecture_progress')
-        .insert({ uuid: userId, lecture_progress: lectureProgress });
-      if (error) console.error('Insert error:', error.message);
-      else {
-        console.log(data);
-      }
-    };
-
-    if (storedProgress) {
-      const updatedProgress = storedProgress.map(progress => {
+    if (!userId) return;
+    if (!dataLoaded) return;
+    if (!lectureProgress || lectureProgress.length === 0) return;
+    const updateProgress = async () => {
+      const updatedProgress = lectureProgress.map(progress => {
         if (progress.key === selectedLessonNumber) {
           if (progress.status === 'Done') setIsLectureDone(true);
           if (progress.status === 'Incomplete')
@@ -83,47 +76,51 @@ export default function LecturePage () {
         }
         return progress;
       });
-
       const isChanged =
-        JSON.stringify(storedProgress) !== JSON.stringify(updatedProgress);
-      if (isChanged) updateProgress(updatedProgress);
-    } else {
-      insertInitialProgress();
-      setDataToStorage('LectureProgress', lectureProgress);
-    }
-  }, [lectureProgress, selectedLessonNumber, setLectureProgress, userId]);
+        JSON.stringify(lectureProgress) !== JSON.stringify(updatedProgress);
+      if (isChanged) {
+        setLectureProgress(updatedProgress);
+        await supabase
+          .from('lecture_progress')
+          .update({ lecture_progress: updatedProgress })
+          .eq('uuid', userId);
+      }
+    };
+    updateProgress();
+  }, [lectureProgress, selectedLessonNumber, dataLoaded, userId]);
 
   // Handler: when lecture/video is finished
-  const handleLectureFinish = () => {
+  const handleLectureFinish = async () => {
     if (isLectureDone) return;
-
     const lectureToUpdate = lectureProgress.find(
       p => p.key === selectedLessonNumber,
     );
     if (!lectureToUpdate)
       return console.error('Lecture not found in progress!');
-
     const updatedProgress = lectureProgress.map(p =>
       p.key === selectedLessonNumber ? { ...p, status: 'Done' } : p,
     );
-
     setLectureProgress(updatedProgress);
-    setDataToStorage('LectureProgress', updatedProgress);
     setIsLectureDone(true);
-
-    // Also update remote DB
-    supabase
+    // Update remote DB
+    await supabase
       .from('lecture_progress')
       .update({ lecture_progress: updatedProgress })
-      .eq('uuid', userId)
-      .then(({ error }) => {
-        if (error) console.error('Update on finish error:', error.message);
-      });
+      .eq('uuid', userId);
   };
 
   // Render: error message
   if (!lessonDetails || isError) {
     return <ErrorMessage text='Error 404' subText='Page not found' />;
+  }
+  if (!dataLoaded) {
+    return (
+      <div className='w-full flex items-center justify-center h-screen'>
+        <div className='font-content font-medium text-xl text-center w-full'>
+          Loading...
+        </div>
+      </div>
+    );
   }
 
   const { pdf, introduction, title, videoLecture } = lessonDetails;
@@ -135,7 +132,7 @@ export default function LecturePage () {
         <button
           id='switch'
           onClick={() => setIsVideo(prev => !prev)}
-          className='px-5 mb-3 py-2 text-xl font-content border-2 border-accent-blue bg-secondary-dark-blue text-white hover:bg-accent-blue transition-all'
+          className='px-5 mb-3 py-2 text-xl self-start font-content border-2 border-accent-blue bg-secondary-dark-blue text-white hover:bg-accent-blue transition-all'
         >
           {isVideo ? 'READ DOCUMENT' : 'WATCH VIDEO LECTURE'}
         </button>

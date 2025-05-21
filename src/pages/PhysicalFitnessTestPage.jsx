@@ -23,54 +23,7 @@ export function PhysicalFitnessTestPage () {
   const userId = useUserId();
 
   useEffect(() => {
-    // Check if both pre and post physical fitness test already exist for this user
-    const checkIfTestTaken = async () => {
-      const resolvedUserId = await Promise.resolve(userId);
-      const { data: existing, error: fetchError } = await supabase
-        .from('physical_fitness_test')
-        .select('pre_physical_fitness_test, post_physical_fitness_test')
-        .eq('uuid', resolvedUserId)
-        .single();
-      const preTestFinishedTests =
-        existing.pre_physical_fitness_test.finishedTestIndex;
-      const postTestFinishedTests =
-        existing.post_physical_fitness_test.finishedTestIndex;
-      const max =
-        preTestFinishedTests.length - 1 || postTestFinishedTests.length - 1;
-      if (fetchError) {
-        console.error('Fetch error:', fetchError.message);
-        return;
-      }
-      if (
-        existing &&
-        preTestFinishedTests.includes(max) &&
-        postTestFinishedTests.includes(max)
-      ) {
-        setIsTaken(true);
-        return;
-      }
-      if (existing && !preTestFinishedTests.includes(max)) {
-        setTestType('pre_physical_fitness_test');
-        return;
-      }
-      if (existing && !postTestFinishedTests.includes(max)) {
-        setTestType('post_physical_fitness_test');
-        return;
-      }
-    };
-    checkIfTestTaken();
-  }, [userId]);
-
-  //remove item from localStorage everytime it is unmounted
-  // useEffect(()=>{
-  //   return () => {
-  //     localStorage.removeItem('physicalFitnessdata')
-  //   }
-  // },[])
-
-  useEffect(() => {
     const dataFromStorage = getDataFromStorage('physicalFitnessData');
-    console.log(dataFromStorage);
     if (dataFromStorage && Object.keys(dataFromStorage).length > 0) {
       setPhysicalFitnessData(dataFromStorage);
 
@@ -80,8 +33,6 @@ export function PhysicalFitnessTestPage () {
       if (dataFromStorage) {
         finishedTestIndex = dataFromStorage.finishedTestIndex;
         currentTestIndex = Number(testIndex);
-        console.log(finishedTestIndex.length, currentTestIndex);
-        console.log(finishedTestIndex);
       }
       if (testIndex === 0) {
         setIsDataReady(true);
@@ -90,7 +41,7 @@ export function PhysicalFitnessTestPage () {
         !finishedTestIndex.includes(currentTestIndex - 1) ||
         finishedTestIndex.length <= currentTestIndex
       ) {
-        console.log(finishedTestIndex);
+        console.log('this is the problem');
         setIsBadRequest(true);
       }
       setIsDataReady(true);
@@ -111,6 +62,56 @@ export function PhysicalFitnessTestPage () {
       );
     }
   }, [physicalFitnessData.finishedTestIndex, navigate]);
+
+  useEffect(() => {
+    if (!userId) return; // Wait until userId is defined
+    const checkIfTestTaken = async () => {
+      if (typeof userId !== 'string' || userId.trim() === '') {
+        console.log(userId);
+        setIsBadRequest(true);
+        return;
+      }
+
+      const { data: existing, error: fetchError } = await supabase
+        .from('physical_fitness_test')
+        .select('pre_physical_fitness_test, post_physical_fitness_test')
+        .eq('uuid', userId)
+        .single();
+
+      if (fetchError) {
+        console.error('Fetch error:', fetchError.message);
+        return;
+      }
+
+      const preTestFinishedTests =
+        existing?.pre_physical_fitness_test?.finishedTestIndex || [];
+      const postTestFinishedTests =
+        existing?.post_physical_fitness_test?.finishedTestIndex || [];
+
+      const max =
+        preTestFinishedTests.length - 1 || postTestFinishedTests.length - 1;
+
+      if (
+        preTestFinishedTests.includes(max) &&
+        postTestFinishedTests.includes(max)
+      ) {
+        setIsTaken(true);
+      } else if (!preTestFinishedTests.includes(max)) {
+        setTestType('pre_physical_fitness_test');
+      } else if (!postTestFinishedTests.includes(max)) {
+        setTestType('post_physical_fitness_test');
+      }
+    };
+
+    checkIfTestTaken();
+  }, [userId]);
+
+  //remove item from localStorage everytime it is unmounted
+  // useEffect(()=>{
+  //   return () => {
+  //     localStorage.removeItem('physicalFitnessdata')
+  //   }
+  // },[])
 
   const handleTimeoutConfirm = () => {
     if (testIndex === '0') {
@@ -164,7 +165,6 @@ export function PhysicalFitnessTestPage () {
             physicalFitnessData={physicalFitnessData}
             index={testIndex}
             setIsTimeout={setIsTimeout}
-            setIsBadRequest={setIsBadRequest}
             testType={testType}
           />
         </div>
