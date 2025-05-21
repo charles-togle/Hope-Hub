@@ -75,6 +75,9 @@ export default function Register () {
     const { data, error } = await supabase.auth.signUp({
       email: trimmedEmail,
       password: trimmedPassword,
+      options: {
+        emailRedirectTo: 'http:/localhost:5173/auth/login',
+      },
     });
 
     if (error) {

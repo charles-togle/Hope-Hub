@@ -20,13 +20,13 @@ const formatDuration = isoDuration => {
 export default function VideoList ({ videos, onVideoSelect, className }) {
   return (
     <div
-      className={`grid grid-cols-1 gap-4 font-content w-full h-full overflow-y-auto ${className}`}
+      className={`grid grid-cols-1 gap-4 font-content w-full overflow-y-auto ${className}`}
     >
       {videos.map(video => (
         <div
           key={video.id.videoId}
           onClick={() => onVideoSelect(video)}
-          className='flex flex-row items-center gap-5 p-4 shadow-md bg-accent-blue  rounded-md hover:brightness-80 ursor-pointer'
+          className='flex flex-row items-center gap-5 rounded-md hover:brightness-80 cursor-pointer'
         >
           <div className='relative'>
             <img
@@ -34,11 +34,11 @@ export default function VideoList ({ videos, onVideoSelect, className }) {
               alt={video.snippet.title}
               className='w-full h-auto rounded-md'
             />
-            <p className='text-xs text-gray-300 mt-2 absolute bottom-2 right-2 bg-black p-1 pl-2 pr-2'>
+            <p className='text-xs text-white mt-2 absolute bottom-2 right-2 bg-black bg-opacity-40 p-1 pl-2 pr-2'>
               {formatDuration(video.duration)}
             </p>
           </div>
-          <h4 className='text-sm font-medium text-white text-left w-full'>
+          <h4 className='text-sm font-medium text-black text-left w-full'>
             {video.snippet.title}
           </h4>
         </div>
