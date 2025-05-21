@@ -23,10 +23,7 @@ export function PhysicalFitnessTestSummary () {
 
   useEffect(() => {
     async function checkConstraints () {
-      const resolvedUserId = await Promise.resolve(userId);
-      if (!resolvedUserId) {
-        setIsBadRequest(true);
-        setIsDataReady(true);
+      if (userId) {
         return;
       }
       const { data: existing, error: fetchError } = await supabase
@@ -51,7 +48,7 @@ export function PhysicalFitnessTestSummary () {
       return;
     }
 
-    if(!userId) return
+    if (!userId) return;
     async function getDataFromDatabase () {
       //handle pre test or post test
       const data = await getPhysicalFitnessData(userId, columnName);
