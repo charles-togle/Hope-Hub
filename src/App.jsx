@@ -15,11 +15,12 @@ import HealthCalculator from './pages/HealthCalculators/HealthCalculator';
 import LectureProgressProvider from './providers/LectureProvider';
 import Home from './pages/Home';
 import { PhysicalFitnessTestSummary } from './pages/PhysicalFitnessTestSummary';
-import Login from './pages/Auth/login';
+import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import ForgotPassword from './pages/Auth/ForgotPassword';
 import ChangePassword from './pages/Auth/ChangePassword';
 import DiscoverMore from './pages/DiscoverMore';
+import StudentDashboard from './pages/Profiles/StudentDashboard';
 
 function App () {
   const SideBarOutlet = () => {
@@ -53,10 +54,24 @@ function App () {
     return <Outlet />;
   };
 
+  const ProfileWrapper = () => {
+    const isAdmin = false;
+
+    if (isAdmin) {
+      return (
+        // <div></div> admin here
+        <></>
+      );
+    } else {
+      return <StudentDashboard />;
+    }
+  };
+
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<SideBarOutlet />} path='/'>
+          <Route index element={<Home />}></Route>
           <Route path='home' element={<Home />}></Route>
           <Route path='about' element={<About />} />
           <Route path='health-calculators' element={<HealthCalculator />} />
@@ -84,7 +99,7 @@ function App () {
               element={<PhysicalFitnessTestPage />}
             />
             <Route
-              path='summary'
+              path='summary/:testType'
               element={<PhysicalFitnessTestSummary />}
             ></Route>
           </Route>
@@ -99,6 +114,7 @@ function App () {
             <Route path='forgot-password' element={<ForgotPassword />}></Route>
             <Route path='change-password' element={<ChangePassword />}></Route>
           </Route>
+          <Route path='profile' element={<ProfileWrapper />}></Route>
           <Route path='*' element={<NotFound />} />
         </Route>
       </Routes>

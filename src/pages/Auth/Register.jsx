@@ -6,6 +6,7 @@ import InputContainer from '../../components/auth/InputContainer';
 import FormButton from '../../components/auth/FormButton';
 import { useState } from 'react';
 import supabase from '@/client/supabase';
+import LectureProgress from '@/utilities/LectureProgress';
 
 export default function Register () {
   const [name, setName] = useState('');
@@ -37,18 +38,33 @@ export default function Register () {
 
   const handleRegister = async () => {
     setErrorMessage('');
+
     if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match');
       return;
     }
 
-    const fields = [email, password, confirmPassword, name, classCode];
+    // Trim all inputs
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+    const trimmedConfirmPassword = confirmPassword.trim();
+    const trimmedName = name.trim();
+    const trimmedClassCode = classCode.trim();
+
+    const fields = [
+      trimmedEmail,
+      trimmedPassword,
+      trimmedConfirmPassword,
+      trimmedName,
+      trimmedClassCode,
+    ];
+
     const areAllFieldsFilled = fields.every(field =>
-      field === classCode
+      field === trimmedClassCode
         ? isEducator
           ? true
-          : field.trim() !== ''
-        : field.trim() !== '',
+          : field !== ''
+        : field !== '',
     );
 
     if (!areAllFieldsFilled) {
@@ -57,8 +73,8 @@ export default function Register () {
     }
 
     const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
+      email: trimmedEmail,
+      password: trimmedPassword,
     });
 
     if (error) {
@@ -66,24 +82,44 @@ export default function Register () {
       return;
     }
 
-    const userId = data.user.id;
-
-    if (!error) {
-      const { data, error } = await supabase.from('profile').insert({
-        uuid: userId,
-        full_name: name,
-        email: email,
-        class_code: classCode,
-        user_type: isEducator ? 'teacher' : 'student',
-      });
-      if (error) {
-        setErrorMessage(error.message);
-      } else {
-        setSuccessMessage(
-          'Account created successfully! Please check your email to verify your account.',
-        );
-      }
+    if (!data || !data.user) {
+      setErrorMessage('Registration succeeded, but user info is missing.');
+      return;
     }
+
+    const userId = data.user.id;
+    const userType = isEducator ? 'teacher' : 'student';
+
+    const { error: rpcError } = await supabase.rpc('register_user', {
+      p_user_id: userId,
+      p_full_name: trimmedName,
+      p_email: trimmedEmail,
+      p_user_type: userType,
+      p_class_code: trimmedClassCode,
+    });
+
+    if (rpcError) {
+      setErrorMessage('Error during registration: ' + rpcError.message);
+      return;
+    }
+
+    const { error: lectureProgressError } = await supabase
+      .from('lecture_progress')
+      .upsert({
+        uuid: userId,
+        lecture_progress: LectureProgress(),
+      });
+
+    if (lectureProgressError) {
+      setErrorMessage(
+        'Error initializing lecture progress: ' + lectureProgressError.message,
+      );
+      return;
+    }
+
+    setSuccessMessage(
+      'Account created successfully! Please check your email to verify your account.',
+    );
   };
 
   return (
