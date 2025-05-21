@@ -14,6 +14,38 @@ export default function DiscoverMore () {
   const [prevPageToken, setPrevPageToken] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
+  const fetchFullVideoDetails = async videos => {
+    const videoIds = videos.map(video => video.id.videoId).join(',');
+
+    const response = await youtube.get('/videos', {
+      params: {
+        id: videoIds,
+        part: 'snippet,contentDetails',
+      },
+    });
+
+    const detailsMap = response.data.items.reduce((acc, item) => {
+      acc[item.id] = {
+        snippet: item.snippet,
+        duration: item.contentDetails.duration,
+      };
+      return acc;
+    }, {});
+
+    return videos.map(video => {
+      const id = video.id.videoId;
+      const details = detailsMap[id];
+
+      return {
+        ...video,
+        snippet: {
+          ...details?.snippet,
+        },
+        duration: details?.duration || 'N/A',
+      };
+    });
+  };
+
   const fetchRelatedVideos = async videoId => {
     const response = await youtube.get('/search', {
       params: {
@@ -23,48 +55,26 @@ export default function DiscoverMore () {
       },
     });
 
-    setVideos(response.data.items);
+    const fullVideos = await fetchFullVideoDetails(response.data.items);
+    setVideos(fullVideos);
     setNextPageToken(response.data.nextPageToken || null);
     setPrevPageToken(response.data.prevPageToken || null);
   };
 
-  const fetchVideoDurations = async videos => {
-    const videoIds = videos.map(video => video.id.videoId).join(',');
-    const response = await youtube.get('/videos', {
-      params: {
-        id: videoIds,
-        part: 'contentDetails',
-      },
-    });
-
-    const durations = response.data.items.reduce((acc, item) => {
-      acc[item.id] = item.contentDetails.duration;
-      return acc;
-    }, {});
-
-    console.log(durations);
-
-    return videos.map(video => ({
-      ...video,
-      duration: durations[video.id.videoId] || 'N/A',
-    }));
-  };
-
   const handleSearch = async (query, pageToken = '') => {
     const fullQuery = `${query} fitness`;
-
     setSearchQuery(fullQuery);
 
     const response = await youtube.get('/search', {
       params: {
         q: fullQuery,
         pageToken: pageToken,
+        type: 'video',
       },
     });
 
-    const videosWithDurations = await fetchVideoDurations(response.data.items);
-
-    setVideos(videosWithDurations);
+    const fullVideos = await fetchFullVideoDetails(response.data.items);
+    setVideos(fullVideos);
     setNextPageToken(response.data.nextPageToken || null);
     setPrevPageToken(response.data.prevPageToken || null);
   };
@@ -83,36 +93,44 @@ export default function DiscoverMore () {
         },
       });
 
-      const firstVideo = response.data.items[0];
-      if (firstVideo) {
-        const videosWithDurations = await fetchVideoDurations(
-          response.data.items,
-        );
-        setSelectedVideo(videosWithDurations[0]);
-        setVideos(videosWithDurations);
+      const fullVideos = await fetchFullVideoDetails(response.data.items);
+      if (fullVideos.length > 0) {
+        setSelectedVideo(fullVideos[0]);
+        setVideos(fullVideos);
         setNextPageToken(response.data.nextPageToken || null);
         setPrevPageToken(response.data.prevPageToken || null);
       }
     };
 
     searchAndPlayFirstVideo();
-  }, []); // Run only once when the component mounts
+  }, []);
 
   return (
     <section
       id='discover-more'
-      className='parent-container h-fit relative bg-transparent! '
+      className='parent-container h-fit relative bg-transparent!'
     >
-      <PageHeading text='Discover More'></PageHeading>
-      <div className='h-screen overflow-hidden  mt-5 '>
-        <div className='content-container  shadow-md border-3 border-accent-blue rounded-lg p-6 w-full!  bg-transparent! relative'>
-          <img src={BackgroundImage} className='fixed top-0 -z-1' alt='' />
-          <Search onSearch={handleSearch} />
-          <div className='grid grid-cols-[65%_35%] grid-rows-2'>
+      <PageHeading text='Discover More' />
+      <div className='h-fit flex flex-col items-center justify-center mr-auto ml-auto'>
+        <div className='flex flex-row justify-between mb-8 w-[85%] mt-10'>
+          <div>
+            <p className='font-heading text-4xl text-primary-blue'>
+              YouTube Search
+            </p>
+            <hr className='w-3/4 border-1 border-primary-yellow mt-2' />
+          </div>
+          <Search onSearch={handleSearch} className='w-[50%] -mr-10' />
+        </div>
+        <div className='w-[85%] shadow-md mb-10 border-2 border-accent-blue rounded-lg p-6 bg-transparent! relative'>
+          <div className='grid grid-cols-[59%_39%] gap-x-[2%] grid-rows-1 max-h-[120vh]'>
             <VideoPlayer video={selectedVideo} />
-            <div className='h-90'>
-              <VideoList videos={videos} onVideoSelect={handleVideoSelect} />
-              {videos.length > 0 && ( // Only show Pagination if videos are available
+            <div className='h-full'>
+              <VideoList
+                videos={videos}
+                onVideoSelect={handleVideoSelect}
+                className='h-[90%]'
+              />
+              {videos.length > 0 && (
                 <Pagination
                   onPrev={() => handleSearch(searchQuery, prevPageToken)}
                   onNext={() => handleSearch(searchQuery, nextPageToken)}

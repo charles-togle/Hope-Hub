@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SearchIcon from '@/assets/icons/search_icon.png';
 
 export default function Search ({ onSearch, className }) {
   const [query, setQuery] = useState('');
@@ -9,20 +10,26 @@ export default function Search ({ onSearch, className }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`${className} flex w-full gap-6`}>
+    <form
+      onSubmit={handleSubmit}
+      className={`${className} flex gap-6 items-center justify-end`}
+    >
       <input
         type='text'
-        placeholder='Search YouTube...'
+        placeholder='Search Videos'
         value={query}
         onChange={e => setQuery(e.target.value)}
-        className='w-1/4 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+        className='w-3/4 p-2 h-10 border-1 border-black rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500'
       />
-      <button
-        type='submit' 
-        className='px-4 py-2 bg-primary-blue text-white rounded-md hover:bg-blue-600'
-      >
-        Search
-      </button>
+      <div>
+        <button
+          type='submit'
+          className='bg-white gap-2 self-end flex flex-row items-center justify-center font-content font-medium hover:brightness-95'
+        >
+          <img src={SearchIcon} className='h-5' />
+          Search
+        </button>
+      </div>
     </form>
   );
 }
