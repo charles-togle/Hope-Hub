@@ -29,7 +29,6 @@ export default function PhysicalFitnessTest ({
   physicalFitnessData,
   testType,
 }) {
-  console.log(testType);
   const [currentTime, setCurrentTime] = useState(
     `${String(new Date().getHours()).padStart(2, '0')}:${String(
       new Date().getMinutes(),
@@ -143,7 +142,7 @@ export default function PhysicalFitnessTest ({
   };
 
   const handleSubmit = async () => {
-    const resolvedUserId = await Promise.resolve(userId);
+    if(!userId) return
     setCurrentTime(
       `${String(new Date().getHours()).padStart(2, '0')}:${String(
         new Date().getMinutes(),
@@ -190,7 +189,7 @@ export default function PhysicalFitnessTest ({
       supabase
         .from('physical_fitness_test')
         .update({ [testType]: updatedPhysicalFitnessData })
-        .eq('uuid', resolvedUserId)
+        .eq('uuid', userId)
         .then(({ data, error }) => {
           if (error) {
             console.log(testType);

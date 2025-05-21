@@ -1,13 +1,12 @@
-// hooks/useUserId.ts
+// hooks/useUserId.js
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import supabase from '@/client/supabase';
 
-export const useUserId = async () => {
+export const useUserId = () => {
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
-  // return 'd0c3e568-ee5e-45d8-a3bd-105650aba056';
   useEffect(() => {
     const getSession = async () => {
       const { data, error } = await supabase.auth.getSession();
@@ -22,5 +21,5 @@ export const useUserId = async () => {
     getSession();
   }, [navigate]);
 
-  return userId;
+  return userId; // ✅ returns the actual user ID string, not a Promise
 };

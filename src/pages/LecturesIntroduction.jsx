@@ -1,79 +1,43 @@
 import PageHeading from '@/components/PageHeading';
 import LectureIntroduction from '@/components/LectureIntroComponent';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Lessons } from '@/utilities/Lessons';
-import getDataFromStorage from '@/utilities/getDataFromStorage';
-import setDataToStorage from '@/utilities/setDataToStorage';
-import useLectureProgress from '@/hooks/useLectureProgress';
 import supabase from '@/client/supabase';
-import { useId } from 'react';
+import { useUserId } from '@/hooks/useUserId';
+import LectureProgress from '@/utilities/LectureProgress';
+import { useNavigate } from 'react-router-dom';
 
 export default function Lectures () {
   const [dataLoaded, setDataLoaded] = useState(false);
-  const { lectureProgress, setLectureProgress } = useLectureProgress();
   const [activeLessons, setActiveLessons] = useState(Lessons);
   const [activeFilter, setActiveFilter] = useState('All');
-  const [storedProgress, setStoredProgress] = useState(null);
+  const [storedProgress, setStoredProgress] = useState(LectureProgress());
   const LectureFilters = ['All', 'Done', 'Pending', 'Incomplete'];
-  const userId = useId();
-
-  const insertInitialProgress = async () => {
-    const { data, error } = await supabase
-      .from('lecture_progress')
-      .upsert({ uuid: userId, lecture_progress: lectureProgress });
-    if (error) {
-      console.error('Upsert error:', error.message);
-    } else {
-      console.log(data);
-    }
-  };
-
+  const userId = useUserId();
+  const navigate = useNavigate();
   useEffect(() => {
+    if (!userId) return;
     const fetchProgressFromDB = async () => {
-      // Query Supabase for user's lecture progress
       const { data, error } = await supabase
         .from('lecture_progress')
         .select('lecture_progress')
         .eq('uuid', userId)
         .single();
-
-      if (error) {
-        console.error('Error fetching progress:', error.message);
-        // If DB fetch fails, set default progress
-        setDataToStorage('LectureProgress', lectureProgress);
-        setLectureProgress(lectureProgress);
-        insertInitialProgress();
-      } else if (data && data.lecture_progress) {
-        // If DB has data, use it for localStorage and state
-        setDataToStorage('LectureProgress', data.lecture_progress);
-        setLectureProgress(data.lecture_progress);
-        setStoredProgress(data.lecture_progress);
+      if (error || !data || !data.lecture_progress) {
+        setStoredProgress(LectureProgress());
       } else {
-        // If no data in DB, set default progress
-        setDataToStorage('LectureProgress', lectureProgress);
-        setLectureProgress(lectureProgress);
-        insertInitialProgress();
+        setStoredProgress(data.lecture_progress);
       }
       setDataLoaded(true);
     };
-
-    // Check localStorage first
-    const localProgress = getDataFromStorage('LectureProgress');
-    setStoredProgress(localProgress);
-
-    if (!localProgress || Object.keys(localProgress).length === 0) {
-      // If not in localStorage, get from DB
-      fetchProgressFromDB();
-    } else if (!dataLoaded) {
-      // If in localStorage, just update state
-      setLectureProgress(localProgress);
-      setDataLoaded(true);
-    }
-  }, [setLectureProgress, dataLoaded, lectureProgress, userId]);
+    fetchProgressFromDB();
+  }, [userId]);
 
   const handleFilterChange = useCallback(
     filter => {
-      if (!storedProgress || Object.keys(storedProgress).length === 0) {
+      if (!storedProgress || storedProgress.length === 0) {
+        setActiveLessons([]);
+        setActiveFilter(filter);
         return;
       }
       const mergedLessons = Lessons.map(lesson => {
@@ -85,12 +49,10 @@ export default function Lectures () {
           status: progress ? progress.status : 'Incomplete',
         };
       });
-
       const filteredLessons = mergedLessons.filter(lesson => {
         if (filter === 'All') return true;
         return lesson.status === filter;
       });
-
       setActiveFilter(filter);
       setActiveLessons(filteredLessons);
     },
@@ -100,6 +62,17 @@ export default function Lectures () {
   useEffect(() => {
     handleFilterChange('All');
   }, [handleFilterChange]);
+
+  if (!dataLoaded) {
+    return (
+      <div className='w-full flex items-center justify-center h-screen'>
+        <div className='font-content font-medium text-xl text-center w-full'>
+          Loading...
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       id='lectures'
@@ -125,11 +98,12 @@ export default function Lectures () {
               <button
                 key={index}
                 onClick={() => handleFilterChange(filter)}
-                className={`${
-                  filter === activeFilter
-                    ? 'bg-primary-yellow rounded-sm text-secondary-dark-blue!'
-                    : ''
-                } text-white text-center font-content py-2 min-w-1/8 px-2 text-sm lg:w-auto lg:px-5`}
+                className={
+                  `text-white text-center font-content py-2 min-w-1/8 px-2 text-sm lg:w-auto lg:px-5 ` +
+                  (filter === activeFilter
+                    ? 'bg-primary-yellow rounded-sm text-secondary-dark-blue'
+                    : 'bg-secondary-dark-blue')
+                }
               >
                 {filter}
               </button>
@@ -146,15 +120,19 @@ export default function Lectures () {
           className='flex justify-center space-y-3 flex-col items-center overflow-auto mt-5'
         >
           {activeLessons.length !== 0 ? (
-            activeLessons.map((lesson, index) => (
-              <LectureIntroduction
-                lectureKey={lesson.key}
-                key={index}
-                title={lesson.title}
-                introduction={lesson.introduction}
-                status={lesson.status}
-              ></LectureIntroduction>
-            ))
+            activeLessons.map((lesson, index) => {
+              const lectureKey = index + 1;
+              return (
+                <LectureIntroduction
+                  lectureKey={lesson.key}
+                  key={index}
+                  title={lesson.title}
+                  introduction={lesson.introduction}
+                  status={lesson.status}
+                  onClick={() => navigate(`lecture/${lectureKey}/lecture`)}
+                ></LectureIntroduction>
+              );
+            })
           ) : (
             <p className='font-content font-bold text-2xl pt-15'>
               No Available Data
