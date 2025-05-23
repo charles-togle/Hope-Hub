@@ -26,7 +26,7 @@ export default function VideoList ({ videos, onVideoSelect, className }) {
         <div
           key={video.id.videoId}
           onClick={() => onVideoSelect(video)}
-          className='flex flex-row items-center gap-5 rounded-md hover:brightness-80 cursor-pointer'
+          className='lg:flex lg:flex-row items-center gap-5 rounded-md hover:brightness-80 cursor-pointer'
         >
           <div className='relative'>
             <img
@@ -38,7 +38,7 @@ export default function VideoList ({ videos, onVideoSelect, className }) {
               {formatDuration(video.duration)}
             </p>
           </div>
-          <h4 className='text-sm font-medium text-black text-left w-full'>
+          <h4 className='text-sm font-medium text-black text-center lg:text-left w-full'>
             {video.snippet.title}
           </h4>
         </div>

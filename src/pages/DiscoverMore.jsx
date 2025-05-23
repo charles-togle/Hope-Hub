@@ -1,11 +1,10 @@
 import PageHeading from '@/components/PageHeading';
-import youtube from '@/client/youtube';
+import youtubeFetch from '@/client/youtube';
 import Search from '@/components/youtube/Search';
 import VideoList from '@/components/youtube/VideoList';
 import VideoPlayer from '@/components/youtube/VideoPlayer';
 import Pagination from '@/components/youtube/Pagination';
-import { useState, useEffect } from 'react';
-import BackgroundImage from '@/assets/images/generic_bg.png';
+import { useState, useEffect, useRef } from 'react';
 
 export default function DiscoverMore () {
   const [videos, setVideos] = useState([]);
@@ -13,18 +12,22 @@ export default function DiscoverMore () {
   const [nextPageToken, setNextPageToken] = useState(null);
   const [prevPageToken, setPrevPageToken] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const containerRef = useRef(null);
 
-  const fetchFullVideoDetails = async videos => {
-    const videoIds = videos.map(video => video.id.videoId).join(',');
+  const fetchFullVideoDetails = async items => {
+    const videoIds = items
+      .map(v => v.id.videoId || v.id)
+      .filter(Boolean)
+      .join(',');
+    if (!videoIds) return [];
 
-    const response = await youtube.get('/videos', {
-      params: {
-        id: videoIds,
-        part: 'snippet,contentDetails',
-      },
+    const data = await youtubeFetch('videos', {
+      part: 'snippet,contentDetails',
+      id: videoIds,
+      maxResults: 10,
     });
 
-    const detailsMap = response.data.items.reduce((acc, item) => {
+    const detailsMap = data.items.reduce((acc, item) => {
       acc[item.id] = {
         snippet: item.snippet,
         duration: item.contentDetails.duration,
@@ -32,103 +35,101 @@ export default function DiscoverMore () {
       return acc;
     }, {});
 
-    return videos.map(video => {
-      const id = video.id.videoId;
-      const details = detailsMap[id];
-
+    return items.map(video => {
+      const id = video.id.videoId || video.id;
+      const details = detailsMap[id] || {};
       return {
         ...video,
-        snippet: {
-          ...details?.snippet,
-        },
-        duration: details?.duration || 'N/A',
+        snippet: { ...details.snippet },
+        duration: details.duration || 'N/A',
       };
     });
-  };
-
-  const fetchRelatedVideos = async videoId => {
-    const response = await youtube.get('/search', {
-      params: {
-        relatedToVideoId: videoId,
-        type: 'video',
-        q: 'fitness',
-      },
-    });
-
-    const fullVideos = await fetchFullVideoDetails(response.data.items);
-    setVideos(fullVideos);
-    setNextPageToken(response.data.nextPageToken || null);
-    setPrevPageToken(response.data.prevPageToken || null);
   };
 
   const handleSearch = async (query, pageToken = '') => {
     const fullQuery = `${query} fitness`;
     setSearchQuery(fullQuery);
-
-    const response = await youtube.get('/search', {
-      params: {
+    try {
+      const data = await youtubeFetch('search', {
+        part: 'snippet',
         q: fullQuery,
-        pageToken: pageToken,
+        pageToken,
         type: 'video',
-      },
-    });
+        maxResults: 10,
+      });
 
-    const fullVideos = await fetchFullVideoDetails(response.data.items);
-    setVideos(fullVideos);
-    setNextPageToken(response.data.nextPageToken || null);
-    setPrevPageToken(response.data.prevPageToken || null);
+      const fullVideos = await fetchFullVideoDetails(data.items);
+      setVideos(fullVideos);
+      setNextPageToken(data.nextPageToken || null);
+      setPrevPageToken(data.prevPageToken || null);
+    } catch (err) {
+      // Silently fail or show user-friendly UI feedback if needed
+    }
   };
 
   const handleVideoSelect = video => {
+    if (window.innerWidth < 1024) {
+      document.querySelectorAll('*').forEach(el => {
+        if (el.scrollTop > 0) el.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
     setSelectedVideo(video);
-    fetchRelatedVideos(video.id.videoId);
+    if (nextPageToken) {
+      handleSearch(searchQuery, nextPageToken);
+    }
   };
 
   useEffect(() => {
-    const searchAndPlayFirstVideo = async () => {
-      const response = await youtube.get('/search', {
-        params: {
+    const init = async () => {
+      try {
+        const data = await youtubeFetch('search', {
+          part: 'snippet',
           q: 'fitness tips',
           type: 'video',
-        },
-      });
+          maxResults: 10,
+        });
 
-      const fullVideos = await fetchFullVideoDetails(response.data.items);
-      if (fullVideos.length > 0) {
-        setSelectedVideo(fullVideos[0]);
-        setVideos(fullVideos);
-        setNextPageToken(response.data.nextPageToken || null);
-        setPrevPageToken(response.data.prevPageToken || null);
+        const fullVideos = await fetchFullVideoDetails(data.items);
+        if (fullVideos.length) {
+          setSelectedVideo(fullVideos[0]);
+          setVideos(fullVideos);
+          setNextPageToken(data.nextPageToken || null);
+          setPrevPageToken(data.prevPageToken || null);
+        }
+      } catch (err) {
+        // Silently fail or show user-friendly UI feedback if needed
       }
     };
-
-    searchAndPlayFirstVideo();
+    init();
   }, []);
 
   return (
     <section
       id='discover-more'
-      className='parent-container h-fit relative bg-transparent!'
+      className='parent-container h-fit relative bg-transparent'
     >
       <PageHeading text='Discover More' />
-      <div className='h-fit flex flex-col items-center justify-center mr-auto ml-auto'>
-        <div className='flex flex-row justify-between mb-8 w-[85%] mt-10'>
+      <div
+        ref={containerRef}
+        className='h-fit flex flex-col items-center justify-center mx-auto'
+      >
+        <div className='flex justify-between mb-8 w-4/5 mt-10'>
           <div>
             <p className='font-heading text-4xl text-primary-blue'>
               YouTube Search
             </p>
             <hr className='w-3/4 border-1 border-primary-yellow mt-2' />
           </div>
-          <Search onSearch={handleSearch} className='w-[50%] -mr-10' />
+          <Search onSearch={handleSearch} className='w-1/2 -mr-10' />
         </div>
-        <div className='w-[85%] shadow-md mb-10 border-2 border-accent-blue rounded-lg p-6 bg-transparent! relative'>
-          <div className='grid grid-cols-[59%_39%] gap-x-[2%] grid-rows-1 max-h-[120vh]'>
+        <div className='w-4/5 shadow-md mb-10 border-2 border-accent-blue rounded-lg p-6'>
+          <div className='flex flex-col sm:gap-10 lg:grid lg:grid-cols-[59%_39%] gap-x-4 lg:min-h-[100vh] lg:max-h-[120vh]'>
             <VideoPlayer video={selectedVideo} />
             <div className='h-full'>
               <VideoList
                 videos={videos}
                 onVideoSelect={handleVideoSelect}
-                className='h-[90%]'
+                className='h-7/10 lg:flex lg:flex-col grid grid-cols-2'
               />
               {videos.length > 0 && (
                 <Pagination
