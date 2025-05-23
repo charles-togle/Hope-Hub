@@ -23,7 +23,7 @@ export default function VideoPlayer ({ video, className = '' }) {
         {video.snippet.title}
         <hr className='w-1/2 border-primary-yellow border-1 mt-4 mb-4' />
       </h2>
-      <p className='text-content font-content text-justify max-h-80 overflow-y-auto'>
+      <p className='text-content w-full overflow-x-hidden pr-2 pl-2 font-content text-justify max-h-60 overflow-y-auto'>
         {video.snippet.description}
       </p>
     </div>
