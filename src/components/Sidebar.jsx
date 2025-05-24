@@ -57,7 +57,7 @@ export default function Sidebar ({ isOpen }) {
   };
 
   const handleTransitionEnd = () => {
-    if (!isOpen) setShouldRender(false);
+    if (!isOpen && isMobile) setShouldRender(false);
   };
 
   return (
@@ -65,8 +65,8 @@ export default function Sidebar ({ isOpen }) {
       id='sidebar'
       className={`${
         isMobile ? '' : 'aside '
-      } lg:w-[7vw] w-[35vw] h-screen overflow-hidden bg-secondary-dark-blue relative
-      border-r-secondary-dark-blue lg:flex flex-col items-center 
+      } lg:w-[7vw] w-[60vw] h-screen overflow-hidden bg-secondary-dark-blue lg:relative
+      border-r-secondary-dark-blue lg:flex flex-col items-center absolute z-2
       transition-all duration-400
       ${isMobile ? (isOpen ? 'translate-x-0' : '-translate-x-full w-0!') : ''}
       `}
@@ -76,7 +76,7 @@ export default function Sidebar ({ isOpen }) {
     >
       <div
         id='logo'
-        className={`fulltransition-all w-full duration-400 ease-out flex justify-center ${
+        className={`fulltransition-all w-full duration-400 ease-out flex justify-center items-center] ${
           isWide && !isMobile ? 'bg-white' : ''
         }`}
         onClick={() => navigate('/home')}
@@ -85,13 +85,13 @@ export default function Sidebar ({ isOpen }) {
         <img
           src={isWide && !isMobile ? SidebarLogo : SidebarLogoSmall}
           alt=''
-          className={`transition-all duration-400 w-fit h-40 object-contain`}
+          className={`transition-all duration-400 w-fit h-[15dvh] mt-[3vh] mb-[3vh] lg:mt-0 lg:h-40 object-contain`}
         />
       </div>
 
       <div
         id='sidebar-button'
-        className='flex flex-col items-center justify-around lg:justify-evenly h-full w-full'
+        className='flex flex-col items-center justify-around lg:justify-evenly w-full h-[75dvh] lg:h-full'
       >
         {SidebarButtons.map((item, index) => (
           <div
@@ -110,7 +110,7 @@ export default function Sidebar ({ isOpen }) {
                 className='transition-all duration-500 ml-5 lg:ml-0 mr-5 w-5 lg:w-8'
                 alt={`${item.text} Icon`}
               />
-              <p className='text-lg text-text-content text-wrap font-heading text-left border-white lg:w-[60%] lg:text-base lg:text-nowrap '>
+              <p className='text-lg text-text-content text-wrap font-heading text-left border-white lg:w-[60%] lg:text-base'>
                 {item.text}
               </p>
               {index === active && (
