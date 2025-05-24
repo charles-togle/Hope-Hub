@@ -7,6 +7,7 @@ import FormButton from '../../components/auth/FormButton';
 import { useState } from 'react';
 import supabase from '@/client/supabase';
 import LectureProgress from '@/utilities/LectureProgress';
+import { useEffect } from 'react';
 
 export default function Register () {
   const [name, setName] = useState('');
@@ -97,7 +98,13 @@ export default function Register () {
       setErrorMessage('Registration succeeded, but user info is missing.');
       return;
     }
+
+    setSuccessMessage('Verification has been sent to your email');
   };
+
+  useEffect(() => {
+    setClassCode('');
+  }, [isEducator]);
 
   return (
     <AuthContainer>

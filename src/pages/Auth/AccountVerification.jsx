@@ -7,13 +7,13 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
 import supabase from '@/client/supabase';
-import { useCallback } from 'react';
+import { useRef } from 'react';
 
 export default function AccountVerification () {
   const navigate = useNavigate();
   const [isBadRequest, setIsBadRequest] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [userRegistered, setUserRegistered] = useState(false);
+  const userRegistered = useRef(false);
 
   const handleRegister = async () => {
     const {
@@ -38,21 +38,32 @@ export default function AccountVerification () {
       }, 1000);
       return;
     }
+
+    const arrayClassCode = classCode ? [`${classCode}`] : [];
+
+    console.log(userType);
     const { error: rpcError } = await supabase.rpc('register_user', {
       p_user_id: userId,
       p_full_name: fullName,
       p_email: email,
       p_user_type: userType,
-      p_class_code: [classCode] || null,
+      p_class_code: arrayClassCode,
+      p_lecture_progress: lectureProgress,
     });
 
+    console.log(arrayClassCode);
     if (!rpcError) {
-      setUserRegistered(true);
+      setTimeout(() => {
+        supabase.auth.signOut();
+      }, 1500);
       return;
     }
 
     if (rpcError) {
       setErrorMessage('Error during registration: ' + rpcError.message);
+      setTimeout(() => {
+        supabase.auth.signOut();
+      }, 1500);
       return;
     }
 
@@ -67,13 +78,19 @@ export default function AccountVerification () {
       setErrorMessage(
         'Error initializing lecture progress: ' + lectureProgressError.message,
       );
+      setTimeout(() => {
+        supabase.auth.signOut();
+      }, 1500);
+      return;
     }
   };
+
   useEffect(() => {
-    if (!userRegistered) {
+    if (!userRegistered.current) {
+      userRegistered.current = true;
       handleRegister();
     }
-  }, [userRegistered, handleRegister]);
+  }, []);
 
   if (isBadRequest) {
     return <ErrorMessage text='Error 400' subText='Bad Request'></ErrorMessage>;
