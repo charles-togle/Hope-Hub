@@ -21,6 +21,7 @@ import ForgotPassword from './pages/Auth/ForgotPassword';
 import ChangePassword from './pages/Auth/ChangePassword';
 import DiscoverMore from './pages/DiscoverMore';
 import StudentDashboard from './pages/Profiles/StudentDashboard';
+import AccountVerification from './pages/Auth/AccountVerification';
 
 function App () {
   const SideBarOutlet = () => {
@@ -113,6 +114,10 @@ function App () {
             <Route path='register' element={<Register />}></Route>
             <Route path='forgot-password' element={<ForgotPassword />}></Route>
             <Route path='change-password' element={<ChangePassword />}></Route>
+            <Route
+              path='account-verification'
+              element={<AccountVerification />}
+            ></Route>
           </Route>
           <Route path='profile' element={<ProfileWrapper />}></Route>
           <Route path='*' element={<NotFound />} />
