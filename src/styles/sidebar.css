@@ -1,25 +1,25 @@
-aside:hover {
+.aside:hover {
   width: 18vw;
   transition: all;
   transition-duration: 500ms;
 }
 
-aside {
+.aside {
   transition: all;
   transition-duration: 500ms;
 }
 
-aside button {
+.aside button {
   transform: translateX(35%);
   transition: all;
   transition-duration: 300ms;
 }
 
-aside:hover button {
+.aside:hover button {
   transform: translateX(10%);
 }
 
-aside button > p {
+.aside button > p {
   transform: translateX(100%);
   transition: all;
   transition-duration: 300ms;
@@ -28,7 +28,7 @@ aside button > p {
   text-wrap: nowrap;
 }
 
-aside:hover button>p {
+.aside:hover button>p {
   display: block;
   width: 80%;
   transform: translateX(0%);

@@ -1,4 +1,5 @@
 import './styles/global.css';
+import { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import About from './pages/About';
 import Lectures from './pages/LecturesIntroduction';
@@ -21,20 +22,31 @@ import ForgotPassword from './pages/Auth/ForgotPassword';
 import ChangePassword from './pages/Auth/ChangePassword';
 import DiscoverMore from './pages/DiscoverMore';
 import StudentDashboard from './pages/Profiles/StudentDashboard';
+import HamburgerMenu from './assets/icons/hamburger_icon.png';
 import AccountVerification from './pages/Auth/AccountVerification';
 
-function App () {
-  const SideBarOutlet = () => {
-    return (
-      <div className='flex h-screen overflow-hidden'>
-        <Sidebar />
-        <div className='flex-1 h-screen overflow-x-hidden overflow-y-auto justify-center relative'>
-          <Outlet />
+function SidebarLayout () {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const handleHamburgerClick = () => setSidebarOpen(open => !open);
+  return (
+    <div className='flex h-screen overflow-hidden'>
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <div className='lg:pt-0 flex-1 h-screen overflow-x-hidden overflow-y-auto justify-center relative'>
+        <div className='hamburger-menu pl-5 flex items-center top-0 w-screen h-20 bg-secondary-dark-blue lg:hidden'>
+          <img
+            src={HamburgerMenu}
+            className='w-10 pr-3 cursor-pointer'
+            onClick={handleHamburgerClick}
+          />
+          <p className='text-primary-yellow text-3xl font-heading'>Hope Hub</p>
         </div>
+        <Outlet />
       </div>
-    );
-  };
+    </div>
+  );
+}
 
+function App () {
   const PhysicalFitnessWrapper = () => {
     return (
       <PhysicalFitnessDataProvider>
@@ -71,7 +83,7 @@ function App () {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<SideBarOutlet />} path='/'>
+        <Route element={<SidebarLayout />} path='/'>
           <Route index element={<Home />}></Route>
           <Route path='home' element={<Home />}></Route>
           <Route path='about' element={<About />} />

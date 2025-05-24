@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '@/styles/sidebar.css';
 
-export default function Sidebar () {
+export default function Sidebar ({ isOpen }) {
   const SidebarButtons = [
     { text: 'Home', icon: HomeIcon, route: 'home' },
     {
@@ -55,9 +55,12 @@ export default function Sidebar () {
   return (
     <aside
       id='sidebar'
-      className='hidden w-[7vw] h-screen overflow-hidden bg-secondary-dark-blue relative border-r-4
+      className={`aside w-[7vw] h-screen overflow-hidden bg-secondary-dark-blue relative border-r-4
       border-r-secondary-dark-blue lg:flex flex-col items-center 
-      transition-all duration-400'
+      transition-all duration-400
+      ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+      
+      `}
       onMouseEnter={() => handleOnMouseEnter()}
       onMouseLeave={() => handleOnMouseEnter()}
     >
