@@ -4,6 +4,7 @@ import HomeIcon from '../assets/icons/home_sidebar.png';
 import CalculatorIcon from '../assets/icons/calculator_sidebar.png';
 import LecturesIcon from '../assets/icons/lecture_sidebar.png';
 import QuizIcon from '../assets/icons/quiz_sidebar.png';
+import DiscoverIcon from '../assets/icons/discover-more_sidebar.png';
 import PhysicalFitnessIcon from '../assets/icons/physicalFitnessTest_sidebar.png';
 import AboutIcon from '../assets/icons/about_sidebar.png';
 import ProfileIcon from '../assets/icons/profile_sidebar.png';
@@ -21,7 +22,7 @@ export default function Sidebar ({ isOpen }) {
     },
     { text: 'Lectures', icon: LecturesIcon, route: '/lectures' },
     {
-      text: 'Quizzes/Activities',
+      text: 'Quizzes / Activities',
       icon: QuizIcon,
       route: '/quizzes-and-activities',
     },
@@ -32,7 +33,7 @@ export default function Sidebar ({ isOpen }) {
     },
     {
       text: 'Discover More',
-      icon: PhysicalFitnessIcon,
+      icon: DiscoverIcon,
       route: '/discover-more',
     },
     { text: 'About', icon: AboutIcon, route: '/about' },
@@ -43,6 +44,9 @@ export default function Sidebar ({ isOpen }) {
   const navigate = useNavigate();
   const [isWide, setIsWide] = useState(false);
 
+  // Add isMobile variable
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+
   const handleClick = (index, route) => {
     navigate(route);
     setActive(index);
@@ -52,28 +56,34 @@ export default function Sidebar ({ isOpen }) {
     setIsWide(prev => !prev);
   };
 
+  const handleTransitionEnd = () => {
+    if (!isOpen) setShouldRender(false);
+  };
+
   return (
     <aside
       id='sidebar'
-      className={`aside w-[7vw] h-screen overflow-hidden bg-secondary-dark-blue relative border-r-4
+      className={`${
+        isMobile ? '' : 'aside '
+      } lg:w-[7vw] w-[35vw] h-screen overflow-hidden bg-secondary-dark-blue relative
       border-r-secondary-dark-blue lg:flex flex-col items-center 
       transition-all duration-400
-      ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-      
+      ${isMobile ? (isOpen ? 'translate-x-0' : '-translate-x-full w-0!') : ''}
       `}
+      onTransitionEnd={handleTransitionEnd}
       onMouseEnter={() => handleOnMouseEnter()}
       onMouseLeave={() => handleOnMouseEnter()}
     >
       <div
         id='logo'
         className={`fulltransition-all w-full duration-400 ease-out flex justify-center ${
-          isWide ? 'bg-white' : ''
+          isWide && !isMobile ? 'bg-white' : ''
         }`}
         onClick={() => navigate('/home')}
       >
         {!isWide && <hr className='mt-5 absolute top-0 w-[60%] right-0' />}
         <img
-          src={isWide ? SidebarLogo : SidebarLogoSmall}
+          src={isWide && !isMobile ? SidebarLogo : SidebarLogoSmall}
           alt=''
           className={`transition-all duration-400 w-fit h-40 object-contain`}
         />
@@ -81,11 +91,11 @@ export default function Sidebar ({ isOpen }) {
 
       <div
         id='sidebar-button'
-        className='flex flex-col items-center justify-evenly h-full w-full'
+        className='flex flex-col items-center justify-around lg:justify-evenly h-full w-full'
       >
         {SidebarButtons.map((item, index) => (
           <div
-            className={`${isWide ? '' : ''} ${
+            className={`${isWide && !isMobile ? '' : ''} ${
               index === active ? 'brightness-75' : ''
             } w-full bg-secondary-dark-blue pt-2 pb-2 hover:brightness-75 `}
             key={`${item}-${index}`}
@@ -93,14 +103,14 @@ export default function Sidebar ({ isOpen }) {
             <button
               type='button'
               onClick={() => handleClick(index, item.route)}
-              className={`transition-all duration-500  flex items-center w-full relative`}
+              className={`transition-all duration-500 flex items-center w-full relative`}
             >
               <img
                 src={item.icon}
-                className='transition-all duration-500 mr-5 w-8'
+                className='transition-all duration-500 ml-5 lg:ml-0 mr-5 w-5 lg:w-8'
                 alt={`${item.text} Icon`}
               />
-              <p className='text-sm text-text-content font-heading text-left  border-white p w-[60%] lg:text-base '>
+              <p className='text-lg text-text-content text-wrap font-heading text-left border-white lg:w-[60%] lg:text-base lg:text-nowrap '>
                 {item.text}
               </p>
               {index === active && (

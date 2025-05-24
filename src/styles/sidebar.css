@@ -10,7 +10,7 @@
 }
 
 .aside button {
-  transform: translateX(35%);
+  transform: translateX(30%);
   transition: all;
   transition-duration: 300ms;
 }
