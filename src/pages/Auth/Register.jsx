@@ -7,6 +7,7 @@ import FormButton from '../../components/auth/FormButton';
 import { useState } from 'react';
 import supabase from '@/client/supabase';
 import LectureProgress from '@/utilities/LectureProgress';
+import { useEffect } from 'react';
 
 export default function Register () {
   const [name, setName] = useState('');
@@ -72,11 +73,19 @@ export default function Register () {
       return;
     }
 
+    const userType = isEducator ? 'teacher' : 'student';
+
     const { data, error } = await supabase.auth.signUp({
       email: trimmedEmail,
       password: trimmedPassword,
       options: {
-        emailRedirectTo: 'http:/localhost:5173/auth/login',
+        emailRedirectTo: 'http://localhost:5173/auth/account-verification',
+        data: {
+          fullName: trimmedName,
+          userType: userType,
+          classCode: trimmedClassCode,
+          lectureProgress: LectureProgress(),
+        },
       },
     });
 
@@ -90,40 +99,12 @@ export default function Register () {
       return;
     }
 
-    const userId = data.user.id;
-    const userType = isEducator ? 'teacher' : 'student';
-
-    const { error: rpcError } = await supabase.rpc('register_user', {
-      p_user_id: userId,
-      p_full_name: trimmedName,
-      p_email: trimmedEmail,
-      p_user_type: userType,
-      p_class_code: trimmedClassCode,
-    });
-
-    if (rpcError) {
-      setErrorMessage('Error during registration: ' + rpcError.message);
-      return;
-    }
-
-    const { error: lectureProgressError } = await supabase
-      .from('lecture_progress')
-      .upsert({
-        uuid: userId,
-        lecture_progress: LectureProgress(),
-      });
-
-    if (lectureProgressError) {
-      setErrorMessage(
-        'Error initializing lecture progress: ' + lectureProgressError.message,
-      );
-      return;
-    }
-
-    setSuccessMessage(
-      'Account created successfully! Please check your email to verify your account.',
-    );
+    setSuccessMessage('Verification has been sent to your email');
   };
+
+  useEffect(() => {
+    setClassCode('');
+  }, [isEducator]);
 
   return (
     <AuthContainer>

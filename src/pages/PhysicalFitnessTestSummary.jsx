@@ -29,11 +29,11 @@ export function PhysicalFitnessTestSummary () {
       const { data: existing, error: fetchError } = await supabase
         .from('physical_fitness_test')
         .select(columnName)
-        .eq('uuid', resolvedUserId)
+        .eq('uuid', userId)
         .single();
       console.log(existing);
-      const finishedTests = existing[columnName].finishedTestIndex;
-      const max = existing[columnName].finishedTestIndex.length - 1;
+      const finishedTests = existing[columnName]?.finishedTestIndex;
+      const max = existing[columnName]?.finishedTestIndex.length - 1;
       if (existing && !finishedTests.includes(max)) {
         setIsBadRequest(true);
       } else if (fetchError) {
