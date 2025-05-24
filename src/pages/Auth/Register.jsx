@@ -78,7 +78,7 @@ export default function Register () {
       email: trimmedEmail,
       password: trimmedPassword,
       options: {
-        emailRedirectTo: 'http://localhost:5173/auth/account-registration',
+        emailRedirectTo: 'http://localhost:5173/auth/account-verification',
         data: {
           fullName: trimmedName,
           userType: userType,

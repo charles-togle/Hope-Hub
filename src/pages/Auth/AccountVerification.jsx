@@ -7,11 +7,13 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
 import supabase from '@/client/supabase';
+import { useCallback } from 'react';
 
 export default function AccountVerification () {
   const navigate = useNavigate();
   const [isBadRequest, setIsBadRequest] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [userRegistered, setUserRegistered] = useState(false);
 
   const handleRegister = async () => {
     const {
@@ -44,6 +46,11 @@ export default function AccountVerification () {
       p_class_code: [classCode] || null,
     });
 
+    if (!rpcError) {
+      setUserRegistered(true);
+      return;
+    }
+
     if (rpcError) {
       setErrorMessage('Error during registration: ' + rpcError.message);
       return;
@@ -63,8 +70,10 @@ export default function AccountVerification () {
     }
   };
   useEffect(() => {
-    handleRegister(parsed);
-  }, []);
+    if (!userRegistered) {
+      handleRegister();
+    }
+  }, [userRegistered, handleRegister]);
 
   if (isBadRequest) {
     return <ErrorMessage text='Error 400' subText='Bad Request'></ErrorMessage>;
