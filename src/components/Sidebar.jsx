@@ -8,11 +8,19 @@ import DiscoverIcon from '../assets/icons/discover-more_sidebar.png';
 import PhysicalFitnessIcon from '../assets/icons/physicalFitnessTest_sidebar.png';
 import AboutIcon from '../assets/icons/about_sidebar.png';
 import ProfileIcon from '../assets/icons/profile_sidebar.png';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import ActiveHomeIcon from '../assets/icons/activeIcons/ActiveHome.png';
+import ActiveCalculatorIcon from '../assets/icons/activeIcons/ActiveCalculator.png';
+import ActiveLecturesIcon from '../assets/icons/activeIcons/ActiveLectures.png';
+import ActiveQuizIcon from '../assets/icons/activeIcons/ActiveQuiz.png';
+import ActivePhysicalFitnessIcon from '../assets/icons/activeIcons/ActivePhysicalFitness.png';
+import ActiveDiscoverIcon from '../assets/icons/activeIcons/ActiveDiscover.png';
+import ActiveAboutIcon from '../assets/icons/activeIcons/ActiveAbout.png';
+import ActiveProfileIcon from '../assets/icons/activeIcons/ActiveProfile.png';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '@/styles/sidebar.css';
 
-export default function Sidebar ({ isOpen }) {
+export default function Sidebar ({ isOpen, onClose }) {
   const SidebarButtons = [
     { text: 'Home', icon: HomeIcon, route: 'home' },
     {
@@ -40,6 +48,19 @@ export default function Sidebar ({ isOpen }) {
     { text: 'Profile', icon: ProfileIcon, route: '/profile' },
   ];
 
+  // Complete ActiveIconVariants for all sidebar buttons
+  const ActiveIconVariants = {
+    Home: ActiveHomeIcon,
+    'Health Calculators': ActiveCalculatorIcon,
+    Lectures: ActiveLecturesIcon,
+    'Quizzes / Activities': ActiveQuizIcon,
+    'Physical Fitness Test': ActivePhysicalFitnessIcon,
+    'Discover More': ActiveDiscoverIcon,
+    About: ActiveAboutIcon,
+    Profile: ActiveProfileIcon,
+  };
+
+  const location = useLocation();
   const [active, setActive] = useState(-1);
   const navigate = useNavigate();
   const [isWide, setIsWide] = useState(false);
@@ -47,9 +68,36 @@ export default function Sidebar ({ isOpen }) {
   // Add isMobile variable
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
 
+  // Close sidebar on outside click (mobile only)
+  useEffect(() => {
+    if (!isMobile || !isOpen) return;
+    const handleClick = e => {
+      // Only close if click is outside the sidebar
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar && !sidebar.contains(e.target)) {
+        if (onClose) onClose();
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [isMobile, isOpen, onClose]);
+
+  // Determine active index based on current path
+  useEffect(() => {
+    const foundIndex = SidebarButtons.findIndex(btn => {
+      // Support both exact and partial matches for nested routes
+      if (btn.route === '/') return location.pathname === '/';
+      return location.pathname.startsWith(btn.route.replace(/\/$/, ''));
+    });
+    setActive(foundIndex);
+  }, [location.pathname]);
+
   const handleClick = (index, route) => {
     navigate(route);
     setActive(index);
+    if (isMobile && typeof onClose === 'function') {
+      onClose();
+    }
   };
 
   const handleOnMouseEnter = () => {
@@ -66,7 +114,7 @@ export default function Sidebar ({ isOpen }) {
       className={`${
         isMobile ? '' : 'aside '
       } lg:w-[7vw] w-[60vw] h-screen overflow-hidden bg-secondary-dark-blue lg:relative
-      border-r-secondary-dark-blue lg:flex flex-col items-center absolute z-2
+      border-r-secondary-dark-blue lg:flex flex-col items-center absolute z-999
       transition-all duration-400
       ${isMobile ? (isOpen ? 'translate-x-0' : '-translate-x-full w-0!') : ''}
       `}
@@ -106,16 +154,15 @@ export default function Sidebar ({ isOpen }) {
               className={`transition-all duration-500 flex items-center w-full relative`}
             >
               <img
-                src={item.icon}
+                src={
+                  index === active ? ActiveIconVariants[item.text] : item.icon
+                }
                 className='transition-all duration-500 ml-5 lg:ml-0 mr-5 w-5 lg:w-8'
                 alt={`${item.text} Icon`}
               />
               <p className='text-lg text-text-content text-wrap font-heading text-left border-white lg:w-[60%] lg:text-base'>
                 {item.text}
               </p>
-              {index === active && (
-                <span className='absolute right-2 text-white text-2xl'>•</span>
-              )}
             </button>
           </div>
         ))}

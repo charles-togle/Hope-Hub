@@ -32,7 +32,7 @@ function SidebarLayout () {
     <div className='flex h-screen overflow-hidden'>
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className='lg:pt-0 flex-1 h-screen overflow-x-hidden overflow-y-auto justify-center relative'>
-        <div className='hamburger-menu pl-5 flex items-center top-0 w-screen h-20 bg-secondary-dark-blue lg:hidden relative'>
+        <div className='hamburger-menu pl-5 flex items-center top-0 w-screen h-20 bg-secondary-dark-blue mb-5 lg:hidden relative'>
           <img
             src={HamburgerMenu}
             className='w-10 pr-3 cursor-pointer'
