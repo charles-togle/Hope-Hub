@@ -8,21 +8,21 @@ import DiscoverIcon from '../assets/icons/discover-more_sidebar.png';
 import PhysicalFitnessIcon from '../assets/icons/physicalFitnessTest_sidebar.png';
 import AboutIcon from '../assets/icons/about_sidebar.png';
 import ProfileIcon from '../assets/icons/profile_sidebar.png';
-import ActiveHomeIcon from '../assets/icons/activeIcons/ActiveHome.png';
-import ActiveCalculatorIcon from '../assets/icons/activeIcons/ActiveCalculator.png';
-import ActiveLecturesIcon from '../assets/icons/activeIcons/ActiveLectures.png';
-import ActiveQuizIcon from '../assets/icons/activeIcons/ActiveQuiz.png';
-import ActivePhysicalFitnessIcon from '../assets/icons/activeIcons/ActivePhysicalFitness.png';
-import ActiveDiscoverIcon from '../assets/icons/activeIcons/ActiveDiscover.png';
-import ActiveAboutIcon from '../assets/icons/activeIcons/ActiveAbout.png';
-import ActiveProfileIcon from '../assets/icons/activeIcons/ActiveProfile.png';
+import ActiveHomeIcon from '../assets/icons/activeIcons/ActiveHomeIcon.png';
+import ActiveCalculatorIcon from '../assets/icons/activeIcons/ActiveCalculatorsIcon.png';
+import ActiveLecturesIcon from '../assets/icons/activeIcons/ActiveLecturesIcon.png';
+import ActiveQuizIcon from '../assets/icons/activeIcons/ActiveQuizIcon.png';
+import ActivePhysicalFitnessIcon from '../assets/icons/activeIcons/ActivePhysicalIcon.png';
+import ActiveDiscoverIcon from '../assets/icons/activeIcons/ActiveDiscoverIcon.png';
+import ActiveAboutIcon from '../assets/icons/activeIcons/ActiveAboutIcon.png';
+import ActiveProfileIcon from '../assets/icons/activeIcons/ActiveProfileIcon.png';
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '@/styles/sidebar.css';
 
 export default function Sidebar ({ isOpen, onClose }) {
   const SidebarButtons = [
-    { text: 'Home', icon: HomeIcon, route: 'home' },
+    { text: 'Home', icon: HomeIcon, route: '/home' },
     {
       text: 'Health Calculators',
       icon: CalculatorIcon,
@@ -37,7 +37,7 @@ export default function Sidebar ({ isOpen, onClose }) {
     {
       text: 'Physical Fitness Test',
       icon: PhysicalFitnessIcon,
-      route: 'physical-fitness-test/parq',
+      route: '/physical-fitness-test/parq',
     },
     {
       text: 'Discover More',
@@ -125,13 +125,13 @@ export default function Sidebar ({ isOpen, onClose }) {
       <div
         id='logo'
         className={`fulltransition-all w-full duration-400 ease-out flex justify-center items-center] ${
-          isWide && !isMobile ? 'bg-white' : ''
+          isWide || (isMobile && isOpen) ? 'bg-white' : ''
         }`}
         onClick={() => navigate('/home')}
       >
         {!isWide && <hr className='mt-5 absolute top-0 w-[60%] right-0' />}
         <img
-          src={isWide && !isMobile ? SidebarLogo : SidebarLogoSmall}
+          src={isWide || (isMobile && isOpen) ? SidebarLogo : SidebarLogoSmall}
           alt=''
           className={`transition-all duration-400 w-fit h-[15dvh] mt-[3vh] mb-[3vh] lg:mt-0 lg:h-40 object-contain`}
         />
@@ -143,9 +143,9 @@ export default function Sidebar ({ isOpen, onClose }) {
       >
         {SidebarButtons.map((item, index) => (
           <div
-            className={`${isWide && !isMobile ? '' : ''} ${
-              index === active ? 'brightness-75' : ''
-            } w-full bg-secondary-dark-blue pt-2 pb-2 hover:brightness-75 `}
+            className={`${
+              isWide && !isMobile ? '' : ''
+            } w-full bg-secondary-dark-blue pt-2 pb-2 `}
             key={`${item}-${index}`}
           >
             <button
@@ -153,14 +153,20 @@ export default function Sidebar ({ isOpen, onClose }) {
               onClick={() => handleClick(index, item.route)}
               className={`transition-all duration-500 flex items-center w-full relative`}
             >
+              <div
+                className={`highlight opacity-0 ${
+                  index === active ? 'block opacity-30 ' : ''
+                } absolute w-full bg-black z-0 pb-6 pt-6              
+                `}
+              ></div>
               <img
                 src={
                   index === active ? ActiveIconVariants[item.text] : item.icon
                 }
-                className='transition-all duration-500 ml-5 lg:ml-0 mr-5 w-5 lg:w-8'
+                className='relative z-1 transition-all duration-500 ml-5 lg:ml-0 mr-5 w-8 lg:w-unset lg:h-8'
                 alt={`${item.text} Icon`}
               />
-              <p className='text-lg text-text-content text-wrap font-heading text-left border-white lg:w-[60%] lg:text-base'>
+              <p className='relative z-1 text-lg text-text-content text-wrap font-heading text-left border-white lg:w-[60%] lg:text-base'>
                 {item.text}
               </p>
             </button>

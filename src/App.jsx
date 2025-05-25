@@ -38,7 +38,7 @@ function SidebarLayout () {
             className='w-10 pr-3 cursor-pointer'
             onClick={handleHamburgerClick}
           />
-          <p className='text-primary-yellow text-3xl font-heading'>Hope Hub</p>
+          <p className='text-white text-3xl font-heading'>Hope Hub</p>
         </div>
         <Outlet />
       </div>
