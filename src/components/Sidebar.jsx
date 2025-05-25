@@ -124,7 +124,7 @@ export default function Sidebar ({ isOpen, onClose }) {
     >
       <div
         id='logo'
-        className={`fulltransition-all w-full duration-400 ease-out flex justify-center items-center] ${
+        className={`fulltransition-all w-full duration-400 ease-out flex justify-center items-center mb-4 lg:mb-0 ${
           isWide || (isMobile && isOpen) ? 'bg-white' : ''
         }`}
         onClick={() => navigate('/home')}
