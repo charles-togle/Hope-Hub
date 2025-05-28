@@ -20,6 +20,7 @@ export default function StudentDashboard () {
   });
   const [isDataReady, setIsDataReady] = useState(false);
   const [studentName, setStudentName] = useState('');
+  const [classCode, setClassCode] = useState('');
 
   const userID = useUserId();
   const navigate = useNavigate();
@@ -70,6 +71,24 @@ export default function StudentDashboard () {
     });
     setIsDataReady(true);
   };
+
+  useEffect(() => {
+    async function getClassCode () {
+      const { data, error } = await supabase
+        .from('class_code')
+        .select()
+        .single()
+        .eq('uuid', userID);
+      if (error) {
+        setClassCode('');
+        return;
+      }
+      const classCode = data?.class_code[0];
+      setClassCode(classCode);
+    }
+    if (!isDataReady) return;
+    getClassCode();
+  }, [userID, isDataReady]);
 
   useEffect(() => {
     if (isDataReady) return;
@@ -163,6 +182,10 @@ export default function StudentDashboard () {
     }
   };
 
+  const handleLeaveClass = () => {
+    //leave class
+  };
+
   const onProfileChange = async (file, fileName = 'profilePicture') => {
     if (!userID) return;
     const bucketName = 'profile-pictures';
@@ -229,7 +252,7 @@ export default function StudentDashboard () {
           <hr className='w-90 border-1 border-primary-yellow mt-3 mb-3' />
         </div>
         <div id='content' className='w-full '>
-          <Banner name={studentName}></Banner>
+          <Banner name={studentName} classCode={classCode}></Banner>
           <div id='statistics' className='grid grid-cols-2 gap-5'>
             <div id='lectures'>
               <Statistics progress={lectureProgress} type='Lectures' />
