@@ -8,7 +8,7 @@ export default function AuthContainer ({ children }) {
       <img
         src={AuthBG}
         alt=''
-        className='w-full h-screen absolute -z-1 top-0'
+        className='w-full max-h-[110vh] absolute -z-1 top-0'
       />
       <div className='flex justify-center items-center w-full'>{children}</div>
     </section>

@@ -7,6 +7,7 @@ import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import JoinClass from '@/components/dashboard/JoinClass';
 
 export default function StudentDashboard () {
   const [preTestFinished, setPreTestFinished] = useState(false);
@@ -20,7 +21,9 @@ export default function StudentDashboard () {
   });
   const [isDataReady, setIsDataReady] = useState(false);
   const [studentName, setStudentName] = useState('');
-  const [classCode, setClassCode] = useState('');
+  const [classCode, setClassCode] = useState(null);
+  const [tempClassCode, setTempClassCode] = useState(''); //for setting new class code
+  const [isJoiningClass, setIsJoiningClass] = useState(false);
 
   const userID = useUserId();
   const navigate = useNavigate();
@@ -83,8 +86,11 @@ export default function StudentDashboard () {
         setClassCode('');
         return;
       }
-      const classCode = data?.class_code[0];
-      setClassCode(classCode);
+      const classCode = data?.class_code;
+      if (!classCode) setClassCode(null);
+      else {
+        setClassCode(classCode[0]);
+      }
     }
     if (!isDataReady) return;
     getClassCode();
@@ -182,8 +188,36 @@ export default function StudentDashboard () {
     }
   };
 
-  const handleLeaveClass = () => {
-    //leave class
+  const handleLeaveClass = async () => {
+    const { error: leaveClassError } = await supabase
+      .from('class_code')
+      .update({ class_code: null })
+      .eq('uuid', userID);
+    if (leaveClassError) {
+      console.log(
+        'there was a problem leaving class: ',
+        leaveClassError.message,
+      );
+      return;
+    }
+    setClassCode(null);
+  };
+
+  const handleJoinClass = async () => {
+    console.log(tempClassCode);
+    const { error: joinClassError } = await supabase
+      .from('class_code')
+      .update({ class_code: [tempClassCode] })
+      .eq('uuid', userID);
+    if (joinClassError) {
+      console.log(
+        'there was a problem joining class: ',
+        joinClassError.message,
+      );
+      return;
+    }
+    setIsJoiningClass(false);
+    setClassCode(tempClassCode);
   };
 
   const onProfileChange = async (file, fileName = 'profilePicture') => {
@@ -246,13 +280,26 @@ export default function StudentDashboard () {
   };
   return (
     <section className='StudentDashboard parent-container'>
+      {isJoiningClass && (
+        <JoinClass
+          setTempClassCode={setTempClassCode}
+          tempClassCode={tempClassCode}
+          handleClose={() => setIsJoiningClass(false)}
+          handleJoinClass={handleJoinClass}
+        ></JoinClass>
+      )}
       <div className='content-container grid! grid-cols-[75%_25%] w-[93%]! gap-x-10 pt-10! relative'>
         <div className='col-span-2'>
           <h1 className='font-heading text-primary-blue text-5xl'>Dashboard</h1>
           <hr className='w-90 border-1 border-primary-yellow mt-3 mb-3' />
         </div>
         <div id='content' className='w-full '>
-          <Banner name={studentName} classCode={classCode}></Banner>
+          <Banner
+            name={studentName}
+            classCode={classCode}
+            onClassLeave={handleLeaveClass}
+            onClassJoinOpen={() => setIsJoiningClass(true)}
+          ></Banner>
           <div id='statistics' className='grid grid-cols-2 gap-5'>
             <div id='lectures'>
               <Statistics progress={lectureProgress} type='Lectures' />

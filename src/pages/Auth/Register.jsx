@@ -57,19 +57,20 @@ export default function Register () {
       trimmedPassword,
       trimmedConfirmPassword,
       trimmedName,
-      trimmedClassCode,
     ];
 
-    const areAllFieldsFilled = fields.every(field =>
-      field === trimmedClassCode
-        ? isEducator
-          ? true
-          : field !== ''
-        : field !== '',
-    );
+    const areAllFieldsFilled = fields.every(field => field !== '');
 
     if (!areAllFieldsFilled) {
-      setErrorMessage('Please fill up all fields');
+      setErrorMessage('Please fill up all required fields');
+      setSuccessMessage('');
+      return;
+    }
+
+    if (trimmedClassCode && trimmedClassCode.length !== 6) {
+      setErrorMessage('Class code must be exactly 6 characters');
+      setSuccessMessage('');
+
       return;
     }
 
@@ -83,19 +84,22 @@ export default function Register () {
         data: {
           fullName: trimmedName,
           userType: userType,
-          classCode: trimmedClassCode,
+          classCode: trimmedClassCode !== '' ? trimmedClassCode : null,
           lectureProgress: LectureProgress(),
+          password: trimmedPassword,
         },
       },
     });
 
     if (error) {
       setErrorMessage(error.message);
+      setSuccessMessage('');
       return;
     }
 
     if (!data || !data.user) {
       setErrorMessage('Registration succeeded, but user info is missing.');
+      setSuccessMessage('');
       return;
     }
 
@@ -130,7 +134,9 @@ export default function Register () {
           <FormInput
             value={classCode}
             placeholder={
-              isEducator ? 'You can create a class later' : 'Enter class code'
+              isEducator
+                ? 'You can create a class later'
+                : 'Nothing going on yet? Join a class later'
             }
             disabled={isEducator}
             setValue={setClassCode}
