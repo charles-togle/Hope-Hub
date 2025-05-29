@@ -52,32 +52,9 @@ export default function AccountVerification () {
     });
 
     console.log(arrayClassCode);
-    if (!rpcError) {
-      setTimeout(() => {
-        supabase.auth.signOut();
-      }, 1500);
-      return;
-    }
 
     if (rpcError) {
       setErrorMessage('Error during registration: ' + rpcError.message);
-      setTimeout(() => {
-        supabase.auth.signOut();
-      }, 1500);
-      return;
-    }
-
-    const { error: lectureProgressError } = await supabase
-      .from('lecture_progress')
-      .upsert({
-        uuid: userId,
-        lecture_progress: lectureProgress,
-      });
-
-    if (lectureProgressError) {
-      setErrorMessage(
-        'Error initializing lecture progress: ' + lectureProgressError.message,
-      );
       setTimeout(() => {
         supabase.auth.signOut();
       }, 1500);

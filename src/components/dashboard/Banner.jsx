@@ -2,6 +2,7 @@ export default function Banner ({
   name = 'name',
   classCode = '123a45',
   onClassLeave = () => {},
+  onClassJoinOpen = () => {},
 }) {
   return (
     <div
@@ -22,15 +23,20 @@ export default function Banner ({
         id='class-code'
         className='flex items-center justify-center flex-col'
       >
-        <p className='font-content italic'>
-          Class Code:
-          <span className='text-primary-yellow font-bold'> {classCode}</span>
+        <p
+          className={`font-content italic  ${
+            classCode ? 'text-left mb-5' : 'text-center text-lg mb-2'
+          }`}
+        >
+          {(classCode && 'Class Code: ') || 'Currently not enrolled in a class'}
+
+          <span className='text-primary-yellow font-bold'>{classCode}</span>
         </p>
         <button
-          className='bg-[#DB4E34] rounded-md mt-5 w-full py-3 text-sm italic hover:brightness-90'
-          onClick={() => onClassLeave()}
+          className='bg-[#DB4E34] rounded-md  w-full py-3 text-sm italic hover:brightness-90'
+          onClick={classCode ? () => onClassLeave() : () => onClassJoinOpen()}
         >
-          Leave Class
+          {classCode ? 'Leave Class' : 'Join Class'}
         </button>
       </div>
     </div>
