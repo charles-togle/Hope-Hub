@@ -5,144 +5,161 @@ import { useEffect, useState } from 'react';
 import LecturePDF from '@/components/LecturePDF';
 import LectureVideo from '@/components/LectureVideo';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
-import setDataToStorage from '@/utilities/setDataToStorage';
-import useLectureProgress from '@/hooks/useLectureProgress';
-import getDataFromStorage from '@/utilities/getDataFromStorage';
-export default function LecturePage() {
+import supabase from '@/client/supabase';
+import { useUserId } from '@/hooks/useUserId';
+import LectureProgress from '@/utilities/LectureProgress';
+
+export default function LecturePage () {
   const { lessonNumber, lectureType } = useParams();
+  const navigate = useNavigate();
+  const userId = useUserId();
   const [isError, setIsError] = useState(false);
   const [isLectureDone, setIsLectureDone] = useState(false);
-  const [isVideo, setIsVideo] = useState(() => {
-    if (lectureType === 'video') {
-      return true;
-    } else if (lectureType === 'lecture') {
-      return false;
-    } else {
-      return false;
-    }
-  });
+  const [isVideo, setIsVideo] = useState(lectureType === 'video');
+  const [lectureProgress, setLectureProgress] = useState([]);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const selectedLessonNumber = Number(lessonNumber);
 
-  const navigate = useNavigate();
-  const selectedLessonNumber = lessonNumber;
-  const { lectureProgress, setLectureProgress } = useLectureProgress();
+  const lessonDetails = Lessons.find(
+    lesson => lesson.key === selectedLessonNumber,
+  );
 
+  // Fetch lecture progress from DB on mount
   useEffect(() => {
-    if (lectureType !== 'video' && lectureType !== 'lecture') {
+    if (!userId) return;
+    const fetchProgress = async () => {
+      const { data, error } = await supabase
+        .from('lecture_progress')
+        .select('lecture_progress')
+        .eq('uuid', userId)
+        .single();
+      if (error || !data || !data.lecture_progress) {
+        setLectureProgress(LectureProgress());
+      } else {
+        setLectureProgress(data.lecture_progress);
+      }
+      setDataLoaded(true);
+    };
+    fetchProgress();
+  }, [userId]);
+
+  // Guard: invalid lectureType or out of bounds lesson
+  useEffect(() => {
+    if (
+      !['video', 'lecture'].includes(lectureType) ||
+      selectedLessonNumber > Lessons.length
+    ) {
       setIsError(true);
     }
-  }, [lectureType]);
+  }, [lectureType, selectedLessonNumber]);
 
+  // Ensure correct route format based on isVideo state
   useEffect(() => {
     navigate(
       `/lectures/lecture/${selectedLessonNumber}/${
         isVideo ? 'video' : 'lecture'
       }`,
     );
-  }, [isVideo, navigate, lectureType, selectedLessonNumber]);
+  }, [isVideo, selectedLessonNumber, navigate]);
 
+  // Mark as pending if not done, and update DB
   useEffect(() => {
-    const storedProgress = getDataFromStorage('LectureProgress');
-    if (storedProgress) {
-      const currentLecture = storedProgress.find(
-        (progress) => progress.key === Number(selectedLessonNumber),
-      );
-
-      if (currentLecture && currentLecture.status === 'Done') {
-        setIsLectureDone(true);
-      }
-      const updatedProgress = storedProgress.map((progress) => {
-        if (
-          progress.key === Number(selectedLessonNumber) &&
-          progress.status === 'Incomplete'
-        ) {
-          return { ...progress, status: 'Pending' };
+    if (!userId) return;
+    if (!dataLoaded) return;
+    if (!lectureProgress || lectureProgress.length === 0) return;
+    const updateProgress = async () => {
+      const updatedProgress = lectureProgress.map(progress => {
+        if (progress.key === selectedLessonNumber) {
+          if (progress.status === 'Done') setIsLectureDone(true);
+          if (progress.status === 'Incomplete')
+            return { ...progress, status: 'Pending' };
         }
         return progress;
       });
-
-      if (JSON.stringify(storedProgress) !== JSON.stringify(updatedProgress)) {
-        setDataToStorage('LectureProgress', updatedProgress);
+      const isChanged =
+        JSON.stringify(lectureProgress) !== JSON.stringify(updatedProgress);
+      if (isChanged) {
         setLectureProgress(updatedProgress);
+        await supabase
+          .from('lecture_progress')
+          .update({ lecture_progress: updatedProgress })
+          .eq('uuid', userId);
       }
-    } else {
-      setDataToStorage('LectureProgress', lectureProgress);
-    }
-  }, [selectedLessonNumber, setLectureProgress, lectureProgress]);
+    };
+    updateProgress();
+  }, [lectureProgress, selectedLessonNumber, dataLoaded, userId]);
 
-  if (selectedLessonNumber > Lessons.length || isError) {
-    return <ErrorMessage text={'Error 404'} subText={'Page not found'} />;
-  }
-
-  const lessonDetails = Lessons.find(
-    (lesson) => lesson.key === Number(selectedLessonNumber),
-  );
-  const { pdf, introduction, title, videoLecture } = lessonDetails;
-
-  const handleLectureFinish = () => {
+  // Handler: when lecture/video is finished
+  const handleLectureFinish = async () => {
     if (isLectureDone) return;
-
     const lectureToUpdate = lectureProgress.find(
-      (lecture) => lecture.key === Number(selectedLessonNumber),
+      p => p.key === selectedLessonNumber,
     );
-    if (!lectureToUpdate) {
-      console.error('Lecture not found!');
-      return;
-    }
-    const updatedLecture = { ...lectureToUpdate, status: 'Done' };
-    const updatedProgress = lectureProgress.map((lecture) =>
-      lecture.key === Number(selectedLessonNumber) ? updatedLecture : lecture,
+    if (!lectureToUpdate)
+      return console.error('Lecture not found in progress!');
+    const updatedProgress = lectureProgress.map(p =>
+      p.key === selectedLessonNumber ? { ...p, status: 'Done' } : p,
     );
     setLectureProgress(updatedProgress);
-    setDataToStorage('LectureProgress', updatedProgress);
     setIsLectureDone(true);
+    // Update remote DB
+    await supabase
+      .from('lecture_progress')
+      .update({ lecture_progress: updatedProgress })
+      .eq('uuid', userId);
   };
 
+  // Render: error message
+  if (!lessonDetails || isError) {
+    return <ErrorMessage text='Error 404' subText='Page not found' />;
+  }
+  if (!dataLoaded) {
+    return (
+      <div className='w-full flex items-center justify-center h-screen'>
+        <div className='font-content font-medium text-xl text-center w-full'>
+          Loading...
+        </div>
+      </div>
+    );
+  }
+
+  const { pdf, introduction, title, videoLecture } = lessonDetails;
+
   return (
-    <div id="lecture-page" className="h-fit min-h-screen bg-gray-background">
-      <PageHeading text="Lecture & Video Lessons"></PageHeading>
-      <div
-        id="content"
-        className="w-[80%] h-fit flex flex-col mr-auto ml-auto mt-5 items-center relative"
-      >
+    <div id='lecture-page' className='min-h-screen bg-gray-background'>
+      <PageHeading text='Lecture & Video Lessons' />
+      <div className='w-[90%] lg:w-[80%] mx-auto mt-5 flex flex-col items-center'>
         <button
-          id="switch"
-          onClick={() => {
-            setIsVideo((prev) => !prev);
-          }}
-          className="w-fit self-start px-5 mb-3 border-2 border-accent-blue py-2 text-xl font-content bg-secondary-dark-blue text-white hover:bg-accent-blue hover:text-white transition-all"
+          id='switch'
+          onClick={() => setIsVideo(prev => !prev)}
+          className='px-5 mb-3 py-2 text-xl self-start font-content border-2 border-accent-blue bg-secondary-dark-blue text-white hover:bg-accent-blue transition-all'
         >
           {isVideo ? 'READ DOCUMENT' : 'WATCH VIDEO LECTURE'}
         </button>
-        <div
-          className={`${
-            isVideo ? 'hidden' : 'block'
-          } transition-opacity duration-300`}
-        >
+
+        {!isVideo && (
           <LecturePDF
             lectureNumber={selectedLessonNumber}
             title={title}
             introduction={introduction}
             pdfLink={pdf}
-            quizLink={''}
-            onTimerEnd={() => handleLectureFinish()}
+            quizLink=''
+            onTimerEnd={handleLectureFinish}
             isLectureDone={isLectureDone}
           />
-        </div>
-        <div
-          className={`${
-            isVideo ? 'block' : 'hidden'
-          } transition-opacity duration-300`}
-        >
+        )}
+
+        {isVideo && (
           <LectureVideo
             lectureNumber={selectedLessonNumber}
             title={title}
             introduction={introduction}
             videoLink={videoLecture}
-            quizLink={''}
-            onVideoFinish={() => handleLectureFinish()}
+            quizLink=''
+            onVideoFinish={handleLectureFinish}
             isLectureDone={isLectureDone}
           />
-        </div>
+        )}
       </div>
     </div>
   );
