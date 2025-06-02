@@ -1,6 +1,10 @@
 import supabase from '@/client/supabase';
 
-export async function onProfileChange (file, fileName = 'profilePicture') {
+export async function onProfileChange (
+  userID,
+  file,
+  fileName = 'profilePicture',
+) {
   if (!userID) return;
   const bucketName = 'profile-pictures';
   const folderName = userID;

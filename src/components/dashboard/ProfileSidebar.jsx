@@ -9,7 +9,7 @@ export default function ProfileSidebar ({
   handleLogout,
 }) {
   return (
-    <Container className='h-full mt-0! flex flex-col items-center pt-5 space-y-5 relative'>
+    <Container className='h-full relative left mt-0! flex flex-col items-center pt-5 space-y-5 max-h-[90vh]'>
       <ProfilePicture
         onProfileChange={onProfileChange}
         initialFile={memoizedFile}
@@ -23,7 +23,7 @@ export default function ProfileSidebar ({
         <p className='text-neutral-dark-blue font-md text-base'>Student</p>
       </div>
       <button
-        className='font-bold text-red text-xl absolute bottom-1 mb-10 flex items-center gap-2 hover:brightness-75'
+        className='font-bold text-red text-xl absolute bottom-1 mb-10 flex items-center gap-2 hover:brightness-75 cursor-pointer'
         onClick={() => handleLogout()}
       >
         <LogOut className='w-6 h-6' /> Logout

@@ -71,6 +71,7 @@ const AuthWrapper = () => {
 
 const ProfileWrapper = () => {
   const [isTeacher, setIsTeacher] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const userID = useUserId();
 
   useEffect(() => {
@@ -91,9 +92,14 @@ const ProfileWrapper = () => {
         return;
       }
       setIsTeacher(data.user_type === 'teacher');
+      setIsLoading(false);
     }
     getType();
   }, [userID]);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   if (isTeacher) {
     return <TeacherDashboard></TeacherDashboard>;

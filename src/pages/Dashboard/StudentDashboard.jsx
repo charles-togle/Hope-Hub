@@ -80,7 +80,7 @@ export default function StudentDashboard () {
   useEffect(() => {
     async function getClassCode () {
       const { data, error } = await supabase
-        .from('class_code')
+        .from('student_class_code')
         .select()
         .single()
         .eq('uuid', userID);
@@ -91,7 +91,7 @@ export default function StudentDashboard () {
       const classCode = data?.class_code;
       if (!classCode) setClassCode(null);
       else {
-        setClassCode(classCode[0]);
+        setClassCode(classCode);
       }
     }
     if (!isDataReady) return;
