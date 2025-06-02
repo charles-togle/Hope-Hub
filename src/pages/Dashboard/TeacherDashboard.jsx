@@ -127,14 +127,13 @@ export default function TeacherDashboard () {
       </div>
       <DashboardContainer>
         <div className='flex gap-4 flex-col relative min-h-[90vh] w-full'>
-          <div className='font-heading text-primary-blue'>
+          <div className='font-heading-small text-primary-blue'>
             <p className='text-4xl'>Hello, Prof. {teacherName} </p>
             <hr className='w-60 border-1 border-primary-yellow mt-2 mb-2' />
             <p className='text-2xl'>Welcome to Teacher’s Dashboard</p>
           </div>
           <Banner isStudent={false} name={teacherName} />{' '}
           <div id='class-codes' className='flex flex-wrap w-full gap-4 pb-40'>
-            {' '}
             {classCodes.map(code => (
               <ClassCode
                 key={code.class_code}
