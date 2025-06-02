@@ -1,6 +1,6 @@
 import React from 'react';
 import PageHeading from '@/components/PageHeading';
-import HealthCalculatorButton from '@/components/HealthCalculatorButtons';
+import HealthCalculatorButton from '@/components/health-calculators/HealthCalculatorButtons';
 import { Link } from 'react-router-dom';
 
 export default function HealthCalculator() {

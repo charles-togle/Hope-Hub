@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { PhysicalFitnessTestList } from '@/utilities/PhysicalFitnessTestList';
 import { Fragment } from 'react';
 import { usePhysicalFitnessData } from '@/hooks/usePhysicalFitnessData';
-import { AlertMessage } from './utilities/AlertMessage';
+import { AlertMessage } from '@/components/utilities/AlertMessage';
 import setDataToStorage from '@/utilities/setDataToStorage';
 import getDataFromStorage from '@/utilities/getDataFromStorage';
 import { Timer } from '@/components/utilities/Timer';
-import { ResultSection } from './physical-fitness-test/ResultSection';
-import { TipsAndInterpretation } from './physical-fitness-test/TipsAndInterperetation';
+import { ResultSection } from '@/components/physical-fitness-test/ResultSection';
+import { TipsAndInterpretation } from '@/components/physical-fitness-test/TipsAndInterperetation';
 import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
 
@@ -142,7 +142,7 @@ export default function PhysicalFitnessTest ({
   };
 
   const handleSubmit = async () => {
-    if(!userId) return
+    if (!userId) return;
     setCurrentTime(
       `${String(new Date().getHours()).padStart(2, '0')}:${String(
         new Date().getMinutes(),

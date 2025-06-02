@@ -1,5 +1,5 @@
 import PageHeading from '@/components/PageHeading';
-import LectureIntroduction from '@/components/LectureIntroComponent';
+import LectureIntroduction from '@/components/lectures/LectureIntroComponent';
 import { useState, useEffect, useCallback } from 'react';
 import { Lessons } from '@/utilities/Lessons';
 import supabase from '@/client/supabase';

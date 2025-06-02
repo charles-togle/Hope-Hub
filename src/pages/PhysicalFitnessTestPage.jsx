@@ -1,4 +1,4 @@
-import PhysicalFitnessTest from '@/components/PhysicalFitnessTest';
+import PhysicalFitnessTest from '@/components/physical-fitness-test/PhysicalFitnessTest';
 import PageHeading from '@/components/PageHeading';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
