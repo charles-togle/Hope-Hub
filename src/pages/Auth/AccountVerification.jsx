@@ -39,15 +39,13 @@ export default function AccountVerification () {
       return;
     }
 
-    const arrayClassCode = classCode ? [`${classCode}`] : [];
-
     console.log(userType);
     const { error: rpcError } = await supabase.rpc('register_user', {
       p_user_id: userId,
       p_full_name: fullName,
       p_email: email,
       p_user_type: userType,
-      p_class_code: arrayClassCode,
+      p_class_code: classCode,
       p_lecture_progress: lectureProgress,
     });
 
