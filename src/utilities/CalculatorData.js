@@ -2,7 +2,7 @@
 
 export const CalculatorData = {
   BMI: {
-    descriptiption:
+    description:
       '1st Paragraph placeholder --- Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
     instructions: [
       'Choose your gender',
@@ -12,12 +12,6 @@ export const CalculatorData = {
       'Click calculate',
       'Read results',
     ],
-    results: [
-      { min: 0, max: 18.5, interpretation: 'Underweight' },
-      { min: 18.5, max: 24.9, interpretation: 'Normal' },
-      { min: 25.0, max: 29.9, interpretation: 'Overweight' },
-      { min: 30.0, interpretation: 'Obese' },
-    ], // this will be your own logic
     statisticalInterpretation: {
       underweight: 'Lower than 5th percentile of population distribution',
       normal: 'Statistically typical for a healthy adult population',
@@ -36,7 +30,5 @@ export const CalculatorData = {
     },
   },
   //medical and statistical interpretation is from https://chatgpt.com/share/683d8381-6e78-800c-a55d-8ea030a1d742
-
   //next calculator
-
 };

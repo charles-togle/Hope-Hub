@@ -26,6 +26,10 @@ import HamburgerMenu from './assets/icons/hamburger_icon.png';
 import AccountVerification from './pages/Auth/AccountVerification';
 import TeacherDashboard from './pages/Dashboard/TeacherDashboard';
 import supabase from './client/supabase';
+import BMICalculator from './pages/HealthCalculators/BMICalculator';
+import BMRCalculator from './pages/HealthCalculators/BMRCalculator';
+import CalorieCalculator from './pages/HealthCalculators/CalorieCalculator';
+import { HealthCalculatorWrapper } from './pages/HealthCalculators/HealthCalculatorsWrapper';
 import { useUserId } from './hooks/useUserId';
 
 function SidebarLayout () {
@@ -115,8 +119,16 @@ function App () {
         <Route element={<SidebarLayout />} path='/'>
           <Route index element={<Home />}></Route>
           <Route path='home' element={<Home />}></Route>
-          <Route path='about' element={<About />} />
-          <Route path='health-calculators' element={<HealthCalculator />} />
+          <Route path='about' element={<About />} />{' '}
+          <Route
+            path='health-calculators'
+            element={<HealthCalculatorWrapper />}
+          >
+            <Route index element={<HealthCalculator />} />
+            <Route path='bmi' element={<BMICalculator />} />
+            <Route path='bmr' element={<BMRCalculator />} />
+            <Route path='calorie' element={<CalorieCalculator />} />
+          </Route>
           <Route path='lectures' element={<LectureWrapper />}>
             <Route index element={<Lectures />} />
             <Route
