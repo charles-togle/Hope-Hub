@@ -39,7 +39,7 @@ export default function BMICalculator () {
   const weightUnits = ['kg', 'lbs'];
   const getBMICategory = bmi => {
     if (bmi < 18.5) return 'Underweight';
-    if (bmi < 25) return 'Normal weight';
+    if (bmi < 25) return 'Normal';
     if (bmi < 30) return 'Overweight';
     return 'Obese';
   };
@@ -50,7 +50,7 @@ export default function BMICalculator () {
         return 'text-red-600';
       case 'Overweight':
         return 'text-orange-500';
-      case 'Normal weight':
+      case 'Normal':
         return 'text-green-600';
       default:
         return 'text-gray-500';
