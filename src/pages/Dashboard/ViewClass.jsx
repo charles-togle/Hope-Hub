@@ -122,6 +122,7 @@ export default function ViewClass () {
   const [isLoading, setIsLoading] = useState(false);
   const [quizSubFilter, setQuizSubFilter] = useState('none');
   const [activeStudentData, setActiveStudentData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [headings, setHeadings] = useState(
     getTableHeadings('All', combinedData),
   );
@@ -170,7 +171,6 @@ export default function ViewClass () {
       setIsLoading(false);
     }
   }, [isOwnershipChecked, hasOwnership]);
-
   const getStudentData = async () => {
     const allStudentData = await getStudentsByClassCode(classCode);
     const cleanedStudentData = cleanStudentData(allStudentData);
@@ -178,8 +178,55 @@ export default function ViewClass () {
     setActiveStudentData(cleanedStudentData);
     setDefaultStudentData(cleanedStudentData);
   };
+
+  const handleSearch = searchTerm => {
+    setSearchTerm(searchTerm);
+
+    // Get the current filtered data based on active filter and sub-filter
+    let baseData = defaultStudentData;
+
+    // Apply lecture sub-filter if in Lecture mode
+    if (activeFilter === 'Lecture' && lectureSubFilter !== 'all') {
+      if (lectureSubFilter === 'done') {
+        baseData = defaultStudentData.filter(student => {
+          return (
+            student.Lesson1 === 'Done' &&
+            student.Lesson2 === 'Done' &&
+            student.Lesson3 === 'Done'
+          );
+        });
+      } else if (lectureSubFilter === 'pending') {
+        baseData = defaultStudentData.filter(student => {
+          return (
+            student.Lesson1 === 'Pending' ||
+            student.Lesson2 === 'Pending' ||
+            student.Lesson3 === 'Pending'
+          );
+        });
+      } else if (lectureSubFilter === 'incomplete') {
+        baseData = defaultStudentData.filter(student => {
+          return (
+            student.Lesson1 === 'Incomplete' ||
+            student.Lesson2 === 'Incomplete' ||
+            student.Lesson3 === 'Incomplete'
+          );
+        });
+      }
+    }
+    // Apply search filter
+    if (searchTerm.trim() === '') {
+      setActiveStudentData(baseData);
+    } else {
+      const filteredData = baseData.filter(student =>
+        student.studentName?.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+      setActiveStudentData(filteredData);
+    }
+  };
   const handleFilterChange = filter => {
     setActiveFilter(filter);
+    setSearchTerm(''); // Clear search when changing filters
+
     if (filter === 'Lecture') {
       setHeadings(getTableHeadings(filter, lecturesData));
       setActiveStudentData(defaultStudentData);
@@ -193,8 +240,11 @@ export default function ViewClass () {
       setLectureSubFilter('all');
     }
   };
+
   const handleLectureSubFilterChange = filter => {
     setLectureSubFilter(filter);
+    setSearchTerm(''); // Clear search when changing sub-filters
+
     if (filter === 'all') {
       setActiveStudentData(defaultStudentData);
     } else if (filter === 'done') {
@@ -337,13 +387,12 @@ export default function ViewClass () {
                 </div>
               )}
             </div>
-          </div>
-
+          </div>{' '}
           <div
             id='search'
             className='w-full lg:w-[40%] flex items-center gap-3'
           >
-            <Search />
+            <Search onSearch={handleSearch} />
           </div>
         </div>{' '}
         <div className='w-full mt-10'>
