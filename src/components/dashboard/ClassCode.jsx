@@ -14,8 +14,11 @@ export default function ClassCode ({
       onClick={() => navigate(`/dashboard/view-class/${classCode}`)}
     >
       <button
-        onClick={() => onRemove()}
-        className='absolute top-0 right-5 text-2xl font-bold'
+        onClick={e => {
+          e.stopPropagation();
+          onRemove();
+        }}
+        className='absolute top-0 right-5 text-2xl font-bold cursor-pointer'
         style={{ letterSpacing: '-0.2em' }}
       >
         ---

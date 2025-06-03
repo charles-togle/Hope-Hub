@@ -5,6 +5,9 @@ import Table from '@/components/dashboard/ViewClass/Table';
 import { Lessons } from '@/utilities/Lessons';
 import { getStudentsByClassCode } from '@/services/getStudentDataByClassCode';
 import { cleanStudentData } from '@/services/cleanStudentData';
+import { useUserId } from '@/hooks/useUserId';
+import supabase from '@/client/supabase';
+import ErrorMessage from '@/components/utilities/ErrorMessage';
 
 const sampleData = [
   {
@@ -99,6 +102,8 @@ const getTableHeadings = (activeFilter, data) => {
         headings.push(`Quiz ${data.QuizNumber}`);
       }
     });
+    headings.push('Pre Test Record');
+    headings.push('Post Test Record');
   }
   return headings;
 };
@@ -110,6 +115,7 @@ export default function ViewClass () {
   const combinedData = combineObjects(lecturesData, quizData);
 
   const params = useParams();
+  const userId = useUserId();
   const [activeFilter, setActiveFilter] = useState('All');
   const [defaultStudentData, setDefaultStudentData] = useState([]);
   const [lectureSubFilter, setLectureSubFilter] = useState('all');
@@ -119,30 +125,72 @@ export default function ViewClass () {
   const [headings, setHeadings] = useState(
     getTableHeadings('All', combinedData),
   );
+  const [isOwnershipChecked, setIsOwnershipChecked] = useState(false);
+  const [hasOwnership, setHasOwnership] = useState(false);
   const Filters = ['All', 'Lecture', 'Quiz'];
-
   const classCode = params.classCode;
+
+  // Check if the current teacher owns this class
+  const checkClassOwnership = async () => {
+    if (!userId || !classCode) {
+      setHasOwnership(false);
+      setIsOwnershipChecked(true);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('teacher_class_code')
+        .select('class_code')
+        .eq('uuid', userId)
+        .eq('class_code', classCode)
+        .single();
+
+      if (error || !data) {
+        setHasOwnership(false);
+      } else {
+        setHasOwnership(true);
+      }
+    } catch (err) {
+      console.error('Error checking class ownership:', err);
+      setHasOwnership(false);
+    }
+
+    setIsOwnershipChecked(true);
+  };
+
   useEffect(() => {
-    setIsLoading(true);
-    getStudentData();
-    setIsLoading(false);
-  }, []);
+    checkClassOwnership();
+  }, [userId, classCode]);
+
+  useEffect(() => {
+    if (isOwnershipChecked && hasOwnership) {
+      setIsLoading(true);
+      getStudentData();
+      setIsLoading(false);
+    }
+  }, [isOwnershipChecked, hasOwnership]);
 
   const getStudentData = async () => {
     const allStudentData = await getStudentsByClassCode(classCode);
     const cleanedStudentData = cleanStudentData(allStudentData);
+    console.log(cleanedStudentData);
     setActiveStudentData(cleanedStudentData);
     setDefaultStudentData(cleanedStudentData);
   };
-
   const handleFilterChange = filter => {
     setActiveFilter(filter);
     if (filter === 'Lecture') {
       setHeadings(getTableHeadings(filter, lecturesData));
+      setActiveStudentData(defaultStudentData);
+      handleLectureSubFilterChange('all');
     } else if (filter === 'Quiz') {
       setHeadings(getTableHeadings(filter, quizData));
+      setActiveStudentData(defaultStudentData);
     } else if (filter === 'All') {
       setHeadings(getTableHeadings(filter, combinedData));
+      setActiveStudentData(defaultStudentData);
+      setLectureSubFilter('all');
     }
   };
   const handleLectureSubFilterChange = filter => {
@@ -181,9 +229,12 @@ export default function ViewClass () {
       setActiveStudentData(filteredData);
     }
   };
-
-  if (isLoading) {
+  if (!isOwnershipChecked || isLoading) {
     return <p>Loading...</p>;
+  }
+
+  if (isOwnershipChecked && !hasOwnership) {
+    return <ErrorMessage text='Error 404' subText='Class Not Found' />;
   }
 
   return (
@@ -294,9 +345,11 @@ export default function ViewClass () {
           >
             <Search />
           </div>
-        </div>
-        <div className='w-full overflow-x-auto flex justify-center'>
-          <Table headings={headings} content={activeStudentData}></Table>
+        </div>{' '}
+        <div className='w-full mt-10'>
+          <div className='overflow-x-auto'>
+            <Table headings={headings} content={activeStudentData}></Table>
+          </div>
         </div>
       </div>
     </section>

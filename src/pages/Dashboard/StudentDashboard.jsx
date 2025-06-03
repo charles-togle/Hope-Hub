@@ -150,7 +150,7 @@ export default function StudentDashboard () {
 
   const handleLeaveClass = async () => {
     const { error: leaveClassError } = await supabase
-      .from('class_code')
+      .from('student_class_code')
       .update({ class_code: null })
       .eq('uuid', userID);
     if (leaveClassError) {
@@ -161,8 +161,8 @@ export default function StudentDashboard () {
 
   const handleJoinClass = async () => {
     const { error: joinClassError } = await supabase
-      .from('class_code')
-      .update({ class_code: [tempClassCode] })
+      .from('student_class_code')
+      .update({ class_code: tempClassCode })
       .eq('uuid', userID);
     if (joinClassError) {
       return;

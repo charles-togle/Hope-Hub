@@ -2,6 +2,7 @@ const sampleData = [
   {
     email: 'charles3939togle@gmail.com',
     full_name: 'TestPerson1',
+    uuid: '',
     lecture_progress: [
       [
         { key: 1, title: 'Personal Safety Protocol', status: 'Incomplete' },
@@ -30,14 +31,41 @@ export const cleanStudentData = studentData => {
     const clean = {
       email: data.email,
       studentName: data.full_name,
+      uuid: data.uuid,
       Lesson1: '',
       Lesson2: '',
       Lesson3: '',
+      preTestCompleted: false,
+      postTestCompleted: false,
     };
+
     const { lecture_progress } = data;
     lecture_progress[0].forEach(lecture => {
       clean[`Lesson${lecture.key}`] = lecture.status;
     });
+
+    const preTest = data.pre_physical_fitness_test;
+    const postTest = data.post_physical_fitness_test;
+
+    console.log(preTest);
+    console.log(postTest);
+    if (preTest && preTest[0]) {
+      const { finishedTestIndex } = preTest[0];
+      if (finishedTestIndex) {
+        clean.preTestCompleted =
+          finishedTestIndex &&
+          finishedTestIndex.includes(finishedTestIndex.length - 1);
+      }
+    }
+
+    if (postTest && postTest[0]) {
+      const { finishedTestIndex } = postTest[0];
+      if (finishedTestIndex) {
+        clean.postTestCompleted =
+          finishedTestIndex &&
+          finishedTestIndex.includes(finishedTestIndex.length - 1);
+      }
+    }
 
     cleanedData.push(clean);
   });
