@@ -1,22 +1,33 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Search from '@/components/dashboard/Search';
+import Table from '@/components/dashboard/ViewClass/Table';
+import { Lessons } from '@/utilities/Lessons';
+import { getStudentsByClassCode } from '@/services/getStudentDataByClassCode';
+import { cleanStudentData } from '@/services/cleanStudentData';
 
-const LecturesData = [
+const sampleData = [
   {
-    key: 1,
-    title: 'Introduction to Personal Safety',
-    status: 'Done',
+    email: 'charles3939togle@gmail.com',
+    full_name: 'TestPerson1',
+    lecture_progress: [
+      [
+        { key: 1, title: 'Personal Safety Protocol', status: 'Incomplete' },
+        { key: 2, title: 'Physiological Indicators', status: 'Incomplete' },
+        { key: 3, title: 'The FITT Principle', status: 'Incomplete' },
+      ],
+    ],
   },
   {
-    key: 2,
-    title: 'Understanding Physiological Indicators',
-    status: 'Pending',
-  },
-  {
-    key: 3,
-    title: 'The FITT Principle Explained',
-    status: 'Pending',
+    email: 'ctogle.a12345617@umak.edu.ph',
+    full_name: 'TestPerson2',
+    lecture_progress: [
+      [
+        { key: 1, title: 'Personal Safety Protocol', status: 'Incomplete' },
+        { key: 2, title: 'Physiological Indicators', status: 'Incomplete' },
+        { key: 3, title: 'The FITT Principle', status: 'Done' },
+      ],
+    ],
   },
 ];
 
@@ -55,63 +66,125 @@ const QuizzesData = [
 
 const transformDataLecture = data => {
   return data.map(item => ({
+    Type: 'Lecture',
     LessonNumber: item.key,
-    LessonStatus: item.status,
   }));
 };
 
 const transformQuizData = data => {
   return data.map(item => ({
+    Type: 'Quiz',
     QuizNumber: item.number,
-    QuizStatus: item.status,
-    QuizScore: item.status.toLowerCase() === 'done' ? item.details.Score : -1,
   }));
 };
 
 function combineObjects (lectureArray, quizArray) {
   return [...lectureArray, ...quizArray];
 }
-const setTableHeadings = ({ activeFilter, data }) => {
+const getTableHeadings = (activeFilter, data) => {
   const headings = ['Name', 'Email'];
   if (activeFilter === 'Lecture') {
     data.forEach(data => {
-      headings.push(`Lesson ${data.Number}`);
+      headings.push(`Lesson ${data.LessonNumber}`);
     });
   } else if (activeFilter === 'Quiz') {
     data.forEach(data => {
-      headings.push(`Quiz ${data.Number}`);
+      headings.push(`Quiz ${data.QuizNumber}`);
+    });
+  } else if (activeFilter === 'All') {
+    data.forEach(data => {
+      if (data.Type === 'Lecture') {
+        headings.push(`Lesson ${data.LessonNumber}`);
+      } else if (data.Type === 'Quiz') {
+        headings.push(`Quiz ${data.QuizNumber}`);
+      }
     });
   }
-  return headings
+  return headings;
 };
 
 export default function ViewClass () {
-  const params = useParams();
-  const [activeFilter, setActiveFilter] = useState('All');
-  const [lectureSubFilter, setLectureSubFilter] = useState('all');
-  const [quizSubFilter, setQuizSubFilter] = useState('none');
-  const lecturesData = transformDataLecture(LecturesData);
+  //initialize data
+  const lecturesData = transformDataLecture(Lessons);
   const quizData = transformQuizData(QuizzesData);
   const combinedData = combineObjects(lecturesData, quizData);
 
+  const params = useParams();
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [defaultStudentData, setDefaultStudentData] = useState([]);
+  const [lectureSubFilter, setLectureSubFilter] = useState('all');
+  const [isLoading, setIsLoading] = useState(false);
+  const [quizSubFilter, setQuizSubFilter] = useState('none');
+  const [activeStudentData, setActiveStudentData] = useState([]);
+  const [headings, setHeadings] = useState(
+    getTableHeadings('All', combinedData),
+  );
+  const Filters = ['All', 'Lecture', 'Quiz'];
+
   const classCode = params.classCode;
   useEffect(() => {
-    console.log(classCode);
+    setIsLoading(true);
+    getStudentData();
+    setIsLoading(false);
   }, []);
 
-
-  const Filters = ['All', 'Lecture', 'Quiz'];
+  const getStudentData = async () => {
+    const allStudentData = await getStudentsByClassCode(classCode);
+    const cleanedStudentData = cleanStudentData(allStudentData);
+    setActiveStudentData(cleanedStudentData);
+    setDefaultStudentData(cleanedStudentData);
+  };
 
   const handleFilterChange = filter => {
     setActiveFilter(filter);
-
-
+    if (filter === 'Lecture') {
+      setHeadings(getTableHeadings(filter, lecturesData));
+    } else if (filter === 'Quiz') {
+      setHeadings(getTableHeadings(filter, quizData));
+    } else if (filter === 'All') {
+      setHeadings(getTableHeadings(filter, combinedData));
+    }
   };
-  useEffect(() => {
-    console.log('Lectures Data:', lecturesData);
-    console.log('Quiz Data:', quizData);
-    console.log('Combined Arrays:', combinedData);
-  }, []);
+  const handleLectureSubFilterChange = filter => {
+    setLectureSubFilter(filter);
+    if (filter === 'all') {
+      setActiveStudentData(defaultStudentData);
+    } else if (filter === 'done') {
+      // Filter students who have completed all lessons
+      const filteredData = defaultStudentData.filter(student => {
+        return (
+          student.Lesson1 === 'Done' &&
+          student.Lesson2 === 'Done' &&
+          student.Lesson3 === 'Done'
+        );
+      });
+      setActiveStudentData(filteredData);
+    } else if (filter === 'pending') {
+      // Filter students who have at least one pending lesson
+      const filteredData = defaultStudentData.filter(student => {
+        return (
+          student.Lesson1 === 'Pending' ||
+          student.Lesson2 === 'Pending' ||
+          student.Lesson3 === 'Pending'
+        );
+      });
+      setActiveStudentData(filteredData);
+    } else if (filter === 'incomplete') {
+      // Filter students who have at least one incomplete lesson
+      const filteredData = defaultStudentData.filter(student => {
+        return (
+          student.Lesson1 === 'Incomplete' ||
+          student.Lesson2 === 'Incomplete' ||
+          student.Lesson3 === 'Incomplete'
+        );
+      });
+      setActiveStudentData(filteredData);
+    }
+  };
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <section className='parent-container' id='view-class'>
@@ -127,7 +200,6 @@ export default function ViewClass () {
           id='options'
         >
           <div className='flex flex-col gap-3'>
-            {/* Main Filter Buttons */}
             <div
               id='buttons'
               className='rounded-sm bg-secondary-dark-blue w-full h-fit flex items-center flex-nowrap lg:w-fit'
@@ -158,13 +230,15 @@ export default function ViewClass () {
                   <div className='flex bg-gray-100 rounded-md p-1'>
                     {[
                       { value: 'all', label: 'All' },
-                      { value: 'complete', label: 'Complete' },
+                      { value: 'done', label: 'Done' },
                       { value: 'pending', label: 'Pending' },
                       { value: 'incomplete', label: 'Incomplete' },
                     ].map(option => (
                       <button
                         key={option.value}
-                        onClick={() => setLectureSubFilter(option.value)}
+                        onClick={() =>
+                          handleLectureSubFilterChange(option.value)
+                        }
                         className={`px-3 py-1 text-xs font-content rounded transition-colors ${
                           lectureSubFilter === option.value
                             ? 'bg-secondary-dark-blue text-white'
@@ -221,7 +295,9 @@ export default function ViewClass () {
             <Search />
           </div>
         </div>
-        <div>{/* content */}</div>
+        <div className='w-full overflow-x-auto flex justify-center'>
+          <Table headings={headings} content={activeStudentData}></Table>
+        </div>
       </div>
     </section>
   );
