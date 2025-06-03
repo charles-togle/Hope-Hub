@@ -45,7 +45,7 @@ export default function Sidebar ({ isOpen, onClose }) {
       route: '/discover-more',
     },
     { text: 'About', icon: AboutIcon, route: '/about' },
-    { text: 'Profile', icon: ProfileIcon, route: '/profile' },
+    { text: 'Dashboard', icon: ProfileIcon, route: '/dashboard' },
   ];
 
   // Complete ActiveIconVariants for all sidebar buttons
@@ -57,7 +57,7 @@ export default function Sidebar ({ isOpen, onClose }) {
     'Physical Fitness Test': ActivePhysicalFitnessIcon,
     'Discover More': ActiveDiscoverIcon,
     About: ActiveAboutIcon,
-    Profile: ActiveProfileIcon,
+    Dashboard: ActiveProfileIcon,
   };
 
   const location = useLocation();

@@ -3,14 +3,21 @@ import ErrorMessage from '@/components/utilities/ErrorMessage';
 import { Fragment, useEffect, useState } from 'react';
 import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 export function PhysicalFitnessTestSummary () {
   const { testType } = useParams();
+  const [searchParams] = useSearchParams();
   const [isDataReady, setIsDataReady] = useState(false);
   const [dataResults, setDataResults] = useState([]);
   const [isBadRequest, setIsBadRequest] = useState(false);
+  const [studentInfo, setStudentInfo] = useState(null);
   const userId = useUserId();
+
+  // Check if this is a teacher viewing a student's record
+  const studentId = searchParams.get('student');
+  const targetUserId = studentId || userId;
+  const isTeacherView = !!studentId;
 
   let columnName = '';
   if (testType === 'pre-test') {
@@ -20,38 +27,79 @@ export function PhysicalFitnessTestSummary () {
   } else {
     columnName = 'pre_physical_fitness_test';
   }
-
   useEffect(() => {
     async function checkConstraints () {
-      if (userId) {
+      if (!userId) {
         return;
       }
+      // If teacher is viewing student data, validate access
+      if (isTeacherView) {
+        // For now, we'll proceed if teacher is logged in
+
+        // Check if the student exists
+        const { data: studentExists, error: studentCheckError } = await supabase
+          .from('profile')
+          .select('uuid')
+          .eq('uuid', targetUserId)
+          .single();
+
+        if (studentCheckError || !studentExists) {
+          console.error('Student not found:', targetUserId);
+          setIsBadRequest(true);
+          return;
+        }
+      }
+
       const { data: existing, error: fetchError } = await supabase
         .from('physical_fitness_test')
         .select(columnName)
-        .eq('uuid', userId)
+        .eq('uuid', targetUserId)
         .single();
       console.log(existing);
-      const finishedTests = existing[columnName]?.finishedTestIndex;
-      const max = existing[columnName]?.finishedTestIndex.length - 1;
-      if (existing && !finishedTests.includes(max)) {
+
+      if (fetchError) {
+        console.error('Error fetching test data:', fetchError);
         setIsBadRequest(true);
-      } else if (fetchError) {
+        return;
+      }
+
+      const finishedTests = existing[columnName]?.finishedTestIndex;
+      if (!finishedTests) {
+        console.error('No test data found for user:', targetUserId);
+        setIsBadRequest(true);
+        return;
+      }
+
+      const max = finishedTests.length - 1;
+      if (!finishedTests.includes(max)) {
+        console.error('Test not completed for user:', targetUserId);
         setIsBadRequest(true);
       }
     }
     checkConstraints();
-  });
-
+  }, [targetUserId, userId, isTeacherView, columnName]);
   useEffect(() => {
     if (isDataReady) {
       return;
     }
 
-    if (!userId) return;
+    if (!targetUserId) return;
     async function getDataFromDatabase () {
+      // If in teacher view, fetch student information first
+      if (isTeacherView) {
+        const { data: studentData, error: studentError } = await supabase
+          .from('profile')
+          .select('full_name, email')
+          .eq('uuid', targetUserId)
+          .single();
+
+        if (!studentError && studentData) {
+          setStudentInfo(studentData);
+        }
+      }
+
       //handle pre test or post test
-      const data = await getPhysicalFitnessData(userId, columnName);
+      const data = await getPhysicalFitnessData(targetUserId, columnName);
       if (data) {
         setDataResults(getSummary(data));
         setIsDataReady(true);
@@ -59,7 +107,7 @@ export function PhysicalFitnessTestSummary () {
     }
 
     getDataFromDatabase();
-  }, [isDataReady, userId]);
+  }, [isDataReady, targetUserId, isTeacherView, columnName]);
 
   if (isBadRequest) {
     return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
@@ -76,7 +124,6 @@ export function PhysicalFitnessTestSummary () {
   if (!dataResults) {
     return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
   }
-
   return (
     <section id='physical-fitness-test-summary' className='parent-container'>
       <PageHeading text={'Physical Fitness Test'}></PageHeading>
@@ -84,6 +131,19 @@ export function PhysicalFitnessTestSummary () {
         <h1 className='w-full text-left text-4xl font-heading -ml-20 mb-5 font-medium text-primary-blue'>
           {testType === 'pre-test' ? 'Pre Test' : 'Post Test'} Record
         </h1>
+        {isTeacherView && studentInfo && (
+          <div className='w-full mb-5 p-4 bg-gray-100 rounded-lg -ml-20'>
+            <h2 className='text-xl font-medium text-gray-800 mb-2'>
+              Student Information
+            </h2>
+            <p className='text-gray-700'>
+              <strong>Name:</strong> {studentInfo.full_name}
+            </p>
+            <p className='text-gray-700'>
+              <strong>Email:</strong> {studentInfo.email}
+            </p>
+          </div>
+        )}
         <div className='w-full flex flex-col space-y-5 mb-10'>
           {dataResults.map((summary, index) => (
             <Fragment key={`${summary.title} ${index}`}>

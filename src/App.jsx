@@ -26,6 +26,7 @@ import HamburgerMenu from './assets/icons/hamburger_icon.png';
 import AccountVerification from './pages/Auth/AccountVerification';
 import TeacherDashboard from './pages/Dashboard/TeacherDashboard';
 import supabase from './client/supabase';
+import ViewClass from './pages/Dashboard/ViewClass';
 import { useUserId } from './hooks/useUserId';
 
 function SidebarLayout () {
@@ -150,8 +151,12 @@ function App () {
             <Route path='quiz/:quizId' element={<Quiz />} />
             <Route path='activity/:activityId' element={<Activity />} />
           </Route>
-          <Route path='profile' element={<ProfileWrapper />}></Route>
+          <Route path='dashboard' element={<ProfileWrapper />}></Route>
           <Route path='*' element={<NotFound />} />
+          <Route
+            path='dashboard/view-class/:classCode'
+            element={<ViewClass />}
+          ></Route>
         </Route>
         <Route path='auth' element={<AuthWrapper />}>
           <Route path='login' element={<Login />}></Route>

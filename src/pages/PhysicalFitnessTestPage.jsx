@@ -50,14 +50,13 @@ export function PhysicalFitnessTestPage () {
       setIsBadRequest(true);
     }
   }, [setPhysicalFitnessData, testIndex, physicalFitnessData.length, navigate]);
-
   useEffect(() => {
     const finishedTestIndex = physicalFitnessData.finishedTestIndex || [];
     if (finishedTestIndex.includes(finishedTestIndex.length - 1)) {
       localStorage.removeItem('physicalFitnessData');
       navigate(
         `/physical-fitness-test/summary/${
-          testType === 'pre_physical_fitness_data' ? 'pre-test' : 'post-test'
+          testType === 'pre_physical_fitness_test' ? 'pre-test' : 'post-test'
         }`,
       );
     }
@@ -82,7 +81,6 @@ export function PhysicalFitnessTestPage () {
         console.error('Fetch error:', fetchError.message);
         return;
       }
-
       const preTestFinishedTests =
         existing?.pre_physical_fitness_test?.finishedTestIndex || [];
       const postTestFinishedTests =
