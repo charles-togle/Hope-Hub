@@ -80,7 +80,7 @@ export default function AccountVerification () {
         ></FormHeading>
         <FormButton
           text='Go to dashboard'
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate('/dashboard')}
         ></FormButton>
         {errorMessage && (
           <p className='text-red font-content font-semibold mt-2'>
