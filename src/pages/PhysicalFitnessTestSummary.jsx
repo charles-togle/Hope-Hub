@@ -4,6 +4,7 @@ import { Fragment, useEffect, useState } from 'react';
 import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
 import { useParams, useSearchParams } from 'react-router-dom';
+import Footer from '@/components/Footer';
 
 export function PhysicalFitnessTestSummary () {
   const { testType } = useParams();
@@ -170,6 +171,7 @@ export function PhysicalFitnessTestSummary () {
           ))}
         </div>
       </div>
+      <Footer></Footer>
     </section>
   );
 }
