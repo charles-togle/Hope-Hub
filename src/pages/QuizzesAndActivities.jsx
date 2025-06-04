@@ -2,6 +2,7 @@ import PageHeading from '@/components/PageHeading';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { QuizzesAndActivitiesData } from '@/utilities/QuizAndActivities';
+import Footer from '@/components/Footer';
 
 export default function QuizzesAndActivities() {
   const [activeFilter, setActiveFilter] = useState('All');
@@ -47,6 +48,7 @@ export default function QuizzesAndActivities() {
           );
         })}
       </div>
+      <Footer></Footer>
     </div>
   );
 }

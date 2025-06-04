@@ -7,7 +7,10 @@ export default function VideoList ({ videos, onVideoClick }) {
         videos.map(video => {
           const videoDetails = video;
           return (
-            <div onClick={() => onVideoClick(videoDetails)}>
+            <div
+              onClick={() => onVideoClick(videoDetails)}
+              className='cursor-pointer'
+            >
               <VideoPreview
                 duration={video.duration}
                 thumbnail={video.thumbnail}

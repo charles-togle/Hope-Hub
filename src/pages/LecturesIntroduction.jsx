@@ -6,6 +6,7 @@ import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
 import LectureProgress from '@/utilities/LectureProgress';
 import { useNavigate } from 'react-router-dom';
+import Footer from '@/components/Footer';
 
 export default function Lectures () {
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -74,7 +75,7 @@ export default function Lectures () {
   }
 
   return (
-    <div
+    <section
       id='lectures'
       className='overflow-x-hidden h-screen bg-background overflow-y-scroll'
     >
@@ -145,6 +146,7 @@ export default function Lectures () {
           )}
         </div>
       </div>
-    </div>
+      <Footer></Footer>
+    </section>
   );
 }

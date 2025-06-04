@@ -6,6 +6,7 @@ import { AlertMessage } from '@/components/utilities/AlertMessage';
 import setDataToStorage from '@/utilities/setDataToStorage';
 import { useUserId } from '@/hooks/useUserId';
 import supabase from '@/client/supabase';
+import Footer from '@/components/Footer';
 export default function PhysicalActivityReadinessQuestionnaire () {
   const { physicalFitnessData, setPhysicalFitnessData } =
     usePhysicalFitnessData();
@@ -336,6 +337,7 @@ export default function PhysicalActivityReadinessQuestionnaire () {
           </div>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 }
