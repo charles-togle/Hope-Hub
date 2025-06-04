@@ -2,6 +2,7 @@ import PageHeading from '@/components/PageHeading';
 import VideoHeading from '@/components/discover-more/VideoHeading';
 import VideoList from '@/components/discover-more/VideoList';
 import VideoPlayer from '@/components/discover-more/VideoPlayer';
+import Footer from '@/components/Footer';
 import { UpperBodyVideos } from '@/utilities/DiscoverMoreVideos';
 import { LowerBodyVideos } from '@/utilities/DiscoverMoreVideos';
 import { useRef, useState } from 'react';
@@ -49,6 +50,7 @@ export default function DiscoverMore () {
           </div>
         </div>
       </div>
+      <Footer></Footer>
     </section>
   );
 }
