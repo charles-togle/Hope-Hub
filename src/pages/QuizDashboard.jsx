@@ -1,21 +1,18 @@
 import PageHeading from '@/components/PageHeading';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { QuizzesAndActivitiesData } from '@/utilities/QuizAndActivities';
+import { Quizzes } from '@/utilities/QuizData';
 import Footer from '@/components/Footer';
 
-export default function QuizzesAndActivities() {
+export default function QuizDashboard() {
   const [activeFilter, setActiveFilter] = useState('All');
   const filters = ['All', 'Done', 'Pending', 'Locked'];
 
   return (
     <div>
-      <PageHeading
-        text="Quizzes & Activities"
-        className="bg-background z-2"
-      ></PageHeading>
+      <PageHeading text="Quizzes" className="bg-background z-2"></PageHeading>
       <div
-        id="quizzes-and-activities"
+        id="quizzes"
         className="flex flex-col items-center justify-center w-5/6 mx-auto mb-8"
       >
         <div
@@ -40,10 +37,10 @@ export default function QuizzesAndActivities() {
             })}
           </ul>
         </div>
-        {QuizzesAndActivitiesData.map((task) => {
+        {Quizzes.map((quiz) => {
           return (
-            (task.status === activeFilter || activeFilter === 'All') && (
-              <Card key={task.type + task.number} task={task} />
+            (quiz.status === activeFilter || activeFilter === 'All') && (
+              <Card key={'Quiz ' + quiz.number} quiz={quiz} />
             )
           );
         })}
@@ -53,36 +50,40 @@ export default function QuizzesAndActivities() {
   );
 }
 
-function Card({ task }) {
+function Card({ quiz }) {
   const statusColors = {
     Done: 'bg-green',
     Pending: 'bg-primary-yellow',
     Locked: 'bg-red',
   };
 
-  return (
-    <Link to={`${task.type.toLowerCase()}/${task.number}`}>
-      <div className="rounded-2xl flex flex-col border-2 border-secondary-dark-blue overflow-clip mb-5">
-        <div className="flex justify-between items-center px-10  bg-secondary-dark-blue font-content text-white h-[10vh]">
-          <h2 className="text-2xl">
-            <strong>{task.type + ' ' + task.number + ': '}</strong>
-            {task.title}
-          </h2>
-          <h3
-            className={`${
-              statusColors[task.status]
-            } rounded-sm w-[12%] flex items-center justify-center py-1`}
-          >
-            {task.status}
-          </h3>
-        </div>
-        <div className="flex justify-between items-center py-4 pl-10 pr-15 h-[25vh]">
-          <Results status={task.status} details={task.details} />
-          <div className="w-[3px] h-full bg-primary-yellow"></div>
-          <Overview content={task.content} />
-        </div>
+  const cardBody = (
+    <div className="rounded-2xl flex flex-col border-2 border-secondary-dark-blue overflow-clip mb-5">
+      <div className="flex justify-between items-center px-10  bg-secondary-dark-blue font-content text-white h-[10vh]">
+        <h2 className="text-2xl">
+          <strong>{'Quiz ' + quiz.number + ': '}</strong>
+          {quiz.title}
+        </h2>
+        <h3
+          className={`${
+            statusColors[quiz.status]
+          } rounded-sm w-[12%] flex items-center justify-center py-1`}
+        >
+          {quiz.status}
+        </h3>
       </div>
-    </Link>
+      <div className="flex justify-between items-center py-4 pl-10 pr-15 h-[25vh]">
+        <Results status={quiz.status} details={quiz.details} />
+        <div className="w-[3px] h-full bg-primary-yellow"></div>
+        <Overview content={quiz.content} />
+      </div>
+    </div>
+  );
+
+  return quiz.status === 'Locked' ? (
+    cardBody
+  ) : (
+    <Link to={`quiz/${quiz.number}`}>{cardBody}</Link>
   );
 }
 

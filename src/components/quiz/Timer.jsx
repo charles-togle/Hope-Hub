@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import TimerIcon from '@/assets/icons/timer_quiz.png';
+import { RemainingTimeContext } from '@/providers/QuizContext';
 
 export default function Timer({ duration, color, onTimerEnd }) {
   const [time, setTime] = useState(0);
+  const remainingTimeRef = useContext(RemainingTimeContext);
+  remainingTimeRef.current = time;
 
   useEffect(() => {
     const startTime = Date.now();
