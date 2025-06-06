@@ -7,6 +7,7 @@ export default function CalculatorDropdown () {
   const location = useLocation();
 
   const calculatorOptions = [
+
     { label: 'BMI Calculator', value: 'bmi', path: '/health-calculators/bmi' },
     { label: 'BMR Calculator', value: 'bmr', path: '/health-calculators/bmr' },
     {

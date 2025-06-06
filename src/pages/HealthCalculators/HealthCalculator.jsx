@@ -30,7 +30,7 @@ export default function HealthCalculator () {
 
   return (
     <div id='health-calculator'>
-      <PageHeading text='Health Calculators'></PageHeading>
+      <PageHeading text = "Fitness & Health Calculators"/>
       <div
         id='health-calculators-content'
         className='w-[80%] flex justify-center flex-col items-center mr-auto ml-auto mt-16'

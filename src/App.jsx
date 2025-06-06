@@ -120,11 +120,12 @@ function App () {
           <Route index element={<Home />}></Route>
           <Route path='home' element={<Home />}></Route>
           <Route path='about' element={<About />} />{' '}
+
+          <Route path = 'health-calculators' element = {<HealthCalculator/>}> </Route>
           <Route
             path='health-calculators'
             element={<HealthCalculatorWrapper />}
           >
-            <Route index element={<HealthCalculator />} />
             <Route path='bmi' element={<BMICalculator />} />
             <Route path='bmr' element={<BMRCalculator />} />
             <Route path='calorie' element={<CalorieCalculator />} />
