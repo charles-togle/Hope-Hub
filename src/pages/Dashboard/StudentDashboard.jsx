@@ -9,6 +9,7 @@ import ProfileSidebar from '@/components/dashboard/ProfileSidebar';
 import { useName, useProfilePicture } from '@/hooks/useDashboardData';
 import DashboardContainer from '@/components/dashboard/DashboardContainer';
 import { onProfileChange as onProfileChangeUtil } from '@/utilities/onProfileChange';
+import { LogOut } from 'lucide-react';
 
 export default function StudentDashboard () {
   const userID = useUserId();
@@ -202,9 +203,21 @@ export default function StudentDashboard () {
         ></JoinClass>
       )}
       <DashboardContainer>
-        <div className='col-span-2'>
-          <h1 className='font-heading text-primary-blue text-5xl'>Dashboard</h1>
-          <hr className='w-90 border-1 border-primary-yellow mt-3 mb-3' />
+        <div className='absolute top-0 mt-10 grid grid-cols-2 place-content-center w-full lg:w-fit lg:block'>
+          <div>
+            <h1 className='font-heading text-primary-blue text-4xl lg:text-5xl'>
+              Dashboard
+            </h1>
+            <hr className='lg:w-90 border-1 border-primary-yellow mt-3 mb-3' />
+          </div>
+          <div>
+            <button
+              className='lg:hidden ml-auto text-base font-bold font-content px-3 py-2 text-white bg-[#DB4E34] mb-10 flex items-center gap-2'
+              onClick={() => handleLogout()}
+            >
+              <LogOut className='w-6 h-6' /> Logout
+            </button>
+          </div>
         </div>
         <div id='content' className='w-full '>
           <Banner
@@ -229,14 +242,14 @@ export default function StudentDashboard () {
             className='w-full text-center grid grid-cols-2 gap-5'
           >
             <button
-              className='p-7 bg-neutral-dark-blue text-white font-content rounded-md hover:brightness-90 cursor-pointer disabled:brightness-80 disabled:cursor-not-allowed'
+              className='lg:p-7 lg:text-base text-xs p-5 bg-neutral-dark-blue text-white font-content rounded-md hover:brightness-90 cursor-pointer disabled:brightness-80 disabled:cursor-not-allowed'
               disabled={!preTestFinished}
               onClick={() => handlePreTestClick()}
             >
               VIEW PFT - PRE TEST RECORD
             </button>
             <button
-              className='p-7 bg-neutral-dark-blue text-white font-content rounded-md hover:brightness-90 cursor-pointer disabled:brightness-80 disabled:cursor-not-allowed'
+              className='lg:p-7 lg:text-base text-xs p-5 bg-neutral-dark-blue text-white font-content rounded-md hover:brightness-90 cursor-pointer disabled:brightness-80 disabled:cursor-not-allowed'
               disabled={!postTestFinished}
               onClick={() => handlePostTestClick()}
             >
@@ -246,7 +259,7 @@ export default function StudentDashboard () {
         </div>
         <div
           id='profile'
-          className='sticky w-full h-full top-0 bg-white max-h-[80vh] flex flex-col items-center justify-start'
+          className='hidden sticky w-full h-full top-0 bg-white max-h-[80vh] lg:flex flex-col items-center justify-start'
         >
           <ProfileSidebar
             handleLogout={handleLogout}
