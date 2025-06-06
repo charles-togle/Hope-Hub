@@ -13,8 +13,18 @@ export default function Banner ({
       }`}
     >
       <div className=''>
-        <p className='font-bold lg:text-base text-xs'>Welcome Back, {name}!</p>
-        <p className='text-xs lg:text-base'>
+        <p
+          className={`${
+            isStudent ? 'text-xs' : 'text-sm mr-2'
+          } font-bold lg:text-base`}
+        >
+          Welcome Back, {name}!
+        </p>
+        <p
+          className={` ${
+            isStudent ? 'text-sm' : 'text-base'
+          } lg:text-base mr-2`}
+        >
           Embark on your journey to achieve your fitness goals and unlock your
           full potential today!
         </p>

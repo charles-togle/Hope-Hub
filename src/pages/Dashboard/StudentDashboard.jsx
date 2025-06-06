@@ -203,7 +203,7 @@ export default function StudentDashboard () {
         ></JoinClass>
       )}
       <DashboardContainer>
-        <div className='absolute top-0 mt-10 grid grid-cols-2 place-content-center w-full lg:w-fit lg:block'>
+        <div className='grid grid-cols-2 place-content-center w-full lg:w-fit lg:block'>
           <div>
             <h1 className='font-heading text-primary-blue text-4xl lg:text-5xl'>
               Dashboard

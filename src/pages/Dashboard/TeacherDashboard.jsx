@@ -151,12 +151,14 @@ export default function TeacherDashboard () {
             onClick={handleAddClass}
           />{' '}
         </div>
-        <ProfileSidebar
-          memoizedFile={memoizedFile}
-          name={teacherName}
-          onProfileChange={handleProfileChange}
-          handleLogout={handleLogout}
-        ></ProfileSidebar>
+        <div className='h-full hidden lg:block'>
+          <ProfileSidebar
+            memoizedFile={memoizedFile}
+            name={teacherName}
+            onProfileChange={handleProfileChange}
+            handleLogout={handleLogout}
+          ></ProfileSidebar>
+        </div>
       </DashboardContainer>
     </section>
   );
