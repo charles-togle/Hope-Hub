@@ -87,16 +87,14 @@ export function PhysicalFitnessTestSummary () {
     if (!targetUserId) return;
     async function getDataFromDatabase () {
       // If in teacher view, fetch student information first
-      if (isTeacherView) {
-        const { data: studentData, error: studentError } = await supabase
-          .from('profile')
-          .select('full_name, email')
-          .eq('uuid', targetUserId)
-          .single();
+      const { data: studentData, error: studentError } = await supabase
+        .from('profile')
+        .select('full_name, email')
+        .eq('uuid', targetUserId)
+        .single();
 
-        if (!studentError && studentData) {
-          setStudentInfo(studentData);
-        }
+      if (!studentError && studentData) {
+        setStudentInfo(studentData);
       }
 
       //handle pre test or post test
@@ -129,11 +127,11 @@ export function PhysicalFitnessTestSummary () {
     <section id='physical-fitness-test-summary' className='parent-container'>
       <PageHeading text={'Physical Fitness Test'}></PageHeading>
       <div id='summary-content' className='content-container'>
-        <h1 className='w-full text-left text-3xl lg:text-4xl font-heading lg:-ml-20 mb-5 font-medium text-primary-blue'>
+        <h1 className='w-full text-left text-3xl lg:text-4xl font-heading lg:-ml-20 lg:mb-5 font-medium text-primary-blue'>
           {testType === 'pre-test' ? 'Pre Test' : 'Post Test'} Record
         </h1>
-        {isTeacherView && studentInfo && (
-          <div className='w-full mb-5 p-4 bg-gray-100 rounded-lg -ml-20'>
+        {studentInfo && (
+          <div className='w-full mb-5 p-4 bg-gray-100 rounded-lg lg:-ml-20'>
             <h2 className='text-xl font-medium text-gray-800 mb-2'>
               Student Information
             </h2>
@@ -158,7 +156,7 @@ export function PhysicalFitnessTestSummary () {
                 return (
                   heading && (
                     <Fragment>
-                      <h1 className=' text-xl lg:text-3xl font-heading lg:-ml-5 mb-0 font-medium'>
+                      <h1 className=' text-2xl lg:text-3xl font-heading lg:-ml-5 mb-0 font-medium'>
                         {heading}
                       </h1>
                       <hr className='w-1/3 border-1 border-primary-yellow mb-4 -ml-5' />
