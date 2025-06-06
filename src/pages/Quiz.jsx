@@ -1,90 +1,17 @@
 import { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { QuizzesData } from '@/utilities/QuizAndActivities';
 import PageHeading from '@/components/PageHeading';
 import Timer from '@/components/quiz/Timer';
 import QuizBackground from '@/assets/images/quiz_bg.png';
 import { Input } from '@/components/ui/input';
-import { shuffleArray } from '@/utilities/utils';
+import { shuffleArray, calculatePoints } from '@/utilities/utils';
 import CustomButton from '@/components/quiz/CustomButton';
-import { IdentificationRefContext } from '@/contexts/IdentificationRefContext';
 import QuizProvider from '@/providers/QuizProvider';
-
-const sampleQuizQuestions = [
-  {
-    type: 'multiple-choice',
-    duration: '10',
-    question: 'What is the capital of France?',
-    choices: [
-      { text: 'Paris', isCorrect: true },
-      { text: 'Madrid', isCorrect: false },
-      { text: 'Berlin', isCorrect: false },
-      { text: 'Rome', isCorrect: false },
-    ],
-  },
-  {
-    type: 'identification',
-    duration: '10',
-    question: 'What is the capital of Spain?',
-    answer: 'Madrid',
-  },
-  {
-    type: 'multiple-choice',
-    duration: '10',
-    question: 'What is the capital of Germany?',
-    choices: [
-      { text: 'Madrid', isCorrect: false },
-      { text: 'Paris', isCorrect: false },
-      { text: 'Rome', isCorrect: false },
-      { text: 'Berlin', isCorrect: true },
-    ],
-  },
-  {
-    type: 'multiple-choice',
-    duration: '10',
-    question: 'What is the capital of Italy?',
-    choices: [
-      { text: 'Madrid', isCorrect: false },
-      { text: 'Berlin', isCorrect: false },
-      { text: 'Rome', isCorrect: true },
-      { text: 'Paris', isCorrect: false },
-    ],
-  },
-  {
-    type: 'identification',
-    duration: '10',
-    question: 'What is the capital of Portugal?',
-    answer: 'Lisbon',
-  },
-];
-
-const sampleQuestionsResult = [
-  {
-    question: 'What is the capital of France?',
-    answer: 'Madrid',
-    isCorrect: false,
-  },
-  {
-    question: 'What is the capital of Spain?',
-    answer: 'Cairo',
-    isCorrect: false,
-  },
-  {
-    question: 'What is the capital of Germany?',
-    answer: 'Berlin',
-    isCorrect: true,
-  },
-  {
-    question: 'What is the capital of Italy?',
-    answer: 'Rome',
-    isCorrect: true,
-  },
-  {
-    question: 'What is the capital of Portugal?',
-    answer: 'Manila',
-    isCorrect: false,
-  },
-];
+import {
+  QuestionsContext,
+  IdentificationRefContext,
+  RemainingTimeContext,
+} from '@/providers/QuizContext';
 
 const sampleLeaderboardNames = [
   { name: 'Togle, Charles Nathaniel', points: 1003 },
@@ -104,19 +31,19 @@ export default function Quiz() {
 
 export function QuizPage() {
   let { quizId } = useParams();
-  let questions = QuizzesData.find(
-    (quiz) => quiz.number.toString() === quizId,
-  ).questions; // data for prod
-  // let questions = sampleQuizQuestions; // data for test
+  let questions = useContext(QuestionsContext);
+  const remainingTimeRef = useContext(RemainingTimeContext);
 
   const [quizState, setQuizState] = useState({
     quizId: quizId,
     questionIndex: 0,
     score: 0,
-    questions: [], // data for prod
-    // questions: sampleQuestionsResult,
-    // status: 'completed', // data for test
-    status: 'in progress', // data for prod
+    points: 0,
+    // status: '', // should be fetched from the database in prod
+    // status: 'Done', // data for test
+    status: 'Pending', // data for test
+    // questionsAnswered: sampleQuestionsResult,
+    questionsAnswered: [], // data for prod
   });
 
   function onAnswerSelected(answer, multipleChoice = true) {
@@ -137,14 +64,19 @@ export function QuizPage() {
         isCorrect = true;
     }
 
+    alert(calculatePoints(isCorrect, remainingTimeRef.current, 60));
+
     if (quizState.questionIndex <= questions.length - 1) {
       setQuizState((prevQuizState) => {
         return {
           ...prevQuizState,
           questionIndex: prevQuizState.questionIndex + 1,
           score: prevQuizState.score + (isCorrect ? 1 : 0),
-          questions: [
-            ...prevQuizState.questions,
+          points:
+            prevQuizState.points +
+            calculatePoints(isCorrect, remainingTimeRef.current, 60),
+          questionsAnswered: [
+            ...prevQuizState.questionsAnswered,
             {
               question: questions[prevQuizState.questionIndex].question,
               correctAnswer: correctAnswer,
@@ -161,11 +93,18 @@ export function QuizPage() {
         return {
           ...prevQuizState,
           questionIndex: prevQuizState.questionIndex - 1,
-          status: 'completed',
+          status: 'Done',
         };
       });
     }
   }
+
+  // if (quizState.status === 'Done') {
+  //   sampleLeaderboardNames.push({
+  //     name: 'User ',
+  //     points: quizState.points,
+  //   });
+  // }
 
   const isIdentification =
     questions[quizState.questionIndex].type === 'identification';
@@ -174,20 +113,20 @@ export function QuizPage() {
   return (
     <div>
       <PageHeading
-        text="Quizzes & Activities"
+        text="Quizzes"
         className="bg-background z-2"
       ></PageHeading>
       <div id="quiz-1" className="flex flex-col w-5/6 mx-auto mb-4">
         <div className="flex items-start justify-between pt-8">
           <div>
             <h2 className="font-heading-small text-3xl text-primary-blue ">
-              {quizState.status === 'in progress'
+              {quizState.status === 'Pending'
                 ? `Quiz #${quizId}: Lecture #${quizId}`
                 : 'Results & Summary'}
             </h2>
             <hr className="w-[60%] border-1 border-primary-yellow mt-2 mb-3" />
           </div>
-          {quizState.status === 'in progress' && (
+          {quizState.status === 'Pending' && (
             <Timer
               key={quizState.questionIndex}
               duration={questions[quizState.questionIndex].duration}
@@ -202,8 +141,9 @@ export function QuizPage() {
             />
           )}
         </div>
-        {quizState.status === 'in progress' ? (
+        {quizState.status === 'Pending' ? (
           <QuizBody
+            key={quizState.questionIndex}
             index={quizState.questionIndex}
             question={questions[quizState.questionIndex]}
             score={quizState.score}
@@ -302,49 +242,49 @@ function MultipleChoice({ choices, handleAnswer }) {
 function Results({ questions, quizState }) {
   return (
     <div className="w-[70%] flex flex-col items-center justify-center text-black font-content mx-auto">
-      <div className="rounded-2xl mt-8 mb-6 py-8 text-base border-2 border-black w-full">
-        <div className="relative w-full flex flex-col items-center justify-center border-t-2 border-black">
-          <div className="w-[55%] bg-white absolute -top-3 left-1/2 -translate-x-1/2 ">
-            <h3 className="w-fit mx-auto font-semibold text-2xl text-center border-b-[0.8px] border-black px-6">
+      <div className="rounded-2xl mt-8 mb-6 py-8 text-base border-2 border-black w-full bg-[linear-gradient(180deg,#111C4E_0%,#003D69_100%)]">
+        <div className="relative w-full flex flex-col items-center justify-center border-t-2 border-white text-white">
+          <div className="w-[55%] bg-[#111C4E] absolute -top-3 left-1/2 -translate-x-1/2 ">
+            <h3 className="w-fit mx-auto font-semibold text-2xl text-center border-b-[0.8px] border-white px-6">
               Summary
             </h3>
           </div>
           <h3 className="text-lg mt-9">
             Quiz #{quizState.quizId} Lecture #{quizState.quizId}
           </h3>
-          <h2 className="text-2xl font-semibold border-b-2 border-black px-3 pb-4 mt-4">
+          <h2 className="text-2xl font-semibold border-b-2 border-white px-3 pb-4 mt-4">
             You aced, keep shining!
           </h2>
           <div className="flex items-center justify-between mt-5 mb-4 w-[55%]">
             <div>
-              <h1 className="text-2xl font-semibold border-b-2 border-black px-2">
+              <h1 className="text-2xl font-semibold border-b-2 border-white px-2">
                 Score:
               </h1>
             </div>
-            <div className="rounded-xl border-2 border-black py-5 px-30">
+            <div className="rounded-xl border-2 border-white py-5 px-30 bg-[#000A3A]">
               <h1 className="text-4xl font-bold">
-                {quizState.score}/{quizState.questions.length}
+                {quizState.score}/{quizState.questionsAnswered.length}
               </h1>
             </div>
           </div>
-          <hr className="w-[75%] border-1 border-black mt-3 mb-4" />
+          <hr className="w-[75%] border-1 border-white mt-3 mb-4" />
           <h3 className="text-lg">Performance Stats</h3>
           <div className="flex items-center justify-between mt-3 w-[70%]">
-            <div className="flex flex-col items-center justify-center text-green py-3 px-25 rounded-xl border-2 border-black">
+            <div className="flex flex-col items-center justify-center text-green py-3 px-25 rounded-xl border-2 border-white  bg-[#000A3A]">
               <h3 className="text-2xl font-bold">{quizState.score}</h3>
               <h3>Correct</h3>
             </div>
-            <div className="flex flex-col items-center justify-center text-red py-3 px-25 rounded-xl border-2 border-black">
+            <div className="flex flex-col items-center justify-center text-red py-3 px-25 rounded-xl border-2 border-white bg-[#000A3A]">
               <h3 className="text-2xl font-bold">
-                {quizState.questions.length - quizState.score}
+                {quizState.questionsAnswered.length - quizState.score}
               </h3>
               <h3>Incorrect</h3>
             </div>
           </div>
-          <hr className="w-[40%] border-1 border-black mt-8 mb-5" />
+          <hr className="w-[40%] border-1 border-white mt-8 mb-5" />
         </div>
-        <div className="border-t-2 border-black pt-4 relative w-full mt-10 text-lg">
-          <h3 className="w-[40%] absolute -top-4 left-1/2 -translate-x-1/2 bg-white text-center font-bold text-xl">
+        <div className="border-t-2 border-white pt-4 relative w-full mt-10 text-lg text-white">
+          <h3 className="w-[40%] absolute -top-4 left-1/2 -translate-x-1/2 bg-[#053361] text-center font-bold text-xl">
             Leaderboard
           </h3>
           <div className="mt-6">
@@ -364,7 +304,7 @@ function Results({ questions, quizState }) {
         <h4 className="font-semibold text-xl">Review Questions</h4>
         <h4 className="text-lg">Here lies all the correct answers.</h4>
       </div>
-      {quizState.questions.map((questionData, index) => {
+      {quizState.questionsAnswered.map((questionData, index) => {
         return (
           <ResultQuestion
             key={index + questionData.question}
