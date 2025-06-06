@@ -7,4 +7,10 @@ function shuffleArray(array) {
   return arr;
 }
 
-export { shuffleArray };
+function calculatePoints(isCorrect, timeRemaining, totalTime) {
+  const basePoints = isCorrect ? 1000 : 500;
+  const timeDeduction = Math.round((timeRemaining / totalTime) * basePoints);
+  return timeDeduction < 100 ? 100 : Math.round(timeDeduction / 100) * 100;
+}
+
+export { shuffleArray, calculatePoints };

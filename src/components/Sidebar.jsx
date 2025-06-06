@@ -20,7 +20,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '@/styles/sidebar.css';
 
-export default function Sidebar ({ isOpen, onClose }) {
+export default function Sidebar({ isOpen, onClose }) {
   const SidebarButtons = [
     { text: 'Home', icon: HomeIcon, route: '/home' },
     {
@@ -30,9 +30,9 @@ export default function Sidebar ({ isOpen, onClose }) {
     },
     { text: 'Lectures', icon: LecturesIcon, route: '/lectures' },
     {
-      text: 'Quizzes / Activities',
+      text: 'Quizzes',
       icon: QuizIcon,
-      route: '/quizzes-and-activities',
+      route: '/quizzes',
     },
     {
       text: 'Physical Fitness Test',
@@ -53,7 +53,7 @@ export default function Sidebar ({ isOpen, onClose }) {
     Home: ActiveHomeIcon,
     'Health Calculators': ActiveCalculatorIcon,
     Lectures: ActiveLecturesIcon,
-    'Quizzes / Activities': ActiveQuizIcon,
+    'Quizzes': ActiveQuizIcon,
     'Physical Fitness Test': ActivePhysicalFitnessIcon,
     'Discover More': ActiveDiscoverIcon,
     About: ActiveAboutIcon,
@@ -71,7 +71,7 @@ export default function Sidebar ({ isOpen, onClose }) {
   // Close sidebar on outside click (mobile only)
   useEffect(() => {
     if (!isMobile || !isOpen) return;
-    const handleClick = e => {
+    const handleClick = (e) => {
       // Only close if click is outside the sidebar
       const sidebar = document.getElementById('sidebar');
       if (sidebar && !sidebar.contains(e.target)) {
@@ -84,7 +84,7 @@ export default function Sidebar ({ isOpen, onClose }) {
 
   // Determine active index based on current path
   useEffect(() => {
-    const foundIndex = SidebarButtons.findIndex(btn => {
+    const foundIndex = SidebarButtons.findIndex((btn) => {
       // Support both exact and partial matches for nested routes
       if (btn.route === '/') return location.pathname === '/';
       return location.pathname.startsWith(btn.route.replace(/\/$/, ''));
@@ -101,7 +101,7 @@ export default function Sidebar ({ isOpen, onClose }) {
   };
 
   const handleOnMouseEnter = () => {
-    setIsWide(prev => !prev);
+    setIsWide((prev) => !prev);
   };
 
   const handleTransitionEnd = () => {
@@ -110,7 +110,7 @@ export default function Sidebar ({ isOpen, onClose }) {
 
   return (
     <aside
-      id='sidebar'
+      id="sidebar"
       className={`${
         isMobile ? '' : 'aside '
       } lg:w-[7vw] w-[60vw] h-screen overflow-hidden bg-secondary-dark-blue lg:relative
@@ -123,23 +123,23 @@ export default function Sidebar ({ isOpen, onClose }) {
       onMouseLeave={() => handleOnMouseEnter()}
     >
       <div
-        id='logo'
+        id="logo"
         className={`fulltransition-all w-full duration-400 ease-out flex justify-center items-center mb-4 lg:mb-0 ${
           isWide || (isMobile && isOpen) ? 'bg-white' : ''
         }`}
         onClick={() => navigate('/home')}
       >
-        {!isWide && <hr className='mt-5 absolute top-0 w-[60%] right-0' />}
+        {!isWide && <hr className="mt-5 absolute top-0 w-[60%] right-0" />}
         <img
           src={isWide || (isMobile && isOpen) ? SidebarLogo : SidebarLogoSmall}
-          alt=''
+          alt=""
           className={`transition-all duration-400 w-fit h-[15dvh] mt-[3vh] mb-[3vh] lg:mt-0 lg:h-40 object-contain`}
         />
       </div>
 
       <div
-        id='sidebar-button'
-        className='flex flex-col items-center justify-around lg:justify-evenly w-full h-[75dvh] lg:h-full'
+        id="sidebar-button"
+        className="flex flex-col items-center justify-around lg:justify-evenly w-full h-[75dvh] lg:h-full"
       >
         {SidebarButtons.map((item, index) => (
           <div
@@ -149,7 +149,7 @@ export default function Sidebar ({ isOpen, onClose }) {
             key={`${item}-${index}`}
           >
             <button
-              type='button'
+              type="button"
               onClick={() => handleClick(index, item.route)}
               className={`transition-all duration-500 flex items-center w-full relative`}
             >
@@ -163,10 +163,10 @@ export default function Sidebar ({ isOpen, onClose }) {
                 src={
                   index === active ? ActiveIconVariants[item.text] : item.icon
                 }
-                className='relative z-1 transition-all duration-500 ml-5 lg:ml-0 mr-5 w-8 lg:w-unset lg:h-8'
+                className="relative z-1 transition-all duration-500 ml-5 lg:ml-0 mr-5 w-8 lg:w-unset lg:h-8"
                 alt={`${item.text} Icon`}
               />
-              <p className='relative z-1 text-lg text-text-content text-wrap font-heading text-left border-white lg:w-[60%] lg:text-base'>
+              <p className="relative z-1 text-lg text-text-content text-wrap font-heading text-left border-white lg:w-[60%] lg:text-base">
                 {item.text}
               </p>
             </button>
