@@ -39,45 +39,20 @@ export default function AccountVerification () {
       return;
     }
 
-    const arrayClassCode = classCode ? [`${classCode}`] : [];
-
     console.log(userType);
     const { error: rpcError } = await supabase.rpc('register_user', {
       p_user_id: userId,
       p_full_name: fullName,
       p_email: email,
       p_user_type: userType,
-      p_class_code: arrayClassCode,
+      p_class_code: classCode,
       p_lecture_progress: lectureProgress,
     });
 
     console.log(arrayClassCode);
-    if (!rpcError) {
-      setTimeout(() => {
-        supabase.auth.signOut();
-      }, 1500);
-      return;
-    }
 
     if (rpcError) {
       setErrorMessage('Error during registration: ' + rpcError.message);
-      setTimeout(() => {
-        supabase.auth.signOut();
-      }, 1500);
-      return;
-    }
-
-    const { error: lectureProgressError } = await supabase
-      .from('lecture_progress')
-      .upsert({
-        uuid: userId,
-        lecture_progress: lectureProgress,
-      });
-
-    if (lectureProgressError) {
-      setErrorMessage(
-        'Error initializing lecture progress: ' + lectureProgressError.message,
-      );
       setTimeout(() => {
         supabase.auth.signOut();
       }, 1500);
@@ -105,7 +80,7 @@ export default function AccountVerification () {
         ></FormHeading>
         <FormButton
           text='Go to dashboard'
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate('/dashboard')}
         ></FormButton>
         {errorMessage && (
           <p className='text-red font-content font-semibold mt-2'>

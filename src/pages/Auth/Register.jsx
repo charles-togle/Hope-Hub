@@ -18,6 +18,7 @@ export default function Register () {
   const [isEducator, setEducator] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handlePasswordChange = value => {
     setPassword(value);
@@ -36,12 +37,14 @@ export default function Register () {
       setErrorMessage('');
     }
   };
-
   const handleRegister = async () => {
     setErrorMessage('');
+    setIsLoading(true);
+    setSuccessMessage('');
 
     if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match');
+      setIsLoading(false);
       return;
     }
 
@@ -57,19 +60,20 @@ export default function Register () {
       trimmedPassword,
       trimmedConfirmPassword,
       trimmedName,
-      trimmedClassCode,
     ];
 
-    const areAllFieldsFilled = fields.every(field =>
-      field === trimmedClassCode
-        ? isEducator
-          ? true
-          : field !== ''
-        : field !== '',
-    );
-
+    const areAllFieldsFilled = fields.every(field => field !== '');
     if (!areAllFieldsFilled) {
-      setErrorMessage('Please fill up all fields');
+      setErrorMessage('Please fill up all required fields');
+      setSuccessMessage('');
+      setIsLoading(false);
+      return;
+    }
+
+    if (trimmedClassCode && trimmedClassCode.length !== 6) {
+      setErrorMessage('Class code must be exactly 6 characters');
+      setSuccessMessage('');
+      setIsLoading(false);
       return;
     }
 
@@ -79,27 +83,33 @@ export default function Register () {
       email: trimmedEmail,
       password: trimmedPassword,
       options: {
-        emailRedirectTo: 'http://localhost:5173/auth/account-verification',
+        emailRedirectTo:
+          'https://hope-hub-dcvm.vercel.app/auth/account-verification',
         data: {
           fullName: trimmedName,
           userType: userType,
-          classCode: trimmedClassCode,
+          classCode: trimmedClassCode !== '' ? trimmedClassCode : null,
           lectureProgress: LectureProgress(),
+          password: trimmedPassword,
         },
       },
     });
-
     if (error) {
       setErrorMessage(error.message);
+      setSuccessMessage('');
+      setIsLoading(false);
       return;
     }
 
     if (!data || !data.user) {
       setErrorMessage('Registration succeeded, but user info is missing.');
+      setSuccessMessage('');
+      setIsLoading(false);
       return;
     }
 
     setSuccessMessage('Verification has been sent to your email');
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -130,7 +140,9 @@ export default function Register () {
           <FormInput
             value={classCode}
             placeholder={
-              isEducator ? 'You can create a class later' : 'Enter class code'
+              isEducator
+                ? 'You can create a class later'
+                : 'Nothing going on yet? Join a class later'
             }
             disabled={isEducator}
             setValue={setClassCode}
@@ -164,7 +176,11 @@ export default function Register () {
             {successMessage}
           </p>
         )}
-        <FormButton text='Sign Up' onClick={handleRegister}></FormButton>{' '}
+        <FormButton
+          text={isLoading ? 'Signing you up...' : 'Sign Up'}
+          onClick={handleRegister}
+          disabled={isLoading}
+        />{' '}
       </FormContainer>
     </AuthContainer>
   );

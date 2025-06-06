@@ -1,11 +1,12 @@
 import PageHeading from '@/components/PageHeading';
-import LectureIntroduction from '@/components/LectureIntroComponent';
+import LectureIntroduction from '@/components/lectures/LectureIntroComponent';
 import { useState, useEffect, useCallback } from 'react';
 import { Lessons } from '@/utilities/Lessons';
 import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
 import LectureProgress from '@/utilities/LectureProgress';
 import { useNavigate } from 'react-router-dom';
+import Footer from '@/components/Footer';
 
 export default function Lectures () {
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -74,7 +75,7 @@ export default function Lectures () {
   }
 
   return (
-    <div
+    <section
       id='lectures'
       className='overflow-x-hidden h-screen bg-background overflow-y-scroll'
     >
@@ -90,6 +91,7 @@ export default function Lectures () {
           id='buttons-wrapper'
           className='sticky top-0 pt-[3%] pb-[2%] self-start w-full flex flex-col-reverse items-center justify-between flex-wrap bg-background z-10 lg:flex-nowrap lg:flex-row'
         >
+          {' '}
           <div
             id='buttons'
             className='rounded-sm bg-secondary-dark-blue w-full h-fit flex justify-between flex-nowrap lg:w-fit'
@@ -99,10 +101,14 @@ export default function Lectures () {
                 key={index}
                 onClick={() => handleFilterChange(filter)}
                 className={
-                  `text-white text-center font-content py-2 min-w-1/8 px-2 text-sm lg:w-auto lg:px-5 ` +
+                  `text-white text-center font-content py-2 min-w-1/8 px-2 text-sm lg:w-auto lg:px-5 transition-colors ${
+                    index === 0 ? 'rounded-l-sm' : ''
+                  } ${
+                    index === LectureFilters.length - 1 ? 'rounded-r-sm' : ''
+                  } ` +
                   (filter === activeFilter
-                    ? 'bg-primary-yellow rounded-sm text-secondary-dark-blue'
-                    : 'bg-secondary-dark-blue')
+                    ? 'bg-primary-yellow text-secondary-dark-blue'
+                    : 'bg-secondary-dark-blue hover:bg-gray-700')
                 }
               >
                 {filter}
@@ -140,6 +146,7 @@ export default function Lectures () {
           )}
         </div>
       </div>
-    </div>
+      <Footer></Footer>
+    </section>
   );
 }

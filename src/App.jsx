@@ -1,5 +1,5 @@
 import './styles/global.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import About from './pages/About';
 import Lectures from './pages/LecturesIntroduction';
@@ -21,9 +21,13 @@ import Register from './pages/Auth/Register';
 import ForgotPassword from './pages/Auth/ForgotPassword';
 import ChangePassword from './pages/Auth/ChangePassword';
 import DiscoverMore from './pages/DiscoverMore';
-import StudentDashboard from './pages/Profiles/StudentDashboard';
+import StudentDashboard from './pages/Dashboard/StudentDashboard';
 import HamburgerMenu from './assets/icons/hamburger_icon.png';
 import AccountVerification from './pages/Auth/AccountVerification';
+import TeacherDashboard from './pages/Dashboard/TeacherDashboard';
+import supabase from './client/supabase';
+import ViewClass from './pages/Dashboard/ViewClass';
+import { useUserId } from './hooks/useUserId';
 
 function SidebarLayout () {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -46,40 +50,66 @@ function SidebarLayout () {
   );
 }
 
-function App () {
-  const PhysicalFitnessWrapper = () => {
-    return (
-      <PhysicalFitnessDataProvider>
-        <Outlet />
-      </PhysicalFitnessDataProvider>
-    );
-  };
+const PhysicalFitnessWrapper = () => {
+  return (
+    <PhysicalFitnessDataProvider>
+      <Outlet />
+    </PhysicalFitnessDataProvider>
+  );
+};
 
-  const LectureWrapper = () => {
-    return (
-      <LectureProgressProvider>
-        <Outlet />
-      </LectureProgressProvider>
-    );
-  };
+const LectureWrapper = () => {
+  return (
+    <LectureProgressProvider>
+      <Outlet />
+    </LectureProgressProvider>
+  );
+};
 
-  const AuthWrapper = () => {
-    return <Outlet />;
-  };
+const AuthWrapper = () => {
+  return <Outlet />;
+};
 
-  const ProfileWrapper = () => {
-    const isAdmin = false;
+const ProfileWrapper = () => {
+  const [isTeacher, setIsTeacher] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const userID = useUserId();
 
-    if (isAdmin) {
-      return (
-        // <div></div> admin here
-        <></>
-      );
-    } else {
-      return <StudentDashboard />;
+  useEffect(() => {
+    async function getType () {
+      if (!userID) {
+        return;
+      }
+      const { data, error: userTypeError } = await supabase
+        .from('profile')
+        .select('user_type')
+        .eq('uuid', userID)
+        .single();
+      if (userTypeError) {
+        console.log(
+          'there was a problem fetching user type',
+          userTypeError.message,
+        );
+        return;
+      }
+      setIsTeacher(data.user_type === 'teacher');
+      setIsLoading(false);
     }
-  };
+    getType();
+  }, [userID]);
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isTeacher) {
+    return <TeacherDashboard></TeacherDashboard>;
+  } else {
+    return <StudentDashboard />;
+  }
+};
+
+function App () {
   return (
     <BrowserRouter>
       <Routes>
@@ -121,18 +151,22 @@ function App () {
             <Route path='quiz/:quizId' element={<Quiz />} />
             <Route path='activity/:activityId' element={<Activity />} />
           </Route>
-          <Route path='auth' element={<AuthWrapper />}>
-            <Route path='login' element={<Login />}></Route>
-            <Route path='register' element={<Register />}></Route>
-            <Route path='forgot-password' element={<ForgotPassword />}></Route>
-            <Route path='change-password' element={<ChangePassword />}></Route>
-            <Route
-              path='account-verification'
-              element={<AccountVerification />}
-            ></Route>
-          </Route>
-          <Route path='profile' element={<ProfileWrapper />}></Route>
+          <Route path='dashboard' element={<ProfileWrapper />}></Route>
           <Route path='*' element={<NotFound />} />
+          <Route
+            path='dashboard/view-class/:classCode'
+            element={<ViewClass />}
+          ></Route>
+        </Route>
+        <Route path='auth' element={<AuthWrapper />}>
+          <Route path='login' element={<Login />}></Route>
+          <Route path='register' element={<Register />}></Route>
+          <Route path='forgot-password' element={<ForgotPassword />}></Route>
+          <Route path='change-password' element={<ChangePassword />}></Route>
+          <Route
+            path='account-verification'
+            element={<AccountVerification />}
+          ></Route>
         </Route>
       </Routes>
     </BrowserRouter>
