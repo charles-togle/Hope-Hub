@@ -36,12 +36,13 @@ export function QuizPage() {
   let { quizId } = useParams();
   let questions = useContext(QuestionsContext);
   const remainingTimeRef = useContext(RemainingTimeContext);
-
+  const [shouldShowPoints, setShouldShowPoints] = useState(false);
   const [quizState, setQuizState] = useState({
     quizId: quizId,
     questionIndex: 0,
     score: 0,
     points: 0,
+    currentQuestionPoints: 0,
     // status: '', // should be fetched from the database in prod
     // status: 'Done', // data for test
     status: 'Pending', // data for test
@@ -67,6 +68,17 @@ export function QuizPage() {
         isCorrect = true;
     }
 
+    let pointsEarnedForCurrentQuestion = calculatePoints(
+      isCorrect,
+      remainingTimeRef.current,
+      questions[quizState.questionIndex].duration,
+    );
+
+    setQuizState({
+      ...quizState,
+      currentQuestionPoints: pointsEarnedForCurrentQuestion,
+    });
+    setShouldShowPoints(true);
     // alert(
     //   calculatePoints(
     //     isCorrect,
@@ -77,18 +89,13 @@ export function QuizPage() {
 
     if (quizState.questionIndex <= questions.length - 1) {
       setTimeout(() => {
+        setShouldShowPoints(false);
         setQuizState((prevQuizState) => {
           return {
             ...prevQuizState,
             questionIndex: prevQuizState.questionIndex + 1,
             score: prevQuizState.score + (isCorrect ? 1 : 0),
-            points:
-              prevQuizState.points +
-              calculatePoints(
-                isCorrect,
-                remainingTimeRef.current,
-                questions[quizState.questionIndex].duration,
-              ),
+            points: prevQuizState.points + pointsEarnedForCurrentQuestion,
             questionsAnswered: [
               ...prevQuizState.questionsAnswered,
               {
@@ -164,6 +171,8 @@ export function QuizPage() {
               score={quizState.score}
               handleAnswer={onAnswerSelected}
               totalItems={questions.length}
+              showPoints={shouldShowPoints}
+              points={quizState.currentQuestionPoints}
             />
           ) : (
             <Results questions={questions} quizState={quizState} />
@@ -174,7 +183,15 @@ export function QuizPage() {
   );
 }
 
-function QuizBody({ index, question, score, handleAnswer, totalItems }) {
+function QuizBody({
+  index,
+  question,
+  score,
+  handleAnswer,
+  totalItems,
+  showPoints,
+  points,
+}) {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full relative">
       <div className="rounded-t-full border-2 border-secondary-dark-blue py-4 px-14 relative top-3">
@@ -182,7 +199,7 @@ function QuizBody({ index, question, score, handleAnswer, totalItems }) {
       </div>
       <div
         className="flex flex-col justify-center items-center rounded-2xl w-full min-h-[90vh] z-10 bg-cover bg-center bg-no-repeat 
-          p-10 text-2xl text-white font-content"
+          p-10 text-2xl text-white font-content relative"
         style={{ backgroundImage: `url(${QuizBackground})` }}
       >
         <h3 className="my-7 text-3xl">
@@ -196,6 +213,23 @@ function QuizBody({ index, question, score, handleAnswer, totalItems }) {
             transition={{ duration: 0.5 }}
             className="flex flex-col items-center justify-center w-full h-full"
           >
+            {showPoints && (
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ type: 'spring', stiffness: 50 }}
+                className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 bg-[rgba(0,0,0,0.5)] rounded-2xl"
+              >
+                <motion.span
+                  className="text-green-500 text-8xl font-bold drop-shadow-lg"
+                  initial={{ y: -50 }}
+                  animate={{ y: 0 }}
+                >
+                  +{points} points!
+                </motion.span>
+              </motion.div>
+            )}
             <p className="w-[80%] text-center whitespace-pre-line">
               {question.question}
             </p>
@@ -255,18 +289,7 @@ function MultipleChoice({ choices, handleAnswer }) {
   const [isDisabled, setIsDisabled] = useState(false);
 
   return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0 },
-        visible: {
-          opacity: 1,
-          transition: { staggerChildren: 0.3 },
-        },
-      }}
-      initial="hidden"
-      animate="visible"
-      className="flex flex-wrap justify-center w-full h-full mt-3"
-    >
+    <div className="flex flex-wrap justify-center w-full h-full mt-3">
       {choices.map((choice, index) => (
         <CustomButton
           key={index + choice.text}
@@ -281,7 +304,7 @@ function MultipleChoice({ choices, handleAnswer }) {
           <span>{choice.text}</span>
         </CustomButton>
       ))}
-    </motion.div>
+    </div>
   );
 }
 
