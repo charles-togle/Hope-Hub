@@ -215,10 +215,9 @@ function QuizBody({
           >
             {showPoints && (
               <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
+                initial={{ opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ type: 'spring', stiffness: 50 }}
+                exit={{ opacity: 0 }}
                 className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 bg-[rgba(0,0,0,0.5)] rounded-2xl"
               >
                 <motion.span
