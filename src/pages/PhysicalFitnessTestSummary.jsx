@@ -87,16 +87,14 @@ export function PhysicalFitnessTestSummary () {
     if (!targetUserId) return;
     async function getDataFromDatabase () {
       // If in teacher view, fetch student information first
-      if (isTeacherView) {
-        const { data: studentData, error: studentError } = await supabase
-          .from('profile')
-          .select('full_name, email')
-          .eq('uuid', targetUserId)
-          .single();
+      const { data: studentData, error: studentError } = await supabase
+        .from('profile')
+        .select('full_name, email')
+        .eq('uuid', targetUserId)
+        .single();
 
-        if (!studentError && studentData) {
-          setStudentInfo(studentData);
-        }
+      if (!studentError && studentData) {
+        setStudentInfo(studentData);
       }
 
       //handle pre test or post test
@@ -129,11 +127,11 @@ export function PhysicalFitnessTestSummary () {
     <section id='physical-fitness-test-summary' className='parent-container'>
       <PageHeading text={'Physical Fitness Test'}></PageHeading>
       <div id='summary-content' className='content-container'>
-        <h1 className='w-full text-left text-4xl font-heading -ml-20 mb-5 font-medium text-primary-blue'>
+        <h1 className='w-full text-left text-3xl lg:text-4xl font-heading lg:-ml-20 lg:mb-5 font-medium text-primary-blue'>
           {testType === 'pre-test' ? 'Pre Test' : 'Post Test'} Record
         </h1>
-        {isTeacherView && studentInfo && (
-          <div className='w-full mb-5 p-4 bg-gray-100 rounded-lg -ml-20'>
+        {studentInfo && (
+          <div className='w-full mb-5 p-4 bg-gray-100 rounded-lg lg:-ml-20'>
             <h2 className='text-xl font-medium text-gray-800 mb-2'>
               Student Information
             </h2>
@@ -158,7 +156,7 @@ export function PhysicalFitnessTestSummary () {
                 return (
                   heading && (
                     <Fragment>
-                      <h1 className='text-3xl font-heading -ml-5 mb-0 font-medium'>
+                      <h1 className=' text-2xl lg:text-3xl font-heading lg:-ml-5 mb-0 font-medium'>
                         {heading}
                       </h1>
                       <hr className='w-1/3 border-1 border-primary-yellow mb-4 -ml-5' />
@@ -182,7 +180,7 @@ const TableColumn = ({ columnContent }) => (
       <td
         className={`${
           index === 0 ? 'border-l-0!' : ''
-        } text-center font-content w-15 h-15 border-l-4 border-t-4 border-secondary-dark-blue`}
+        } text-xs font-semibold lg:text-base text-center font-content w-15 h-15 border-l-2 lg:border-l-4 border-t-4 border-secondary-dark-blue`}
         key={`data ${index}`}
       >
         {content}
@@ -197,7 +195,7 @@ const TableHeading = ({ headings }) => (
       <th
         className={`${
           index === 0 ? 'border-l-0!' : ''
-        } h-20 text-center font-content border-l-4 text-white bg-secondary-dark-blue border-white`}
+        } text-xs lg:text-base h-10 lg:h-20 text-center font-content border-l-2 lg:border-l-4 text-white bg-secondary-dark-blue border-white`}
         key={heading}
       >
         {heading}
@@ -208,7 +206,7 @@ const TableHeading = ({ headings }) => (
 
 const TableSummary = ({ summary }) => (
   <div id='summary'>
-    <div className='flex flex-row font-heading space-x-2 text-lg'>
+    <div className='flex flex-row font-heading space-x-2 lg:text-lg'>
       <p>{summary.number}.</p>
       <p>{summary.title}</p>
     </div>
@@ -221,7 +219,7 @@ const TableSummary = ({ summary }) => (
         <tbody>
           <tr className={`${summary.hasParentHeading ? '' : 'hidden'}`}>
             <th
-              className='text-center font-bold font-content h-10  border-b-4 border-white'
+              className='lg:text-base text-sm text-center font-bold font-content h-10  border-b-4 border-white'
               colSpan={summary.headings.length}
             >
               {summary.parentHeading}
