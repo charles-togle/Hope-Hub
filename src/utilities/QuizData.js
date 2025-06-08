@@ -334,181 +334,198 @@ const QuizzesData = [
         ],
       },
     ],
+  },
+  {
+    number: 2,
+    questions: [
+      {
+        type: 'identification',
+        duration: '180',
+        question:
+          "Calculate Charles' Target Heart Rate range using:\nAge: 25\nResting Heart Rate: 65 bpm\nIntensity: 60-80%\n\nThe student must:\n1. Calculate HRmax using 220 - Age\n2. Find HRr: HRmax - RHr\n3. Calculate THR range:\n   - Lower THR = HRr × 0.60 + RHr\n   - Upper THR = HRr × 0.80 + RHr\n\nThe answer must be in the format: Lower THR-Upper THR bpm",
+        answer: '143-169 bpm',
+      },
+    ],
+  },
+];
 
-    // questions: [
-    //   {
-    //     type: 'multiple-choice',
-    //     duration: '60',
-    //     question:
-    //       'Physical education plays a crucial role in the holistic development of students by promoting physical, mental, and social well-being. Which of the following best describes the primary objective of physical education in the academic setting, particularly in fostering lifelong fitness habits among students?',
-    //     choices: [
-    //       {
-    //         text: 'To train students for competitive sports at a professional level regardless of interest or ability.',
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         text: 'To provide students with a theoretical understanding of the history of global physical activities without requiring participation.',
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         text: 'To enhance student performance in academic subjects through purely sedentary brain exercises integrated with sports trivia.',
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         text: 'To equip students with knowledge, skills, and motivation to maintain a healthy lifestyle through regular physical activity across their lifespan.',
-    //         isCorrect: true,
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     type: 'identification',
-    //     duration: '60',
-    //     question:
-    //       'This component of physical fitness refers to the ability of a muscle or group of muscles to sustain repeated contractions against resistance for an extended period of time.',
-    //     answer: 'Muscular endurance',
-    //   },
-    //   {
-    //     type: 'multiple-choice',
-    //     duration: '60',
-    //     question:
-    //       'In the context of physical fitness testing, which of the following statements best explains the significance of cardiorespiratory endurance in maintaining optimal health and performance?',
-    //     choices: [
-    //       {
-    //         text: 'Cardiorespiratory endurance is solely related to an individual’s body weight and has little effect on overall health outcomes.',
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         text: 'It measures how efficiently the heart and lungs supply oxygen during sustained physical activity, contributing significantly to stamina and disease prevention.',
-    //         isCorrect: true,
-    //       },
-    //       {
-    //         text: 'This fitness component is primarily concerned with improving muscle size and should only be developed through weight training.',
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         text: 'It is irrelevant to physical education goals and is rarely assessed in school-based fitness programs.',
-    //         isCorrect: false,
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     type: 'identification',
-    //     duration: '60',
-    //     question:
-    //       'This term describes the ability to move a joint or a group of joints through their complete range of motion without pain or restriction.',
-    //     answer: 'Flexibility',
-    //   },
-    //   {
-    //     type: 'multiple-choice',
-    //     duration: '60',
-    //     question:
-    //       'Which of the following best illustrates the principle of specificity as it applies to physical training in a physical education setting, particularly when designing a workout program for a specific goal?',
-    //     choices: [
-    //       {
-    //         text: 'Performing various physical activities randomly to ensure general fitness improvement without a specific focus.',
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         text: 'Engaging in exercises that directly target the desired area of improvement, such as sprinting drills to increase running speed.',
-    //         isCorrect: true,
-    //       },
-    //       {
-    //         text: 'Using the same routine regardless of the individual’s sport or performance goals to maintain consistency.',
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         text: 'Avoiding exercises that are difficult or uncomfortable, focusing only on preferred activities.',
-    //         isCorrect: false,
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     type: 'identification',
-    //     duration: '60',
-    //     question:
-    //       'In physical education, this principle refers to the gradual increase of stress placed upon the body during exercise training to stimulate adaptation and improvement.',
-    //     answer: 'Progressive overload',
-    //   },
-    //   {
-    //     type: 'multiple-choice',
-    //     duration: '60',
-    //     question:
-    //       'Warm-up routines are essential in any physical education class or training session. Which of the following best describes the purpose and benefit of performing a warm-up before engaging in more strenuous physical activity?',
-    //     choices: [
-    //       {
-    //         text: 'To maximize muscular fatigue in preparation for rest and recovery.',
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         text: 'To raise body temperature, increase blood flow to muscles, and reduce the risk of injury by preparing the body for physical exertion.',
-    //         isCorrect: true,
-    //       },
-    //       {
-    //         text: 'To replace the need for the actual workout by focusing on gentle stretching alone.',
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         text: 'To serve as a time filler without any real physiological benefits before the actual activity begins.',
-    //         isCorrect: false,
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     type: 'multiple-choice',
-    //     duration: '60',
-    //     question:
-    //       'Physical fitness has several components, each contributing to overall health and performance. Which of the following is *not* typically considered a component of health-related physical fitness?',
-    //     choices: [
-    //       {
-    //         text: 'Body composition',
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         text: 'Agility',
-    //         isCorrect: true,
-    //       },
-    //       {
-    //         text: 'Muscular strength',
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         text: 'Flexibility',
-    //         isCorrect: false,
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     type: 'identification',
-    //     duration: '60',
-    //     question:
-    //       'This is the ability to exert force during an activity, commonly evaluated by exercises such as push-ups or weight lifting.',
-    //     answer: 'Muscular strength',
-    //   },
-    //   {
-    //     type: 'multiple-choice',
-    //     duration: '60',
-    //     question:
-    //       'Cool-down exercises are a vital part of a balanced workout. Which of the following best represents the reason for including a cool-down phase at the end of physical activity?',
-    //     choices: [
-    //       {
-    //         text: 'To shock the muscles into recovery by stopping movement immediately after intense exertion.',
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         text: 'To mentally transition from exercise to rest by incorporating static, non-physical reflection activities only.',
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         text: 'To prevent muscle soreness, allow gradual heart rate recovery, and enhance flexibility through gentle movements and stretching.',
-    //         isCorrect: true,
-    //       },
-    //       {
-    //         text: 'To replace hydration and nutrition needs after intense physical activity through visualization techniques.',
-    //         isCorrect: false,
-    //       },
-    //     ],
-    //   },
-    // ],
+const QuizzesDataOld = [
+  {
+    number: 1,
+    questions: [
+      {
+        type: 'multiple-choice',
+        duration: '60',
+        question:
+          'Physical education plays a crucial role in the holistic development of students by promoting physical, mental, and social well-being. Which of the following best describes the primary objective of physical education in the academic setting, particularly in fostering lifelong fitness habits among students?',
+        choices: [
+          {
+            text: 'To train students for competitive sports at a professional level regardless of interest or ability.',
+            isCorrect: false,
+          },
+          {
+            text: 'To provide students with a theoretical understanding of the history of global physical activities without requiring participation.',
+            isCorrect: false,
+          },
+          {
+            text: 'To enhance student performance in academic subjects through purely sedentary brain exercises integrated with sports trivia.',
+            isCorrect: false,
+          },
+          {
+            text: 'To equip students with knowledge, skills, and motivation to maintain a healthy lifestyle through regular physical activity across their lifespan.',
+            isCorrect: true,
+          },
+        ],
+      },
+      {
+        type: 'identification',
+        duration: '60',
+        question:
+          'This component of physical fitness refers to the ability of a muscle or group of muscles to sustain repeated contractions against resistance for an extended period of time.',
+        answer: 'Muscular endurance',
+      },
+      {
+        type: 'multiple-choice',
+        duration: '60',
+        question:
+          'In the context of physical fitness testing, which of the following statements best explains the significance of cardiorespiratory endurance in maintaining optimal health and performance?',
+        choices: [
+          {
+            text: 'Cardiorespiratory endurance is solely related to an individual’s body weight and has little effect on overall health outcomes.',
+            isCorrect: false,
+          },
+          {
+            text: 'It measures how efficiently the heart and lungs supply oxygen during sustained physical activity, contributing significantly to stamina and disease prevention.',
+            isCorrect: true,
+          },
+          {
+            text: 'This fitness component is primarily concerned with improving muscle size and should only be developed through weight training.',
+            isCorrect: false,
+          },
+          {
+            text: 'It is irrelevant to physical education goals and is rarely assessed in school-based fitness programs.',
+            isCorrect: false,
+          },
+        ],
+      },
+      {
+        type: 'identification',
+        duration: '60',
+        question:
+          'This term describes the ability to move a joint or a group of joints through their complete range of motion without pain or restriction.',
+        answer: 'Flexibility',
+      },
+      {
+        type: 'multiple-choice',
+        duration: '60',
+        question:
+          'Which of the following best illustrates the principle of specificity as it applies to physical training in a physical education setting, particularly when designing a workout program for a specific goal?',
+        choices: [
+          {
+            text: 'Performing various physical activities randomly to ensure general fitness improvement without a specific focus.',
+            isCorrect: false,
+          },
+          {
+            text: 'Engaging in exercises that directly target the desired area of improvement, such as sprinting drills to increase running speed.',
+            isCorrect: true,
+          },
+          {
+            text: 'Using the same routine regardless of the individual’s sport or performance goals to maintain consistency.',
+            isCorrect: false,
+          },
+          {
+            text: 'Avoiding exercises that are difficult or uncomfortable, focusing only on preferred activities.',
+            isCorrect: false,
+          },
+        ],
+      },
+      {
+        type: 'identification',
+        duration: '60',
+        question:
+          'In physical education, this principle refers to the gradual increase of stress placed upon the body during exercise training to stimulate adaptation and improvement.',
+        answer: 'Progressive overload',
+      },
+      {
+        type: 'multiple-choice',
+        duration: '60',
+        question:
+          'Warm-up routines are essential in any physical education class or training session. Which of the following best describes the purpose and benefit of performing a warm-up before engaging in more strenuous physical activity?',
+        choices: [
+          {
+            text: 'To maximize muscular fatigue in preparation for rest and recovery.',
+            isCorrect: false,
+          },
+          {
+            text: 'To raise body temperature, increase blood flow to muscles, and reduce the risk of injury by preparing the body for physical exertion.',
+            isCorrect: true,
+          },
+          {
+            text: 'To replace the need for the actual workout by focusing on gentle stretching alone.',
+            isCorrect: false,
+          },
+          {
+            text: 'To serve as a time filler without any real physiological benefits before the actual activity begins.',
+            isCorrect: false,
+          },
+        ],
+      },
+      {
+        type: 'multiple-choice',
+        duration: '60',
+        question:
+          'Physical fitness has several components, each contributing to overall health and performance. Which of the following is *not* typically considered a component of health-related physical fitness?',
+        choices: [
+          {
+            text: 'Body composition',
+            isCorrect: false,
+          },
+          {
+            text: 'Agility',
+            isCorrect: true,
+          },
+          {
+            text: 'Muscular strength',
+            isCorrect: false,
+          },
+          {
+            text: 'Flexibility',
+            isCorrect: false,
+          },
+        ],
+      },
+      {
+        type: 'identification',
+        duration: '60',
+        question:
+          'This is the ability to exert force during an activity, commonly evaluated by exercises such as push-ups or weight lifting.',
+        answer: 'Muscular strength',
+      },
+      {
+        type: 'multiple-choice',
+        duration: '60',
+        question:
+          'Cool-down exercises are a vital part of a balanced workout. Which of the following best represents the reason for including a cool-down phase at the end of physical activity?',
+        choices: [
+          {
+            text: 'To shock the muscles into recovery by stopping movement immediately after intense exertion.',
+            isCorrect: false,
+          },
+          {
+            text: 'To mentally transition from exercise to rest by incorporating static, non-physical reflection activities only.',
+            isCorrect: false,
+          },
+          {
+            text: 'To prevent muscle soreness, allow gradual heart rate recovery, and enhance flexibility through gentle movements and stretching.',
+            isCorrect: true,
+          },
+          {
+            text: 'To replace hydration and nutrition needs after intense physical activity through visualization techniques.',
+            isCorrect: false,
+          },
+        ],
+      },
+    ],
   },
   {
     number: 2,
@@ -842,321 +859,6 @@ const QuizzesData = [
         question:
           'What term describes the body’s ability to maintain balance and control during movement or while stationary?',
         answer: 'Balance',
-      },
-    ],
-  },
-];
-
-const QuizzesTestData = [
-  {
-    number: 1,
-    questions: [
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio. Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          {
-            text: 'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio. Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-            isCorrect: true,
-          },
-          {
-            text: 'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-            isCorrect: false,
-          },
-          {
-            text: 'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-            isCorrect: false,
-          },
-          {
-            text: 'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-            isCorrect: false,
-          },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
-      },
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: true },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
-      },
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: true },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
-      },
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: true },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
-      },
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: true },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
-      },
-    ],
-  },
-  {
-    number: 2,
-    questions: [
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: true },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
-      },
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: true },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
-      },
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: true },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
-      },
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: true },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
-      },
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: true },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
-      },
-    ],
-  },
-  {
-    number: 3,
-    questions: [
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: true },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
-      },
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: true },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
-      },
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: true },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
-      },
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: true },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
-      },
-      {
-        type: 'multiple-choice',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        choices: [
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: true },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-          { text: 'Lorem ipsum dolor sit amet consectetur', isCorrect: false },
-        ],
-      },
-      {
-        type: 'identification',
-        duration: '10',
-        question:
-          'Lorem ipsum dolor sit amet consectetur. Curabitur at tempus ultrices metus metus lectus nunc dictum tincidunt. Quam vestibulum id viverra vitae odio.',
-        answer: 'Lorem ipsum dolor sit amet consectetur',
       },
     ],
   },

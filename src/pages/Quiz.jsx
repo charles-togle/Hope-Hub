@@ -7,6 +7,8 @@ import { Input } from '@/components/ui/input';
 import { shuffleArray, calculatePoints } from '@/utilities/utils';
 import CustomButton from '@/components/quiz/CustomButton';
 import QuizProvider from '@/providers/QuizProvider';
+import AudioPlayer from '@/components/quiz/AudioPlayer';
+import audioFile from '@/assets/sounds/quizziz-in-game-theme.mp3';
 import {
   QuestionsContext,
   IdentificationRefContext,
@@ -64,7 +66,13 @@ export function QuizPage() {
         isCorrect = true;
     }
 
-    alert(calculatePoints(isCorrect, remainingTimeRef.current, 60));
+    alert(
+      calculatePoints(
+        isCorrect,
+        remainingTimeRef.current,
+        questions[quizState.questionIndex].duration,
+      ),
+    );
 
     if (quizState.questionIndex <= questions.length - 1) {
       setQuizState((prevQuizState) => {
@@ -74,7 +82,11 @@ export function QuizPage() {
           score: prevQuizState.score + (isCorrect ? 1 : 0),
           points:
             prevQuizState.points +
-            calculatePoints(isCorrect, remainingTimeRef.current, 60),
+            calculatePoints(
+              isCorrect,
+              remainingTimeRef.current,
+              questions[quizState.questionIndex].duration,
+            ),
           questionsAnswered: [
             ...prevQuizState.questionsAnswered,
             {
@@ -111,53 +123,53 @@ export function QuizPage() {
   const identificationAnswerRef = useContext(IdentificationRefContext);
 
   return (
-    <div>
-      <PageHeading
-        text="Quizzes"
-        className="bg-background z-2"
-      ></PageHeading>
-      <div id="quiz-1" className="flex flex-col w-5/6 mx-auto mb-4">
-        <div className="flex items-start justify-between pt-8">
-          <div>
-            <h2 className="font-heading-small text-3xl text-primary-blue ">
-              {quizState.status === 'Pending'
-                ? `Quiz #${quizId}: Lecture #${quizId}`
-                : 'Results & Summary'}
-            </h2>
-            <hr className="w-[60%] border-1 border-primary-yellow mt-2 mb-3" />
+    <AudioPlayer source={audioFile}>
+      <div>
+        <PageHeading text="Quizzes" className="bg-background z-2"></PageHeading>
+        <div id="quiz-1" className="flex flex-col w-5/6 mx-auto mb-4">
+          <div className="flex items-start justify-between pt-8">
+            <div>
+              <h2 className="font-heading-small text-3xl text-primary-blue ">
+                {quizState.status === 'Pending'
+                  ? `Quiz #${quizId}: Lecture #${quizId}`
+                  : 'Results & Summary'}
+              </h2>
+              <hr className="w-[60%] border-1 border-primary-yellow mt-2 mb-3" />
+            </div>
+            {quizState.status === 'Pending' && (
+              <Timer
+                key={quizState.questionIndex}
+                duration={questions[quizState.questionIndex].duration}
+                color={'red'}
+                onTimerEnd={() => {
+                  onAnswerSelected(
+                    isIdentification ? identificationAnswerRef.current : '',
+                    isIdentification ? false : true,
+                  );
+                  identificationAnswerRef.current = '';
+                }}
+              />
+            )}
           </div>
-          {quizState.status === 'Pending' && (
-            <Timer
+          {quizState.status === 'Pending' ? (
+            <QuizBody
               key={quizState.questionIndex}
-              duration={questions[quizState.questionIndex].duration}
-              color={'red'}
-              onTimerEnd={() => {
-                onAnswerSelected(
-                  isIdentification ? identificationAnswerRef.current : '',
-                  isIdentification ? false : true,
-                );
-                identificationAnswerRef.current = '';
-              }}
+              index={quizState.questionIndex}
+              question={questions[quizState.questionIndex]}
+              score={quizState.score}
+              handleAnswer={onAnswerSelected}
+              totalItems={questions.length}
             />
+          ) : (
+            <Results questions={questions} quizState={quizState} />
           )}
         </div>
-        {quizState.status === 'Pending' ? (
-          <QuizBody
-            key={quizState.questionIndex}
-            index={quizState.questionIndex}
-            question={questions[quizState.questionIndex]}
-            score={quizState.score}
-            handleAnswer={onAnswerSelected}
-          />
-        ) : (
-          <Results questions={questions} quizState={quizState} />
-        )}
       </div>
-    </div>
+    </AudioPlayer>
   );
 }
 
-function QuizBody({ index, question, score, handleAnswer }) {
+function QuizBody({ index, question, score, handleAnswer, totalItems }) {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full relative">
       <div className="rounded-t-full border-2 border-secondary-dark-blue py-4 px-14 relative top-3">
@@ -168,8 +180,12 @@ function QuizBody({ index, question, score, handleAnswer }) {
         p-10 text-2xl text-white font-content"
         style={{ backgroundImage: `url(${QuizBackground})` }}
       >
-        <h3 className="my-7 text-3xl">{index + 1}/10</h3>
-        <p className="w-[80%] text-center">{question.question}</p>
+        <h3 className="my-7 text-3xl">
+          {index + 1}/{totalItems}
+        </h3>
+        <p className="w-[80%] text-center whitespace-pre-line">
+          {question.question}
+        </p>
         <hr className="w-[75%] border-1 border-white mt-8 mb-4" />
         {question.type === 'identification' ? (
           <Identification handleAnswer={handleAnswer} />
@@ -343,7 +359,7 @@ function ResultQuestion({ index, questionData, questions }) {
         questionData.isCorrect ? 'border-green' : 'border-red'
       } py-5 px-8 my-4 w-full`}
     >
-      <p>
+      <p className="whitespace-pre-line">
         {index + 1}. {questionData.question}
       </p>
       <hr className="border-1 border-black/30 my-3" />
