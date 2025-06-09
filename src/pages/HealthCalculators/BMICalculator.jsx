@@ -2,7 +2,6 @@ import { getBMI } from '@/services/Calculations';
 import { CalculatorData } from '@/utilities/CalculatorData';
 import Container from '@/components/health-calculators/Container';
 import CalculatorContainer from '@/components/health-calculators/CalculatorContainer';
-import PageHeading from '@/components/PageHeading';
 import { CalculatorDetails } from '@/components/health-calculators/CalculatorDetails';
 import GenderSelector from '@/components/health-calculators/GenderSelector';
 import { useState } from 'react';

@@ -21,3 +21,14 @@ export const getBMI = (height, weight, heightUnit, weightUnit) => {
 
   return weightInKg / (heightInMeters * heightInMeters);
 };
+
+export const getBMR = (height, width, type) => {
+  let result;
+  if (type === 'US') {
+    //calculation in us
+  } else if (type === 'Metric') {
+    //calculations in metric
+  }
+
+  //return result
+};
