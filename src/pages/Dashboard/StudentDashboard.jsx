@@ -202,23 +202,23 @@ export default function StudentDashboard () {
           handleJoinClass={handleJoinClass}
         ></JoinClass>
       )}
-      <DashboardContainer>
-        <div className='grid grid-cols-2 place-content-center w-full lg:w-fit lg:block'>
-          <div>
-            <h1 className='font-heading text-primary-blue text-4xl lg:text-5xl'>
-              Dashboard
-            </h1>
-            <hr className='lg:w-90 border-1 border-primary-yellow mt-3 mb-3' />
-          </div>
-          <div>
-            <button
-              className='lg:hidden ml-auto text-base font-bold font-content px-3 py-2 text-white bg-[#DB4E34] mb-10 flex items-center gap-2'
-              onClick={() => handleLogout()}
-            >
-              <LogOut className='w-6 h-6' /> Logout
-            </button>
-          </div>
+      <div className='px-10 mt-5 mb-5 lg:mb-0 grid grid-cols-2 place-content-center w-full lg:w-fit lg:block '>
+        <div>
+          <h1 className='font-heading text-primary-blue text-4xl lg:text-5xl'>
+            Dashboard
+          </h1>
+          <hr className='lg:w-90 border-1 border-primary-yellow mt-3' />
         </div>
+        <div>
+          <button
+            className='lg:hidden ml-auto text-base font-bold font-content px-3 py-2 text-white bg-[#DB4E34] flex items-center gap-2 cursor-pointer'
+            onClick={() => handleLogout()}
+          >
+            <LogOut className='w-6 h-6' /> Logout
+          </button>
+        </div>
+      </div>
+      <DashboardContainer>
         <div id='content' className='w-full '>
           <Banner
             name={studentName}
