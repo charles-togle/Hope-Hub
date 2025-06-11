@@ -21,6 +21,12 @@ export default function StudentDashboard () {
     pending: 0,
     total: 10,
   });
+  const [quizProgress, setQuizProgress] = useState({
+    completed: 0,
+    incomplete: 0,
+    pending: 0,
+    total: 2,
+  });
   const [isDataReady, setIsDataReady] = useState(false);
   const [classCode, setClassCode] = useState(null);
   const [tempClassCode, setTempClassCode] = useState('');
@@ -45,6 +51,41 @@ export default function StudentDashboard () {
     ...sampleProgress,
     total: Object.values(sampleProgress).reduce((acc, value) => acc + value, 0),
   };
+
+  const getQuizProgress = async () => {
+    if (!userID) return;
+
+    const { count: quizCount } = await supabase
+      .from('quiz')
+      .select('*', { count: 'exact' });
+
+    const { data: quizProgress, error: quizError } = await supabase
+      .from('quiz_progress')
+      .select('status')
+      .eq('user_id', userID);
+
+    if (quizError) {
+      return;
+    }
+    console.log(quizProgress);
+    let completed = 0;
+    let incomplete = 0;
+    let pending = 0;
+    quizProgress.forEach(item => {
+      if (item.status === 'Done') completed += 1;
+      else if (item.status === 'Pending') pending += 1;
+    });
+
+    incomplete = quizCount - (completed + pending);
+
+    setQuizProgress({
+      completed,
+      incomplete,
+      pending,
+      total: quizCount,
+    });
+  };
+
   const getLectureProgress = async () => {
     if (!userID) return;
     const { data, error } = await supabase
@@ -102,6 +143,11 @@ export default function StudentDashboard () {
   useEffect(() => {
     if (isDataReady) return;
     getLectureProgress();
+  }, [userID, isDataReady]);
+
+  useEffect(() => {
+    if (isDataReady) return;
+    getQuizProgress();
   }, [userID, isDataReady]);
 
   useEffect(() => {
@@ -231,7 +277,7 @@ export default function StudentDashboard () {
               <Statistics progress={lectureProgress} type='Lectures' />
             </div>
             <div id='quizzes'>
-              <Statistics progress={sampleProgress} type='Quizzes' />
+              <Statistics progress={quizProgress} type='Quizzes' />
             </div>
           </div>
           <div id='quiz-scores' className='w-full text-center'>
