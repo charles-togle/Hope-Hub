@@ -16,6 +16,11 @@ export default function HealthCalculator () {
       className: '',
       linkTo: '/health-calculators/bmi',
     },
+    {
+      text: 'Basal Metabolic Rate Calculator',
+      className: '',
+      linkTo: '/health-calculators/bmr',
+    },
     { text: 'Calorie Calculator', className: '', linkTo: '' },
     { text: 'Calorie Calculator', className: '', linkTo: '' },
     { text: 'Ideal Body Weight (IBW) Calculator', className: '', linkTo: '' },
@@ -30,7 +35,7 @@ export default function HealthCalculator () {
 
   return (
     <div id='health-calculator'>
-      <PageHeading text = "Fitness & Health Calculators"/>
+      <PageHeading text='Fitness & Health Calculators' />
       <div
         id='health-calculators-content'
         className='w-[80%] flex justify-center flex-col items-center mr-auto ml-auto mt-16'
