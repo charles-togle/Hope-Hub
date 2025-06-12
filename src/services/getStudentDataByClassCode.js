@@ -1,7 +1,7 @@
 import supabase from '@/client/supabase';
 
 export async function getStudentsByClassCode (classCode) {
-  const { data, error } = await supabase.rpc('get_students_by_class', {
+  const { data, error } = await supabase.rpc('retrieve_students_by_class', {
     class_code_input: classCode,
   });
 
@@ -10,5 +10,6 @@ export async function getStudentsByClassCode (classCode) {
     return [];
   }
 
+  console.log(data);
   return data;
 }

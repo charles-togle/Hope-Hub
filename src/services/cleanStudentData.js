@@ -25,16 +25,13 @@ const sampleData = [
 ];
 
 export const cleanStudentData = studentData => {
+  console.log(studentData);
   const cleanedData = [];
-
   studentData.forEach(data => {
     const clean = {
       email: data.email,
       studentName: data.full_name,
       uuid: data.uuid,
-      Lesson1: '',
-      Lesson2: '',
-      Lesson3: '',
       preTestCompleted: false,
       postTestCompleted: false,
     };
@@ -46,9 +43,6 @@ export const cleanStudentData = studentData => {
 
     const preTest = data.pre_physical_fitness_test;
     const postTest = data.post_physical_fitness_test;
-
-    console.log(preTest);
-    console.log(postTest);
     if (preTest && preTest[0]) {
       const { finishedTestIndex } = preTest[0];
       if (finishedTestIndex) {
@@ -67,6 +61,17 @@ export const cleanStudentData = studentData => {
       }
     }
 
+    const quizData = data.quiz_data;
+    if (quizData) {
+      quizData.forEach(quiz => {
+        clean[`Quiz${quiz.quiz_number}`] =
+          quiz.status === 'Pending'
+            ? quiz.status
+            : `${quiz.score}/${quiz.total_items}`;
+      });
+    }
+
+    console.log(clean);
     cleanedData.push(clean);
   });
 
