@@ -6,6 +6,7 @@ import { AlertMessage } from '@/components/utilities/AlertMessage';
 import setDataToStorage from '@/utilities/setDataToStorage';
 import { useUserId } from '@/hooks/useUserId';
 import supabase from '@/client/supabase';
+import Footer from '@/components/Footer';
 export default function PhysicalActivityReadinessQuestionnaire () {
   const { physicalFitnessData, setPhysicalFitnessData } =
     usePhysicalFitnessData();
@@ -85,6 +86,7 @@ export default function PhysicalActivityReadinessQuestionnaire () {
         setIsError(true);
         return;
       }
+      console.log(existing);
       const preFinished =
         existing?.pre_physical_fitness_test?.finishedTestIndex || [];
       const postFinished =
@@ -129,21 +131,23 @@ export default function PhysicalActivityReadinessQuestionnaire () {
   const isNullOrWhiteSpace = input => {
     return !input || input.trim().length === 0;
   };
-
   const handleInformationChange = (keyName, value) => {
-    if (keyName === 'email' && !emailRegex.test(value.trim())) {
-      setIsEmailValid(false);
-      return;
-    } else {
-      setIsEmailValid(true);
-    }
-    setPhysicalFitnessData(prev => ({
-      ...prev,
+    // Update the data first
+    const updatedData = {
+      ...physicalFitnessData,
       [keyName]: value,
-    }));
+    };
+    setPhysicalFitnessData(updatedData);
+
+    // Handle email validation
+    if (keyName === 'email') {
+      setIsEmailValid(emailRegex.test(value.trim()));
+    }
+
+    // Check if all required fields are filled
     setAreAllUserDataFilled(() =>
       ['name', 'gender', 'email', 'category'].every(
-        key => physicalFitnessData[key] !== !isNullOrWhiteSpace,
+        key => !isNullOrWhiteSpace(updatedData[key]),
       ),
     );
   };
@@ -253,24 +257,26 @@ export default function PhysicalActivityReadinessQuestionnaire () {
                 onChange={e => handleInformationChange('email', e.target.value)}
                 className='border-1 border-[#8B8989] w-full font-content px-1 rounded-sm mt-0.5 not-valid:border-red'
               />
-            </label>
+            </label>{' '}
             <label>
               <p>Age:</p>
               <select
-                defaultValue={physicalFitnessData?.email}
+                defaultValue={physicalFitnessData?.category}
                 onChange={e =>
                   handleInformationChange('category', e.target.value)
                 }
                 className='border-1 border-[#8B8989]! w-full font-content px-1 rounded-sm mt-0.5'
               >
-                <option disabled>--Select one option--</option>
-                <option selected value='elementaryBoys'>
+                <option disabled value=''>
+                  --Select one option--
+                </option>
+                <option value='elementaryBoys'>
                   Boy (Elementary 5-12 yrs old)
                 </option>
                 <option value='elementaryGirls'>
                   Girl (Elementary 5-12 yrs old)
                 </option>
-                <option value='secondaryBots'>
+                <option value='secondaryBoys'>
                   Boy (High School 13-18 yrs old)
                 </option>
                 <option value='secondaryGirls'>
@@ -331,6 +337,7 @@ export default function PhysicalActivityReadinessQuestionnaire () {
           </div>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 }

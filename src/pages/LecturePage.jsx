@@ -2,13 +2,12 @@ import { Lessons } from '@/utilities/Lessons';
 import { useParams, useNavigate } from 'react-router-dom';
 import PageHeading from '@/components/PageHeading';
 import { useEffect, useState } from 'react';
-import LecturePDF from '@/components/LecturePDF';
-import LectureVideo from '@/components/LectureVideo';
+import LecturePDF from '@/components/lectures/LecturePDF';
+import LectureVideo from '@/components/lectures/LectureVideo';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
 import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
 import LectureProgress from '@/utilities/LectureProgress';
-
 export default function LecturePage () {
   const { lessonNumber, lectureType } = useParams();
   const navigate = useNavigate();
@@ -126,7 +125,7 @@ export default function LecturePage () {
   const { pdf, introduction, title, videoLecture } = lessonDetails;
 
   return (
-    <div id='lecture-page' className='min-h-screen bg-gray-background'>
+    <section id='lecture-page' className='min-h-screen bg-gray-background'>
       <PageHeading text='Lecture & Video Lessons' />
       <div className='w-[90%] lg:w-[80%] mx-auto mt-5 flex flex-col items-center'>
         <button
@@ -161,6 +160,6 @@ export default function LecturePage () {
           />
         )}
       </div>
-    </div>
+    </section>
   );
 }

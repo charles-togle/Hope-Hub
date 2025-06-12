@@ -2,6 +2,7 @@ import Banner from '@/assets/banner_home.svg';
 import HomePageHero from '@/assets/images/gym_homepage.png';
 import Banner2 from '@/assets/images/gym_banner_home.jpg';
 import GymPicture from '@/assets/images/gym3_homepage.png';
+import Footer from '@/components/Footer';
 import { useNavigate } from 'react-router-dom';
 export default function Home () {
   const navigate = useNavigate();
@@ -79,22 +80,7 @@ export default function Home () {
           </p>
         </div>
       </section>
-      <footer className='flex flex-row bg-[#121212] w-full items-center p-5'>
-        <p className='text-primary-blue font-content w-fit pl-10 text-3xl font-semibold italic'>
-          Discover your health <br />
-          strenghten your body <br /> unlock your potential
-        </p>
-        <hr className='h-full border-1 border-primary-yellow mr-10 ml-10' />
-        <div className='w-6/10 flex flex-col'>
-          <p className='text-white text-center mt-5'>
-            The Hope Hub, we believe in the Power of Physical Education to
-            inspire change and create a lasting impact on well-being. Whether
-            you're teaching the next generation of students or building your own
-            fitness knowledge, we're here to guide you every step of the way.{' '}
-          </p>
-          <div className='text-white mt-20'>Placeholder</div>
-        </div>
-      </footer>
+    <Footer></Footer>
     </div>
   );
 }

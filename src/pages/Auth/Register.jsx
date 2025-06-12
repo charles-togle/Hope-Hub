@@ -7,6 +7,7 @@ import FormButton from '../../components/auth/FormButton';
 import { useState } from 'react';
 import supabase from '@/client/supabase';
 import LectureProgress from '@/utilities/LectureProgress';
+import { useEffect } from 'react';
 
 export default function Register () {
   const [name, setName] = useState('');
@@ -17,6 +18,7 @@ export default function Register () {
   const [isEducator, setEducator] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handlePasswordChange = value => {
     setPassword(value);
@@ -35,12 +37,14 @@ export default function Register () {
       setErrorMessage('');
     }
   };
-
   const handleRegister = async () => {
     setErrorMessage('');
+    setIsLoading(true);
+    setSuccessMessage('');
 
     if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match');
+      setIsLoading(false);
       return;
     }
 
@@ -56,71 +60,61 @@ export default function Register () {
       trimmedPassword,
       trimmedConfirmPassword,
       trimmedName,
-      trimmedClassCode,
     ];
 
-    const areAllFieldsFilled = fields.every(field =>
-      field === trimmedClassCode
-        ? isEducator
-          ? true
-          : field !== ''
-        : field !== '',
-    );
-
+    const areAllFieldsFilled = fields.every(field => field !== '');
     if (!areAllFieldsFilled) {
-      setErrorMessage('Please fill up all fields');
+      setErrorMessage('Please fill up all required fields');
+      setSuccessMessage('');
+      setIsLoading(false);
       return;
     }
+
+    if (trimmedClassCode && trimmedClassCode.length !== 6) {
+      setErrorMessage('Class code must be exactly 6 characters');
+      setSuccessMessage('');
+      setIsLoading(false);
+      return;
+    }
+
+    const userType = isEducator ? 'teacher' : 'student';
 
     const { data, error } = await supabase.auth.signUp({
       email: trimmedEmail,
       password: trimmedPassword,
+      options: {
+        emailRedirectTo:
+          'https://hope-hub-dcvm.vercel.app/auth/account-verification',
+        data: {
+          fullName: trimmedName,
+          userType: userType,
+          classCode: trimmedClassCode !== '' ? trimmedClassCode : null,
+          lectureProgress: LectureProgress(),
+          password: trimmedPassword,
+        },
+      },
     });
-
     if (error) {
       setErrorMessage(error.message);
+      setSuccessMessage('');
+      setIsLoading(false);
       return;
     }
 
     if (!data || !data.user) {
       setErrorMessage('Registration succeeded, but user info is missing.');
+      setSuccessMessage('');
+      setIsLoading(false);
       return;
     }
 
-    const userId = data.user.id;
-    const userType = isEducator ? 'teacher' : 'student';
-
-    const { error: rpcError } = await supabase.rpc('register_user', {
-      p_user_id: userId,
-      p_full_name: trimmedName,
-      p_email: trimmedEmail,
-      p_user_type: userType,
-      p_class_code: trimmedClassCode,
-    });
-
-    if (rpcError) {
-      setErrorMessage('Error during registration: ' + rpcError.message);
-      return;
-    }
-
-    const { error: lectureProgressError } = await supabase
-      .from('lecture_progress')
-      .upsert({
-        uuid: userId,
-        lecture_progress: LectureProgress(),
-      });
-
-    if (lectureProgressError) {
-      setErrorMessage(
-        'Error initializing lecture progress: ' + lectureProgressError.message,
-      );
-      return;
-    }
-
-    setSuccessMessage(
-      'Account created successfully! Please check your email to verify your account.',
-    );
+    setSuccessMessage('Verification has been sent to your email');
+    setIsLoading(false);
   };
+
+  useEffect(() => {
+    setClassCode('');
+  }, [isEducator]);
 
   return (
     <AuthContainer>
@@ -146,7 +140,9 @@ export default function Register () {
           <FormInput
             value={classCode}
             placeholder={
-              isEducator ? 'You can create a class later' : 'Enter class code'
+              isEducator
+                ? 'You can create a class later'
+                : 'Nothing going on yet? Join a class later'
             }
             disabled={isEducator}
             setValue={setClassCode}
@@ -180,7 +176,11 @@ export default function Register () {
             {successMessage}
           </p>
         )}
-        <FormButton text='Sign Up' onClick={handleRegister}></FormButton>{' '}
+        <FormButton
+          text={isLoading ? 'Signing you up...' : 'Sign Up'}
+          onClick={handleRegister}
+          disabled={isLoading}
+        />{' '}
       </FormContainer>
     </AuthContainer>
   );
