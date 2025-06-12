@@ -52,21 +52,23 @@ export default function Table ({ headings, content }) {
                 } whitespace-nowrap`}
               >
                 {headingIndex === 0 ? (
-                  <span className='min-w-[150px] block px-4 py-3'>
+                  <span className='w-full block px-4 py-3 text-center'>
                     {item.studentName}
                   </span>
                 ) : headingIndex === 1 ? (
-                  <span className='min-w-[200px] block px-4 py-3'>
+                  <span className='w-full block px-4 py-3 text-center'>
                     {item.email}
                   </span>
                 ) : heading === 'Pre Test Record' ? (
                   item.preTestCompleted ? (
-                    <button
-                      className='bg-primary-blue text-white w-full h-full py-2 text-sm hover:brightness-110 transition-all duration-200'
-                      onClick={() => handleViewTestRecord(item, heading)}
-                    >
-                      View
-                    </button>
+                    <div className='flex justify-center'>
+                      <button
+                        className='bg-primary-blue text-white w-[80%] py-2 text-sm hover:brightness-80 transition-all duration-200 cursor-pointer'
+                        onClick={() => handleViewTestRecord(item, heading)}
+                      >
+                        View
+                      </button>
+                    </div>
                   ) : (
                     <span className='w-full block text-center py-2'>
                       Not completed
@@ -74,12 +76,14 @@ export default function Table ({ headings, content }) {
                   )
                 ) : heading === 'Post Test Record' ? (
                   item.postTestCompleted ? (
-                    <button
-                      className='bg-primary-blue text-white w-full h-full py-2 text-sm hover:brightness-110 transition-all duration-200'
-                      onClick={() => handleViewTestRecord(item, heading)}
-                    >
-                      View
-                    </button>
+                    <div className='flex justify-center'>
+                      <button
+                        className='bg-primary-blue text-white w-[80%] py-2 text-sm hover:brightness-80 transition-all duration-200 cursor-pointer'
+                        onClick={() => handleViewTestRecord(item, heading)}
+                      >
+                        View
+                      </button>
+                    </div>
                   ) : (
                     <span className='w-full block text-center py-2'>
                       Not completed
@@ -87,7 +91,10 @@ export default function Table ({ headings, content }) {
                   )
                 ) : (
                   <span className='min-w-[100px] block text-center px-4 py-3'>
-                    {item[heading.replaceAll(' ', '')]}
+                    {heading.includes('Quiz') &&
+                    item[heading.replaceAll(' ', '')] === undefined
+                      ? 'Incomplete'
+                      : item[heading.replaceAll(' ', '')]}
                   </span>
                 )}
               </td>
