@@ -9,7 +9,7 @@ export default function ProfileSidebar ({
   handleLogout,
 }) {
   return (
-    <Container className='h-full relative left mt-0! flex flex-col items-center pt-5 space-y-5 max-h-[90vh]'>
+    <Container className='h-full relative left mt-0! flex flex-col items-center pt-5 space-y-5'>
       <ProfilePicture
         onProfileChange={onProfileChange}
         initialFile={memoizedFile}
