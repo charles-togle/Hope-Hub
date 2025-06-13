@@ -21,9 +21,15 @@ export default function HealthCalculator () {
       className: '',
       linkTo: '/health-calculators/bmr',
     },
+    { text: 'Calorie & Daily Caloric Needs (TDEE) Calculator',
+      className: '',
+      linkTo: '/health-calculators/CalorieTDEECalculator' },
     { text: 'Calorie Calculator', className: '', linkTo: '' },
-    { text: 'Calorie Calculator', className: '', linkTo: '' },
-    { text: 'Ideal Body Weight (IBW) Calculator', className: '', linkTo: '' },
+    { 
+      text: 'Ideal Body Weight (IBW) Calculator',
+      className: '',
+      linkTo: '/health-calculators/IBWCalculator'
+    },
     { text: 'Body Fat Percentage Calculator', className: '', linkTo: '' },
     {
       text: 'Daily Caloric Needs (TDEE) Calculator',

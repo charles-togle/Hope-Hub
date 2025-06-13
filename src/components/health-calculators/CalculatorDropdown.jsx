@@ -11,10 +11,11 @@ export default function CalculatorDropdown () {
     { label: 'BMI Calculator', value: 'bmi', path: '/health-calculators/bmi' },
     { label: 'BMR Calculator', value: 'bmr', path: '/health-calculators/bmr' },
     {
-      label: 'Calorie Calculator',
-      value: 'calorie',
-      path: '/health-calculators/calorie',
+      label: 'Calorie & TDEE',
+      value: 'tdee',
+      path: '/health-calculators/CalorieTDEECalculator',
     },
+    { label: 'IBW Calculator', value: 'ibw', path: '/health-calculators/ibw' },
   ];
 
   // Get current calculator based on URL

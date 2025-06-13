@@ -1,3 +1,5 @@
+import { ActivityIcon } from "lucide-react";
+
 const convertLbsToKg = number => number * 0.4536;
 const convertKgToLbs = number => number / 0.4536;
 const convertFtToM = number => number * 0.3048;
@@ -95,6 +97,93 @@ export const getBMR = (
 
   return {
     BMR: parseFloat(bmr.toFixed(2)),
+    DailyCalories: caloriesByActivity,
+  };
+};
+
+export const getTDEE = (
+  gender,
+  age,
+  height,
+  weight,
+  activityType,
+  heightUnit = 'cm', // default to cm
+  weightUnit = 'kg', // default to kg
+) => {
+  if (!gender) {
+    throw new Error('Gender is unknown');
+  }
+  gender = gender.toLowerCase();
+
+  // Convert height to cm if needed
+  let heightInCm;
+  if (heightUnit === 'ft') {
+    heightInCm = convertFtToM(height) * 100; // ft -> m -> cm
+  } else if (heightUnit === 'm') {
+    heightInCm = height * 100; // m -> cm
+  } else {
+    heightInCm = height; // assume cm
+  }
+
+  // Convert weight to kg if needed
+  const weightInKg = weightUnit === 'lbs' ? convertLbsToKg(weight) : weight;
+
+  const activityMultipliers = {
+    'Sedentary (Little to No Exercise)': 1.2,
+    'Light Exercise (1-2 times/week)': 1.375,
+    'Moderate Exercise (3-5 times/week)': 1.55,
+    'Heavy Exercise (6-7 times/week)': 1.725,
+    'Athlete (2x per day)': 2.0,
+  };
+
+  let tdee;
+  switch (activityType) {
+    case 'Sedentary (Little to No Exercise)':
+      tdee =
+        gender === 'male'
+          ? (10 * weightInKg + 6.25 * heightInCm - 5 * age + 5) * activityMultipliers['Sedentary (Little to No Exercise)']
+          : (10 * weightInKg + 6.25 * heightInCm - 5 * age - 161) * activityMultipliers['Sedentary (Little to No Exercise)'];
+      break;
+
+    case 'Light Exercise (1-2 times/week)':
+      tdee =
+        gender === 'male'
+          ? (10 * weightInKg + 6.25 * heightInCm - 5 * age + 5) * activityMultipliers['Light Exercise (1-2 times/week)']
+          : (10 * weightInKg + 6.25 * heightInCm - 5 * age + 161) * activityMultipliers['Light Exercise (1-2 times/week)'];
+      break;
+
+    case 'Moderate Exercise (3-5 times/week)':
+      tdee =
+        gender === 'male'
+          ? (13.397 * weightInKg + 6.25 * heightInCm - 5 * age + 5) * activityMultipliers['Moderate Exercise (3-5 times/week)']
+          : (9.247 * weightInKg + 6.25 * heightInCm - 5 * age - 161) * activityMultipliers['Moderate Exercise (3-5 times/week)'];
+      break;
+
+    case 'Heavy Exercise (6-7 times/week)':
+      tdee =
+        gender === 'male'
+          ? (13.397 * weightInKg + 6.25 * heightInCm - 5 * age + 5) * activityMultipliers['Heavy Exercise (6-7 times/week)']
+          : (9.247 * weightInKg + 6.25 * heightInCm - 5 * age - 161) * activityMultipliers['Heavy Exercise (6-7 times/week)'];
+      break;
+
+    case 'Athlete (2x per day)':
+      tdee =
+        (gender === 'male'
+          ? 13.397 * weightInKg + 6.25 * heightInCm - 5 * age + 5
+          : 9.247 * weightInKg + 6.25 * heightInCm - 5 * age + 5) * activityMultipliers['Athlete (2x per day)'];
+      break;
+
+    default:
+      throw new Error(`Unknown formula variant: ${formulaVariant}`);
+  }
+
+  const caloriesByActivity = {};
+  for (const [level, multiplier] of Object.entries(activityMultipliers)) {
+    caloriesByActivity[level] = Math.round(parseFloat(tdee * multiplier));
+  }
+
+  return {
+    TDEE: parseFloat(tdee.toFixed(2)),
     DailyCalories: caloriesByActivity,
   };
 };

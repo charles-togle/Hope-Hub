@@ -28,7 +28,8 @@ import TeacherDashboard from './pages/Dashboard/TeacherDashboard';
 import supabase from './client/supabase';
 import BMICalculator from './pages/HealthCalculators/BMICalculator';
 import BMRCalculator from './pages/HealthCalculators/BMRCalculator';
-import CalorieCalculator from './pages/HealthCalculators/CalorieCalculator';
+import TDEECalculator from './pages/HealthCalculators/CalorieTDEECalculator';
+import IBWCalculator from './pages/HealthCalculators/IBWCalculator';
 import { HealthCalculatorWrapper } from './pages/HealthCalculators/HealthCalculatorsWrapper';
 import { useUserId } from './hooks/useUserId';
 
@@ -128,7 +129,8 @@ function App () {
           >
             <Route path='bmi' element={<BMICalculator />} />
             <Route path='bmr' element={<BMRCalculator />} />
-            <Route path='calorie' element={<CalorieCalculator />} />
+            <Route path='CalorieTDEECalculator' element={<TDEECalculator />} />
+            <Route path='ibw' element={<IBWCalculator />} />
           </Route>
           <Route path='lectures' element={<LectureWrapper />}>
             <Route index element={<Lectures />} />
