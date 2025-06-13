@@ -132,6 +132,27 @@ export default function TeacherDashboard () {
             <p className='text-4xl'>Hello, Prof. {teacherName} </p>
             <hr className='w-60 border-1 border-primary-yellow mt-2 mb-2' />
             <p className='text-2xl'>Welcome to Teacher’s Dashboard</p>
+=======
+        <div className='flex gap-4 flex-col relative min-h-[90vh] w-full pt-10! lg:pt-40'>
+          <div className='flex lg:items-center lg:gap-10 font-heading-small text-primary-blue z-3'>
+            <div>
+              <p className='text-2xl lg:text-4xl'>
+                Hello, Prof. {teacherName}{' '}
+              </p>
+              <hr className='w-60 border-1 border-primary-yellow mt-2 mb-2' />
+              <p className='text-xl lg:text-2xl'>
+                Welcome to Teacher’s Dashboard
+              </p>
+            </div>
+            <div>
+              <button
+                className='lg:hidden ml-auto text-base font-bold font-content px-3 py-2 text-white bg-[#DB4E34] flex items-center gap-2 cursor-pointer'
+                onClick={() => handleLogout()}
+              >
+                <LogOut className='w-6 h-6' /> Logout
+              </button>
+            </div>
+>>>>>>> Stashed changes
           </div>
           <Banner isStudent={false} name={teacherName} />{' '}
           <div id='class-codes' className='flex flex-wrap w-full gap-4 pb-40'>
