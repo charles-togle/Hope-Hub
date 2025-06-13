@@ -16,10 +16,10 @@ export default function Search ({
       <input
         type='text'
         placeholder={placeholder}
-        className='rounded-lg border-1 w-full border-black h-1/2 pl-3'
+        className='py-2 rounded-lg border-1 w-full lg:py-0 border-black lg:h-1/2 pl-3'
         onChange={handleInputChange}
       />
-      <div className='flex flex-row h-1/3 '>
+      <div className='hidden lg:flex flex-row lg:h-1/3 '>
         <img src={SearchIcon} alt='search' />
         <p>Search</p>
       </div>

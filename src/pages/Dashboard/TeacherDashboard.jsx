@@ -126,6 +126,7 @@ export default function TeacherDashboard () {
         )}
       </div>
       <DashboardContainer>
+<<<<<<< Updated upstream
         <div className='flex gap-4 flex-col relative min-h-[90vh] w-full'>
           <div className='font-heading-small text-primary-blue'>
             <p className='text-4xl'>Hello, Prof. {teacherName} </p>
