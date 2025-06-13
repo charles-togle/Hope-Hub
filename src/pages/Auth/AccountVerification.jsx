@@ -45,7 +45,7 @@ export default function AccountVerification () {
       p_full_name: fullName,
       p_email: email,
       p_user_type: userType,
-      p_class_code: classCode,
+      p_class_code: classCode || null,
       p_lecture_progress: lectureProgress,
     });
 

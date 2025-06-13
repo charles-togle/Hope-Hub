@@ -10,6 +10,7 @@ import { useName, useProfilePicture } from '@/hooks/useDashboardData';
 import DashboardContainer from '@/components/dashboard/DashboardContainer';
 import { onProfileChange as onProfileChangeUtil } from '@/utilities/onProfileChange';
 import { LogOut } from 'lucide-react';
+import QuizScoreTable from '@/components/dashboard/QuizScoreTable';
 
 export default function StudentDashboard () {
   const userID = useUserId();
@@ -21,21 +22,26 @@ export default function StudentDashboard () {
     pending: 0,
     total: 10,
   });
-  const [isDataReady, setIsDataReady] = useState(false);
+  const [quizProgress, setQuizProgress] = useState({
+    completed: 0,
+    incomplete: 0,
+    pending: 0,
+    total: 2,
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const [classCode, setClassCode] = useState(null);
   const [tempClassCode, setTempClassCode] = useState('');
   const [isJoiningClass, setIsJoiningClass] = useState(false);
+  const [quizData, setQuizData] = useState([]);
+  const [quizCount, setQuizCount] = useState(0);
   const navigate = useNavigate();
 
-  const [profilePictureFile, setProfilePictureFile] = useProfilePicture(
-    userID,
-    isDataReady,
-  );
+  const [profilePictureFile, setProfilePictureFile] = useProfilePicture(userID);
   const memoizedFile = useMemo(
     () => profilePictureFile,
     [profilePictureFile?.name, profilePictureFile?.size],
   );
-  const studentName = useName(userID, isDataReady);
+  const studentName = useName(userID);
   let sampleProgress = {
     completed: 7,
     incomplete: 10,
@@ -45,8 +51,91 @@ export default function StudentDashboard () {
     ...sampleProgress,
     total: Object.values(sampleProgress).reduce((acc, value) => acc + value, 0),
   };
+
+  const getQuizProgress = async () => {
+    if (!userID) {
+      setIsLoading(true);
+      return;
+    }
+
+    const { count: quizCount } = await supabase
+      .from('quiz')
+      .select('*', { count: 'exact' });
+
+    const { data: quizProgress, error: quizError } = await supabase
+      .from('quiz_progress')
+      .select('status')
+      .eq('user_id', userID);
+
+    setQuizCount(quizCount);
+    if (quizError) {
+      return;
+    }
+    let completed = 0;
+    let incomplete = 0;
+    let pending = 0;
+    quizProgress.forEach(item => {
+      if (item.status === 'Done') completed += 1;
+      else if (item.status === 'Pending') pending += 1;
+    });
+
+    incomplete = quizCount - (completed + pending);
+
+    setQuizProgress({
+      completed,
+      incomplete,
+      pending,
+      total: quizCount,
+    });
+    setIsLoading(false);
+  };
+  const getQuizData = async () => {
+    if (!userID || quizCount === 0) {
+      setIsLoading(true);
+      return;
+    }
+    const { data: quizData, error: quizDataError } = await supabase
+      .from('quiz_progress')
+      .select('quiz_id, status, score, total_items, date_taken')
+      .eq('user_id', userID);
+
+    if (quizDataError) return;
+
+    const completeQuizData = [];
+    for (let index = 1; index <= quizCount; index++) {
+      let isFound = false;
+      let existingQuiz = null;
+
+      if (quizData) {
+        quizData.forEach(element => {
+          if (element.quiz_id === index) {
+            isFound = true;
+            existingQuiz = element;
+            return;
+          }
+        });
+      }
+      if (isFound && existingQuiz) {
+        completeQuizData.push(existingQuiz);
+      } else {
+        completeQuizData.push({
+          quiz_id: index,
+          status: 'Incomplete',
+          score: undefined,
+          total_items: undefined,
+          date_taken: undefined,
+        });
+      }
+    }
+    setIsLoading(false);
+    setQuizData(completeQuizData);
+  };
+
   const getLectureProgress = async () => {
-    if (!userID) return;
+    if (!userID) {
+      setIsLoading(true);
+      return;
+    }
     const { data, error } = await supabase
       .from('lecture_progress')
       .select('lecture_progress')
@@ -54,7 +143,6 @@ export default function StudentDashboard () {
       .single();
 
     if (error) {
-      setIsDataReady(true);
       return;
     }
 
@@ -75,43 +163,57 @@ export default function StudentDashboard () {
       pending,
       total: lectures.length,
     });
-    setIsDataReady(true);
+    setIsLoading(false);
+  };
+
+  const getClassCode = async () => {
+    if (!userID) {
+      setIsLoading(true);
+      return;
+    }
+    const { data, error } = await supabase
+      .from('student_class_code')
+      .select()
+      .single()
+      .eq('uuid', userID);
+    if (error) {
+      setClassCode('');
+      return;
+    }
+    const classCode = data?.class_code;
+    if (!classCode) setClassCode(null);
+    else {
+      setClassCode(classCode);
+    }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    async function getClassCode () {
-      const { data, error } = await supabase
-        .from('student_class_code')
-        .select()
-        .single()
-        .eq('uuid', userID);
-      if (error) {
-        setClassCode('');
-        return;
-      }
-      const classCode = data?.class_code;
-      if (!classCode) setClassCode(null);
-      else {
-        setClassCode(classCode);
-      }
-    }
-    if (!isDataReady) return;
     getClassCode();
-  }, [userID, isDataReady]);
+  }, [userID]);
 
   useEffect(() => {
-    if (isDataReady) return;
     getLectureProgress();
-  }, [userID, isDataReady]);
+  }, [userID]);
 
   useEffect(() => {
-    if (!isDataReady) return;
+    getQuizProgress();
+  }, [userID]);
+  useEffect(() => {
+    getQuizData();
+  }, [userID, quizCount]);
+
+  useEffect(() => {
     isPreTestFinished().then(setPreTestFinished);
     isPostTestFinished().then(setPostTestFinished);
-  }, [isDataReady]);
+  }, [userID]);
 
   const checkIfFinished = async column => {
-    if (!userID) return;
+    if (!userID) {
+      setIsLoading(true);
+      return;
+    }
     const { data: existing, error: fetchError } = await supabase
       .from('physical_fitness_test')
       .select(column)
@@ -128,6 +230,7 @@ export default function StudentDashboard () {
         finishedTestIndex.includes(finishedTestIndex.length - 1)
       );
     }
+    setIsLoading(false);
   };
 
   const isPreTestFinished = async () => {
@@ -177,7 +280,7 @@ export default function StudentDashboard () {
   };
 
   // Optionally, add a guard for userID before rendering:
-  if (!userID) {
+  if (!userID || isLoading) {
     return (
       <div className='w-full flex items-center justify-center h-screen'>
         <div className='font-content font-medium text-xl text-center w-full'>
@@ -219,7 +322,7 @@ export default function StudentDashboard () {
         </div>
       </div>
       <DashboardContainer>
-        <div id='content' className='w-full '>
+        <div id='content' className='w-full mb-20'>
           <Banner
             name={studentName}
             classCode={classCode}
@@ -231,11 +334,14 @@ export default function StudentDashboard () {
               <Statistics progress={lectureProgress} type='Lectures' />
             </div>
             <div id='quizzes'>
-              <Statistics progress={sampleProgress} type='Quizzes' />
+              <Statistics progress={quizProgress} type='Quizzes' />
             </div>
           </div>
           <div id='quiz-scores' className='w-full text-center'>
-            {/* Quiz score here */} Quiz Score
+            <QuizScoreTable
+              quizData={quizData}
+              quizCount={quizCount}
+            ></QuizScoreTable>
           </div>
           <div
             id='physical-fitness-records'
@@ -259,7 +365,7 @@ export default function StudentDashboard () {
         </div>
         <div
           id='profile'
-          className='hidden sticky w-full h-full top-0 bg-white max-h-[80vh] lg:flex flex-col items-center justify-start'
+          className='hidden sticky w-full h-full max-h-[90vh]! top-0 bg-white lg:flex flex-col items-center justify-start'
         >
           <ProfileSidebar
             handleLogout={handleLogout}

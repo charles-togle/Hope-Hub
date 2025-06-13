@@ -3,69 +3,12 @@ import { useParams } from 'react-router-dom';
 import Search from '@/components/dashboard/Search';
 import Table from '@/components/dashboard/ViewClass/Table';
 import { Lessons } from '@/utilities/Lessons';
+import { Quizzes } from '@/utilities/Quizzes';
 import { getStudentsByClassCode } from '@/services/getStudentDataByClassCode';
 import { cleanStudentData } from '@/services/cleanStudentData';
 import { useUserId } from '@/hooks/useUserId';
 import supabase from '@/client/supabase';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
-
-const sampleData = [
-  {
-    email: 'charles3939togle@gmail.com',
-    full_name: 'TestPerson1',
-    lecture_progress: [
-      [
-        { key: 1, title: 'Personal Safety Protocol', status: 'Incomplete' },
-        { key: 2, title: 'Physiological Indicators', status: 'Incomplete' },
-        { key: 3, title: 'The FITT Principle', status: 'Incomplete' },
-      ],
-    ],
-  },
-  {
-    email: 'ctogle.a12345617@umak.edu.ph',
-    full_name: 'TestPerson2',
-    lecture_progress: [
-      [
-        { key: 1, title: 'Personal Safety Protocol', status: 'Incomplete' },
-        { key: 2, title: 'Physiological Indicators', status: 'Incomplete' },
-        { key: 3, title: 'The FITT Principle', status: 'Done' },
-      ],
-    ],
-  },
-];
-
-const QuizzesData = [
-  {
-    type: 'Quiz',
-    number: 1,
-    title: 'Safety Protocols Quiz',
-    status: 'Done',
-    details: {
-      Score: '9/10',
-      Ranking: '1',
-      ['Date Taken']: 'May 5, 2025',
-      ['Start-time']: '9:00AM',
-      ['End-time']: '9:30AM',
-    },
-    content: 'Covers basic personal safety measures and protocols.',
-  },
-  {
-    type: 'Quiz',
-    number: 2,
-    title: 'Physiological Indicators Quiz',
-    status: 'Pending',
-    details: {},
-    content: 'Covers topics on body signals and fitness indicators.',
-  },
-  {
-    type: 'Quiz',
-    number: 3,
-    title: 'FITT Principle Quiz',
-    status: 'Pending',
-    details: {},
-    content: 'Tests understanding of Frequency, Intensity, Time, and Type.',
-  },
-];
 
 const transformDataLecture = data => {
   return data.map(item => ({
@@ -77,7 +20,7 @@ const transformDataLecture = data => {
 const transformQuizData = data => {
   return data.map(item => ({
     Type: 'Quiz',
-    QuizNumber: item.number,
+    QuizNumber: item.quiz_number,
   }));
 };
 
@@ -110,26 +53,45 @@ const getTableHeadings = (activeFilter, data) => {
 
 export default function ViewClass () {
   //initialize data
-  const lecturesData = transformDataLecture(Lessons);
-  const quizData = transformQuizData(QuizzesData);
-  const combinedData = combineObjects(lecturesData, quizData);
 
   const params = useParams();
   const userId = useUserId();
+  const [lecturesData, setLecturesData] = useState([]);
+  const [quizData, setQuizData] = useState([]);
+  const [combinedData, setCombinedData] = useState([]);
   const [activeFilter, setActiveFilter] = useState('All');
   const [defaultStudentData, setDefaultStudentData] = useState([]);
   const [lectureSubFilter, setLectureSubFilter] = useState('all');
   const [isLoading, setIsLoading] = useState(false);
   const [quizSubFilter, setQuizSubFilter] = useState('none');
+  const [isDataReady, setIsDataReady] = useState(false);
   const [activeStudentData, setActiveStudentData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [headings, setHeadings] = useState(
-    getTableHeadings('All', combinedData),
-  );
+  const [headings, setHeadings] = useState([]);
   const [isOwnershipChecked, setIsOwnershipChecked] = useState(false);
   const [hasOwnership, setHasOwnership] = useState(false);
   const Filters = ['All', 'Lecture', 'Quiz'];
   const classCode = params.classCode;
+
+  useEffect(() => {
+    async function fetchData () {
+      const resolvedQuizData = new Promise(resolve => {
+        resolve(Quizzes());
+      });
+
+      const quizzes = await resolvedQuizData;
+      const lectures = transformDataLecture(Lessons);
+      const quizData = transformQuizData(quizzes);
+      const combined = combineObjects(lectures, quizData);
+      setHeadings(getTableHeadings('All', combined));
+      setLecturesData(lectures);
+      setQuizData(quizData);
+      setCombinedData(combined);
+    }
+
+    fetchData();
+    setIsDataReady(true);
+  }, []);
 
   // Check if the current teacher owns this class
   const checkClassOwnership = async () => {
@@ -165,18 +127,26 @@ export default function ViewClass () {
   }, [userId, classCode]);
 
   useEffect(() => {
-    if (isOwnershipChecked && hasOwnership) {
+    if (!isOwnershipChecked) {
       setIsLoading(true);
+    }
+    if (isOwnershipChecked && hasOwnership) {
       getStudentData();
-      setIsLoading(false);
     }
   }, [isOwnershipChecked, hasOwnership]);
+
   const getStudentData = async () => {
-    const allStudentData = await getStudentsByClassCode(classCode);
-    const cleanedStudentData = cleanStudentData(allStudentData);
-    console.log(cleanedStudentData);
-    setActiveStudentData(cleanedStudentData);
-    setDefaultStudentData(cleanedStudentData);
+    try {
+      setIsLoading(true);
+      const allStudentData = await getStudentsByClassCode(classCode);
+      const cleanedStudentData = cleanStudentData(allStudentData);
+      setActiveStudentData(cleanedStudentData);
+      setDefaultStudentData(cleanedStudentData);
+    } catch (error) {
+      console.error('Error fetching student data:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSearch = searchTerm => {
@@ -234,10 +204,12 @@ export default function ViewClass () {
     } else if (filter === 'Quiz') {
       setHeadings(getTableHeadings(filter, quizData));
       setActiveStudentData(defaultStudentData);
+      handleQuizSubFilterChange('none');
     } else if (filter === 'All') {
       setHeadings(getTableHeadings(filter, combinedData));
       setActiveStudentData(defaultStudentData);
       setLectureSubFilter('all');
+      setQuizSubFilter('none');
     }
   };
 
@@ -279,11 +251,70 @@ export default function ViewClass () {
       setActiveStudentData(filteredData);
     }
   };
-  if (!isOwnershipChecked || isLoading) {
-    return <p>Loading...</p>;
+
+  const handleQuizSubFilterChange = filter => {
+    setQuizSubFilter(filter);
+    setSearchTerm(''); // Clear search when changing sub-filters
+
+    if (filter === 'none') {
+      setActiveStudentData(defaultStudentData);
+    } else {
+      // Create a copy of the data to sort
+      let sortedData = [...defaultStudentData];
+
+      if (filter === 'ascending' || filter === 'descending') {
+        // Sort by quiz scores
+        sortedData.sort((a, b) => {
+          // Calculate average score for each student across all quizzes
+          let scoreA = 0;
+          let scoreB = 0;
+          let quizCountA = 0;
+          let quizCountB = 0;
+
+          // Check all quiz columns
+          Object.keys(a).forEach(key => {
+            if (key.startsWith('Quiz') && a[key] && a[key] !== 'Pending') {
+              const match = a[key].match(/(\d+)\/(\d+)/);
+              if (match) {
+                scoreA += parseInt(match[1]) / parseInt(match[2]);
+                quizCountA++;
+              }
+            }
+          });
+
+          Object.keys(b).forEach(key => {
+            if (key.startsWith('Quiz') && b[key] && b[key] !== 'Pending') {
+              const match = b[key].match(/(\d+)\/(\d+)/);
+              if (match) {
+                scoreB += parseInt(match[1]) / parseInt(match[2]);
+                quizCountB++;
+              }
+            }
+          });
+
+          // Calculate average scores (handle division by zero)
+          const avgA = quizCountA > 0 ? scoreA / quizCountA : 0;
+          const avgB = quizCountB > 0 ? scoreB / quizCountB : 0;
+
+          return filter === 'ascending' ? avgA - avgB : avgB - avgA;
+        });
+      }
+
+      setActiveStudentData(sortedData);
+    }
+  };
+
+  if (!isOwnershipChecked || isLoading || !isDataReady) {
+    return (
+      <div className='w-full flex items-center justify-center h-screen'>
+        <div className='font-content font-medium text-xl text-center w-full'>
+          Loading...
+        </div>
+      </div>
+    );
   }
 
-  if (isOwnershipChecked && !hasOwnership) {
+  if (isOwnershipChecked && !hasOwnership && !isLoading) {
     return <ErrorMessage text='Error 404' subText='Class Not Found' />;
   }
 
@@ -303,14 +334,14 @@ export default function ViewClass () {
           <div className='flex flex-col gap-3'>
             <div
               id='buttons'
-              className='rounded-sm bg-secondary-dark-blue w-full h-fit flex items-center flex-nowrap lg:w-fit'
+              className='rounded-sm bg-secondary-dark-blue w-fit h-fit flex items-center flex-nowrap lg:w-fit'
             >
               {Filters.map((filter, index) => (
                 <button
                   key={index}
                   onClick={() => handleFilterChange(filter)}
                   className={
-                    `text-white text-center font-content py-2 min-w-1/8 px-2 text-sm lg:w-auto lg:px-5 transition-colors ${
+                    `text-white text-center font-content py-2 min-w-1/8 px-5 text-sm lg:w-auto lg:px-5 transition-colors sticky top-0 ${
                       index === 0 ? 'rounded-l-sm' : ''
                     } ${index === Filters.length - 1 ? 'rounded-r-sm' : ''} ` +
                     (filter === activeFilter
@@ -365,7 +396,7 @@ export default function ViewClass () {
                     ].map(option => (
                       <button
                         key={option.value}
-                        onClick={() => setQuizSubFilter(option.value)}
+                        onClick={() => handleQuizSubFilterChange(option.value)}
                         className={`px-3 py-1 text-xs font-content rounded transition-colors ${
                           quizSubFilter === option.value
                             ? 'bg-secondary-dark-blue text-white'

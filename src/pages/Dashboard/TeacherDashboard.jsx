@@ -13,6 +13,7 @@ import AddClassCode from '@/components/dashboard/AddClassCode';
 import { Plus } from 'lucide-react';
 import supabase from '@/client/supabase';
 import { useNavigate } from 'react-router-dom';
+import { LogOut } from 'lucide-react';
 
 export default function TeacherDashboard () {
   const userID = useUserId();
@@ -165,7 +166,7 @@ export default function TeacherDashboard () {
             onClick={handleAddClass}
           />{' '}
         </div>
-        <div className='h-full hidden lg:block'>
+        <div className='h-full hidden lg:block pt-10'>
           <ProfileSidebar
             memoizedFile={memoizedFile}
             name={teacherName}
