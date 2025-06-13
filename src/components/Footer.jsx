@@ -8,7 +8,7 @@ const Icons = [InstagramIcon, TwitterIcon, YoutubeIcon, FacebookIcon];
 
 export default function Footer () {
   return (
-    <footer className='flex flex-col lg:flex-row bg-[#121212] lg:min-h-[30vh] lg:max-h-[30vh] lg:h-[30vh] w-full lg:items-center justify-evenly p-5 mt-10'>
+    <footer className='mt-10 flex flex-col lg:flex-row bg-[#121212] lg:min-h-[30vh] lg:max-h-[30vh] lg:h-[30vh] w-full lg:items-center justify-evenly p-5'>
       <p className='text-primary-blue font-content w-full lg:w-1/3 lg:pl-10 text-lg lg:text-3xl font-semibold italic'>
         Discover your health strenghten your body unlock your potential
       </p>

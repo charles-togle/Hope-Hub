@@ -1,16 +1,16 @@
 export default function VideoPlayer ({ video }) {
   return (
     <>
-      <div id='video-player' className='w-7/10'>
-        <div className='w-full min-h-100 max-h-fit'>
+      <div id='video-player' className='w-full lg:w-7/10'>
+        <div className='lg:w-full lg:min-h-100 max-h-fit'>
           <video
             src={video.videoLink}
             about={video.videoTitle}
             controls
-            className='rounded-lg'
+            className='rounded-lg px-2'
           />
         </div>
-        <div id='video-details' className='mt-5 mb-20'>
+        <div id='video-details' className='mt-5 mb-20 px-3'>
           <h2 className='text-3xl font-content text-primary-blue font-medium'>
             {video.title}
           </h2>
@@ -31,8 +31,8 @@ export default function VideoPlayer ({ video }) {
             </ul>
           </div>
           <div>
-            <p className='font-semibold text-red-600 mb-2'>Don'ts</p>
-            <ul className='mb-4'>
+            <p className='font-semibold text-red-600 lg:mb-2'>Don'ts</p>
+            <ul className='lg:mb-4'>
               {video.description.dont.map((dontItem, index) => (
                 <li key={index} className='flex items-start mb-1'>
                   <span className='text-red-600 mr-2'>✗</span>

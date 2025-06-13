@@ -16,7 +16,7 @@ export default function VideoPreview ({
   return (
     <div
       id='video-preview'
-      className='min-w-10 max-w-full hover:brightness-80 hover:rounded-none overflow-hidden'
+      className='min-w-50 pb-5 lg:pb-0 lg:min-w-10 max-w-full hover:brightness-80 hover:rounded-none overflow-hidden'
     >
       <div className='relative w-fit'>
         <img src={thumbnail} className=' rounded-lg hover:rounded-none' />
