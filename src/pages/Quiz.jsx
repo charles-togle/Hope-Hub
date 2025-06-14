@@ -10,11 +10,14 @@ import QuizProvider from '@/providers/QuizProvider';
 import AudioPlayer from '@/components/quiz/AudioPlayer';
 import audioFile from '@/assets/sounds/quizziz-in-game-theme.mp3';
 import { motion, AnimatePresence } from 'motion/react';
+import { Loader2 } from 'lucide-react';
 import {
   QuestionsContext,
   IdentificationRefContext,
   RemainingTimeContext,
+  QuizContext,
 } from '@/providers/QuizContext';
+import { markQuizAsDone, submitAnswer } from '@/utilities/QuizData';
 
 const sampleLeaderboardNames = [
   { name: 'Togle, Charles Nathaniel', points: 1003 },
@@ -26,9 +29,12 @@ const sampleLeaderboardNames = [
 
 export default function Quiz() {
   return (
-    <QuizProvider>
-      <QuizPage />
-    </QuizProvider>
+    <div>
+      <PageHeading text="Quizzes" className="bg-background z-2"></PageHeading>
+      <QuizProvider>
+        <QuizPage />
+      </QuizProvider>
+    </div>
   );
 }
 
@@ -36,21 +42,107 @@ export function QuizPage() {
   let { quizId } = useParams();
   let questions = useContext(QuestionsContext);
   const remainingTimeRef = useContext(RemainingTimeContext);
+  const identificationAnswerRef = useContext(IdentificationRefContext);
+  const { quizState, setQuizState } = useContext(QuizContext);
+
+  const [isLoading, setIsLoading] = useState(false);
   const [shouldShowPoints, setShouldShowPoints] = useState(false);
-  const [quizState, setQuizState] = useState({
-    quizId: quizId,
-    questionIndex: 0,
-    score: 0,
-    points: 0,
-    currentQuestionPoints: 0,
-    // status: '', // should be fetched from the database in prod
-    // status: 'Done', // data for test
-    status: 'Pending', // data for test
-    // questionsAnswered: sampleQuestionsResult,
-    questionsAnswered: [], // data for prod
-  });
+
+  console.log('questions: ', questions); // access quizId
+  console.log('quiz state: ', quizState);
+
+  // const [quizState, setQuizState] = useState({
+  //   quizId: quizId,
+  //   questionIndex: 0,
+  //   score: 0,
+  //   points: 0,
+  //   currentQuestionPoints: 0,
+  //   // status: '', // should be fetched from the database in prod
+  //   // status: 'Done', // data for test
+  //   status: 'Pending', // data for test
+  //   // questionsAnswered: sampleQuestionsResult,
+  //   questionsAnswered: [], // data for prod
+  // });
 
   function onAnswerSelected(answer, multipleChoice = true) {
+    let correctAnswer = questions[quizState.questionIndex].answer;
+    let isCorrect = false;
+
+    if (multipleChoice) {
+      correctAnswer = questions[quizState.questionIndex].choices.find(
+        (choice) => choice.isCorrect,
+      ).text;
+      if (answer.isCorrect) isCorrect = true;
+      answer = answer.text;
+    } else {
+      if (
+        answer.trim().toLowerCase() ===
+        questions[quizState.questionIndex].answer.toLowerCase()
+      )
+        isCorrect = true;
+    }
+
+    let pointsEarnedForCurrentQuestion = calculatePoints(
+      isCorrect,
+      remainingTimeRef.current,
+      questions[quizState.questionIndex].duration,
+    );
+
+    setQuizState({
+      ...quizState,
+      currentQuestionPoints: pointsEarnedForCurrentQuestion,
+    });
+    setShouldShowPoints(true);
+
+    const newQuizState = {
+      ...quizState,
+      questionIndex: quizState.questionIndex + 1,
+      score: quizState.score + (isCorrect ? 1 : 0),
+      points: quizState.points + pointsEarnedForCurrentQuestion,
+      questionsAnswered: [
+        ...quizState.questionsAnswered,
+        {
+          question: questions[quizState.questionIndex].question,
+          correctAnswer: correctAnswer,
+          answer: answer,
+          isCorrect: isCorrect,
+        },
+      ],
+    };
+
+    if (quizState.questionIndex <= questions.length - 1) {
+      setTimeout(async () => {
+        setShouldShowPoints(false);
+        setIsLoading(true);
+        const error = await submitAnswer(newQuizState);
+        // console.log('quizState from submitAnswer: ', quizState);
+        // console.log('data from submitAnswer: ', data);
+        if (!error) {
+          setQuizState(newQuizState);
+          setIsLoading(false);
+        }
+      }, 1000);
+    }
+
+    if (quizState.questionIndex === questions.length - 1) {
+      const newQuizState = {
+        ...quizState,
+        questionIndex: quizState.questionIndex - 1,
+        status: 'Done',
+      };
+
+      setTimeout(async () => {
+        setIsLoading(true);
+        const error = await markQuizAsDone(newQuizState);
+        if (!error) {
+          setQuizState(newQuizState);
+          setIsLoading(false);
+        }
+      }, 1000);
+    }
+  }
+
+  function onAnswerSelectedOld(answer, multipleChoice = true) {
     let correctAnswer = questions[quizState.questionIndex].answer;
     let isCorrect = false;
 
@@ -132,54 +224,63 @@ export function QuizPage() {
 
   const isIdentification =
     questions[quizState.questionIndex].type === 'identification';
-  const identificationAnswerRef = useContext(IdentificationRefContext);
 
   return (
-    <AudioPlayer source={audioFile}>
-      <div>
-        <PageHeading text="Quizzes" className="bg-background z-2"></PageHeading>
-        <div id="quiz-1" className="flex flex-col w-5/6 mx-auto mb-4">
-          <div className="flex items-start justify-between pt-8">
-            <div>
-              <h2 className="font-heading-small text-3xl text-primary-blue ">
-                {quizState.status === 'Pending'
-                  ? `Quiz #${quizId}: Lecture #${quizId}`
-                  : 'Results & Summary'}
-              </h2>
-              <hr className="w-[60%] border-1 border-primary-yellow mt-2 mb-3" />
-            </div>
-            {quizState.status === 'Pending' && (
-              <Timer
-                key={quizState.questionIndex}
-                duration={questions[quizState.questionIndex].duration}
-                color={'red'}
-                onTimerEnd={() => {
-                  onAnswerSelected(
-                    isIdentification ? identificationAnswerRef.current : '',
-                    isIdentification ? false : true,
-                  );
-                  identificationAnswerRef.current = '';
-                }}
-              />
-            )}
-          </div>
-          {quizState.status === 'Pending' ? (
-            <QuizBody
-              key={quizState.questionIndex}
-              index={quizState.questionIndex}
-              question={questions[quizState.questionIndex]}
-              score={quizState.score}
-              handleAnswer={onAnswerSelected}
-              totalItems={questions.length}
-              showPoints={shouldShowPoints}
-              points={quizState.currentQuestionPoints}
-            />
-          ) : (
-            <Results questions={questions} quizState={quizState} />
-          )}
+    <div>
+      {isLoading ? (
+        <div className="flex justify-center items-center h-[50vh] p-4">
+          <Loader2 className="animate-spin text-primary-yellow" size={48} />
         </div>
-      </div>
-    </AudioPlayer>
+      ) : (
+        <AudioPlayer
+          source={audioFile}
+          shouldStop={quizState.status === 'Done'}
+        >
+          <div>
+            <div id="quiz-1" className="flex flex-col w-5/6 mx-auto mb-4">
+              <div className="flex items-start justify-between pt-8">
+                <div>
+                  <h2 className="font-heading-small text-3xl text-primary-blue ">
+                    {quizState.status === 'Pending'
+                      ? `Quiz #${quizId}: Lecture #${quizId}`
+                      : 'Results & Summary'}
+                  </h2>
+                  <hr className="w-[60%] border-1 border-primary-yellow mt-2 mb-3" />
+                </div>
+                {quizState.status === 'Pending' && (
+                  <Timer
+                    key={quizState.questionIndex}
+                    duration={questions[quizState.questionIndex].duration}
+                    color={'red'}
+                    onTimerEnd={() => {
+                      onAnswerSelected(
+                        isIdentification ? identificationAnswerRef.current : '',
+                        isIdentification ? false : true,
+                      );
+                      identificationAnswerRef.current = '';
+                    }}
+                  />
+                )}
+              </div>
+              {quizState.status === 'Pending' ? (
+                <QuizBody
+                  key={quizState.questionIndex}
+                  index={quizState.questionIndex}
+                  question={questions[quizState.questionIndex]}
+                  score={quizState.score}
+                  handleAnswer={onAnswerSelected}
+                  totalItems={questions.length}
+                  showPoints={shouldShowPoints}
+                  points={quizState.currentQuestionPoints}
+                />
+              ) : (
+                <Results questions={questions} quizState={quizState} />
+              )}
+            </div>
+          </div>
+        </AudioPlayer>
+      )}
+    </div>
   );
 }
 
@@ -218,12 +319,14 @@ function QuizBody({
                 initial={{ opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
                 className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 bg-[rgba(0,0,0,0.5)] rounded-2xl"
               >
                 <motion.span
                   className="text-green-500 text-8xl font-bold drop-shadow-lg"
                   initial={{ y: -50 }}
                   animate={{ y: 0 }}
+                  transition={{ duration: 0.4 }}
                 >
                   +{points} points!
                 </motion.span>
@@ -493,20 +596,25 @@ function ResultQuestion({ index, questionData, questions }) {
         </div>
       ) : (
         <div className="flex flex-col items-baseline gap-y-2 my-3">
-          {questions[index].choices.map((choice, i) => {
-            return (
-              <div key={i + choice.text} className="flex items-center gap-x-2">
+          {questions
+            .find((q) => q.question === questionData.question)
+            .choices.map((choice, i) => {
+              return (
                 <div
-                  className={`w-[15px] h-[15px] rounded-full shrink-0 ${
-                    choice.text === questionData.answer
-                      ? selectedColor
-                      : 'bg-[#D9D9D9]'
-                  }`}
-                ></div>
-                <p>{choice.text}</p>
-              </div>
-            );
-          })}
+                  key={i + choice.text}
+                  className="flex items-center gap-x-2"
+                >
+                  <div
+                    className={`w-[15px] h-[15px] rounded-full shrink-0 ${
+                      choice.text === questionData.answer
+                        ? selectedColor
+                        : 'bg-[#D9D9D9]'
+                    }`}
+                  ></div>
+                  <p>{choice.text}</p>
+                </div>
+              );
+            })}
         </div>
       )}
     </div>

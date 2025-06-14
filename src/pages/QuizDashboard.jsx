@@ -1,12 +1,34 @@
 import PageHeading from '@/components/PageHeading';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Quizzes } from '@/utilities/QuizData';
+import { Loader2 } from 'lucide-react';
+import {
+  fetchQuizzes,
+  Quizzes,
+  extractQuizDetails,
+} from '@/utilities/QuizData';
 import Footer from '@/components/Footer';
 
 export default function QuizDashboard() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [quizzes, setQuizzes] = useState([]);
   const [activeFilter, setActiveFilter] = useState('All');
   const filters = ['All', 'Done', 'Pending', 'Locked'];
+
+  useEffect(() => {
+    async function fetchAndSetQuizzes() {
+      const data = extractQuizDetails(await fetchQuizzes());
+      console.log('data', data);
+      setQuizzes(data);
+      setTimeout(() => setIsLoading(false), 1000);
+    }
+    fetchAndSetQuizzes();
+  }, []);
+
+  // useEffect(() => {
+  //   console.log('is array', Array.isArray(quizzes));
+  //   console.log('after setQuizDetails', quizzes);
+  // }, [quizzes]);
 
   return (
     <div>
@@ -28,7 +50,7 @@ export default function QuizDashboard() {
                 <li
                   key={index}
                   className={`${filter === activeFilter ? 'filter-active' : ''}
-                    filter`}
+                    filter cursor-pointer`}
                   onClick={() => setActiveFilter(filter)}
                 >
                   {filter}
@@ -37,13 +59,41 @@ export default function QuizDashboard() {
             })}
           </ul>
         </div>
-        {Quizzes.map((quiz) => {
+        {isLoading ? (
+          <div className="flex justify-center items-center h-[50vh] p-4">
+            <Loader2 className="animate-spin text-primary-yellow" size={48} />
+          </div>
+        ) : (
+          Array.isArray(quizzes) && (
+            <div className="flex flex-col items-center justify-center min-h-[50vh]">
+              <div>
+                {quizzes.map((quiz) => {
+                  return (
+                    (quiz.status === activeFilter ||
+                      activeFilter === 'All') && (
+                      <Card key={'Quiz ' + quiz.number} quiz={quiz} />
+                    )
+                  );
+                })}
+              </div>
+            </div>
+          )
+          // quizzes.map((quiz) => {
+          //   return (
+          //     (quiz.status === activeFilter || activeFilter === 'All') && (
+          //       <Card key={'Quiz ' + quiz.number} quiz={quiz} />
+          //     )
+          //   );
+          // })
+
+          /* {Quizzes.map((quiz) => { // this is used for testing purposes
           return (
             (quiz.status === activeFilter || activeFilter === 'All') && (
               <Card key={'Quiz ' + quiz.number} quiz={quiz} />
             )
           );
-        })}
+        })} */
+        )}
       </div>
       <Footer></Footer>
     </div>
@@ -72,7 +122,7 @@ function Card({ quiz }) {
           {quiz.status}
         </h3>
       </div>
-      <div className="flex justify-between items-center py-4 pl-10 pr-15 h-[25vh]">
+      <div className="flex justify-between items-center py-4 pl-10 pr-15 w-full h-[25vh]">
         <Results status={quiz.status} details={quiz.details} />
         <div className="w-[3px] h-full bg-primary-yellow"></div>
         <Overview content={quiz.content} />
@@ -104,7 +154,7 @@ function Results({ status, details }) {
     Pending: (
       <h4>
         <strong>
-          <i>Not yet Taken</i>
+          <i>Not yet Done</i>
         </strong>
         <br />
         <i>(Can be taken)</i>
