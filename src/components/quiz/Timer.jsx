@@ -2,9 +2,13 @@ import { useEffect, useState, useContext } from 'react';
 import TimerIcon from '@/assets/icons/timer_quiz.png';
 import { RemainingTimeContext } from '@/providers/QuizContext';
 import { motion } from 'motion/react';
+import { updateRemainingTime } from '@/utilities/QuizData';
+import { useParams } from 'react-router-dom';
 
 export default function Timer({ duration, color, onTimerEnd }) {
+  const { quizId } = useParams();
   const [time, setTime] = useState(0);
+  const [hasTimerEnded, setHasTimerEnded] = useState(false);
   const remainingTimeRef = useContext(RemainingTimeContext);
   remainingTimeRef.current = time;
 
@@ -14,14 +18,23 @@ export default function Timer({ duration, color, onTimerEnd }) {
 
     const interval = setInterval(() => {
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const remainingTime = duration - elapsed;
       if (elapsed > duration) {
+        console.log('Timer ended');
         clearInterval(interval);
-        onTimerEnd();
-      } else setTime(duration - elapsed);
+        setHasTimerEnded(true);
+      } else setTime(remainingTime);
+      updateRemainingTime(quizId, remainingTime);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [duration, onTimerEnd]);
+  }, [duration, quizId]);
+
+  // fix for race condition where onTimerEnd is called twice 
+  if (hasTimerEnded) {
+    onTimerEnd();
+    setHasTimerEnded(false);
+  }
 
   return (
     <div className="flex items-center gap-4">

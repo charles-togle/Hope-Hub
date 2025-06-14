@@ -2,11 +2,7 @@ import PageHeading from '@/components/PageHeading';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
-import {
-  fetchQuizzes,
-  Quizzes,
-  extractQuizDetails,
-} from '@/utilities/QuizData';
+import { fetchQuizzes, extractQuizDetails } from '@/utilities/QuizData';
 import Footer from '@/components/Footer';
 
 export default function QuizDashboard() {
@@ -65,8 +61,8 @@ export default function QuizDashboard() {
           </div>
         ) : (
           Array.isArray(quizzes) && (
-            <div className="flex flex-col items-center justify-center min-h-[50vh]">
-              <div>
+            <div className="flex flex-col items-center justify-center min-h-[50vh] w-full">
+              <div className="w-full">
                 {quizzes.map((quiz) => {
                   return (
                     (quiz.status === activeFilter ||
@@ -78,21 +74,6 @@ export default function QuizDashboard() {
               </div>
             </div>
           )
-          // quizzes.map((quiz) => {
-          //   return (
-          //     (quiz.status === activeFilter || activeFilter === 'All') && (
-          //       <Card key={'Quiz ' + quiz.number} quiz={quiz} />
-          //     )
-          //   );
-          // })
-
-          /* {Quizzes.map((quiz) => { // this is used for testing purposes
-          return (
-            (quiz.status === activeFilter || activeFilter === 'All') && (
-              <Card key={'Quiz ' + quiz.number} quiz={quiz} />
-            )
-          );
-        })} */
         )}
       </div>
       <Footer></Footer>

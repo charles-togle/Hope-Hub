@@ -17,7 +17,12 @@ import {
   RemainingTimeContext,
   QuizContext,
 } from '@/providers/QuizContext';
-import { markQuizAsDone, submitAnswer } from '@/utilities/QuizData';
+import {
+  fetchLeaderboard,
+  markQuizAsDone,
+  submitAnswer,
+} from '@/utilities/QuizData';
+import { useEffect } from 'react';
 
 const sampleLeaderboardNames = [
   { name: 'Togle, Charles Nathaniel', points: 1003 },
@@ -40,16 +45,19 @@ export default function Quiz() {
 
 export function QuizPage() {
   let { quizId } = useParams();
-  let questions = useContext(QuestionsContext);
   const remainingTimeRef = useContext(RemainingTimeContext);
   const identificationAnswerRef = useContext(IdentificationRefContext);
+  const questions = useContext(QuestionsContext);
   const { quizState, setQuizState } = useContext(QuizContext);
 
+  const [leaderboard, setLeaderboard] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [shouldShowPoints, setShouldShowPoints] = useState(false);
 
   console.log('questions: ', questions); // access quizId
   console.log('quiz state: ', quizState);
+  console.log('questions answered: ', quizState.questionsAnswered);
+  console.log('leaderboard: ', leaderboard);
 
   // const [quizState, setQuizState] = useState({
   //   quizId: quizId,
@@ -94,11 +102,12 @@ export function QuizPage() {
     });
     setShouldShowPoints(true);
 
-    const newQuizState = {
+    let newQuizState = {
       ...quizState,
       questionIndex: quizState.questionIndex + 1,
       score: quizState.score + (isCorrect ? 1 : 0),
       points: quizState.points + pointsEarnedForCurrentQuestion,
+      remainingTime: questions[0].duration, // reset remaining time after answering
       questionsAnswered: [
         ...quizState.questionsAnswered,
         {
@@ -114,128 +123,69 @@ export function QuizPage() {
       setTimeout(async () => {
         setShouldShowPoints(false);
         setIsLoading(true);
-        const error = await submitAnswer(newQuizState);
+        let error = await submitAnswer(newQuizState);
+
+        if (newQuizState.questionIndex === questions.length) {
+          newQuizState = {
+            ...newQuizState,
+            questionIndex: newQuizState.questionIndex - 1,
+            status: 'Done',
+          };
+
+          error = await markQuizAsDone(newQuizState);
+        }
+
         // console.log('quizState from submitAnswer: ', quizState);
         // console.log('data from submitAnswer: ', data);
         if (!error) {
+          console.log('no errors');
           setQuizState(newQuizState);
           setIsLoading(false);
         }
       }, 1000);
     }
 
-    if (quizState.questionIndex === questions.length - 1) {
-      const newQuizState = {
-        ...quizState,
-        questionIndex: quizState.questionIndex - 1,
-        status: 'Done',
-      };
+    // if (quizState.questionIndex === questions.length - 1) {
+    //   const newQuizState = {
+    //     ...quizState,
+    //     questionIndex: quizState.questionIndex - 1,
+    //     status: 'Done',
+    //   };
 
-      setTimeout(async () => {
-        setIsLoading(true);
-        const error = await markQuizAsDone(newQuizState);
-        if (!error) {
-          setQuizState(newQuizState);
-          setIsLoading(false);
-        }
-      }, 1000);
-    }
+    //   setTimeout(async () => {
+    //     setIsLoading(true);
+    //     const error = await markQuizAsDone(newQuizState);
+    //     if (!error) {
+    //       setQuizState(newQuizState);
+    //     }
+    //   }, 1000);
+    // }
   }
 
-  function onAnswerSelectedOld(answer, multipleChoice = true) {
-    let correctAnswer = questions[quizState.questionIndex].answer;
-    let isCorrect = false;
-
-    if (multipleChoice) {
-      correctAnswer = questions[quizState.questionIndex].choices.find(
-        (choice) => choice.isCorrect,
-      ).text;
-      if (answer.isCorrect) isCorrect = true;
-      answer = answer.text;
-    } else {
-      if (
-        answer.trim().toLowerCase() ===
-        questions[quizState.questionIndex].answer.toLowerCase()
-      )
-        isCorrect = true;
+  useEffect(() => {
+    async function fetchAndSetLeaderboard() {
+      setLeaderboard(await fetchLeaderboard(quizId));
     }
 
-    let pointsEarnedForCurrentQuestion = calculatePoints(
-      isCorrect,
-      remainingTimeRef.current,
-      questions[quizState.questionIndex].duration,
-    );
+    fetchAndSetLeaderboard();
+  }, [quizId, quizState.status]);
 
-    setQuizState({
-      ...quizState,
-      currentQuestionPoints: pointsEarnedForCurrentQuestion,
-    });
-    setShouldShowPoints(true);
-    // alert(
-    //   calculatePoints(
-    //     isCorrect,
-    //     remainingTimeRef.current,
-    //     questions[quizState.questionIndex].duration,
-    //   ),
-    // );
-
-    if (quizState.questionIndex <= questions.length - 1) {
-      setTimeout(() => {
-        setShouldShowPoints(false);
-        setQuizState((prevQuizState) => {
-          return {
-            ...prevQuizState,
-            questionIndex: prevQuizState.questionIndex + 1,
-            score: prevQuizState.score + (isCorrect ? 1 : 0),
-            points: prevQuizState.points + pointsEarnedForCurrentQuestion,
-            questionsAnswered: [
-              ...prevQuizState.questionsAnswered,
-              {
-                question: questions[prevQuizState.questionIndex].question,
-                correctAnswer: correctAnswer,
-                answer: answer,
-                isCorrect: isCorrect,
-              },
-            ],
-          };
-        });
-      }, 1000);
-    }
-
-    if (quizState.questionIndex === questions.length - 1) {
-      setTimeout(() => {
-        setQuizState((prevQuizState) => {
-          return {
-            ...prevQuizState,
-            questionIndex: prevQuizState.questionIndex - 1,
-            status: 'Done',
-          };
-        });
-      }, 1000);
-    }
-  }
-
-  // if (quizState.status === 'Done') {
-  //   sampleLeaderboardNames.push({
-  //     name: 'User ',
-  //     points: quizState.points,
-  //   });
-  // }
+  console.log('leaderboard because quiz is done: ', leaderboard);
 
   const isIdentification =
-    questions[quizState.questionIndex].type === 'identification';
+    questions.length !== quizState.questionIndex &&
+    questions[quizState.questionIndex].type === 'identification'
+      ? true
+      : false;
 
   return (
     <div>
-      {isLoading ? (
-        <div className="flex justify-center items-center h-[50vh] p-4">
-          <Loader2 className="animate-spin text-primary-yellow" size={48} />
-        </div>
-      ) : (
-        <AudioPlayer
-          source={audioFile}
-          shouldStop={quizState.status === 'Done'}
-        >
+      <AudioPlayer source={audioFile} shouldStop={quizState.status === 'Done'}>
+        {isLoading ? (
+          <div className="flex justify-center items-center h-[50vh] p-4">
+            <Loader2 className="animate-spin text-primary-yellow" size={48} />
+          </div>
+        ) : (
           <div>
             <div id="quiz-1" className="flex flex-col w-5/6 mx-auto mb-4">
               <div className="flex items-start justify-between pt-8">
@@ -250,7 +200,11 @@ export function QuizPage() {
                 {quizState.status === 'Pending' && (
                   <Timer
                     key={quizState.questionIndex}
-                    duration={questions[quizState.questionIndex].duration}
+                    duration={
+                      shouldShowPoints
+                        ? remainingTimeRef.current
+                        : quizState.remainingTime
+                    }
                     color={'red'}
                     onTimerEnd={() => {
                       onAnswerSelected(
@@ -274,12 +228,16 @@ export function QuizPage() {
                   points={quizState.currentQuestionPoints}
                 />
               ) : (
-                <Results questions={questions} quizState={quizState} />
+                <Results
+                  questions={questions}
+                  quizState={quizState}
+                  leaderboard={leaderboard}
+                />
               )}
             </div>
           </div>
-        </AudioPlayer>
-      )}
+        )}
+      </AudioPlayer>
     </div>
   );
 }
@@ -410,7 +368,9 @@ function MultipleChoice({ choices, handleAnswer }) {
   );
 }
 
-function Results({ questions, quizState }) {
+function Results({ questions, quizState, leaderboard }) {
+  console.log('this was rebuilt');
+  console.log('leaderboards for results', leaderboard);
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -516,20 +476,18 @@ function Results({ questions, quizState }) {
             </div>
             <hr className="w-[40%] border-1 border-white mt-8 mb-5" />
           </div>
-          <div className="border-t-2 border-white pt-4 relative w-full mt-10 text-lg text-white">
-            <h3 className="w-[40%] absolute -top-4 left-1/2 -translate-x-1/2 bg-[#053361] text-center font-bold text-xl">
-              Leaderboard
-            </h3>
+          <div className="pt-4 relative w-full mt-8 text-lg text-white">
+            <div className="flex items-center justify-between relative">
+              <hr className="w-[30%] border-1 border-white" />
+              <h3 className="w-[40%] absolute -top-4 left-1/2 -translate-x-1/2 text-center font-bold text-xl">
+                Leaderboard
+              </h3>
+              <hr className="w-[30%] border-1 border-white" />
+            </div>
             <div className="mt-6">
-              {sampleLeaderboardNames
-                .sort((a, b) => b.points - a.points)
-                .map((user, index) => (
-                  <LeaderboardName
-                    key={index + user.name}
-                    rank={index + 1}
-                    user={user}
-                  />
-                ))}
+              {leaderboard.map((user, index) => (
+                <LeaderboardName key={index + user.name} user={user} />
+              ))}
             </div>
           </div>
         </div>
@@ -552,16 +510,17 @@ function Results({ questions, quizState }) {
   );
 }
 
-function LeaderboardName({ rank, user }) {
+function LeaderboardName({ user }) {
+  console.log('leaderboards name');
   return (
     <div>
       <div className="flex flex-col justify-between gap-y-2 w-[70%] mx-auto font-medium">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-x-3">
-            <h3>{rank}</h3>
+            <h3>{user.rank}</h3>
             <h3>{user.name}</h3>
           </div>
-          <h3>{user.points.toLocaleString()} pts</h3>
+          <h3>{user.points} pts</h3>
         </div>
       </div>
     </div>
@@ -569,6 +528,9 @@ function LeaderboardName({ rank, user }) {
 }
 
 function ResultQuestion({ index, questionData, questions }) {
+  console.log('questions length', questions.length);
+  console.log('index', index);
+  console.log('questions:', questions);
   const selectedColor = questionData.isCorrect ? 'bg-green' : 'bg-red';
 
   return (
