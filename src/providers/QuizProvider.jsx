@@ -3,10 +3,7 @@ import {
   extractQuizState,
   fetchQuizQuestions,
   fetchQuizStateIfExists,
-  QuizzesData,
-  updateQuestionsRemaining,
 } from '@/utilities/QuizData';
-import { shuffleArray } from '@/utilities/utils';
 import { useParams } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import {
@@ -26,29 +23,30 @@ export default function QuizProvider({ children }) {
 
   useEffect(() => {
     async function fetchAndSetQuizQuestions(quizId) {
+      const questions = await fetchQuizQuestions(quizId);
+
       const extractedQuizState = extractQuizState(
         await fetchQuizStateIfExists(quizId),
       );
 
-      const updatedQuestions = updateQuestionsRemaining(
-        extractedQuizState,
-        await fetchQuizQuestions(quizId),
-      );
-      console.log('updatedQUestions', updatedQuestions);
+      if (extractedQuizState.remainingTime === 0)
+        extractedQuizState.remainingTime = questions[0].duration;
+
+      // console.log('updatedQUestions', updatedQuestions);
       // console.log('questions', updatedQuestions);
 
-      const shuffledQuestions = shuffleArray(updatedQuestions); // shuffle the questions
+      // const shuffledQuestions = shuffleArray(updatedQuestions); // shuffle the questions
 
-      shuffledQuestions.map((question) => {
-        if (question.type === 'identification') return question; // skip identification questions
-        return {
-          ...question,
-          choices: shuffleArray(question.choices), // shuffle choices for each question
-        };
-      });
+      // shuffledQuestions.map((question) => {
+      //   if (question.type === 'identification') return question; // skip identification questions
+      //   return {
+      //     ...question,
+      //     choices: shuffleArray(question.choices), // shuffle choices for each question
+      //   };
+      // });
 
       setQuizState(extractedQuizState);
-      setQuestions(shuffledQuestions);
+      setQuestions(questions);
       setIsLoading(false);
     }
 
