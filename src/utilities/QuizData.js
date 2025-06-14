@@ -30,15 +30,13 @@ async function fetchQuizzes() {
     return;
   }
 
-  console.log('Quizzes:', data);
   return data;
 }
 
 function extractQuizDetails(quizData) {
   if (!Array.isArray(quizData) || quizData.length === 0) return;
-  quizData.map(async (quiz, index) => {
+  quizData.map(async (quiz) => {
     let progress = quiz.quiz_progress[0] || [];
-    console.log('quiz', progress);
     quiz.number = quiz.id;
     quiz.status = (progress && progress.status) || 'Locked';
     quiz.details = !progress.date_taken
@@ -93,8 +91,6 @@ async function fetchQuizQuestions(quizId) {
         'Error updating questions shuffled and starting quiz:',
         error,
       );
-    } else {
-      console.log('Updating questions shuffled and quiz started:', data);
     }
   }
 
@@ -127,7 +123,6 @@ async function getQuestionsFromQuizProgressIfExists(quizId) {
     console.error('Error fetching shuffled questions:', error);
   }
 
-  console.log('Questions shuffled:', data.questions_shuffled);
   return data ? data.questions_shuffled : null;
 }
 
@@ -143,7 +138,6 @@ async function getQuestionsFromQuiz(quizId) {
     return;
   }
 
-  console.log('Questions:', data.questions);
   return data.questions.questions;
 }
 
@@ -174,8 +168,6 @@ async function fetchQuizStateIfExists(quizId) {
     console.error('Error fetching quiz state:', error.message);
   }
 
-  console.log('Quiz state:', data);
-
   return data;
 }
 
@@ -194,66 +186,6 @@ function extractQuizState(quizState) {
   };
 }
 
-// function updateQuestionsRemaining(quizState, questions) {
-//   if (!quizState || !questions) return questions;
-//   if (
-//     quizState.questionIndex === 0 ||
-//     !quizState.questionsAnswered ||
-//     quizState.status === 'Done'
-//   )
-//     return questions;
-
-//   const answeredSet = new Set(
-//     quizState.questionsAnswered.map((q) => q.question),
-//   );
-
-//   const answeredQuestions = questions.filter((q) =>
-//     answeredSet.has(q.question),
-//   );
-//   console.log('Answered Questions:', answeredQuestions);
-
-//   const unansweredQuestions = questions.filter(
-//     (q) => !answeredSet.has(q.question),
-//   );
-//   console.log('Unanswered Questions:', unansweredQuestions);
-
-//   const allQuestions = [...answeredQuestions, ...unansweredQuestions];
-
-//   console.log('Merged Questions:', allQuestions);
-
-//   return allQuestions;
-
-// questionsAnswered: [
-//   ...prevQuizState.questionsAnswered,
-//   {
-//     question: questions[prevQuizState.questionIndex].question,
-//     correctAnswer: correctAnswer,
-//     answer: answer,
-//     isCorrect: isCorrect,
-//   },
-// ],
-//  "questions": [
-//     {
-//       "type": "multiple-choice",
-//       "duration": "60",
-//       "question": "Why is it important to reduce exercise intensity and take breaks during hot weather, even if you don't feel thirsty?",
-//       "choices": [
-//         {
-//           "text": "Your muscles burn out faster in heat",
-//           "isCorrect": false
-//         },
-//         {
-//           "text": "The body can overheat before signs appear",
-//           "isCorrect": true
-//         },
-//         {
-//           "text": "You lose energy quicker through sweat",
-//           "isCorrect": false
-//         }
-//       ]
-//     },
-// }
-
 async function submitAnswer(quizState) {
   const {
     quizId,
@@ -264,16 +196,6 @@ async function submitAnswer(quizState) {
     questionsAnswered,
   } = quizState;
   const user = await getCurrentUser();
-
-  // return {
-  //   quizId: quizState.quiz_id,
-  //   questionIndex: quizState.question_index || 0,
-  //   score: quizState.score || 0,
-  //   points: quizState.points || 0,
-  //   currentQuestionPoints: 0,
-  //   status: quizState.status,
-  //   questionsAnswered: quizState.questions_answered,
-  // };
   const { data, error } = await supabase
     .from('quiz_progress')
     .update({
@@ -289,8 +211,6 @@ async function submitAnswer(quizState) {
   if (error) {
     console.error('Error submitting answer:', error.message);
     return error;
-  } else {
-    console.log('Quiz progress updated');
   }
 }
 
@@ -312,8 +232,6 @@ async function markQuizAsDone(quizState) {
   if (error) {
     console.error('Error marking quiz as done:', error.message);
     return error;
-  } else {
-    console.log('Quiz marked as done');
   }
 }
 
@@ -330,8 +248,6 @@ async function updateRemainingTime(quizId, remainingTime) {
   if (error) {
     console.error('Error updating remaining time:', error.message);
     return error;
-  } else {
-    console.log('Remaining time updated:', data);
   }
 }
 
@@ -349,8 +265,6 @@ async function getUserRanking(quizId) {
     return;
   }
 
-  console.log('Top scores:', data);
-
   // Get user ranking
   const userRanking = data
     .map((item, index) => ({
@@ -360,7 +274,6 @@ async function getUserRanking(quizId) {
     }))
     .find((item) => item.user_id === user.id).rank;
 
-  console.log('User ranking:', userRanking);
   return userRanking;
 }
 
@@ -394,8 +307,6 @@ async function fetchLeaderboard(quizId) {
     console.error('Error fetching leaderboard:', error);
     return;
   }
-
-  console.log('Leaderboard:', data);
 
   return leaderboard;
 }

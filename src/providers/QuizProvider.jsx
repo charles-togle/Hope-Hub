@@ -32,19 +32,6 @@ export default function QuizProvider({ children }) {
       if (extractedQuizState.remainingTime === 0)
         extractedQuizState.remainingTime = questions[0].duration;
 
-      // console.log('updatedQUestions', updatedQuestions);
-      // console.log('questions', updatedQuestions);
-
-      // const shuffledQuestions = shuffleArray(updatedQuestions); // shuffle the questions
-
-      // shuffledQuestions.map((question) => {
-      //   if (question.type === 'identification') return question; // skip identification questions
-      //   return {
-      //     ...question,
-      //     choices: shuffleArray(question.choices), // shuffle choices for each question
-      //   };
-      // });
-
       setQuizState(extractedQuizState);
       setQuestions(questions);
       setIsLoading(false);
@@ -52,10 +39,6 @@ export default function QuizProvider({ children }) {
 
     fetchAndSetQuizQuestions(quizId);
   }, [quizId]);
-
-  // let questions = QuizzesData.find(
-  //   (quiz) => quiz.number.toString() === quizId,
-  // ).questions;
 
   return (
     <QuizContext.Provider value={{ quizState, setQuizState }}>
