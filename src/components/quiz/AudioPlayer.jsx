@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-export default function AudioPlayer({ source, children }) {
+export default function AudioPlayer({ source, shouldStop, children }) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -17,6 +17,15 @@ export default function AudioPlayer({ source, children }) {
         });
     }
   };
+
+  if (shouldStop && isPlaying) {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0; // Reset to the beginning
+      setIsPlaying(false);
+    }
+  }
 
   return (
     <div onClick={handleClick}>
