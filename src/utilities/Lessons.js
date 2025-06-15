@@ -15,6 +15,7 @@ export const Lessons = [
     pdf: 'https://file.garden/Z-9MLal_RynAMoBV/PDFs/PERSONAL%20SAFETY%20PROTOCOLS_PDF.pdf',
     videoLecture:
       'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    quizLink: '/quizzes-and-activities/quiz/1',
   },
   {
     key: 2,
@@ -24,6 +25,7 @@ export const Lessons = [
     pdf: 'https://file.garden/Z-9MLal_RynAMoBV/PDFs/LESSON%202_PHYSIOLOGICAL%20INDICATORS.pdf',
     videoLecture:
       'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    quizLink: '/quizzes-and-activities/quiz/2',
   },
   {
     key: 3,
@@ -32,5 +34,6 @@ export const Lessons = [
     pdf: 'https://file.garden/Z-9MLal_RynAMoBV/PDFs/LESSON%202_PHYSIOLOGICAL%20INDICATORS.pdf',
     videoLecture:
       'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    quizLink: '/quizzes-and-activities/quiz/3',
   },
 ];
