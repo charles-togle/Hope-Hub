@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Home () {
   const navigate = useNavigate();
   const handleStart = () => {
-    navigate('/auth/login');
+    navigate('/dashboard');
   };
 
   return (
@@ -80,7 +80,7 @@ export default function Home () {
           </p>
         </div>
       </section>
-    <Footer></Footer>
+      <Footer></Footer>
     </div>
   );
 }

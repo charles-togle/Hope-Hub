@@ -259,7 +259,7 @@ export default function PhysicalActivityReadinessQuestionnaire () {
               />
             </label>{' '}
             <label>
-              <p>Age:</p>
+              <p>Category:</p>
               <select
                 defaultValue={physicalFitnessData?.category}
                 onChange={e =>
