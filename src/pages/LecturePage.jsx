@@ -8,7 +8,7 @@ import ErrorMessage from '@/components/utilities/ErrorMessage';
 import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
 import LectureProgress from '@/utilities/LectureProgress';
-
+import Loading from '@/components/Loading';
 export default function LecturePage () {
   const { lessonNumber, lectureType } = useParams();
   const navigate = useNavigate();
@@ -114,19 +114,13 @@ export default function LecturePage () {
     return <ErrorMessage text='Error 404' subText='Page not found' />;
   }
   if (!dataLoaded) {
-    return (
-      <div className='w-full flex items-center justify-center h-screen'>
-        <div className='font-content font-medium text-xl text-center w-full'>
-          Loading...
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
-  const { pdf, introduction, title, videoLecture } = lessonDetails;
+  const { pdf, introduction, title, videoLecture, quizLink } = lessonDetails;
 
   return (
-    <div id='lecture-page' className='min-h-screen bg-gray-background'>
+    <section id='lecture-page' className='min-h-screen bg-gray-background'>
       <PageHeading text='Lecture & Video Lessons' />
       <div className='w-[90%] lg:w-[80%] mx-auto mt-5 flex flex-col items-center'>
         <button
@@ -143,7 +137,7 @@ export default function LecturePage () {
             title={title}
             introduction={introduction}
             pdfLink={pdf}
-            quizLink=''
+            quizLink={quizLink}
             onTimerEnd={handleLectureFinish}
             isLectureDone={isLectureDone}
           />
@@ -155,12 +149,12 @@ export default function LecturePage () {
             title={title}
             introduction={introduction}
             videoLink={videoLecture}
-            quizLink=''
+            quizLink={quizLink}
             onVideoFinish={handleLectureFinish}
             isLectureDone={isLectureDone}
           />
         )}
       </div>
-    </div>
+    </section>
   );
 }

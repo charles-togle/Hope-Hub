@@ -27,7 +27,7 @@ export default function Login () {
         setErrorMessage(error.message);
       } else {
         setSuccessMessage('Login Success');
-        navigate('/profile');
+        navigate('/dashboard');
       }
     } catch (err) {
       console.error('Unexpected error during login:', err);

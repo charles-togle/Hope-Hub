@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function LectureVideo({
+export default function LectureVideo ({
   lectureNumber,
   title,
   introduction,
@@ -72,14 +72,14 @@ export default function LectureVideo({
   }, [isDone, onVideoFinish, isSaved]);
 
   return (
-    <div id="video-lecture" className="w-full">
-      <h2 className="bg-neutral-light-blue py-3 px-5 font-content font-medium text-xl">
+    <div id='video-lecture' className='w-full'>
+      <h2 className='bg-neutral-light-blue py-3 px-5 font-content font-medium text-xl'>
         Lecture #{lectureNumber}:{' '}
-        <span className="font-normal ml-3">{title}</span>
+        <span className='font-normal ml-3'>{title}</span>
       </h2>
       <div
-        id="lecture-content"
-        className="flex flex-col min-h-full justify-center p-10 mb-10 bg-background"
+        id='lecture-content'
+        className='flex flex-col min-h-full justify-center p-10 mb-10 bg-background'
       >
         <video
           src={videoLink}
@@ -90,28 +90,28 @@ export default function LectureVideo({
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={handleLoadedMetadata}
           ref={videoRef}
-          className="h-full lg:h-120"
+          className='h-full lg:h-120'
         >
           Your browser does not support the video tag.
         </video>
         <div
-          id="lecture-description"
-          className=" flex flex-col items-center h-fit mt-10 relative font-content lg:flex-row"
+          id='lecture-description'
+          className=' flex flex-col items-center h-fit mt-10 relative font-content lg:flex-row'
         >
-          <p className="absolute top-0 left-0 text-accent-blue text-lg font-medium">
+          <p className='absolute top-0 left-0 text-accent-blue text-lg font-medium'>
             Introduction
           </p>
-          <ul className="w-full pt-7 lg:pt-10">
-            <li className="ml-7 text-sm list-disc text-left lg:text-base">
+          <ul className='w-full pt-7 lg:pt-10'>
+            <li className='ml-7 text-sm list-disc text-left lg:text-base'>
               {introduction}
             </li>
           </ul>
-          <hr className="w-full m-5 border-1 border-black lg:w-0 lg:h-45 lg:mt-0 lg:mb-0 lg:mr-10 lg:ml-10" />
+          <hr className='w-full m-5 border-1 border-black lg:w-0 lg:h-45 lg:mt-0 lg:mb-0 lg:mr-10 lg:ml-10' />
           <div
-            id="button-group"
-            className="flex justify-center items-center flex-col"
+            id='button-group'
+            className='flex justify-center items-center flex-col'
           >
-            <p className="text-center mb-5 font-md ">
+            <p className='text-center mb-5 font-md '>
               Done Learning? Test your knowledge and take the quiz!
             </p>
             <button
@@ -120,10 +120,10 @@ export default function LectureVideo({
                   navigate('not-found');
                   return;
                 }
-                console.log(quizLink);
+                navigate(quizLink);
               }}
               disabled={isLectureDone ? undefined : true}
-              className="w-[45%] py-2 text-lg text-white bg-secondary-dark-blue hover:brightness-90 disabled:brightness-50 lg:w-full lg:py-5"
+              className='w-[45%] py-2 text-lg text-white bg-secondary-dark-blue hover:brightness-90 disabled:brightness-50 lg:w-full lg:py-5 cursor-pointer'
             >
               TAKE QUIZ
             </button>
