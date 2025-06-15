@@ -9,6 +9,8 @@ import { cleanStudentData } from '@/services/cleanStudentData';
 import { useUserId } from '@/hooks/useUserId';
 import supabase from '@/client/supabase';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
+import Loading from '@/components/Loading';
+
 
 const transformDataLecture = data => {
   return data.map(item => ({
@@ -98,6 +100,7 @@ export default function ViewClass () {
     if (!userId || !classCode) {
       setHasOwnership(false);
       setIsOwnershipChecked(true);
+      setIsLoading(true);
       return;
     }
 
@@ -118,7 +121,7 @@ export default function ViewClass () {
       console.error('Error checking class ownership:', err);
       setHasOwnership(false);
     }
-
+    setIsLoading(false);
     setIsOwnershipChecked(true);
   };
 
@@ -144,6 +147,7 @@ export default function ViewClass () {
       setDefaultStudentData(cleanedStudentData);
     } catch (error) {
       console.error('Error fetching student data:', error);
+      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
@@ -304,18 +308,16 @@ export default function ViewClass () {
     }
   };
 
-  if (!isOwnershipChecked || isLoading || !isDataReady) {
-    return (
-      <div className='w-full flex items-center justify-center h-screen'>
-        <div className='font-content font-medium text-xl text-center w-full'>
-          Loading...
-        </div>
-      </div>
-    );
+  if (!isLoading) {
+    return <Loading />;
   }
 
   if (isOwnershipChecked && !hasOwnership && !isLoading) {
     return <ErrorMessage text='Error 404' subText='Class Not Found' />;
+  }
+
+  if (!isOwnershipChecked || isLoading || !isDataReady) {
+    return <Loading />;
   }
 
   return (

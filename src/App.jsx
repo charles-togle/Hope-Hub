@@ -28,20 +28,20 @@ import supabase from './client/supabase';
 import ViewClass from './pages/Dashboard/ViewClass';
 import { useUserId } from './hooks/useUserId';
 
-function SidebarLayout() {
+function SidebarLayout () {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const handleHamburgerClick = () => setSidebarOpen((open) => !open);
+  const handleHamburgerClick = () => setSidebarOpen(open => !open);
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className='flex h-screen overflow-hidden'>
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className="lg:pt-0 flex-1 h-screen overflow-x-hidden overflow-y-auto justify-center relative">
-        <div className="hamburger-menu pl-5 flex items-center top-0 w-screen h-20 bg-secondary-dark-blue mb-5 lg:hidden relative">
+      <div className='lg:pt-0 flex-1 h-screen overflow-x-hidden overflow-y-auto justify-center relative'>
+        <div className='hamburger-menu pl-5 flex items-center top-0 w-screen h-20 bg-secondary-dark-blue mb-5 lg:hidden relative'>
           <img
             src={HamburgerMenu}
-            className="w-10 pr-3 cursor-pointer"
+            className='w-10 pr-3 cursor-pointer'
             onClick={handleHamburgerClick}
           />
-          <p className="text-white text-3xl font-heading">Hope Hub</p>
+          <p className='text-white text-3xl font-heading'>Hope Hub</p>
         </div>
         <Outlet />
       </div>
@@ -75,7 +75,7 @@ const ProfileWrapper = () => {
   const userID = useUserId();
 
   useEffect(() => {
-    async function getType() {
+    async function getType () {
       if (!userID) {
         return;
       }
@@ -114,57 +114,62 @@ const ProfileWrapper = () => {
   }
 };
 
-function App() {
+function App () {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<SidebarLayout />} path="/">
+        <Route element={<SidebarLayout />} path='/'>
           <Route index element={<Home />}></Route>
-          <Route path="home" element={<Home />}></Route>
-          <Route path="about" element={<About />} />
-          <Route path="health-calculators" element={<HealthCalculator />} />
-          <Route path="lectures" element={<LectureWrapper />}>
+          <Route path='home' element={<Home />}></Route>
+          <Route path='about' element={<About />} />
+          <Route path='health-calculators' element={<HealthCalculator />} />
+          <Route path='lectures' element={<LectureWrapper />}>
             <Route index element={<Lectures />} />
             <Route
-              path="lecture/:lessonNumber/:lectureType"
+              path='lecture/:lessonNumber/:lectureType'
               element={<LecturePage />}
             />
           </Route>
           <Route
-            path="discover-more"
+            path='discover-more'
             element={<DiscoverMore></DiscoverMore>}
           ></Route>
           <Route
-            path="physical-fitness-test"
+            path='physical-fitness-test'
             element={<PhysicalFitnessWrapper />}
           >
             <Route
-              path="parq"
+              path='parq'
               element={<PhysicalActivityReadinessQuestionnaire />}
             />
             <Route
-              path="test/:testIndex"
+              path='test/:testIndex'
               element={<PhysicalFitnessTestPage />}
             />
             <Route
-              path="summary/:testType"
+              path='summary/:testType'
               element={<PhysicalFitnessTestSummary />}
             ></Route>
           </Route>
-          <Route path="quizzes">
+          <Route path='quizzes'>
             <Route index element={<QuizDashboard />} />
-            <Route path="quiz/:quizId" element={<Quiz />} />
+            <Route path='quiz/:quizId' element={<Quiz />} />
           </Route>
-          <Route path="profile" element={<ProfileWrapper />}></Route>
-          <Route path="*" element={<NotFound />} />
-        </Route>
-        <Route path="auth" element={<AuthWrapper />}>
-          <Route path="login" element={<Login />}></Route>
-          <Route path="register" element={<Register />}></Route>
-          <Route path="forgot-password" element={<ForgotPassword />}></Route>
-          <Route path="change-password" element={<ChangePassword />}></Route>
+          <Route path='dashboard' element={<ProfileWrapper />}></Route>
           <Route
-            path="account-verification"
+            path='dashboard/view-class/:classCode'
+            element={<ViewClass />}
+          ></Route>
+
+          <Route path='*' element={<NotFound />} />
+        </Route>
+        <Route path='auth' element={<AuthWrapper />}>
+          <Route path='login' element={<Login />}></Route>
+          <Route path='register' element={<Register />}></Route>
+          <Route path='forgot-password' element={<ForgotPassword />}></Route>
+          <Route path='change-password' element={<ChangePassword />}></Route>
+          <Route
+            path='account-verification'
             element={<AccountVerification />}
           ></Route>
         </Route>

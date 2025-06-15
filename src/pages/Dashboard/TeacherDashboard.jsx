@@ -14,6 +14,7 @@ import { Plus } from 'lucide-react';
 import supabase from '@/client/supabase';
 import { useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
+import Loading from '@/components/Loading';
 
 export default function TeacherDashboard () {
   const userID = useUserId();
@@ -105,15 +106,8 @@ export default function TeacherDashboard () {
     }
     navigate('/');
   };
-
   if (!userID || isLoading) {
-    return (
-      <div className='w-full flex items-center justify-center h-screen'>
-        <div className='font-content font-medium text-xl text-center w-full'>
-          Loading...
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

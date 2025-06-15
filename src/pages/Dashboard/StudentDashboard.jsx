@@ -11,6 +11,7 @@ import DashboardContainer from '@/components/dashboard/DashboardContainer';
 import { onProfileChange as onProfileChangeUtil } from '@/utilities/onProfileChange';
 import { LogOut } from 'lucide-react';
 import QuizScoreTable from '@/components/dashboard/QuizScoreTable';
+import Loading from '@/components/Loading';
 
 export default function StudentDashboard () {
   const userID = useUserId();
@@ -281,13 +282,7 @@ export default function StudentDashboard () {
 
   // Optionally, add a guard for userID before rendering:
   if (!userID || isLoading) {
-    return (
-      <div className='w-full flex items-center justify-center h-screen'>
-        <div className='font-content font-medium text-xl text-center w-full'>
-          Loading...
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   const handleLogout = async () => {
@@ -371,7 +366,7 @@ export default function StudentDashboard () {
             handleLogout={handleLogout}
             memoizedFile={memoizedFile}
             onProfileChange={handleProfileChange}
-            userType="Student"
+            userType='Student'
             name={studentName}
           />
         </div>
