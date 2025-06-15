@@ -9,7 +9,5 @@ export async function getStudentsByClassCode (classCode) {
     console.error('Error:', error);
     return [];
   }
-
-  console.log(data);
   return data;
 }

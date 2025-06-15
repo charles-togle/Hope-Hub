@@ -25,7 +25,6 @@ const sampleData = [
 ];
 
 export const cleanStudentData = studentData => {
-  console.log(studentData);
   const cleanedData = [];
   studentData.forEach(data => {
     const clean = {
@@ -71,7 +70,6 @@ export const cleanStudentData = studentData => {
       });
     }
 
-    console.log(clean);
     cleanedData.push(clean);
   });
 
