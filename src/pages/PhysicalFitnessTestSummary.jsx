@@ -5,6 +5,7 @@ import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
 import { useParams, useSearchParams } from 'react-router-dom';
 import Footer from '@/components/Footer';
+import Loading from '@/components/Loading';
 
 export function PhysicalFitnessTestSummary () {
   const { testType } = useParams();
@@ -113,11 +114,7 @@ export function PhysicalFitnessTestSummary () {
   }
 
   if (!isDataReady) {
-    return (
-      <div className='w-full flex justify-center items-center h-screen font-content text-2xl'>
-        Loading..
-      </div>
-    );
+    return <Loading />;
   }
 
   if (!dataResults) {

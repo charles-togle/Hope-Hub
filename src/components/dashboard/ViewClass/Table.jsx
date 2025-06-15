@@ -33,7 +33,7 @@ export default function Table ({ headings, content }) {
               {heading}
             </th>
           ))}
-        </tr>{' '}
+        </tr>
         {content.map((item, index) => (
           <tr
             key={index}

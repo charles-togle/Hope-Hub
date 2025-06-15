@@ -152,13 +152,13 @@ export default function TeacherDashboard () {
                 onRemove={() => handleRemoveClass(code.class_code)}
               />
             ))}
-          </div>{' '}
+          </div>
           <Plus
             color='white'
             strokeWidth={2}
             className='bg-[#999999] w-12 h-12 p-2 rounded-full absolute bottom-20 right-0 cursor-pointer hover:bg-[#777777] transition-colors'
             onClick={handleAddClass}
-          />{' '}
+          />
         </div>
         <div className='h-full hidden lg:block pt-10'>
           <ProfileSidebar
