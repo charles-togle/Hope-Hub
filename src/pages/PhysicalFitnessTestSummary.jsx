@@ -245,10 +245,9 @@ function handleData ({
     parentHeading: [parentHeading],
     title: data.title,
     number: number.toString(),
-    headings: ['Reps', 'Sets', 'Classification', 'Time Started', 'Time Ended'],
+    headings: ['Record', 'Classification', 'Time Started', 'Time Ended'],
     content: [
       `${data.record} ${unit}`,
-      data.sets.toString(),
       data.classification,
       data.timeStarted,
       data.timeEnd,

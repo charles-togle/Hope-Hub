@@ -7,8 +7,8 @@ import { AlertMessage } from '@/components/utilities/AlertMessage';
 import setDataToStorage from '@/utilities/setDataToStorage';
 import getDataFromStorage from '@/utilities/getDataFromStorage';
 import { Timer } from '@/components/utilities/Timer';
-import { ResultSection } from '@/components/physical-fitness-test/ResultSection';
-import { TipsAndInterpretation } from '@/components/physical-fitness-test/TipsAndInterperetation';
+import { ResultSection } from './ResultSection';
+import { TipsAndInterpretation } from './TipsAndInterperetation';
 import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
 
@@ -37,7 +37,6 @@ export default function PhysicalFitnessTest ({
   const [category, setCategory] = useState('');
   const [testResults, setTestResults] = useState({
     reps: '',
-    sets: '',
     timeStarted: currentTime,
     timeEnded: '',
     classification: 'No data available',
@@ -46,6 +45,7 @@ export default function PhysicalFitnessTest ({
   const testDetails = PhysicalFitnessTestList[index];
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [timerTime, setTimerTime] = useState(600);
   const navigate = useNavigate();
   const userId = useUserId();
 
@@ -67,11 +67,8 @@ export default function PhysicalFitnessTest ({
   const handleResultChange = (type, value) => {
     let key = '';
     switch (type) {
-      case 'Reps':
+      case 'Record':
         key = 'reps';
-        break;
-      case 'Sets':
-        key = 'sets';
         break;
       case 'Time Started':
         key = 'timeStarted';
@@ -177,7 +174,6 @@ export default function PhysicalFitnessTest ({
         [testDetails.key]: {
           title: testName,
           record: testResults.reps,
-          sets: testResults.sets,
           timeStarted: testResults.timeStarted,
           timeEnd: testResults.timeEnded,
           classification: testResults.classification,
@@ -203,9 +199,9 @@ export default function PhysicalFitnessTest ({
     });
     if (physicalFitnessData.finishedTestIndex.length >= Number(index)) {
       navigate(`/physical-fitness-test/test/${Number(index) + 1}`);
+      setTimerTime(600);
       setTestResults({
         reps: '',
-        sets: '',
         timeStarted: currentTime,
         timeEnded: '',
         classification: 'No data available',
@@ -247,7 +243,7 @@ export default function PhysicalFitnessTest ({
             <Timer
               className='flex flex-row justify-start items-center space-x-5 lg:relative lg:right-0 lg:w-[50%] lg:mt-2'
               onEnd={() => setIsTimeout(true)}
-              time={600}
+              time={timerTime}
             ></Timer>
           </div>
           <iframe

@@ -371,6 +371,7 @@ export default function StudentDashboard () {
             handleLogout={handleLogout}
             memoizedFile={memoizedFile}
             onProfileChange={handleProfileChange}
+            userType="Student"
             name={studentName}
           />
         </div>

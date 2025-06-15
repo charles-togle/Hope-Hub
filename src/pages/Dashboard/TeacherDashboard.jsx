@@ -171,6 +171,7 @@ export default function TeacherDashboard () {
             memoizedFile={memoizedFile}
             name={teacherName}
             onProfileChange={handleProfileChange}
+            userType='Teacher'
             handleLogout={handleLogout}
           ></ProfileSidebar>
         </div>
