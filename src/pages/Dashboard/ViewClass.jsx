@@ -11,7 +11,6 @@ import supabase from '@/client/supabase';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
 import Loading from '@/components/Loading';
 
-
 const transformDataLecture = data => {
   return data.map(item => ({
     Type: 'Lecture',
@@ -307,10 +306,6 @@ export default function ViewClass () {
       setActiveStudentData(sortedData);
     }
   };
-
-  if (!isLoading) {
-    return <Loading />;
-  }
 
   if (isOwnershipChecked && !hasOwnership && !isLoading) {
     return <ErrorMessage text='Error 404' subText='Class Not Found' />;
