@@ -122,7 +122,7 @@ export default function LecturePage () {
     );
   }
 
-  const { pdf, introduction, title, videoLecture } = lessonDetails;
+  const { pdf, introduction, title, videoLecture, quizLink } = lessonDetails;
 
   return (
     <section id='lecture-page' className='min-h-screen bg-gray-background'>
@@ -142,7 +142,7 @@ export default function LecturePage () {
             title={title}
             introduction={introduction}
             pdfLink={pdf}
-            quizLink=''
+            quizLink={quizLink}
             onTimerEnd={handleLectureFinish}
             isLectureDone={isLectureDone}
           />
@@ -154,7 +154,7 @@ export default function LecturePage () {
             title={title}
             introduction={introduction}
             videoLink={videoLecture}
-            quizLink=''
+            quizLink={quizLink}
             onVideoFinish={handleLectureFinish}
             isLectureDone={isLectureDone}
           />
