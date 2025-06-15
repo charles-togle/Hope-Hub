@@ -27,6 +27,7 @@ import TeacherDashboard from './pages/Dashboard/TeacherDashboard';
 import supabase from './client/supabase';
 import ViewClass from './pages/Dashboard/ViewClass';
 import { useUserId } from './hooks/useUserId';
+import Loading from './components/Loading';
 
 function SidebarLayout () {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -98,13 +99,7 @@ const ProfileWrapper = () => {
   }, [userID]);
 
   if (isLoading) {
-    return (
-      <div className='w-full flex items-center justify-center h-screen'>
-        <div className='font-content font-medium text-xl text-center w-full'>
-          Loading...
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (isTeacher) {

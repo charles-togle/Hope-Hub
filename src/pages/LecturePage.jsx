@@ -8,6 +8,7 @@ import ErrorMessage from '@/components/utilities/ErrorMessage';
 import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
 import LectureProgress from '@/utilities/LectureProgress';
+import Loading from '@/components/Loading';
 export default function LecturePage () {
   const { lessonNumber, lectureType } = useParams();
   const navigate = useNavigate();
@@ -113,13 +114,7 @@ export default function LecturePage () {
     return <ErrorMessage text='Error 404' subText='Page not found' />;
   }
   if (!dataLoaded) {
-    return (
-      <div className='w-full flex items-center justify-center h-screen'>
-        <div className='font-content font-medium text-xl text-center w-full'>
-          Loading...
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   const { pdf, introduction, title, videoLecture, quizLink } = lessonDetails;

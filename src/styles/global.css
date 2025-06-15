@@ -25,6 +25,24 @@
   animation: fadeIn 0.3s ease-out;
 }
 
+@keyframes pulseOpacity {
+  0% {
+    opacity: 1;
+  }
+  
+  50% {
+    opacity: 0.33;
+  }
+  
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-opacity {
+  animation: pulseOpacity 1.5s infinite ease-in-out;
+}
+
 @theme {
   --font-heading: 'Marcellus SC';
   --font-heading-small: 'Marcellus', serif;
@@ -220,7 +238,6 @@
   }
   
   .content-container {
-    @apply w-[95%] pt-[5%] mr-auto ml-auto flex flex-col items-center justify-center
-    lg:w-[80%];
+    @apply w-[95%] pt-[5%] mr-auto ml-auto flex flex-col items-center justify-center lg:w-[80%];
   }
 }
