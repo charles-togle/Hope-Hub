@@ -7,6 +7,7 @@ import GenderSelector from '@/components/health-calculators/GenderSelector';
 import { useState } from 'react';
 import CalculatorInput from '@/components/health-calculators/CalculatorInput';
 import Content from '@/components/health-calculators/Content';
+import RowContainer from '@/components/health-calculators/RowContainer';
 
 export default function BMICalculator () {
   const [gender, setGender] = useState('');
@@ -107,7 +108,7 @@ export default function BMICalculator () {
         name='Body Mass Index Calculator'
         details={description}
       />
-      <div className='flex flex-row justify-between mt-10 w-[85%]'>
+      <RowContainer>
         <CalculatorContainer
           heading='Body Mass Index (BMI) Calculator'
           onCalculate={handleCalculate}
@@ -141,10 +142,10 @@ export default function BMICalculator () {
             ))}
           </ol>
         </Container>
-      </div>
-      <div className='flex flex-row mt-10 justify-between w-[85%]'>
+      </RowContainer>
+      <RowContainer>
         <Container heading='Results'>
-          <p className='font-content w-full mr-5 ml-5 text-lg'>
+          <p className='font-content w-full text-center text-lg'>
             BMI: {bmiResult || '0.00'} kg/m²{' '}
             <span className={getBMICategoryColor(bmiCategory)}>
               ({bmiCategory})
@@ -162,7 +163,7 @@ export default function BMICalculator () {
             Note: BMI doesn't account for muscle mass or body composition.
           </p>
         </Container>
-      </div>
+      </RowContainer>
       <div className='w-full flex flex-col gap-10 mt-10'>
         <Content
           content={bmiMedicalInterpretation}
