@@ -3,6 +3,35 @@ import { shuffleArray } from '@/utilities/utils';
 
 async function fetchQuizzes() {
   const user = await getCurrentUser();
+
+  const { data, error } = user
+    ? await fetchQuizzesOfUser(user)
+    : await fetchQuizzesDefault();
+
+  if (error) {
+    console.error('Error fetching quizzes:', error);
+    return;
+  }
+
+  return data;
+}
+
+async function fetchQuizzesDefault() {
+  const { data, error } = await supabase
+    .from('quiz')
+    .select(
+      `
+    id,
+    title,
+    description,
+    questions`,
+    )
+    .order('id', { ascending: true });
+
+  return { data, error };
+}
+
+async function fetchQuizzesOfUser(user) {
   const { data, error } = await supabase
     .from('quiz')
     .select(
@@ -22,23 +51,16 @@ async function fetchQuizzes() {
     )
   `,
     )
-    .order('id', { ascending: true });
-  // .eq('quiz_progress.user_id', user.id);
+    .order('id', { ascending: true })
+    .eq('quiz_progress.user_id', user.id);
 
-  console.log(data);
-
-  if (error) {
-    console.error('Error fetching quizzes:', error);
-    return;
-  }
-
-  return data;
+  return { data, error };
 }
 
 function extractQuizDetails(quizData) {
   if (!Array.isArray(quizData) || quizData.length === 0) return;
   quizData.map(async (quiz, index) => {
-    let progress = quiz.quiz_progress[0] || [];
+    let progress = (quiz.quiz_progress && quiz.quiz_progress[0]) || [];
     quiz.number = quiz.id;
     quiz.status = (progress && progress.status) || 'Locked';
     quiz.details = !progress.date_taken

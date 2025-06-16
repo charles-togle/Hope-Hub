@@ -14,6 +14,7 @@ export default function QuizDashboard() {
   useEffect(() => {
     async function fetchAndSetQuizzes() {
       const data = extractQuizDetails(await fetchQuizzes());
+      setQuizzes(data);
       setTimeout(() => setIsLoading(false), 1000);
     }
     fetchAndSetQuizzes();
