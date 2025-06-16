@@ -54,24 +54,6 @@ export function QuizPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [shouldShowPoints, setShouldShowPoints] = useState(false);
 
-  console.log('questions: ', questions); // access quizId
-  console.log('quiz state: ', quizState);
-  console.log('questions answered: ', quizState.questionsAnswered);
-  console.log('leaderboard: ', leaderboard);
-
-  // const [quizState, setQuizState] = useState({
-  //   quizId: quizId,
-  //   questionIndex: 0,
-  //   score: 0,
-  //   points: 0,
-  //   currentQuestionPoints: 0,
-  //   // status: '', // should be fetched from the database in prod
-  //   // status: 'Done', // data for test
-  //   status: 'Pending', // data for test
-  //   // questionsAnswered: sampleQuestionsResult,
-  //   questionsAnswered: [], // data for prod
-  // });
-
   function onAnswerSelected(answer, multipleChoice = true) {
     let correctAnswer = questions[quizState.questionIndex].answer;
     let isCorrect = false;
@@ -135,31 +117,12 @@ export function QuizPage() {
           error = await markQuizAsDone(newQuizState);
         }
 
-        // console.log('quizState from submitAnswer: ', quizState);
-        // console.log('data from submitAnswer: ', data);
         if (!error) {
-          console.log('no errors');
           setQuizState(newQuizState);
           setIsLoading(false);
         }
       }, 1000);
     }
-
-    // if (quizState.questionIndex === questions.length - 1) {
-    //   const newQuizState = {
-    //     ...quizState,
-    //     questionIndex: quizState.questionIndex - 1,
-    //     status: 'Done',
-    //   };
-
-    //   setTimeout(async () => {
-    //     setIsLoading(true);
-    //     const error = await markQuizAsDone(newQuizState);
-    //     if (!error) {
-    //       setQuizState(newQuizState);
-    //     }
-    //   }, 1000);
-    // }
   }
 
   useEffect(() => {
@@ -169,8 +132,6 @@ export function QuizPage() {
 
     fetchAndSetLeaderboard();
   }, [quizId, quizState.status]);
-
-  console.log('leaderboard because quiz is done: ', leaderboard);
 
   const isIdentification =
     questions.length !== quizState.questionIndex &&
@@ -369,8 +330,6 @@ function MultipleChoice({ choices, handleAnswer }) {
 }
 
 function Results({ questions, quizState, leaderboard }) {
-  console.log('this was rebuilt');
-  console.log('leaderboards for results', leaderboard);
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -511,7 +470,6 @@ function Results({ questions, quizState, leaderboard }) {
 }
 
 function LeaderboardName({ user }) {
-  console.log('leaderboards name');
   return (
     <div>
       <div className="flex flex-col justify-between gap-y-2 w-[70%] mx-auto font-medium">
@@ -528,9 +486,6 @@ function LeaderboardName({ user }) {
 }
 
 function ResultQuestion({ index, questionData, questions }) {
-  console.log('questions length', questions.length);
-  console.log('index', index);
-  console.log('questions:', questions);
   const selectedColor = questionData.isCorrect ? 'bg-green' : 'bg-red';
 
   return (

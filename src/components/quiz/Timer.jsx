@@ -20,7 +20,6 @@ export default function Timer({ duration, color, onTimerEnd }) {
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
       const remainingTime = duration - elapsed;
       if (elapsed > duration) {
-        console.log('Timer ended');
         clearInterval(interval);
         setHasTimerEnded(true);
       } else setTime(remainingTime);

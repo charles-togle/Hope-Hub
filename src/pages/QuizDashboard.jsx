@@ -14,17 +14,10 @@ export default function QuizDashboard() {
   useEffect(() => {
     async function fetchAndSetQuizzes() {
       const data = extractQuizDetails(await fetchQuizzes());
-      console.log('data', data);
-      setQuizzes(data);
       setTimeout(() => setIsLoading(false), 1000);
     }
     fetchAndSetQuizzes();
   }, []);
-
-  // useEffect(() => {
-  //   console.log('is array', Array.isArray(quizzes));
-  //   console.log('after setQuizDetails', quizzes);
-  // }, [quizzes]);
 
   return (
     <div>
