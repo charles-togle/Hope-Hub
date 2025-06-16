@@ -13,6 +13,8 @@ import AddClassCode from '@/components/dashboard/AddClassCode';
 import { Plus } from 'lucide-react';
 import supabase from '@/client/supabase';
 import { useNavigate } from 'react-router-dom';
+import { LogOut } from 'lucide-react';
+import Loading from '@/components/Loading';
 
 export default function TeacherDashboard () {
   const userID = useUserId();
@@ -104,15 +106,8 @@ export default function TeacherDashboard () {
     }
     navigate('/');
   };
-
   if (!userID || isLoading) {
-    return (
-      <div className='w-full flex items-center justify-center h-screen'>
-        <div className='font-content font-medium text-xl text-center w-full'>
-          Loading...
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
@@ -126,15 +121,28 @@ export default function TeacherDashboard () {
         )}
       </div>
       <DashboardContainer>
-        <div className='flex gap-4 flex-col relative min-h-[90vh] w-full'>
-          <div className='font-heading text-primary-blue'>
-            <p className='text-4xl'>Hello, Prof. {teacherName} </p>
-            <hr className='w-60 border-1 border-primary-yellow mt-2 mb-2' />
-            <p className='text-2xl'>Welcome to Teacher’s Dashboard</p>
+        <div className='flex gap-4 flex-col relative min-h-[90vh] w-full pt-10! lg:pt-40'>
+          <div className='flex lg:items-center lg:gap-10 font-heading-small text-primary-blue z-3'>
+            <div>
+              <p className='text-2xl lg:text-4xl'>
+                Hello, Prof. {teacherName}{' '}
+              </p>
+              <hr className='w-60 border-1 border-primary-yellow mt-2 mb-2' />
+              <p className='text-xl lg:text-2xl'>
+                Welcome to Teacher’s Dashboard
+              </p>
+            </div>
+            <div>
+              <button
+                className='lg:hidden ml-auto text-base font-bold font-content px-3 py-2 text-white bg-[#DB4E34] flex items-center gap-2 cursor-pointer'
+                onClick={() => handleLogout()}
+              >
+                <LogOut className='w-6 h-6' /> Logout
+              </button>
+            </div>
           </div>
           <Banner isStudent={false} name={teacherName} />{' '}
           <div id='class-codes' className='flex flex-wrap w-full gap-4 pb-40'>
-            {' '}
             {classCodes.map(code => (
               <ClassCode
                 key={code.class_code}
@@ -144,20 +152,23 @@ export default function TeacherDashboard () {
                 onRemove={() => handleRemoveClass(code.class_code)}
               />
             ))}
-          </div>{' '}
+          </div>
           <Plus
             color='white'
             strokeWidth={2}
             className='bg-[#999999] w-12 h-12 p-2 rounded-full absolute bottom-20 right-0 cursor-pointer hover:bg-[#777777] transition-colors'
             onClick={handleAddClass}
-          />{' '}
+          />
         </div>
-        <ProfileSidebar
-          memoizedFile={memoizedFile}
-          name={teacherName}
-          onProfileChange={handleProfileChange}
-          handleLogout={handleLogout}
-        ></ProfileSidebar>
+        <div className='h-full hidden lg:block pt-10'>
+          <ProfileSidebar
+            memoizedFile={memoizedFile}
+            name={teacherName}
+            onProfileChange={handleProfileChange}
+            userType='Teacher'
+            handleLogout={handleLogout}
+          ></ProfileSidebar>
+        </div>
       </DashboardContainer>
     </section>
   );

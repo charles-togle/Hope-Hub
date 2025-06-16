@@ -45,7 +45,7 @@ export default function AccountVerification () {
       p_full_name: fullName,
       p_email: email,
       p_user_type: userType,
-      p_class_code: classCode,
+      p_class_code: classCode || null,
       p_lecture_progress: lectureProgress,
     });
 
@@ -80,7 +80,7 @@ export default function AccountVerification () {
         ></FormHeading>
         <FormButton
           text='Go to dashboard'
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate('/dashboard')}
         ></FormButton>
         {errorMessage && (
           <p className='text-red font-content font-semibold mt-2'>

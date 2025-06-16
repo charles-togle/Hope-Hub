@@ -1,6 +1,6 @@
 import PhysicalFitnessTest from '@/components/physical-fitness-test/PhysicalFitnessTest';
 import PageHeading from '@/components/PageHeading';
-import { useParams } from 'react-router-dom';
+import { data, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { AlertMessage } from '@/components/utilities/AlertMessage';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { usePhysicalFitnessData } from '@/hooks/usePhysicalFitnessData';
 import getDataFromStorage from '@/utilities/getDataFromStorage';
 import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
+import Loading from '@/components/Loading';
 
 export function PhysicalFitnessTestPage () {
   const { testIndex } = useParams();
@@ -16,7 +17,9 @@ export function PhysicalFitnessTestPage () {
   const [isTimeout, setIsTimeout] = useState(false);
   const [isDataReady, setIsDataReady] = useState(false);
   const [isTaken, setIsTaken] = useState(false);
+  const [userType, setUserType] = useState('');
   const [testType, setTestType] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { physicalFitnessData, setPhysicalFitnessData } =
     usePhysicalFitnessData();
   const navigate = useNavigate();
@@ -41,7 +44,6 @@ export function PhysicalFitnessTestPage () {
         !finishedTestIndex.includes(currentTestIndex - 1) ||
         finishedTestIndex.length <= currentTestIndex
       ) {
-        console.log('this is the problem');
         setIsBadRequest(true);
       }
       setIsDataReady(true);
@@ -50,21 +52,23 @@ export function PhysicalFitnessTestPage () {
       setIsBadRequest(true);
     }
   }, [setPhysicalFitnessData, testIndex, physicalFitnessData.length, navigate]);
-
   useEffect(() => {
     const finishedTestIndex = physicalFitnessData.finishedTestIndex || [];
     if (finishedTestIndex.includes(finishedTestIndex.length - 1)) {
       localStorage.removeItem('physicalFitnessData');
       navigate(
         `/physical-fitness-test/summary/${
-          testType === 'pre_physical_fitness_data' ? 'pre-test' : 'post-test'
+          testType === 'pre_physical_fitness_test' ? 'pre-test' : 'post-test'
         }`,
       );
     }
   }, [physicalFitnessData.finishedTestIndex, navigate]);
 
   useEffect(() => {
-    if (!userId) return; // Wait until userId is defined
+    if (!userId) {
+      setIsLoading(true);
+      return;
+    } // Wait until userId is defined
     const checkIfTestTaken = async () => {
       if (typeof userId !== 'string' || userId.trim() === '') {
         console.log(userId);
@@ -82,7 +86,6 @@ export function PhysicalFitnessTestPage () {
         console.error('Fetch error:', fetchError.message);
         return;
       }
-
       const preTestFinishedTests =
         existing?.pre_physical_fitness_test?.finishedTestIndex || [];
       const postTestFinishedTests =
@@ -101,9 +104,34 @@ export function PhysicalFitnessTestPage () {
       } else if (!postTestFinishedTests.includes(max)) {
         setTestType('post_physical_fitness_test');
       }
+      setIsLoading(false);
     };
 
     checkIfTestTaken();
+  }, [userId]);
+
+  useEffect(() => {
+    if (!userId) {
+      setIsLoading(true);
+      return;
+    }
+    const checkUserType = async () => {
+      const { data, error } = await supabase
+        .from('profile')
+        .select('user_type')
+        .single()
+        .eq('uuid', userId);
+
+      console.log(data, error);
+      if (error) {
+        setUserType('student');
+        return;
+      }
+      setUserType(data.user_type);
+      setIsLoading(false);
+    };
+
+    checkUserType(); // Call the function once
   }, [userId]);
 
   //remove item from localStorage everytime it is unmounted
@@ -126,6 +154,10 @@ export function PhysicalFitnessTestPage () {
     navigate('/physical-fitness-test/parq');
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   if (isDataReady && isBadRequest) {
     return <ErrorMessage text={'Error 400'} subText={'Bad Request'} />;
   }
@@ -140,6 +172,15 @@ export function PhysicalFitnessTestPage () {
         text={'Looks like the timer has ran out, Retry?'}
         onCancel={handleTimeoutCancel}
         onConfirm={handleTimeoutConfirm}
+      />
+    );
+  }
+
+  if (userType === 'teacher') {
+    return (
+      <ErrorMessage
+        text={'User Type Error'}
+        subText='Only students can take the test'
       />
     );
   }

@@ -8,6 +8,8 @@ import { useState } from 'react';
 import CalculatorInput from '@/components/health-calculators/CalculatorInput';
 import Content from '@/components/health-calculators/Content';
 import RadioButton from '@/components/health-calculators/RadioButtons';
+import RowContainer from '@/components/health-calculators/RowContainer';
+import ResultGroup from '@/components/health-calculators/ResultGroup';
 
 export default function BMRCalculator () {
   const [gender, setGender] = useState('Male');
@@ -101,13 +103,19 @@ export default function BMRCalculator () {
     setBodyFat(20);
     setFormulaVariant('Mifflin St Jeor');
   };
+
+  const sampleMergedResult = {
+    'Mild Weight Loss': 0.0,
+    'Weight Loss': 0.0,
+    'Extreme Weight Loss': 0.0,
+  };
   return (
     <>
       <CalculatorDetails
         name='Basal Metabolic Rate Calculator'
         details={description}
       />
-      <div className='flex flex-row justify-between gap-3 mt-10 w-[90%]'>
+      <RowContainer>
         <CalculatorContainer
           heading='Basal Metabolid Rate (BMR) Calculator'
           onCalculate={handleCalculate}
@@ -153,10 +161,14 @@ export default function BMRCalculator () {
             ))}
           </ol>
         </Container>
-      </div>
-      <div className='flex flex-row mt-10 justify-between w-[90%]'>
+      </RowContainer>
+      <RowContainer>
+        <ResultGroup variant='weight-loss' result={sampleMergedResult} />
+        <ResultGroup variant='weight-gain' result={sampleMergedResult} />
+      </RowContainer>
+      <RowContainer>
         <Container heading='Results'>
-          <p className='font-content w-full px-5 mr-5 ml-5 text-lg'>
+          <p className='font-content w-full mr-5 ml-5 text-lg text-center'>
             BMR = {bmrResult} Calories / day
           </p>
         </Container>{' '}
@@ -188,7 +200,7 @@ export default function BMRCalculator () {
             </tbody>
           </table>
         </Container>
-      </div>
+      </RowContainer>
       <div className='w-full flex flex-col gap-10 mt-10'>
         {/* <Content
           content={bmiMedicalInterpretation}

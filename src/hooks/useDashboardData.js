@@ -4,7 +4,6 @@ import supabase from '@/client/supabase';
 export function useName (userID, isDataReady) {
   const [studentName, setStudentName] = useState('');
   useEffect(() => {
-    if (!isDataReady) return;
     async function fetchStudentName () {
       if (!userID) {
         setStudentName('');
@@ -22,7 +21,7 @@ export function useName (userID, isDataReady) {
       }
     }
     fetchStudentName();
-  }, [isDataReady, userID]);
+  }, [userID]);
   return studentName;
 }
 
@@ -30,7 +29,6 @@ export function useProfilePicture (userID, isDataReady) {
   const [profilePictureFile, setProfilePictureFile] = useState(null);
 
   useEffect(() => {
-    if (!isDataReady) return;
     async function retrieveProfile () {
       if (!userID || typeof userID !== 'string') {
         setProfilePictureFile(null);
@@ -67,7 +65,7 @@ export function useProfilePicture (userID, isDataReady) {
     }
 
     retrieveProfile();
-  }, [userID, isDataReady]);
+  }, [userID]);
 
   return [profilePictureFile, setProfilePictureFile];
 }

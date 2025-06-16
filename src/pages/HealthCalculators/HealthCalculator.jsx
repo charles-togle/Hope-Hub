@@ -2,6 +2,7 @@ import React from 'react';
 import PageHeading from '@/components/PageHeading';
 import HealthCalculatorButton from '@/components/health-calculators/HealthCalculatorButtons';
 import { Link } from 'react-router-dom';
+import Footer from '@/components/Footer';
 
 export default function HealthCalculator () {
   const description = `Lorem ipsum dolor sit amet consectetur. Arcu vitae eget nunc in cras eget. Aliquam diam 
@@ -64,6 +65,7 @@ export default function HealthCalculator () {
         <hr className='border-1 w-25 border-primary-yellow yellow self-start mt-1 mb-7'></hr>
         <p className='font-content ml-10 mb-10'> {description} </p>
       </div>
+      <Footer></Footer>
     </div>
   );
 }

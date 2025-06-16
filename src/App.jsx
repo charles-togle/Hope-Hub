@@ -8,9 +8,8 @@ import PhysicalFitnessDataProvider from './providers/PhysicalFitnessDataProvider
 import { PhysicalFitnessTestPage } from './pages/PhysicalFitnessTestPage';
 import PhysicalActivityReadinessQuestionnaire from './pages/PhysicalActivityReadinessQuestionnaire';
 import NotFound from './pages/NotFound';
-import QuizzesAndActivities from './pages/QuizzesAndActivities';
+import QuizDashboard from './pages/QuizDashboard';
 import Quiz from './pages/Quiz';
-import Activity from './pages/Activity';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import HealthCalculator from './pages/HealthCalculators/HealthCalculator';
 import LectureProgressProvider from './providers/LectureProvider';
@@ -31,7 +30,9 @@ import BMRCalculator from './pages/HealthCalculators/BMRCalculator';
 import TDEECalculator from './pages/HealthCalculators/CalorieTDEECalculator';
 import IBWCalculator from './pages/HealthCalculators/IBWCalculator';
 import { HealthCalculatorWrapper } from './pages/HealthCalculators/HealthCalculatorsWrapper';
+import ViewClass from './pages/Dashboard/ViewClass';
 import { useUserId } from './hooks/useUserId';
+import Loading from './components/Loading';
 
 function SidebarLayout () {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -103,7 +104,7 @@ const ProfileWrapper = () => {
   }, [userID]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (isTeacher) {
@@ -160,12 +161,16 @@ function App () {
               element={<PhysicalFitnessTestSummary />}
             ></Route>
           </Route>
-          <Route path='quizzes-and-activities'>
-            <Route index element={<QuizzesAndActivities />} />
+          <Route path='quizzes'>
+            <Route index element={<QuizDashboard />} />
             <Route path='quiz/:quizId' element={<Quiz />} />
-            <Route path='activity/:activityId' element={<Activity />} />
           </Route>
-          <Route path='profile' element={<ProfileWrapper />}></Route>
+          <Route path='dashboard' element={<ProfileWrapper />}></Route>
+          <Route
+            path='dashboard/view-class/:classCode'
+            element={<ViewClass />}
+          ></Route>
+
           <Route path='*' element={<NotFound />} />
         </Route>
         <Route path='auth' element={<AuthWrapper />}>

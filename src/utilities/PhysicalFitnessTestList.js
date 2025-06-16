@@ -26,7 +26,7 @@ export const PhysicalFitnessTestList = [
       { exact: -1, interpretation: 'Poor' }, // negative overlap = gap
     ],
     videoInstructions:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },
   {
     title: 'Zipper Test (Left hand)',
@@ -54,7 +54,7 @@ export const PhysicalFitnessTestList = [
       { exact: -1, interpretation: 'Poor' }, // negative overlap = gap
     ],
     videoInstructions:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },
   {
     title: 'Sit and Reach (First Attempt)',
@@ -84,7 +84,7 @@ export const PhysicalFitnessTestList = [
       { min: 0, max: 15.9, interpretation: 'Needs Improvement' },
     ],
     videoInstructions:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },
   {
     title: 'Sit and Reach (Second Attempt)',
@@ -114,7 +114,7 @@ export const PhysicalFitnessTestList = [
       { min: 0, max: 15.9, interpretation: 'Needs Improvement' },
     ],
     videoInstructions:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },
   {
     title: 'Pre 3-Minute Step Test',
@@ -133,7 +133,7 @@ export const PhysicalFitnessTestList = [
     ],
     instructionsScoring: ['Record the resting pulse of the tester'],
     videoInstructions:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },
   {
     title: '3-Minute Step Test',
@@ -160,7 +160,7 @@ export const PhysicalFitnessTestList = [
       'Record the 60-second pulse rate immediately after the activity.',
     ],
     videoInstructions:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },
   {
     title: 'Push-Up',
@@ -214,7 +214,7 @@ export const PhysicalFitnessTestList = [
       ],
     },
     videoInstructions:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },
   {
     title: 'Basic Plank',
@@ -246,6 +246,6 @@ export const PhysicalFitnessTestList = [
       { min: 1, max: 15, interpretation: 'Needs Improvement' },
     ],
     videoInstructions:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
   },
 ];

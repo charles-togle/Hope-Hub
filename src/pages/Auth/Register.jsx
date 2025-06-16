@@ -83,7 +83,8 @@ export default function Register () {
       email: trimmedEmail,
       password: trimmedPassword,
       options: {
-        emailRedirectTo: 'http://localhost:5173/auth/account-verification',
+        emailRedirectTo:
+          'https://hope-hub-dcvm.vercel.app/auth/account-verification',
         data: {
           fullName: trimmedName,
           userType: userType,
