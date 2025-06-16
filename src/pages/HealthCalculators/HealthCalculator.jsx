@@ -28,7 +28,7 @@ export default function HealthCalculator () {
     { 
       text: 'Ideal Body Weight (IBW) Calculator',
       className: '',
-      linkTo: '/health-calculators/IBWCalculator'
+      linkTo: '/health-calculators/ibw'
     },
     { text: 'Body Fat Percentage Calculator', className: '', linkTo: '' },
     {

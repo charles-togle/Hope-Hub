@@ -5,6 +5,11 @@ const convertKgToLbs = number => number / 0.4536;
 const convertFtToM = number => number * 0.3048;
 const convertMToFt = number => number / 0.3048;
 const convertCmToM = number => number / 100;
+const convertCmToFt = number => number / 30.48;
+const convertCmToInches = number => number / 2.54;
+const convertMToInches = number => number * 39.3701;
+const convertFtToInches = number => number * 12;
+const convertInchesToM = number => number * 0.0254;
 
 export const getBMI = (height, weight, heightUnit, weightUnit) => {
   // Convert height to meters
@@ -185,5 +190,59 @@ export const getTDEE = (
   return {
     TDEE: parseFloat(tdee.toFixed(2)),
     DailyCalories: caloriesByActivity,
+  };
+};
+
+export const getIBW = (height, heightUnit, gender ) => {
+  // convert height to inches/feet
+  console.log(heightUnit)
+  let heightInInches;
+  if (heightUnit === 'm') {
+    heightInInches = convertMToInches(height);
+  } else if (heightUnit === 'cm') {
+    heightInInches = convertCmToInches(height);
+  } else {
+    heightInInches = convertFtToInches(height);
+  }
+
+  const normalizedGender = gender.toLowerCase();
+
+  let Robinson, Miller, Devine, Hamwi;
+  // const HealthyBMIRange = (height) => {
+  //   minWeight = 18.5 * height ** 2;
+  //   maxWeight = 24.9 * height ** 2;
+  //   String("Minimum: " + toString(minWeight))
+  //   String("Maximum: " + toString(maxWeight))
+  // };
+
+  const overFiveFt = Math.max(heightInInches - 60, 0);
+  const heightInMeters = convertInchesToM(heightInInches);
+
+  const minWeight = 18.5 * heightInMeters ** 2;
+  const maxWeight = 24.9 * heightInMeters ** 2;
+
+  if (normalizedGender === 'female') {
+    Robinson = 49 + 1.7 * overFiveFt;
+    Miller = 53.1 + 1.36 * overFiveFt;
+    Devine = 45.5 + 2.3 * overFiveFt;
+    Hamwi = 45.5 + 2.2 * overFiveFt;
+  } else {
+    Robinson = 52 + 1.9 * overFiveFt;
+    Miller = 56.2 + 1.41 * overFiveFt;
+    Devine = 50 + 2.3 * overFiveFt;
+    Hamwi = 48 + 2.7 * overFiveFt;
+  }
+
+ return {
+    IBW: {
+      Robinson: parseFloat(Robinson.toFixed(2)),
+      Miller: parseFloat(Miller.toFixed(2)),
+      Devine: parseFloat(Devine.toFixed(2)),
+      Hamwi: parseFloat(Hamwi.toFixed(2)),
+    },
+    HealthyBMIRange: {
+      min: parseFloat(minWeight.toFixed(2)),
+      max: parseFloat(maxWeight.toFixed(2)),
+    },
   };
 };
