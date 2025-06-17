@@ -98,3 +98,51 @@ export const getBMR = (
     DailyCalories: caloriesByActivity,
   };
 };
+
+export const getCalorieGoals = (bmr, activityLevel) => {
+  const activityMultipliers = {
+    sedentary: 1.2,
+    'lightly active': 1.375,
+    'moderately active': 1.465,
+    active: 1.55,
+    'very active': 1.725,
+    'extra active': 1.9,
+  };
+
+  let multiplier;
+  switch (activityLevel) {
+    case 'Sedentary: little or no exercise':
+      multiplier = activityMultipliers.sedentary;
+      break;
+    case 'Light: exercise 1-3 times/week':
+      multiplier = activityMultipliers['lightly active'];
+      break;
+    case 'Moderate: exercise 4-5 times/week':
+      multiplier = activityMultipliers['moderately active'];
+      break;
+    case 'Active: daily exercise or intense exercise 3-4 times/week':
+      multiplier = activityMultipliers['active'];
+      break;
+    case 'Very Active: intense exercise 6-7 times/week':
+      multiplier = activityMultipliers['very active'];
+      break;
+    case 'Extra Active: very intense exercise daily, or physical job':
+      multiplier = activityMultipliers['extra active'];
+      break;
+  }
+
+  const tdee = bmr * multiplier;
+  return {
+    weightLoss: {
+      'Mild Weight Loss': Math.round(tdee - 250),
+      'Weight Loss': Math.round(tdee - 500),
+      'Extreme Weight Loss': Math.round(tdee - 1000),
+    },
+    weightGain: {
+      'Maintain Weight': Math.round(tdee),
+      'Mild Weight Gain': Math.round(tdee + 250),
+      'Weight Gain': Math.round(tdee + 500),
+      'Extreme Weight Gain': Math.round(tdee + 1000),
+    },
+  };
+};
