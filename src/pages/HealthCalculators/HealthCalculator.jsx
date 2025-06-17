@@ -14,22 +14,17 @@ export default function HealthCalculator () {
   const HealthCalculatorButtons = [
     {
       text: 'Body Mass Index (BMI) Calculator',
-      className: '',
       linkTo: '/health-calculators/bmi',
     },
     {
       text: 'Basal Metabolic Rate Calculator',
-      className: '',
       linkTo: '/health-calculators/bmr',
     },
-    { text: 'Calorie Calculator', className: '', linkTo: '' },
-    { text: 'Calorie Calculator', className: '', linkTo: '' },
     { text: 'Ideal Body Weight (IBW) Calculator', className: '', linkTo: '' },
     { text: 'Body Fat Percentage Calculator', className: '', linkTo: '' },
     {
       text: 'Daily Caloric Needs (TDEE) Calculator',
-      className: '',
-      linkTo: '',
+      linkTo: '/health-calculators/bmr',
     },
     { text: 'Water Intake Calculator', className: '', linkTo: '' },
   ];
@@ -41,11 +36,10 @@ export default function HealthCalculator () {
         <div className='relative mb-10 w-full'>
           <div className='grid grid-cols-2 gap-y-3 gap-x-10'>
             {HealthCalculatorButtons.map((button, index) => (
-              <HealthCalculatorButton
+              <HealthCalculatorButton 
                 key={index}
                 text={button.text}
                 linkTo={button.linkTo}
-                className={button.className}
               ></HealthCalculatorButton>
             ))}
           </div>
