@@ -8,7 +8,7 @@ export default function Banner ({
   return (
     <div
       id='banner'
-      className={`bg-gradient-to-r from-[#111C4E] to-[#004AAD] w-full font-content text-white lg:p-10 pl-5 py-5 text-xl ${
+      className={`bg-gradient-to-r from-[#111C4E] to-[#004AAD] w-full font-content text-white lg:p-10 pl-5 py-5 text-xl rounded-md ${
         isStudent ? 'grid grid-cols-[60%_10%_25%]' : 'flex'
       }`}
     >

@@ -1,4 +1,4 @@
-import { getBMR } from '@/services/Calculations';
+import { getBMR, getCalorieGoals } from '@/services/Calculations';
 import { CalculatorData } from '@/utilities/CalculatorData';
 import Container from '@/components/health-calculators/Container';
 import CalculatorContainer from '@/components/health-calculators/CalculatorContainer';
@@ -10,6 +10,7 @@ import Content from '@/components/health-calculators/Content';
 import RadioButton from '@/components/health-calculators/RadioButtons';
 import RowContainer from '@/components/health-calculators/RowContainer';
 import ResultGroup from '@/components/health-calculators/ResultGroup';
+import { useCallback } from 'react';
 
 export default function BMRCalculator () {
   const [gender, setGender] = useState('Male');
@@ -20,7 +21,23 @@ export default function BMRCalculator () {
   const [weight, setWeight] = useState('81');
   const [formulaVariant, setFormulaVariant] = useState('Mifflin St Jeor');
   const [bodyFat, setBodyFat] = useState(20);
-  const [bmrResult, setBmrResult] = useState(null);
+  const [bmrResult, setBmrResult] = useState(0);
+  const [maintainingCalories, setMaintainingCalories] = useState(0);
+  const [activityLevel, setActivityLevel] = useState(
+    'Moderate: exercise 4-5 times/week',
+  );
+  const [weightGain, setWeightGain] = useState({
+    'Mantain Weight': 0.0,
+    'Mild Weight Loss': 0.0,
+    'Weight Loss': 0.0,
+    'Extreme Weight Loss': 0.0,
+  });
+
+  const [weightLoss, setWeightLoss] = useState({
+    'Mild Weight Loss': 0.0,
+    'Weight Loss': 0.0,
+    'Extreme Weight Loss': 0.0,
+  });
 
   // Activity level states
   const [sedentaryLevel, setSedentaryLevel] = useState(1.2);
@@ -29,6 +46,7 @@ export default function BMRCalculator () {
   const [veryActiveLevel, setVeryActiveLevel] = useState(1.725);
   const [extremelyActiveLevel, setExtremelyActiveLevel] = useState(1.9);
   const [superActiveLevel, setSuperActiveLevel] = useState(2.0);
+
   const { BMR } = CalculatorData;
   const {
     description,
@@ -60,7 +78,7 @@ export default function BMRCalculator () {
   const heightUnits = ['cm', 'ft', 'm'];
   const weightUnits = ['kg', 'lbs'];
 
-  const handleCalculate = () => {
+  const handleCalculate = useCallback(() => {
     if (!height || !weight || height <= 0 || weight <= 0) {
       alert('Please enter valid height and weight values');
       return;
@@ -85,6 +103,14 @@ export default function BMRCalculator () {
     }
 
     const { BMR, DailyCalories } = bmr;
+    //FOR CALORIE GOALS
+    let calorieGoals;
+    try {
+      calorieGoals = getCalorieGoals(BMR, activityLevel);
+    } catch (e) {
+      alert(e);
+      return;
+    }
 
     setSedentaryLevel(DailyCalories.sedentary);
     setLightActiveLevel(DailyCalories['lightly active']);
@@ -93,22 +119,27 @@ export default function BMRCalculator () {
     setExtremelyActiveLevel(DailyCalories['extra active']);
     setSuperActiveLevel(DailyCalories['super active']);
     setBmrResult(BMR);
-    console.log(BMR);
-  };
-  const handleClear = () => {
+    setWeightGain(calorieGoals.weightGain);
+    setWeightLoss(calorieGoals.weightLoss);
+    setMaintainingCalories(calorieGoals.weightGain['Maintain Weight']);
+  }, []);
+  const handleClear = useCallback(() => {
     setGender('');
     setAge('');
     setHeight('');
     setWeight('');
     setBodyFat(20);
     setFormulaVariant('Mifflin St Jeor');
-  };
+  }, []);
 
-  const sampleMergedResult = {
-    'Mild Weight Loss': 0.0,
-    'Weight Loss': 0.0,
-    'Extreme Weight Loss': 0.0,
-  };
+  const activityVariant = [
+    'Sedentary: little or no exercise',
+    'Light: exercise 1-3 times/week',
+    'Moderate: exercise 4-5 times/week',
+    'Active: daily exercise or intense exercise 3-4 times/week',
+    'Very Active: intense exercise 6-7 times/week',
+    'Extra Active: very intense exercise daily, or physical job',
+  ];
   return (
     <>
       <CalculatorDetails
@@ -139,7 +170,7 @@ export default function BMRCalculator () {
               setValue={setWeight}
               value={weight}
               units={weightUnits}
-            />{' '}
+            />
             <div className='z-3 bg-white relative'>
               <RadioButton
                 choices={formulaVariants}
@@ -150,6 +181,16 @@ export default function BMRCalculator () {
                 showBodyFat={true}
                 bodyFatValue={bodyFat}
                 onBodyFatChange={e => setBodyFat(e.target.value)}
+              />
+            </div>
+            <div className='z-3 bg-white relative'>
+              <RadioButton
+                choices={activityVariant}
+                name='activity-variants'
+                value={activityLevel}
+                setValue={setActivityLevel}
+                text='Activity Level'
+                showBodyFat={false}
               />
             </div>
           </div>
@@ -163,13 +204,23 @@ export default function BMRCalculator () {
         </Container>
       </RowContainer>
       <RowContainer>
-        <ResultGroup variant='weight-loss' result={sampleMergedResult} />
-        <ResultGroup variant='weight-gain' result={sampleMergedResult} />
+        <ResultGroup
+          variant='weight-gain'
+          maintainingCalories={maintainingCalories}
+          result={weightGain}
+        />
+        <ResultGroup
+          variant='weight-loss'
+          maintainingCalories={maintainingCalories}
+          result={weightLoss}
+        />
       </RowContainer>
       <RowContainer>
         <Container heading='Results'>
           <p className='font-content w-full mr-5 ml-5 text-lg text-center'>
-            BMR = {bmrResult} Calories / day
+            BMR ={' '}
+            <span className='font-bold'>{bmrResult.toLocaleString()}</span>{' '}
+            Calories / day
           </p>
         </Container>{' '}
         <Container heading='BMR Caloric Levels' className='w-1/2'>

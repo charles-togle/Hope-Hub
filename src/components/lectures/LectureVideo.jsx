@@ -72,14 +72,17 @@ export default function LectureVideo ({
   }, [isDone, onVideoFinish, isSaved]);
 
   return (
-    <div id='video-lecture' className='w-full'>
-      <h2 className='bg-neutral-light-blue py-3 px-5 font-content font-medium text-xl'>
+    <div
+      id='video-lecture'
+      className='w-full border-secondary-dark-blue border-3 rounded-2xl overflow-clip'
+    >
+      <h2 className='bg-secondary-dark-blue text-white py-3 px-5 font-content font-medium text-xl'>
         Lecture #{lectureNumber}:{' '}
         <span className='font-normal ml-3'>{title}</span>
       </h2>
       <div
         id='lecture-content'
-        className='flex flex-col min-h-full justify-center p-10 mb-10 bg-background'
+        className='flex flex-col min-h-full justify-center p-10'
       >
         <video
           src={videoLink}
