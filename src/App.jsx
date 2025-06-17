@@ -1,5 +1,5 @@
 import './styles/global.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Sidebar from './components/Sidebar';
 import About from './pages/About';
 import Lectures from './pages/LecturesIntroduction';
@@ -32,23 +32,64 @@ import { HealthCalculatorWrapper } from './pages/HealthCalculators/HealthCalcula
 import ViewClass from './pages/Dashboard/ViewClass';
 import { useUserId } from './hooks/useUserId';
 import Loading from './components/Loading';
+import { useRef } from 'react';
 
 function SidebarLayout () {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showMenu, setShowMenu] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const handleHamburgerClick = () => setSidebarOpen(open => !open);
+  const containerRef = useRef(undefined);
+  const handleScroll = useCallback(() => {
+    if (!containerRef.current) return;
+    const currentScroll = containerRef.current.scrollTop;
+
+    if (currentScroll > lastScrollY && currentScroll > 100) {
+      setShowMenu(false);
+    } else if (currentScroll < lastScrollY) {
+      setShowMenu(true);
+    }
+
+    setLastScrollY(currentScroll);
+  }, [lastScrollY]);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const container = containerRef.current;
+    container.addEventListener('scroll', handleScroll);
+
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll]);
+
   return (
     <div className='flex h-screen overflow-hidden'>
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className='lg:pt-0 flex-1 h-screen overflow-x-hidden overflow-y-auto justify-center relative'>
-        <div className='hamburger-menu pl-5 flex items-center top-0 w-screen h-20 bg-secondary-dark-blue mb-5 lg:hidden relative'>
-          <img
-            src={HamburgerMenu}
-            className='w-10 pr-3 cursor-pointer'
-            onClick={handleHamburgerClick}
-          />
-          <p className='text-white text-3xl font-heading'>Hope Hub</p>
+      <div className='relative lg:pt-0 flex-1 h-[100dvh] overflow-x-hidden overflow-y-auto justify-center'>
+        <div
+          className={`fixed transition-transform  ease-in-out z-40 ${
+            showMenu
+              ? 'translate-y-0 duration-600'
+              : '-translate-y-full duration-600'
+          }`}
+        >
+          <div className='hamburger-menu pl-5 flex items-center top-0 w-screen h-20 bg-secondary-dark-blue mb-5 lg:hidden z-999'>
+            <img
+              src={HamburgerMenu}
+              className='w-10 pr-3 cursor-pointer'
+              onClick={handleHamburgerClick}
+            />
+            <p className='text-white text-3xl font-heading'>Hope Hub</p>
+          </div>
         </div>
-        <Outlet />
+        <div
+          className='pt-20 lg:pt-0  overflow-y-auto h-screen'
+          ref={containerRef}
+        >
+          <Outlet />
+        </div>
       </div>
     </div>
   );

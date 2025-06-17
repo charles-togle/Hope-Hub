@@ -27,7 +27,11 @@ export default function Home () {
           id='content'
           className='w-[95%] flex flex-row justify-center gap-5 mt-10 mb-10 lg:mt-25 lg:mb-25 lg:gap-30 '
         >
-          <img src={HomePageHero} alt='' className='w-[60%] h-fit lg:w-[40%]' />
+          <img
+            src={HomePageHero}
+            alt='UMak Gym'
+            className='w-[60%] h-fit lg:w-[40%] aspect-square'
+          />
           <div className='flex flex-col justify-center items-start'>
             <h1 className='font-heading text-lg text-primary-blue lg:text-4xl'>
               Fuel your future <br /> with movement
