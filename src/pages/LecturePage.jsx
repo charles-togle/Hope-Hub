@@ -122,7 +122,7 @@ export default function LecturePage () {
   return (
     <section id='lecture-page' className='min-h-screen bg-gray-background'>
       <PageHeading text='Lecture & Video Lessons' />
-      <div className='w-[90%] lg:w-[80%] mx-auto mt-5 flex flex-col items-center'>
+      <div className='w-[90%] lg:w-[80%] mx-auto mt-5 flex flex-col items-center pb-10'>
         <button
           id='switch'
           onClick={() => setIsVideo(prev => !prev)}
