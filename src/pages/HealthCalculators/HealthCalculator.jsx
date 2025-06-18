@@ -5,11 +5,9 @@ import { Link } from 'react-router-dom';
 import Footer from '@/components/Footer';
 
 export default function HealthCalculator () {
-  const description = `Lorem ipsum dolor sit amet consectetur. Arcu vitae eget nunc in cras eget. Aliquam diam 
-    laoreet sed eget. Faucibus sed pretium risus viverra feugiat commodo nascetur. Eu quis 
-    in mattis morbi velit habitant feugiat. Lorem ipsum dolor sit amet consectetur. Arcu vitae
-    eget nunc in cras eget. Aliquam diam laoreet sed eget. Faucibus sed pretium risus viverra 
-    feugiat commodo nascetur. Eu quis in mattis morbi velit habitant feugiat.`;
+  const description = "Welcome to the Health Calculators Hub — your go-to resource for simple, science-based tools to better understand your body and support your wellness goals. Whether you're tracking fitness progress, adjusting your diet, or just exploring your health status, our calculators provide personalized insights based on the information you enter."
+  + "\nWe offer a variety of calculators designed to address key aspects of physical health. The BMI Calculator helps you see how your weight relates to your height and what that might indicate about your health. The BMR Calculator estimates how many calories your body needs at rest, which is useful for planning your food and energy intake. The IBW Calculator provides an ideal weight estimate based on height and sex, using several well-established medical formulas. The Body Fat Percentage Calculator gives you a closer look at your body composition by estimating how much of your weight comes from fat. Lastly, the Water Intake Calculator shows how much fluid you should drink each day based on your weight and activity level."
+  + "\nThese tools are designed for general educational purposes and are not a substitute for professional medical advice. They can be used to raise awareness, support healthy habit-building, or guide conversations with your healthcare provider — helping you take a more informed and confident approach to your health.";
 
   const HealthCalculatorButtons = [
     {
@@ -20,22 +18,13 @@ export default function HealthCalculator () {
       text: 'Basal Metabolic Rate Calculator',
       linkTo: '/health-calculators/bmr',
     },
-    { text: 'Calorie & Daily Caloric Needs (TDEE) Calculator',
-      className: '',
-      linkTo: '/health-calculators/CalorieTDEECalculator' },
-    { text: 'Calorie Calculator', className: '', linkTo: '' },
     { 
       text: 'Ideal Body Weight (IBW) Calculator',
       className: '',
       linkTo: '/health-calculators/ibw'
     },
-    { text: 'Ideal Body Weight (IBW) Calculator', className: '', linkTo: '' },
     { text: 'Body Fat Percentage Calculator', className: '', linkTo: '' },
-    {
-      text: 'Daily Caloric Needs (TDEE) Calculator',
-      linkTo: '/health-calculators/bmr',
-    },
-    { text: 'Water Intake Calculator', className: '', linkTo: '' },
+    { text: 'Water Intake Calculator', className: '', linkTo: '/health-calculators/waterintake' },
   ];
 
   return (
@@ -60,7 +49,7 @@ export default function HealthCalculator () {
         <hr className='border-1 w-25 border-primary-yellow yellow self-start mt-1 mb-7'></hr>
         <p className='font-content ml-10 mb-10 lg:text-base text-sm'>
           {' '}
-          {description}{' '}
+          {description.split("\n").map((line, idx) => <p key={idx}>{line}</p>)}{' '}
         </p>
       </div>
       <Footer></Footer>

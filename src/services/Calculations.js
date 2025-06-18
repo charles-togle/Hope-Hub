@@ -294,3 +294,30 @@ export const getIBW = (height, heightUnit, gender ) => {
     },
   };
 };
+
+export const getWaterIntake = (weight, activityLevel, weightUnit) => {
+  const weightInKg = weightUnit === 'lbs' ? convertLbsToKg(weight) : weight;
+  
+  const activityMultipliers = {
+    'Sedentary (Little to No Exercise)': 0,
+    'Light Exercise (1-2 times/week)': 0.2,
+    'Moderate Exercise (3-5 times/week)': 0.35,
+    'High Exercise (6-7 times/week)': 0.5,
+    'Extreme (2x per day)': 0.7,
+  };
+
+  let waterIntake = weightInKg * 0.033;
+  console.log(waterIntake);
+
+  switch(activityLevel) {
+    case 'Sedentary (Little to No Exercise)': waterIntake += 0; break;
+    case 'Light Exercise (1-2 times/week)': waterIntake += 0.2; break;
+    case 'Moderate Exercise (3-5 times/week)': waterIntake += 0.35; break;
+    case 'High Exercise (6-7 times/week)': waterIntake += 0.5; break;
+    case 'Extreme (2x per day)': waterIntake += 0.7; break;
+    default: throw new Error(`Unknown formula variant.`);
+  }
+
+  return parseFloat(waterIntake.toFixed(2));
+
+}

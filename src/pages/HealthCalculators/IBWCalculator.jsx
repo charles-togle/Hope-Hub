@@ -7,6 +7,7 @@ import GenderSelector from '@/components/health-calculators/GenderSelector';
 import { useState } from 'react';
 import CalculatorInput from '@/components/health-calculators/CalculatorInput';
 import Content from '@/components/health-calculators/Content';
+import RowContainer from '@/components/health-calculators/RowContainer';
 
 export default function IBWCalculator () {
   const [gender, setGender] = useState('');
@@ -75,7 +76,7 @@ export default function IBWCalculator () {
         name='Ideal Body Weight Calculator'
         details={description}
       />
-      <div className='flex flex-row justify-between mt-10 gap-25'>
+      <RowContainer>
         <CalculatorContainer
           heading='Ideal Body Weight (IBW) Calculator'
           onCalculate={handleCalculate}
@@ -95,7 +96,7 @@ export default function IBWCalculator () {
           </div>
         </CalculatorContainer>
         <Container heading='Instructions'>
-          <div className='max-w-75'>
+          <div className=''>
             <ol className='list-decimal font-content'>
               {instructions.map((instruction, index) => (
                 <li key={`Instruction ${index}`}>{instruction}</li>
@@ -103,12 +104,13 @@ export default function IBWCalculator () {
             </ol>
           </div>
         </Container>
-      </div>
+      </RowContainer>
+
       <div className='text-sm font-content flex flex-row mt-10 justify-between self-center'>
         <Container heading='Results'>
           <div className="right-0 border-b-2 border-primary-yellow w-35 absolute"/>
           <div className='w-full border-b-2 border-primary-blue pb-2 text-center'>
-            <p className='p-2 pt-5'> Ideal weight based on popular formulas:</p>
+            <p className='p-2 pt-5 text-lg'> Ideal weight based on popular formulas:</p>
           </div>
 
           <table className='border-collapse '> 
@@ -128,10 +130,10 @@ export default function IBWCalculator () {
                 <>
                 {Object.entries(results.IBW).map(([formula, value]) =>(
                   <tr key = {formula}>
-                    <td className='pl-3 text-sm font-content border-r-2 border-primary-yellow'> 
+                    <td className='pl-3 text-lg font-content border-r-2 border-primary-yellow'> 
                       {formula}
                     </td>
-                    <td className = 'pl-6'>
+                    <td className = 'pl-6 text-lg'>
                       {value} kg
                     </td>
                   </tr>
@@ -140,7 +142,7 @@ export default function IBWCalculator () {
               )}
 
               {results?.HealthyBMIRange && (
-                <tr className='text-sm font-content' >
+                <tr className='text-lg   font-content' >
                 <td className = "p-3"> 
                   Healthy Weight Range:
                 </td>

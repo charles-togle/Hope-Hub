@@ -17,7 +17,7 @@ export default function RadioButton ({
   const [shown, setShown] = useState(false);
 
   return (
-    <div className='radio-group font-content'>
+    <div className='radio-group font-content border-1 border-black rounded-2xl p-3'>
       <div
         className='flex gap-5 items-center  mb-3 cursor-pointer'
         onClick={() => setShown(prev => !prev)}
