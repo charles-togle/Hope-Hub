@@ -23,6 +23,7 @@ async function fetchQuizzesDefault() {
       `
     id,
     title,
+    lecture_title,
     description,
     questions`,
     )
@@ -38,6 +39,7 @@ async function fetchQuizzesOfUser(user) {
       `
     id,
     title,
+    lecture_title,
     description,
     questions,
     quiz_progress!left (
@@ -76,15 +78,23 @@ function extractQuizDetails(quizData) {
               day: 'numeric',
             },
           ),
-          ['Start-time']: new Date(progress.start_time).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-          }),
+          ['Start-time']: new Date(progress.start_time).toLocaleTimeString(
+            'en-US',
+            {
+              hour: 'numeric',
+              minute: '2-digit',
+              hour12: true,
+            },
+          ),
 
-          ['End-time']: new Date(progress.end_time).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-          }),
+          ['End-time']: new Date(progress.end_time).toLocaleTimeString(
+            'en-US',
+            {
+              hour: 'numeric',
+              minute: '2-digit',
+              hour12: true,
+            },
+          ),
         };
     quiz.content = quiz.description;
     return quiz;
@@ -320,11 +330,13 @@ async function fetchLeaderboard(quizId) {
     .order('points', { ascending: false })
     .limit(5);
 
+  const currentUser = await getCurrentUser();
   const leaderboard = data.map((user, index) => {
     return {
       rank: index + 1,
       name: user.profile.full_name,
       points: user.points.toLocaleString(),
+      isCurrentUser: user.user_id === currentUser.id,
     };
   });
 

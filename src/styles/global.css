@@ -221,12 +221,12 @@
 
 @layer utilities {
   .filter {
-    @apply bg-secondary-dark-blue font-content flex items-center justify-center
-    rounded-sm px-5 text-white;
+    @apply bg-secondary-dark-blue flex items-center justify-center
+    px-5 text-white;
   }
   
   .filter-active {
-    @apply bg-primary-yellow text-secondary-dark-blue font-content;
+    @apply bg-primary-yellow text-secondary-dark-blue;
   }
   
   .apply-drop-shadow > div {

@@ -5,20 +5,22 @@ import {
   fetchQuizStateIfExists,
 } from '@/utilities/QuizData';
 import { useParams } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
 import {
   QuestionsContext,
   IdentificationRefContext,
   RemainingTimeContext,
   QuizContext,
 } from '@/providers/QuizContext';
+import Loading from '@/components/Loading';
 
 export default function QuizProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const [questions, setQuestions] = useState([]);
   const [quizState, setQuizState] = useState(null);
+
   const identificationAnswerRef = useRef('');
   const remainingTimeRef = useRef(0);
+
   const { quizId } = useParams();
 
   useEffect(() => {
@@ -46,8 +48,8 @@ export default function QuizProvider({ children }) {
         <RemainingTimeContext.Provider value={remainingTimeRef}>
           <IdentificationRefContext.Provider value={identificationAnswerRef}>
             {isLoading ? (
-              <div className="flex items-center justify-center h-screen">
-                <Loader2 className="animate-spin text-primary-blue" size={48} />
+              <div className="flex items-center justify-center h-[70vh]">
+                <Loading />
               </div>
             ) : (
               children
