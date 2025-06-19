@@ -10,7 +10,8 @@ import QuizProvider from '@/providers/QuizProvider';
 import AudioPlayer from '@/components/quiz/AudioPlayer';
 import audioFile from '@/assets/sounds/quizziz-in-game-theme.mp3';
 import { motion, AnimatePresence } from 'motion/react';
-import { Loader2 } from 'lucide-react';
+import { useEffect } from 'react';
+import Loading from '@/components/Loading';
 import {
   QuestionsContext,
   IdentificationRefContext,
@@ -22,15 +23,6 @@ import {
   markQuizAsDone,
   submitAnswer,
 } from '@/utilities/QuizData';
-import { useEffect } from 'react';
-
-const sampleLeaderboardNames = [
-  { name: 'Togle, Charles Nathaniel', points: 1003 },
-  { name: 'Villarica, Amrafel Marcus', points: 1002 },
-  { name: 'Picao, Mark Kevin ', points: 1001 },
-  { name: 'Casiano, Justine', points: 1000 },
-  { name: 'San Jose, Alexa Joanne', points: 999 },
-];
 
 export default function Quiz() {
   return (
@@ -52,25 +44,7 @@ export function QuizPage() {
 
   const [leaderboard, setLeaderboard] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [shouldShowPoints, setShouldShowPoints] = useState(false);
-
-  console.log('questions: ', questions); // access quizId
-  console.log('quiz state: ', quizState);
-  console.log('questions answered: ', quizState.questionsAnswered);
-  console.log('leaderboard: ', leaderboard);
-
-  // const [quizState, setQuizState] = useState({
-  //   quizId: quizId,
-  //   questionIndex: 0,
-  //   score: 0,
-  //   points: 0,
-  //   currentQuestionPoints: 0,
-  //   // status: '', // should be fetched from the database in prod
-  //   // status: 'Done', // data for test
-  //   status: 'Pending', // data for test
-  //   // questionsAnswered: sampleQuestionsResult,
-  //   questionsAnswered: [], // data for prod
-  // });
+  const [shouldShowPoints, setShouldShowPoints] = useState(false); // try to use context here
 
   function onAnswerSelected(answer, multipleChoice = true) {
     let correctAnswer = questions[quizState.questionIndex].answer;
@@ -135,31 +109,12 @@ export function QuizPage() {
           error = await markQuizAsDone(newQuizState);
         }
 
-        // console.log('quizState from submitAnswer: ', quizState);
-        // console.log('data from submitAnswer: ', data);
         if (!error) {
-          console.log('no errors');
           setQuizState(newQuizState);
           setIsLoading(false);
         }
       }, 1000);
     }
-
-    // if (quizState.questionIndex === questions.length - 1) {
-    //   const newQuizState = {
-    //     ...quizState,
-    //     questionIndex: quizState.questionIndex - 1,
-    //     status: 'Done',
-    //   };
-
-    //   setTimeout(async () => {
-    //     setIsLoading(true);
-    //     const error = await markQuizAsDone(newQuizState);
-    //     if (!error) {
-    //       setQuizState(newQuizState);
-    //     }
-    //   }, 1000);
-    // }
   }
 
   useEffect(() => {
@@ -169,8 +124,6 @@ export function QuizPage() {
 
     fetchAndSetLeaderboard();
   }, [quizId, quizState.status]);
-
-  console.log('leaderboard because quiz is done: ', leaderboard);
 
   const isIdentification =
     questions.length !== quizState.questionIndex &&
@@ -182,15 +135,18 @@ export function QuizPage() {
     <div>
       <AudioPlayer source={audioFile} shouldStop={quizState.status === 'Done'}>
         {isLoading ? (
-          <div className="flex justify-center items-center h-[50vh] p-4">
-            <Loader2 className="animate-spin text-primary-yellow" size={48} />
+          <div className="flex justify-center items-center h-[60vh] p-4">
+            <Loading />
           </div>
         ) : (
           <div>
-            <div id="quiz-1" className="flex flex-col w-5/6 mx-auto mb-4">
+            <div
+              id="quiz"
+              className="flex flex-col w-[95%] lg:w-5/6 mx-auto mb-4 relative"
+            >
               <div className="flex items-start justify-between pt-8">
                 <div>
-                  <h2 className="font-heading-small text-3xl text-primary-blue ">
+                  <h2 className="font-heading-small text-2xl lg:text-3xl text-primary-blue ">
                     {quizState.status === 'Pending'
                       ? `Quiz #${quizId}: Lecture #${quizId}`
                       : 'Results & Summary'}
@@ -253,15 +209,15 @@ function QuizBody({
 }) {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full relative">
-      <div className="rounded-t-full border-2 border-secondary-dark-blue py-4 px-14 relative top-3">
-        <span className="font-content text-2xl">Score: {score}</span>
+      <div className="rounded-t-full border-2 border-secondary-dark-blue py-4 px-10 lg:px-14 relative top-3">
+        <span className="font-content text-xl lg:text-2xl">Score: {score}</span>
       </div>
       <div
-        className="flex flex-col justify-center items-center rounded-2xl w-full min-h-[90vh] z-10 bg-cover bg-center bg-no-repeat 
-          p-10 text-2xl text-white font-content relative"
+        className="flex flex-col justify-center items-center rounded-2xl w-full lg:min-h-[90vh] z-10 bg-cover bg-center bg-no-repeat 
+          p-3 lg:p-10 text-xl lg:text-2xl text-white font-content relative"
         style={{ backgroundImage: `url(${QuizBackground})` }}
       >
-        <h3 className="my-7 text-3xl">
+        <h3 className="my-5 lg:my-7 text-3xl">
           {index + 1}/{totalItems}
         </h3>
         <AnimatePresence mode="wait">
@@ -281,7 +237,7 @@ function QuizBody({
                 className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 bg-[rgba(0,0,0,0.5)] rounded-2xl"
               >
                 <motion.span
-                  className="text-green-500 text-8xl font-bold drop-shadow-lg"
+                  className="text-green-500 text-5xl lg:text-8xl font-bold drop-shadow-lg"
                   initial={{ y: -50 }}
                   animate={{ y: 0 }}
                   transition={{ duration: 0.4 }}
@@ -290,10 +246,10 @@ function QuizBody({
                 </motion.span>
               </motion.div>
             )}
-            <p className="w-[80%] text-center whitespace-pre-line">
+            <p className="w-full lg:w-[80%] text-center whitespace-pre-line">
               {question.question}
             </p>
-            <hr className="w-[75%] border-1 border-white mt-8 mb-4" />
+            <hr className="w-[85%] lg:w-[75%] border-1 border-white mt-8 mb-4" />
             {question.type === 'identification' ? (
               <Identification handleAnswer={handleAnswer} />
             ) : (
@@ -320,9 +276,9 @@ function Identification({ handleAnswer }) {
   }
 
   return (
-    <div className="w-[70%] flex mt-5 justify-between items-center">
+    <div className="w-[80%] lg:w-[70%] flex flex-col gap-y-4 lg:flex-row mt-5 justify-between items-center">
       <Input
-        className="rounded-sm w-[80%] h-full text-left bg-white text-black !text-lg border-2 border-black py-2 px-10 placeholder:text-left"
+        className="rounded-sm lg:w-[80%] h-full text-left bg-white text-black !text-lg border-2 border-black py-2 px-5 lg:px-10 placeholder:text-left"
         type="text"
         placeholder="Answer"
         onChange={(e) => onChange(e)}
@@ -358,7 +314,7 @@ function MultipleChoice({ choices, handleAnswer }) {
             setIsDisabled(true);
             handleAnswer(choice);
           }}
-          className={`rounded-md w-[45%] min-h-[20vh] text-center m-3 px-6 py-6 text-balance break-words text-xl `}
+          className={`rounded-md w-full lg:w-[45%] min-h-[15vh] lg:min-h-[20vh] text-center m-3 px-6 py-6 text-balance break-words text-xl `}
           style={{ backgroundColor: colors[index] }}
         >
           <span>{choice.text}</span>
@@ -369,8 +325,6 @@ function MultipleChoice({ choices, handleAnswer }) {
 }
 
 function Results({ questions, quizState, leaderboard }) {
-  console.log('this was rebuilt');
-  console.log('leaderboards for results', leaderboard);
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -378,31 +332,31 @@ function Results({ questions, quizState, leaderboard }) {
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-[70%] flex flex-col items-center justify-center text-black font-content mx-auto"
+        className="w-full lg:w-[70%] flex flex-col items-center justify-center text-black font-content mx-auto"
       >
-        <div className="rounded-2xl mt-8 mb-6 py-8 text-base border-2 border-black w-full bg-[linear-gradient(180deg,#111C4E_0%,#003D69_100%)]">
+        <div className="rounded-2xl mt-2 lg:mt-5 mb-6 py-8 text-base border-2 border-black w-full bg-[linear-gradient(180deg,#111C4E_0%,#003D69_100%)]">
           <div className="relative w-full flex flex-col items-center justify-center border-t-2 border-white text-white">
             <div className="w-[55%] bg-[#111C4E] absolute -top-3 left-1/2 -translate-x-1/2 ">
-              <h3 className="w-fit mx-auto font-semibold text-2xl text-center border-b-[0.8px] border-white px-6">
+              <h3 className="w-fit mx-auto font-semibold text-xl lg:text-2xl text-center border-b-[0.8px] border-white px-6">
                 Summary
               </h3>
             </div>
-            <h3 className="text-lg mt-9">
+            <h3 className="text-base lg:text-lg mt-9">
               Quiz #{quizState.quizId} Lecture #{quizState.quizId}
             </h3>
-            <h2 className="text-2xl font-semibold border-b-2 border-white px-3 pb-4 mt-4">
-              You aced, keep shining!
+            <h2 className="text-xl lg:text-2xl font-semibold border-b-2 border-white px-3 pb-4 mt-4">
+              You did your best!
             </h2>
-            <div className="flex items-center justify-between mt-5 mb-4 w-[55%]">
+            <div className="flex items-center justify-between mt-5 mb-4 w-[70%] lg:w-[55%]">
               <div>
-                <h1 className="text-2xl font-semibold border-b-2 border-white px-2">
+                <h1 className="text-xl lg:text-2xl font-semibold border-b-2 border-white px-2">
                   Score:
                 </h1>
               </div>
-              <div className="rounded-xl border-2 border-white py-5 px-30 bg-[#000A3A]">
+              <div className="rounded-xl border-2 border-white py-5 w-[55%] lg:w-[70%] bg-[#000A3A] text-center">
                 <motion.h1
                   animate={{
-                    scale: [1, 1.2, 1],
+                    scale: [1, 1.08, 1],
                     opacity: [1, 0.9, 1],
                   }}
                   transition={{
@@ -410,16 +364,16 @@ function Results({ questions, quizState, leaderboard }) {
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
-                  className="text-4xl font-bold"
+                  className="text-2xl lg:text-4xl font-bold"
                 >
                   {quizState.score}/{quizState.questionsAnswered.length}
                 </motion.h1>
               </div>
             </div>
             <hr className="w-[75%] border-1 border-white mt-3 mb-4" />
-            <h3 className="text-lg">Performance Stats</h3>
-            <div className="flex items-center justify-between mt-3 w-[70%]">
-              <div className="flex flex-col items-center justify-center text-green py-3 px-25 rounded-xl border-2 border-white  bg-[#000A3A]">
+            <h3 className="text-base lg:text-lg">Performance Stats</h3>
+            <div className="flex gap-3 items-center justify-between mt-3 w-[80%]">
+              <div className="flex flex-col items-center justify-center text-green py-3 w-[60%] rounded-xl border-2 border-white  bg-[#000A3A]">
                 <motion.h3
                   animate={{
                     rotate: [-3, 3, -3, 3],
@@ -429,7 +383,7 @@ function Results({ questions, quizState, leaderboard }) {
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
-                  className="text-2xl font-bold"
+                  className="text-xl lg:text-2xl font-bold"
                 >
                   {quizState.score}
                 </motion.h3>
@@ -446,7 +400,7 @@ function Results({ questions, quizState, leaderboard }) {
                   Correct
                 </motion.h3>
               </div>
-              <div className="flex flex-col items-center justify-center text-red py-3 px-25 rounded-xl border-2 border-white bg-[#000A3A]">
+              <div className="flex flex-col items-center justify-center text-red py-3 w-[60%] rounded-xl border-2 border-white bg-[#000A3A]">
                 <motion.h3
                   animate={{
                     rotate: [-3, 3, -3, 3],
@@ -456,7 +410,7 @@ function Results({ questions, quizState, leaderboard }) {
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
-                  className="text-2xl font-bold"
+                  className="text-xl lg:text-2xl font-bold"
                 >
                   {quizState.questionsAnswered.length - quizState.score}
                 </motion.h3>
@@ -476,13 +430,13 @@ function Results({ questions, quizState, leaderboard }) {
             </div>
             <hr className="w-[40%] border-1 border-white mt-8 mb-5" />
           </div>
-          <div className="pt-4 relative w-full mt-8 text-lg text-white">
+          <div className="pt-4 relative w-full lg:mt-8 text-base lg:text-lg text-white">
             <div className="flex items-center justify-between relative">
-              <hr className="w-[30%] border-1 border-white" />
-              <h3 className="w-[40%] absolute -top-4 left-1/2 -translate-x-1/2 text-center font-bold text-xl">
+              <hr className="w-[20%] lg:w-[30%] border-1 border-white" />
+              <h3 className="w-[40%] absolute -top-4 left-1/2 -translate-x-1/2 text-center font-bold text-lg lg:text-xl">
                 Leaderboard
               </h3>
-              <hr className="w-[30%] border-1 border-white" />
+              <hr className="w-[20%] lg:w-[30%] border-1 border-white" />
             </div>
             <div className="mt-6">
               {leaderboard.map((user, index) => (
@@ -492,8 +446,10 @@ function Results({ questions, quizState, leaderboard }) {
           </div>
         </div>
         <div className="self-baseline my-3">
-          <h4 className="font-semibold text-xl">Review Questions</h4>
-          <h4 className="text-lg">Here lies all the correct answers.</h4>
+          <h4 className="font-semibold text-lg lg:text-xl">Review Questions</h4>
+          <h4 className="text-base lg:text-lg">
+            Here lies all the correct answers.
+          </h4>
         </div>
         {quizState.questionsAnswered.map((questionData, index) => {
           return (
@@ -511,33 +467,47 @@ function Results({ questions, quizState, leaderboard }) {
 }
 
 function LeaderboardName({ user }) {
-  console.log('leaderboards name');
   return (
-    <div>
-      <div className="flex flex-col justify-between gap-y-2 w-[70%] mx-auto font-medium">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-x-3">
+    <div className="w-[80%] lg:w-[70%] mx-auto font-medium">
+      {user.isCurrentUser ? (
+        <motion.div
+          animate={{
+            scale: [1, 1.02, 1],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          className="flex items-start lg:items-center justify-between"
+        >
+          <div className="flex items-start lg:items-center gap-x-3 w-[60%] lg:w-auto">
+            <h3>{user.rank}</h3>
+            <h3>{user.name}</h3>
+          </div>
+          <h3>{user.points} pts</h3>
+        </motion.div>
+      ) : (
+        <div className="flex items-start lg:items-center justify-between">
+          <div className="flex items-start lg:items-center gap-x-3 w-[60%] lg:w-auto">
             <h3>{user.rank}</h3>
             <h3>{user.name}</h3>
           </div>
           <h3>{user.points} pts</h3>
         </div>
-      </div>
+      )}
     </div>
   );
 }
 
 function ResultQuestion({ index, questionData, questions }) {
-  console.log('questions length', questions.length);
-  console.log('index', index);
-  console.log('questions:', questions);
   const selectedColor = questionData.isCorrect ? 'bg-green' : 'bg-red';
 
   return (
     <div
       className={`rounded-xl border-2 ${
         questionData.isCorrect ? 'border-green' : 'border-red'
-      } py-5 px-8 my-4 w-full`}
+      } py-5 px-8 my-2 lg:my-4 w-full text-sm lg:text-base`}
     >
       <p className="whitespace-pre-line">
         {index + 1}. {questionData.question}

@@ -46,9 +46,9 @@ function SidebarLayout () {
     if (!containerRef.current) return;
     const currentScroll = containerRef.current.scrollTop;
 
-    if (currentScroll > lastScrollY && currentScroll > 100) {
+    if (currentScroll > lastScrollY && currentScroll > 200) {
       setShowMenu(false);
-    } else if (currentScroll < lastScrollY) {
+    } else if (currentScroll < lastScrollY && currentScroll > 400) {
       setShowMenu(true);
     }
 
@@ -77,13 +77,15 @@ function SidebarLayout () {
               : '-translate-y-full duration-600'
           }`}
         >
-          <div className='hamburger-menu pl-5 flex items-center top-0 w-screen h-20 bg-secondary-dark-blue mb-5 lg:hidden z-999'>
+          <div className='hamburger-menu pl-5 flex items-center top-0 w-screen h-20 md:h-15 bg-secondary-dark-blue mb-5 lg:hidden z-999 '>
             <img
               src={HamburgerMenu}
-              className='w-10 pr-3 cursor-pointer'
+              className='w-10 md:w-7 pr-3 cursor-pointer'
               onClick={handleHamburgerClick}
             />
-            <p className='text-white text-3xl font-heading'>Hope Hub</p>
+            <p className='text-white text-3xl md:text-2xl font-heading'>
+              Hope Hub
+            </p>
           </div>
         </div>
         <div
