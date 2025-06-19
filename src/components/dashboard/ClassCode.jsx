@@ -9,7 +9,7 @@ export default function ClassCode ({
   const navigate = useNavigate();
   return (
     <div
-      className='w-full lg:w-[32%] h-35 rounded-lg relative text-white cursor-pointer'
+      className='w-full md:w-[31.5%] lg:w-[32%] h-35 rounded-lg relative text-white cursor-pointer'
       style={{ backgroundColor: `#${classColor}` }}
       onClick={() => navigate(`/dashboard/view-class/${classCode}`)}
     >

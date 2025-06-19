@@ -181,27 +181,29 @@ export default function AddClassCode ({ onAdd = () => {}, setModalShown }) {
           id='backdrop'
           className='w-full h-full absolute top-0 bg-black opacity-40 -z-1'
         ></div>
-        <FormContainer ref={formRef}>
-          <FormHeading heading='Create a New Class'></FormHeading>{' '}
-          <FormInput
-            value={className}
-            setValue={setClassName}
-            placeholder='Enter class name (e.g., "PE 101 - Physical Education")'
-            disabled={isLoading}
-          />
-          <ColorPicker value={classColor} onChange={setClassColor} />
-          {error && (
-            <p className='text-red-500 text-sm font-content font-semibold'>
-              {error}
-            </p>
-          )}
-          <FormButton
-            className={`${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
-            text={isLoading ? 'Creating Class...' : 'Create Class'}
-            onClick={handleCreateClass}
-            disabled={isLoading}
-          />
-        </FormContainer>
+        <div className='md:scale-90 scale-90 lg:scale-0'>
+          <FormContainer ref={formRef}>
+            <FormHeading heading='Create a New Class'></FormHeading>{' '}
+            <FormInput
+              value={className}
+              setValue={setClassName}
+              placeholder='Enter class name (e.g., "PE 101 - Physical Education")'
+              disabled={isLoading}
+            />
+            <ColorPicker value={classColor} onChange={setClassColor} />
+            {error && (
+              <p className='text-red-500 text-sm font-content font-semibold'>
+                {error}
+              </p>
+            )}
+            <FormButton
+              className={`${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              text={isLoading ? 'Creating Class...' : 'Create Class'}
+              onClick={handleCreateClass}
+              disabled={isLoading}
+            />
+          </FormContainer>
+        </div>
       </div>
     </div>
   );

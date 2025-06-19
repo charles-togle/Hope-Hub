@@ -93,7 +93,7 @@ export default function LectureVideo ({
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={handleLoadedMetadata}
           ref={videoRef}
-          className='h-full lg:h-120'
+          className='h-full lg:h-120 md:h-70 md:w-fit self-center'
         >
           Your browser does not support the video tag.
         </video>

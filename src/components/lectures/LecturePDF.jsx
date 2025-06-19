@@ -25,11 +25,11 @@ export default function LecturePDF ({
       </h2>
       <div
         id='lecture-content'
-        className='grid min-h-full w-full p-2 pt-5 pb-5 lg:p-10 bg-background lg:grid-cols-[65%_30%] lg:grid-row-2 lg:gap-x-10'
+        className='grid min-h-full w-full p-2 pt-5 pb-5 lg:p-10 bg-background lg:grid-cols-[65%_30%] lg:grid-row-2 lg:gap-x-10 md:grid-cols-[65%_30%] md:grid-row-2 md:gap-x-5'
       >
         <iframe
           src={pdfLink}
-          className='mt-5 row-start-2 h-150 rounded-lg w-full lg:h-full lg:row-span-2 lg:mt-0'
+          className='mt-5 row-start-2 h-150 rounded-lg w-full lg:h-full lg:row-span-2 lg:mt-0 md:row-span-2'
         ></iframe>
         <div
           id='lecture-description'
@@ -42,7 +42,7 @@ export default function LecturePDF ({
             <p>Introduction</p>
             <Timer
               className='flex flex-row items-center w-30 justify-between'
-              time={600}
+              time={300}
               onEnd={() => {
                 onTimerEnd();
               }}
@@ -55,7 +55,7 @@ export default function LecturePDF ({
 
         <div
           id='button-group'
-          className='mt-10 font-content lg:col-start-2 flex justify-center items-center flex-col lg:mt-30 '
+          className='mt-10 font-content lg:col-start-2 md:col-start-2 flex justify-center items-center flex-col lg:mt-30 '
         >
           <p className='text-center mb-5 font-md '>
             Finished Learning? Test your knowledge and take the quiz!
@@ -69,7 +69,7 @@ export default function LecturePDF ({
               navigate(quizLink);
             }}
             disabled={isLectureDone ? undefined : true}
-            className='w-[30%] py-2 text-lg text-white bg-secondary-dark-blue hover:brightness-90 disabled:brightness-50 lg:w-full lg:py-5'
+            className='w-[50%] py-2 text-lg text-white bg-secondary-dark-blue hover:brightness-90 disabled:brightness-50 lg:w-full md:w-full lg:py-5'
           >
             TAKE QUIZ
           </button>
