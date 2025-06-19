@@ -31,7 +31,7 @@ import Loading from './components/Loading';
 import { useRef } from 'react';
 
 function SidebarLayout () {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [showMenu, setShowMenu] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const handleHamburgerClick = () => setSidebarOpen(open => !open);

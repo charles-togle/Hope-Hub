@@ -81,7 +81,7 @@ export default function Lectures () {
         ></PageHeading>
         <div
           id='lectures-container'
-          className='w-[90%] flex flex-col items-center mr-auto ml-auto relative mb-10 lg:w-[80%]'
+          className='w-[90%] flex flex-col items-center mr-auto ml-auto relative mb-10 lg:w-[80%] overflow-visible'
         >
           <div
             id='buttons-wrapper'

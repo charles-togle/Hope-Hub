@@ -122,7 +122,7 @@ export default function TeacherDashboard () {
       </div>
       <DashboardContainer>
         <div className='flex gap-4 flex-col relative min-h-[90vh] w-full pt-10! lg:pt-40'>
-          <div className='flex lg:items-center lg:gap-10 font-heading-small text-primary-blue z-3'>
+          <div className='flex lg:items-center lg:gap-10 md:gap-10  font-heading-small text-primary-blue z-3'>
             <div>
               <p className='text-2xl lg:text-4xl'>
                 Hello, Prof. {teacherName}{' '}
