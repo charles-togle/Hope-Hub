@@ -17,13 +17,13 @@ export default function LectureIntroduction ({
   return (
     <div
       id='lecture-introduction'
-      className='border-3 border-black rounded-md'
+      className='border-3 border-black rounded-md cursor-pointer group'
       onClick={() => onClick()}
     >
       <div id='content' className='flex flex-col  pb-5'>
         <div
           id='heading'
-          className='flex flex-row justify-between py-5 px-3 items-center bg-secondary-dark-blue mb-3 lg:px-5'
+          className='flex flex-row justify-between py-5 px-3 items-center bg-secondary-dark-blue mb-3 lg:px-5 group-hover:brightness-110'
         >
           <p className='text-white font-content font-bold text-sm lg:text-lg'>
             Lecture #{lectureKey}:{' '}

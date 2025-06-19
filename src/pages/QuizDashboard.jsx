@@ -29,13 +29,10 @@ export default function QuizDashboard () {
           <Loading />
         </div>
       ) : (
-        <div
-          id='quizzes'
-          className='flex flex-col items-center justify-center w-5/6 mx-auto mb-8 relative'
-        >
+        <>
           <div
             id='header'
-            className='flex flex-wrap justify-between sticky top-0 pt-5 pb-1 z-10 bg-background w-full'
+            className='flex flex-wrap lg:justify-between justify-center sticky top-0 pt-5 pb-1 z-10 bg-background lg:w-full lg:px-20'
           >
             <h2 className='font-heading-small text-2xl lg:text-3xl text-primary-blue border-primary-yellow border-b-3 pb-2'>
               Dashboard
@@ -66,28 +63,33 @@ export default function QuizDashboard () {
               })}
             </ul>
           </div>
-          <div className='flex flex-col items-center mt-4 lg:mt-8 justify-center min-h-[40vh] w-full'>
-            {Array.isArray(quizzes) &&
-            quizzes.filter(
-              quiz => quiz.status === activeFilter || activeFilter === 'All',
-            ).length > 0 ? (
-              <div className='w-full'>
-                {quizzes.map(quiz => {
-                  return (
-                    (quiz.status === activeFilter ||
-                      activeFilter === 'All') && (
-                      <Card key={'Quiz ' + quiz.number} quiz={quiz} />
-                    )
-                  );
-                })}
-              </div>
-            ) : (
-              <p className='font-content font-bold text-2xl pt-15'>
-                No Available Data
-              </p>
-            )}
+          <div
+            id='quizzes'
+            className='flex flex-col items-center justify-center w-5/6 mx-auto mb-8 relative'
+          >
+            <div className='flex flex-col items-center mt-4 lg:mt-8 justify-center min-h-[40vh] w-full'>
+              {Array.isArray(quizzes) &&
+              quizzes.filter(
+                quiz => quiz.status === activeFilter || activeFilter === 'All',
+              ).length > 0 ? (
+                <div className='w-full'>
+                  {quizzes.map(quiz => {
+                    return (
+                      (quiz.status === activeFilter ||
+                        activeFilter === 'All') && (
+                        <Card key={'Quiz ' + quiz.number} quiz={quiz} />
+                      )
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className='font-content font-bold text-2xl pt-15'>
+                  No Available Data
+                </p>
+              )}
+            </div>
           </div>
-        </div>
+        </>
       )}
       <Footer></Footer>
     </div>
