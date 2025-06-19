@@ -10,10 +10,10 @@ import Content from '@/components/health-calculators/Content';
 import RowContainer from '@/components/health-calculators/RowContainer';
 
 export default function IBWCalculator () {
-  const [gender, setGender] = useState('');
-  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('male');
+  const [age, setAge] = useState('20');
   const [heightUnit, setHeightUnit] = useState('cm');
-  const [height, setHeight] = useState('');
+  const [height, setHeight] = useState('172');
   const [results, setResults] = useState(null);
   const [ibwMedicalInterpretation, setIbwMedicalInterpretation] = useState(
     'After calculating your Ideal Body Weight (IBW), this section will provide a medical interpretation of what your result may indicate. It will explain how your estimated IBW can be used in clinical contexts, such as for medication dosing, nutritional planning, or assessing health risk. This information is general and not a substitute for medical advice.',
@@ -23,13 +23,13 @@ export default function IBWCalculator () {
       'Once your IBW is calculated, this section will help you understand how your current weight compares to population-based weight expectations for your height and sex. It provides context on whether you are below, within, or above typical reference ranges used in health assessments.',
     );
 
-  const { BodyFatPercentage } = CalculatorData;
+  const { IBW } = CalculatorData;
   const {
     description,
     instructions,
     statisticalInterpretation,
     medicalInterpretation,
-  } = BodyFatPercentage;
+  } = IBW;
 
   const heightUnits = ['cm', 'ft', 'm'];
   const weightUnits = ['kg', 'lbs'];
@@ -70,6 +70,13 @@ export default function IBWCalculator () {
     );
   };
 
+  const citations = [
+    'Chumlea, W. C., Guo, S. S., Steinbaugh, M. L. (1998). Prediction of body weight for the nonambulatory elderly population. Journal of the American Dietetic Association, 98(9), 1028–1031. https://doi.org/10.1016/S0002-8223(98)00236-3',
+    'Devine, B. J. (1974). Gentamicin therapy. Drug Intelligence & Clinical Pharmacy, 8, 650–655.',
+    'Hamwi, G. J. (1964). Therapy: Changing dietary concepts. In T. S. Danowski (Ed.), Diabetes mellitus: Diagnosis and treatment (pp. 73–78). American Diabetes Association.',
+    'Robinson, J. D., Lupkiewicz, S. M., Palenik, L., Lopez, L. M., & Ariet, M. (1983). Determination of ideal body weight for drug dosage calculations. The American Journal of Hospital Pharmacy, 40(6), 1016–1019.',
+    'Miller, D. R., Carlson, J. D., & Crouch, M. A. (1983). Drug dosage adjustments in renal failure. Pharmacotherapy, 3(3), 156–162.',
+  ];
   return (
     <>
       <CalculatorDetails
@@ -166,6 +173,14 @@ export default function IBWCalculator () {
         <Content
           content={ibwStatisticalInterpretation}
           title='Statistical Interpretation'
+        />
+        <Content
+          content = {citations.map((level, index) => (
+            <div className='pb-2 text-sm font-content'>
+              {level}
+            </div>
+          ))}
+          title='Citations'
         />
       </div>
     </>

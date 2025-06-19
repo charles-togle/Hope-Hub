@@ -3,7 +3,6 @@ import { CalculatorData } from '@/utilities/CalculatorData';
 import Container from '@/components/health-calculators/Container';
 import CalculatorContainer from '@/components/health-calculators/CalculatorContainer';
 import { CalculatorDetails } from '@/components/health-calculators/CalculatorDetails';
-import GenderSelector from '@/components/health-calculators/GenderSelector';
 import { useState } from 'react';
 import CalculatorInput from '@/components/health-calculators/CalculatorInput';
 import Content from '@/components/health-calculators/Content';
@@ -11,14 +10,11 @@ import RowContainer from '@/components/health-calculators/RowContainer';
 import RadioButton from '@/components/health-calculators/RadioButtons';
 
 export default function WaterIntakeCalculator () {
-    const [gender, setGender] = useState('');
-    const [age, setAge] = useState('');
     const [weightUnit, setWeightUnit] = useState('kg');
-    const [weight, setWeight] = useState('');
+    const [weight, setWeight] = useState('81');
     const [waterIntakeCategory, setWaterIntakeCategory] = useState('...');
     const [activityLevel, setActivityLevel] = useState('Sedentary (Little to No Exercise)');
     const [intakeResult, setIntakeResult] = useState('');
-    // const [intakeCategoryColor, setIntakeCategoryColor] = useState('');
     const [intakeMedicalInterpretation, setIntakeMedicalInterpretation] = useState(
         'After calculating your daily water needs, this section will provide a general medical interpretation of your result. It will explain how your hydration level may affect bodily functions, such as energy, digestion, and circulation. This is intended as educational guidance and not a clinical diagnosis.',
     );
@@ -104,6 +100,13 @@ export default function WaterIntakeCalculator () {
         'Extreme (2x per day)',
     ]
 
+    const citations = [
+        'Institute of Medicine. (2005). Dietary reference intakes for water, potassium, sodium, chloride, and sulfate. The National Academies Press. https://doi.org/10.17226/10925',
+        'Popkin, B. M., D’Anci, K. E., & Rosenberg, I. H. (2010). Water, hydration, and health. Nutrition Reviews, 68(8), 439–458. https://doi.org/10.1111/j.1753-4887.2010.00304.x',    
+        'European Food Safety Authority. (2010). Scientific opinion on dietary reference values for water. EFSA Journal, 8(3), 1459. https://doi.org/10.2903/j.efsa.2010.1459',
+        'El Milad, H. S., Chughtai, M., & Stoinski, S. (2020). Hydration and kidney stone risk: A systematic review. Nutrition Reviews, 78(7), 535–546. https://doi.org/10.1093/nutrit/nuz082',
+    ];
+
   return(
     <>
         <CalculatorDetails
@@ -163,6 +166,15 @@ export default function WaterIntakeCalculator () {
             content={IntakeStatisticalInterpretation}
             title='Statistical Interpretation'
             />
+            <Content
+            content = {citations.map((level, index) => (
+                <div className='pb-2 text-sm font-content'>
+                {level}
+                </div>
+            ))}
+            title='Citations'
+            />
+            
         </div>
     </>
   )

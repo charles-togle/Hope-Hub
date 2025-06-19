@@ -10,12 +10,12 @@ import Content from '@/components/health-calculators/Content';
 import RowContainer from '@/components/health-calculators/RowContainer';
 
 export default function BMICalculator () {
-  const [gender, setGender] = useState('');
-  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('male');
+  const [age, setAge] = useState('20');
   const [heightUnit, setHeightUnit] = useState('cm');
   const [weightUnit, setWeightUnit] = useState('kg');
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState('172');
+  const [weight, setWeight] = useState('81');
   const [bmiResult, setBmiResult] = useState(null);
   const [bmiCategory, setBmiCategory] = useState('No data');
   const [bmiMedicalInterpretation, setBmiMedicalInterpretation] = useState(
@@ -102,6 +102,16 @@ export default function BMICalculator () {
       'After calculating your BMI, you will see how your result compares to population distributions and statistical norms. This provides context for understanding where your BMI falls within broader health statistics.',
     );
   };
+
+  const citations = [
+    'World Health Organization. (2021). Obesity and overweight: Key facts. https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight',
+    'Centers for Disease Control and Prevention. (2022). About adult BMI. U.S. Department of Health & Human Services. https://www.cdc.gov/bmi/faq/?CDC_AAref_Val=https://www.cdc.gov/healthyweight/assessing/bmi/adult_bmi/index.html',
+    'National Institutes of Health. (1998). Clinical guidelines on the identification, evaluation, and treatment of overweight and obesity in adults: The evidence report (NIH Publication No. 98–4083). https://www.nhlbi.nih.gov/files/docs/guidelines/ob_gdlns.pdf',
+    'Prospective Studies Collaboration. (2009). Body-mass index and cause-specific mortality in 900,000 adults: Collaborative analyses of 57 prospective studies. The Lancet, 373(9669), 1083–1096. https://doi.org/10.1016/S0140-6736(09)60318-4',
+    'Flegal, K. M., Kit, B. K., Orpana, H., & Graubard, B. I. (2013). Association of all‑cause mortality with overweight and obesity using standard body mass index categories: A systematic review and meta‑analysis. JAMA, 309(1), 71–82. https://doi.org/10.1001/jama.2012.113905',
+    'Di Angelantonio, E., Bhupathiraju, S. N., Wormser, D., Gao, P., Kaptoge, S., Berrington de Gonzalez, A., … Woodward, M. (2016). Body-mass index and all-cause mortality: Individual‑participant-data meta‑analysis of 239 prospective studies in four continents. The Lancet, 388(10046), 776–786. https://pubmed.ncbi.nlm.nih.gov/27423262/',
+  ];
+
   return (
     <>
       <CalculatorDetails
@@ -172,6 +182,14 @@ export default function BMICalculator () {
         <Content
           content={bmiStatisticalInterpretation}
           title='Statistical Interpretation'
+        />
+        <Content
+          content = {citations.map((level, index) => (
+            <div className='pb-2 text-sm font-content'>
+              {level}
+            </div>
+          ))}
+          title='Citations'
         />
       </div>
     </>

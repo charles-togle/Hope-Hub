@@ -13,7 +13,7 @@ import ResultGroup from '@/components/health-calculators/ResultGroup';
 import { useCallback } from 'react';
 
 export default function BMRCalculator () {
-  const [gender, setGender] = useState('Male');
+  const [gender, setGender] = useState('male');
   const [age, setAge] = useState('20');
   const [heightUnit, setHeightUnit] = useState('cm');
   const [weightUnit, setWeightUnit] = useState('kg');
@@ -140,6 +140,13 @@ export default function BMRCalculator () {
     'Very Active: intense exercise 6-7 times/week',
     'Extra Active: very intense exercise daily, or physical job',
   ];
+
+  const citations = [
+    'Mifflin, M. D., St Jeor, S. T., Hill, L. A., Scott, B. J., Daugherty, S. A., & Koh, Y. O. (1990). A new predictive equation for resting energy expenditure in healthy individuals. The American Journal of Clinical Nutrition, 51(2), 241–247. https://doi.org/10.1093/ajcn/51.2.241',
+    'Harris, J. A., & Benedict, F. G. (1919). A biometric study of human basal metabolism. Carnegie Institution of Washington.',
+    'Food and Agriculture Organization, World Health Organization, & United Nations University. (2001). Human energy requirements: Report of a joint FAO/WHO/UNU expert consultation (FAO Food and Nutrition Technical Report Series No. 1). FAO. https://www.fao.org/3/y5686e/y5686e00.htm',
+  ];
+
   return (
     <>
       <CalculatorDetails
@@ -253,14 +260,23 @@ export default function BMRCalculator () {
         </Container>
       </RowContainer>
       <div className='w-full flex flex-col gap-10 mt-10'>
-        {/* <Content
-          content={bmiMedicalInterpretation}
+        <Content
+          content='Your Basal Metabolic Rate (BMR) represents the number of calories your body requires at rest to support vital functions like breathing, circulation, and cell production. It is a foundational measure used in nutrition and medical settings to estimate your total energy needs. Because BMR is highly individualized — depending on your sex, age, weight, and height — there are no universal “healthy” or “unhealthy” categories. A higher or lower BMR is not inherently better or worse; it simply reflects how your body burns energy at rest. This value is most useful when planning diets, medical treatments, or fitness goals tailored to your unique physiology.'
           title='Medical Interpretation'
         />
         <Content
-          content={bmiStatisticalInterpretation}
+          content='Statistically, BMR varies widely across the population and is influenced by biological and lifestyle factors. For example, younger individuals, males, and those with more muscle mass tend to have higher BMRs, while older adults or individuals with less lean mass typically have lower rates. There are no standard classification ranges (such as “low” or “high”) for BMR, since calorie requirements are personal and context-specific. Instead, your result should be viewed as a baseline estimate of how much energy your body needs before accounting for physical activity. When combined with your activity level, it helps determine your Total Daily Energy Expenditure (TDEE).'
           title='Statistical Interpretation'
-        /> */}
+        />
+        <Content
+          content = {citations.map((level, index) => (
+            <div className='pb-2 text-sm font-content'>
+              {level}
+            </div>
+          ))}
+          title='Citations'
+        />
+
       </div>
     </>
   );

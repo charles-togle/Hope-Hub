@@ -8,10 +8,9 @@ import { useState } from 'react';
 import CalculatorInput from '@/components/health-calculators/CalculatorInput';
 import Content from '@/components/health-calculators/Content';
 import RowContainer from '@/components/health-calculators/RowContainer';
-import RadioButton from '@/components/health-calculators/RadioButtons';
 
 export default function BodyFatPercentageCalculator () {
-    const [gender, setGender] = useState('');
+    const [gender, setGender] = useState('female');
     const [age, setAge] = useState('25');
     const [height, setHeight] = useState('165');
     const [heightUnit, setHeightUnit] = useState('cm');
@@ -27,9 +26,7 @@ export default function BodyFatPercentageCalculator () {
 
     const [results, setResults] = useState(null);
     const [bodyFatPercentageCategory, setBodyFatPercentageCategory] = useState('...');
-    const [activityLevel, setActivityLevel] = useState('Sedentary (Little to No Exercise)');
     const [BodyFatPercentageResult, setBodyFatPercentageResult] = useState('');
-    const [percentCategoryLevel, setPercentCategoryLevel] = useState('');
     const [FatPercentageMedicalInterpretation, setFatPercentageMedicalInterpretation] = useState(
         'Once you calculate your result, this section will provide a general medical interpretation of your body fat percentage. It will explain what your level may mean for your health, including potential benefits or risks, based on established clinical guidelines. Always consult a healthcare provider for personal advice.',
     );
@@ -62,7 +59,7 @@ export default function BodyFatPercentageCalculator () {
             if(bodyFatPercentage >= 4) return "Essential";
             return "Below";
         default:
-            //throw new Error("Gender must be 'male' or 'female'.");
+            alert('Gender must be "male" or "female".');
             break;
         }
     };
@@ -127,6 +124,13 @@ const handleCalculate = () => {
         'After calculating your body fat percentage, this section will show how your result compares to typical ranges in the general population. It helps you understand where your number falls statistically — whether it\'s common, rare, or above average — and offers context based on observed health trends.',
         );
     };
+
+    const citations = [
+        'Hodgdon, J. A., & Beckett, M. B. (1984). Prediction of percent body fat for U.S. Navy men and women from body circumferences and height (Naval Health Research Center Report No. 84-29). Naval Health Research Center. https://apps.dtic.mil/sti/citations/ADA143890',
+        'Lindberg, S. (2025, March 20). Ideal body fat percentage for men and women. Healthline. https://www.healthline.com/health/exercise-fitness/ideal-body-fat-percentage',
+        'Lee, B., & Kim, J. Y. (2022). Body fat and risk of all‑cause mortality: A systematic review and dose–response meta‑analysis. Journal of the Academy of Nutrition and Dietetics. Advance online publication. https://doi.org/10.1016/j.jand.2022.01.011',
+        'Popkin, B. M., D’Anci, K. E., & Rosenberg, I. H. (2010). Water, hydration, and health. Nutrition Reviews, 68(8), 439–458. https://doi.org/10.1111/j.1753-4887.2010.00304.x',
+    ];
 
   return(
     <>
@@ -257,6 +261,15 @@ const handleCalculate = () => {
             content={FatPercentageStatisticalIntepretation}
             title='Statistical Interpretation'
             />
+            <Content
+            content = {citations.map((level) => (
+                <div className='pb-2 text-sm font-content'>
+                {level}
+                </div>
+            ))}
+            title='Citations'
+            />
+
         </div>
     </>
   )
