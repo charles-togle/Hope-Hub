@@ -22,7 +22,7 @@ export default function QuizDashboard () {
   }, []);
 
   return (
-    <div>
+    <div className='h-screen overflow-y-auto'>
       <PageHeading text='Quizzes' className='bg-background z-2'></PageHeading>
       {isLoading ? (
         <div className='flex justify-center items-center h-[60vh] p-4'>
