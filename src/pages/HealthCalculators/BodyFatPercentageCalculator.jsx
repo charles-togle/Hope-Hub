@@ -240,6 +240,8 @@ const handleCalculate = () => {
             <Container heading = 'Data Reference'>
                 <div className='font-content text-sm'>
                     <div className='relative grid grid-cols-2 fr gap-3 items-center'>
+                        <span className='text-1xl font-bold'> Percentage </span> <span className='text-1xl font-bold'> Bar Visualizer </span>
+                        <div className="border-b-2 border-primary-blue w-10 self-center"/> <div className="border-b-2 border-primary-blue w-10 self-center"/>
                         <span className='flex mb-2 text-red-800'> less than 4% <br/> Below Essential</span> <div className="h-6 flex shadow-md bg-red-800 w-[4%]"/>
                         <span className='flex mb-2 text-yellow-400 '> 4% - 10% <br/> Essential </span> <div className="h-6 shadow-md bg-yellow-400 w-[6%]"/>
                         <span className='flex mb-2 text-green-400 '> 11% - 26% <br/> Athlete </span> <div className="h-6 shadow-md bg-green-400 w-[16%]"/>

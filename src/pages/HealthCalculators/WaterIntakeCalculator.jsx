@@ -54,9 +54,9 @@ export default function WaterIntakeCalculator () {
         switch (categoryKey) {
             case 'below the recommended intake':
             case 'above the recommended intake':
-                return 'text-yellow-500 text-lg mb-3';
+                return 'text-yellow-500 text-2xl mb-3';
             case 'within the recommended intake':
-                return 'text-green-600 text-lg mb-3';
+                return 'text-green-600 text-2xl mb-3';
         }
     };
 
