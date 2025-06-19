@@ -23,7 +23,7 @@ export default function HealthCalculator () {
       className: '',
       linkTo: '/health-calculators/ibw'
     },
-    { text: 'Body Fat Percentage Calculator', className: '', linkTo: '' },
+    { text: 'Body Fat Percentage Calculator', className: '', linkTo: '/health-calculators/bodyfatpercentage' },
     { text: 'Water Intake Calculator', className: '', linkTo: '/health-calculators/waterintake' },
   ];
 

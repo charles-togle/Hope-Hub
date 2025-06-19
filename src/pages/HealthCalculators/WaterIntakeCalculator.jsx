@@ -1,4 +1,4 @@
-import { getBMI, getWaterIntake } from '@/services/Calculations';
+import { getWaterIntake } from '@/services/Calculations';
 import { CalculatorData } from '@/utilities/CalculatorData';
 import Container from '@/components/health-calculators/Container';
 import CalculatorContainer from '@/components/health-calculators/CalculatorContainer';
@@ -20,11 +20,11 @@ export default function WaterIntakeCalculator () {
     const [intakeResult, setIntakeResult] = useState('');
     // const [intakeCategoryColor, setIntakeCategoryColor] = useState('');
     const [intakeMedicalInterpretation, setIntakeMedicalInterpretation] = useState(
-        'Perform a Water Intake calculation to receive personalized medical interpretation based on your results. This will include information about health risks, recommended actions, and medical considerations specific to your BMI category.',
+        'After calculating your daily water needs, this section will provide a general medical interpretation of your result. It will explain how your hydration level may affect bodily functions, such as energy, digestion, and circulation. This is intended as educational guidance and not a clinical diagnosis.',
     );
     const [IntakeStatisticalInterpretation, setIntakeStatisticalInterpretation] =
         useState(
-        'After calculating your Water Intake, you will see how your result compares to population distributions and statistical norms. This provides context for understanding where your BMI falls within broader health statistics.',
+        'Once your result is calculated, this section will show how your water intake compares to typical hydration ranges for your weight and activity level. It gives context for whether your current or recommended intake aligns with common population averages.',
         );
 
     const { WaterIntake } = CalculatorData;
@@ -91,11 +91,9 @@ export default function WaterIntakeCalculator () {
         setIntakeResult('');
         setWaterIntakeCategory('...');
         setIntakeMedicalInterpretation(
-        'Perform a Water Intake calculation to receive personalized medical interpretation based on your results. This will include information about health risks, recommended actions, and medical considerations specific to your BMI category.',
-        );
+        'After calculating your daily water needs, this section will provide a general medical interpretation of your result. It will explain how your hydration level may affect bodily functions, such as energy, digestion, and circulation. This is intended as educational guidance and not a clinical diagnosis.',        );
         setIntakeStatisticalInterpretation(
-        'After calculating your Water Intake, you will see how your result compares to population distributions and statistical norms. This provides context for understanding where your BMI falls within broader health statistics.',
-        );
+        'Once your result is calculated, this section will show how your water intake compares to typical hydration ranges for your weight and activity level. It gives context for whether your current or recommended intake aligns with common population averages.',        );
     };
 
     const activityVariant = [
@@ -115,7 +113,7 @@ export default function WaterIntakeCalculator () {
 
         <RowContainer>
             <CalculatorContainer
-                heading='Body Mass Index (BMI) Calculator'
+                heading='Water Intake Calculator'
                 onCalculate={handleCalculate}
                 onClear={handleClear}>
                 <div className='flex flex-col gap-3'>

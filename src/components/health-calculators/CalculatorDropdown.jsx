@@ -11,7 +11,8 @@ export default function CalculatorDropdown () {
     { label: 'BMI Calculator', value: 'bmi', path: '/health-calculators/bmi' },
     { label: 'BMR Calculator', value: 'bmr', path: '/health-calculators/bmr' },
     { label: 'IBW Calculator', value: 'ibw', path: '/health-calculators/ibw' },
-    { label: 'Water Intake Calculator', value: 'ibw', path: '/health-calculators/waterintake' },
+    { label: 'Water Intake Calculator', value: 'waterintake', path: '/health-calculators/waterintake' },
+    { label: 'Body Fat Percentage Calculator', value: 'bodyfatpercentage', path: '/health-calculators/bodyfatpercentage'},
   ];
 
   // Get current calculator based on URL

@@ -28,6 +28,7 @@ import supabase from './client/supabase';
 import BMICalculator from './pages/HealthCalculators/BMICalculator';
 import BMRCalculator from './pages/HealthCalculators/BMRCalculator';
 import IBWCalculator from './pages/HealthCalculators/IBWCalculator';
+import BodyFatPercentageCalculator from './pages/HealthCalculators/BodyFatPercentageCalculator';
 import WaterIntakeCalculator from './pages/HealthCalculators/WaterIntakeCalculator';
 import { HealthCalculatorWrapper } from './pages/HealthCalculators/HealthCalculatorsWrapper';
 import ViewClass from './pages/Dashboard/ViewClass';
@@ -173,6 +174,7 @@ function App () {
             <Route path='bmr' element={<BMRCalculator />} />
             <Route path='ibw' element={<IBWCalculator />} />
             <Route path='waterintake' element={<WaterIntakeCalculator/>}/>
+            <Route path='bodyfatpercentage' element={<BodyFatPercentageCalculator/>}/>
           </Route>
           <Route path='lectures' element={<LectureWrapper />}>
             <Route index element={<Lectures />} />

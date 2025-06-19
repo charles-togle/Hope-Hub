@@ -124,4 +124,41 @@ export const CalculatorData = {
         'While excess water is typically excreted by healthy kidneys, very high intake may rarely lead to electrolyte imbalance (e.g. hyponatremia) if extreme. For most healthy individuals, slightly elevated intake is not harmful, especially in hot climates or during intense physical activity. Caution is advised only if fluid intake is excessive or medically restricted.',
     },
   },
+  BodyFatPercentage: {
+  description: 'The Body Fat Percentage Calculator estimates how much of your body weight is made up of fat versus lean mass. By using basic body measurements — including height, weight, waist, neck, and hips (for females) — it applies a recognized formula to provide a reliable estimate of your body fat percentage. This tool is useful for understanding body composition beyond what BMI alone can show. While BMI measures weight in relation to height, body fat percentage reveals more about your health, fitness, and physical makeup. It helps identify whether you fall into categories such as athletic, average, or at risk for obesity-related conditions. Your result will include both a medical and statistical interpretation, offering insights into what your body fat percentage means for your health and how it compares to population norms. This can support informed decisions about fitness, nutrition, and long-term wellness planning.',
+  instructions: [
+    'Select either male or female.',
+    'Enter your age in years.',
+    'Enter your height in your prefered unit (m, cm, ft). You can select units by selecting the drop-down icon.',
+    'Enter your weight in your prefered unit (kg, lbs).',
+    'Enter your waist and neck circumference in your prefered unit (m, cm, ft).',
+    'For females: Measure around the widest part of your hips and buttocks.',
+    'Read results below. Medical and statistical interpretations are also viewable. All outputs are for informational use only and not a substitute for professional medical advice.',
+  ],
+  statisticalInterpretation: {
+    Essential: 'This range is most common among competitive athletes or genetically lean individuals. It represents the minimum body fat needed for basic physiological functions.',
+    Athletes: 'This range reflects a highly active or fit population. It aligns with body fat percentages commonly seen in trained athletes or fitness enthusiasts.',
+    Fitness: 'This category captures the average to above-average population range, especially among adults who are active but not highly athletic. It is statistically common in both fit and moderately sedentary individuals.',
+    Average:
+      'This body fat range is statistically high compared to recommended levels and suggests excess fat accumulation in the general population.',
+    Obese:
+      'Body fat over 70% is extremely uncommon and significantly above typical population norms. It reflects an advanced stage of excess adiposity.',
+    Below:
+      'Body fat levels below 4% are extremely rare and typically seen only in elite endurance athletes or individuals with medical conditions. Statistically, this is considered an outlier and may signal extreme leanness or undernourishment.',
+  },
+  medicalInterpretation: {
+    Essential:
+      'While this level of body fat supports essential life functions, staying at the low end may not be sustainable long-term for most people. It may still increase risk of hormonal imbalance or fatigue if not carefully managed.',
+    Athletes:
+      'This level of body fat generally supports optimal physical performance, metabolic health, and energy levels. It’s considered a healthy range for individuals engaged in regular physical training.',
+    Fitness:
+      'While still within a functional range, higher values in this category may begin to increase risk for metabolic concerns. Health outcomes will depend on factors like fat distribution, diet, and activity level.',
+    Average:
+      'At this level, risks for obesity-related conditions such as cardiovascular disease, insulin resistance, and joint strain are increased. Medical guidance may be appropriate to assess long-term risk.',
+    Obese:
+      'This level of body fat is associated with severe health risks including heart disease, type 2 diabetes, respiratory complications, and reduced life expectancy. Professional intervention is strongly advised.',
+    Below:
+      'Such low body fat may impair hormone production, immune function, and temperature regulation. It can lead to fatigue, infertility, and increased risk of organ damage. Medical evaluation is often recommended.',
+  },
+},
 };

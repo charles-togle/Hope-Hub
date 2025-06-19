@@ -1,3 +1,4 @@
+//import { error } from "console";
 import { ActivityIcon } from "lucide-react";
 
 const convertLbsToKg = number => number * 0.4536;
@@ -321,3 +322,160 @@ export const getWaterIntake = (weight, activityLevel, weightUnit) => {
   return parseFloat(waterIntake.toFixed(2));
 
 }
+
+export const getBodyFatPercentage = (
+  age, gender, height, weight, neck, waist, hips,
+  heightUnit, weightUnit, neckUnit, waistUnit, hipsUnit
+) => {
+  // convert height to inches/feet
+  console.log(heightUnit)
+  let neckInInches, waistInInches, hipsInInches;
+  let heightInInches, heightInMeters;
+  if (heightUnit === 'ft') {
+    heightInMeters = convertFtToM(height);
+  } else if (heightUnit === 'cm') {
+    heightInMeters = convertCmToM(height);
+  } else {
+    heightInMeters = height;
+  }
+
+  if (heightUnit === 'ft') {
+    heightInInches = convertFtToInches(height);
+  } else if (heightUnit === 'cm') {
+    heightInInches = convertCmToInches(height);
+  } else {
+    heightInInches = convertMToInches(height);
+  }
+
+  if (neckUnit === 'm') {
+    neckInInches = convertMToInches(neck);
+  } else if (neckUnit === 'cm') {
+    neckInInches = convertCmToInches(neck);
+  } else {
+    neckInInches = convertFtToInches(neck);
+  }
+
+  if (waistUnit === 'm') {
+    waistInInches = convertMToInches(waist);
+  } else if (waistUnit === 'cm') {
+    waistInInches = convertCmToInches(waist);
+  } else {
+    waistInInches = convertFtToInches(waist);
+  }
+
+  if (hips !== undefined && hipsUnit !== undefined) {
+    if (hipsUnit === 'm') {
+      hipsInInches = convertMToInches(hips);
+    } else if (hipsUnit === 'cm') {
+      hipsInInches = convertCmToInches(hips);
+    } else {
+      hipsInInches = convertFtToInches(hips);
+    }
+  }
+  
+  const weightInKg = weightUnit === 'lbs' ? convertLbsToKg(weight) : weight;
+  console.log(gender);
+  // const idealPercent = parseFloat(idealForAgeList(gender, age));
+  // const categoryName = (gender, usMethod) => {
+  //   switch(gender){
+  //     case 'female':
+  //       if(usMethod >= 10 && usMethod <= 13) return "Essential";
+  //       if(usMethod >=14 && usMethod <= 20) return "Athletes";
+  //       if(usMethod >=21 && usMethod <= 24) return "Fitness";
+  //       if(usMethod >=25 && usMethod <= 31) return "Average";
+  //       if(usMethod >=32 ) return "Obese";
+  //       return "Below essential";
+  //     case 'male':
+  //       if(usMethod >= 10 && usMethod <= 13) return "Essential";
+  //       if(usMethod >=14 && usMethod <= 20) return "Athletes";
+  //       if(usMethod >=21 && usMethod <= 24) return "Fitness";
+  //       if(usMethod >=25 && usMethod <= 31) return "Average";
+  //       if(usMethod >=32 ) return "Obese";
+  //       return "Below essential";
+  //     default:
+  //       //throw new Error("Gender must be 'male' or 'female'.");
+  //       break;
+  //   }
+
+  // };
+
+  let idealForAge, usMethod, massInKg, leanMassInKg, idealLoss, bmi, bmiMethod;
+  
+  const idealForAgeList = (gender, age) => {
+    switch (gender) {
+      case 'male':
+        if(age < 20) return idealForAge = 13;
+        if(age < 40) return idealForAge = 13.5;
+        if(age < 60) return idealForAge = 16;
+        if(age < 80) return idealForAge = 18.5;
+        return idealForAge = 20;
+      case 'female':
+        if(age < 20) return idealForAge = 22;
+        if(age < 40) return idealForAge = 26.5;
+        if(age < 60) return idealForAge = 28;
+        if(age < 80) return idealForAge = 29.5;
+        return idealForAge = 30.5;
+    };
+  };
+  
+  const idealPercent = parseFloat(idealForAgeList(gender, age));
+
+  switch (gender) {
+    case 'male':
+      usMethod = 86.010 * Math.log10(waistInInches - neckInInches) - 70.041 * Math.log10(heightInInches) + 36.76;
+      //category = categoryName(gender, usMethod);
+
+      massInKg = (usMethod / 100) * weightInKg;
+      leanMassInKg = weightInKg - massInKg;
+
+      idealForAge = idealForAgeList(gender, age);
+      bmi = weightInKg / (heightInMeters ** 2 );
+      
+      idealLoss = massInKg - (idealPercent / 100 * weightInKg);
+      bmiMethod = (1.20 * bmi) + (0.23 * age) - (10.8 * 1) - 5.4;
+      
+        console.log("us method: " + usMethod);
+  console.log("mass in kg: " + massInKg);
+  console.log("lean mass in kg: " + leanMassInKg);
+  console.log("bmi: " + bmi);
+  console.log("ideal loss: " + idealLoss);
+  console.log("bmi method: " + bmiMethod);
+      
+      break;
+    case 'female':
+      usMethod = 163.205 * Math.log10(waistInInches + hipsInInches - neckInInches) - 97.684 * Math.log10(heightInInches) - 78.387;
+      //category = categoryName(gender, usMethod);
+
+      massInKg = (usMethod / 100) * weightInKg;
+      leanMassInKg = weightInKg - massInKg;
+
+      idealForAgeList(gender, age);
+      bmi = weightInKg / (heightInMeters ** 2 );
+
+      idealLoss = massInKg - (parseFloat(idealForAgeList(gender, age).toFixed(2)) / 100 * weightInKg);
+      bmiMethod = (1.20 * bmi) + (0.23 * age) - (10.8 * 0) - 5.4;
+      
+      console.log("us method: " + usMethod);
+  console.log("mass in kg: " + massInKg);
+  console.log("lean mass in kg: " + leanMassInKg);
+  console.log("bmi: " + bmi);
+  console.log("ideal loss: " + idealLoss);
+  console.log("bmi method: " + bmiMethod);
+      break;
+    default:
+      console.log(gender);
+      throw new Error("Gender must be 'male' or 'female'.");
+      break;
+  }
+
+  return {
+    results: {
+      'Body Fat: U.S. Navy Method': parseFloat(usMethod.toFixed(2)) + "%",
+      'Body Fat Mass': parseFloat(massInKg.toFixed(2)) + "kg",
+      'Lean Body Mass': parseFloat(leanMassInKg.toFixed(2)) + "kg",
+      'Lean Body Fat for Given Age': parseFloat(idealForAge.toFixed(2)) + "%",
+      'Body Fat Loss to Reach Ideal': parseFloat(idealLoss.toFixed(2)) + "%",
+      'Body Fat: BMI Method': parseFloat(bmiMethod.toFixed(2)) + "%",
+    }
+  }
+};

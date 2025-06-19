@@ -16,20 +16,20 @@ export default function IBWCalculator () {
   const [height, setHeight] = useState('');
   const [results, setResults] = useState(null);
   const [ibwMedicalInterpretation, setIbwMedicalInterpretation] = useState(
-    'Perform an IBW calculation to receive personalized medical interpretation based on your results. This will include information about health risks, recommended actions, and medical considerations specific to your BMI category.',
+    'After calculating your Ideal Body Weight (IBW), this section will provide a medical interpretation of what your result may indicate. It will explain how your estimated IBW can be used in clinical contexts, such as for medication dosing, nutritional planning, or assessing health risk. This information is general and not a substitute for medical advice.',
   );
   const [ibwStatisticalInterpretation, setIbwStatisticalInterpretation] =
     useState(
-      'After calculating your IBW, you will see how your result compares to population distributions and statistical norms. This provides context for understanding where your BMI falls within broader health statistics.',
+      'Once your IBW is calculated, this section will help you understand how your current weight compares to population-based weight expectations for your height and sex. It provides context on whether you are below, within, or above typical reference ranges used in health assessments.',
     );
 
-  const { IBW } = CalculatorData;
+  const { BodyFatPercentage } = CalculatorData;
   const {
     description,
     instructions,
     statisticalInterpretation,
     medicalInterpretation,
-  } = IBW;
+  } = BodyFatPercentage;
 
   const heightUnits = ['cm', 'ft', 'm'];
   const weightUnits = ['kg', 'lbs'];
@@ -63,10 +63,10 @@ export default function IBWCalculator () {
     setHeight('');
     setIbwResult(null);
     setIbwMedicalInterpretation(
-      'Perform an IBW calculation to receive personalized medical interpretation based on your results. This will include information about health risks, recommended actions, and medical considerations specific to your BMI category.',
+      'After calculating your Ideal Body Weight (IBW), this section will provide a medical interpretation of what your result may indicate. It will explain how your estimated IBW can be used in clinical contexts, such as for medication dosing, nutritional planning, or assessing health risk. This information is general and not a substitute for medical advice.',
     );
     setIbwStatisticalInterpretation(
-      'After calculating your IBW, you will see how your result compares to population distributions and statistical norms. This provides context for understanding where your BMI falls within broader health statistics.',
+      'Once your IBW is calculated, this section will help you understand how your current weight compares to population-based weight expectations for your height and sex. It provides context on whether you are below, within, or above typical reference ranges used in health assessments.',
     );
   };
 
