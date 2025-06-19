@@ -107,6 +107,10 @@ export default function LecturePage () {
       .from('lecture_progress')
       .update({ lecture_progress: updatedProgress })
       .eq('uuid', userId);
+
+
+
+    //add unlocking quiz
   };
 
   // Render: error message
