@@ -20,7 +20,6 @@ export default function Timer({ duration, color, onTimerEnd }) {
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
       const remainingTime = duration - elapsed;
       if (elapsed > duration) {
-        console.log('Timer ended');
         clearInterval(interval);
         setHasTimerEnded(true);
       } else setTime(remainingTime);
@@ -47,7 +46,7 @@ export default function Timer({ duration, color, onTimerEnd }) {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="size-8"
+        className="size-7 lg:size-8"
         src={TimerIcon}
         alt="timer"
       />
@@ -61,7 +60,7 @@ export default function Timer({ duration, color, onTimerEnd }) {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className={`font-content text-${color}`}
+        className={`text-base font-content text-${color}`}
       >
         {time} {time > 1 ? 'seconds' : 'second'}
       </motion.span>
