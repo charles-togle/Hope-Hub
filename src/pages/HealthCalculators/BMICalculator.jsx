@@ -200,17 +200,24 @@ export default function BMICalculator () {
         <Content
           content={bmiStatisticalInterpretation}
           title='Statistical Interpretation'
-        />
+        />{' '}
         <Content
-          content = {citations.map((citation, index) => (
+          content={citations.map((citation, index) => (
             <div className='mb-5 text-wrap text-justify'>
-              <div key = {index}>
+              <div key={index}>
                 {citation.name}
-                <a href={citation.link} target='_blank' className='text-blue-400 hover:underline'> {citation.link} </a>
+                <a
+                  href={citation.link}
+                  target='_blank'
+                  className='text-blue-400 hover:underline'
+                >
+                  {' '}
+                  {citation.link}{' '}
+                </a>
               </div>
             </div>
           ))}
-          title='Citations'
+          title='References'
         />
       </div>
     </>
