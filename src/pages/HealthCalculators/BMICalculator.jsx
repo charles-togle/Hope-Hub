@@ -10,12 +10,12 @@ import Content from '@/components/health-calculators/Content';
 import RowContainer from '@/components/health-calculators/RowContainer';
 
 export default function BMICalculator () {
-  const [gender, setGender] = useState('male');
-  const [age, setAge] = useState('20');
+  const [gender, setGender] = useState('');
+  const [age, setAge] = useState('');
   const [heightUnit, setHeightUnit] = useState('cm');
   const [weightUnit, setWeightUnit] = useState('kg');
-  const [height, setHeight] = useState('172');
-  const [weight, setWeight] = useState('81');
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
   const [bmiResult, setBmiResult] = useState(null);
   const [bmiCategory, setBmiCategory] = useState('No data');
   const [bmiMedicalInterpretation, setBmiMedicalInterpretation] = useState(
@@ -104,12 +104,30 @@ export default function BMICalculator () {
   };
 
   const citations = [
-    'World Health Organization. (2021). Obesity and overweight: Key facts. https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight',
-    'Centers for Disease Control and Prevention. (2022). About adult BMI. U.S. Department of Health & Human Services. https://www.cdc.gov/bmi/faq/?CDC_AAref_Val=https://www.cdc.gov/healthyweight/assessing/bmi/adult_bmi/index.html',
-    'National Institutes of Health. (1998). Clinical guidelines on the identification, evaluation, and treatment of overweight and obesity in adults: The evidence report (NIH Publication No. 98–4083). https://www.nhlbi.nih.gov/files/docs/guidelines/ob_gdlns.pdf',
-    'Prospective Studies Collaboration. (2009). Body-mass index and cause-specific mortality in 900,000 adults: Collaborative analyses of 57 prospective studies. The Lancet, 373(9669), 1083–1096. https://doi.org/10.1016/S0140-6736(09)60318-4',
-    'Flegal, K. M., Kit, B. K., Orpana, H., & Graubard, B. I. (2013). Association of all‑cause mortality with overweight and obesity using standard body mass index categories: A systematic review and meta‑analysis. JAMA, 309(1), 71–82. https://doi.org/10.1001/jama.2012.113905',
-    'Di Angelantonio, E., Bhupathiraju, S. N., Wormser, D., Gao, P., Kaptoge, S., Berrington de Gonzalez, A., … Woodward, M. (2016). Body-mass index and all-cause mortality: Individual‑participant-data meta‑analysis of 239 prospective studies in four continents. The Lancet, 388(10046), 776–786. https://pubmed.ncbi.nlm.nih.gov/27423262/',
+    {
+      name: '[1] World Health Organization. (2021). Obesity and overweight: Key facts.',
+      link: 'https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight',
+    },
+    {
+      name: '[2] Centers for Disease Control and Prevention. (2022). About adult BMI. U.S. Department of Health & Human Services.',
+      link: 'https://www.cdc.gov/bmi/faq/?CDC_AAref_Val=https://www.cdc.gov/healthyweight/assessing/bmi/adult_bmi/index.html',
+    },
+    {
+      name: '[3] National Institutes of Health. (1998). Clinical guidelines on the identification, evaluation, and treatment of overweight and obesity in adults: The evidence report (NIH Publication No. 98–4083).',
+      link: 'https://www.nhlbi.nih.gov/files/docs/guidelines/ob_gdlns.pdf',
+    },
+    {
+      name: '[4] Prospective Studies Collaboration. (2009). Body-mass index and cause-specific mortality in 900,000 adults: Collaborative analyses of 57 prospective studies. The Lancet, 373(9669), 1083–1096.',
+      link: 'https://doi.org/10.1016/S0140-6736(09)60318-4',
+    },
+    {
+      name: '[5] Flegal, K. M., Kit, B. K., Orpana, H., & Graubard, B. I. (2013). Association of all‑cause mortality with overweight and obesity using standard body mass index categories: A systematic review and meta‑analysis. JAMA, 309(1), 71–82.',
+      link: 'https://doi.org/10.1001/jama.2012.113905',
+    },
+    {
+      name: '[6] Di Angelantonio, E., Bhupathiraju, S. N., Wormser, D., Gao, P., Kaptoge, S., Berrington de Gonzalez, A., … Woodward, M. (2016). Body-mass index and all-cause mortality: Individual‑participant-data meta‑analysis of 239 prospective studies in four continents. The Lancet, 388(10046), 776–786.',
+      link: 'https://pubmed.ncbi.nlm.nih.gov/27423262/',
+    },
   ];
 
   return (
@@ -146,7 +164,7 @@ export default function BMICalculator () {
           </div>
         </CalculatorContainer>
         <Container heading='Instructions'>
-          <ol className='list-decimal font-content'>
+          <ol className='list-decimal font-content text-sm md:text-lg'>
             {instructions.map((instruction, index) => (
               <li key={`Instruction ${index}`}>{instruction}</li>
             ))}
@@ -155,14 +173,14 @@ export default function BMICalculator () {
       </RowContainer>
       <RowContainer>
         <Container heading='Results'>
-          <p className='font-content w-full text-center text-lg'>
+          <p className='font-content w-full text-center text-sm md:text-lg'>
             BMI: {bmiResult || '0.00'} kg/m²{' '}
             <span className={getBMICategoryColor(bmiCategory)}>
               ({bmiCategory})
             </span>
           </p>
         </Container>
-        <Container heading='BMI POINTERS' className='w-1/2'>
+        <Container heading='BMI POINTERS' className='text-sm md:text-lg w-1/2'>
           <ol className='list-decimal font-content'>
             <li>Healthy Range: 18.5 – 24.9</li>
             <li>Underweight: Below 18.5</li>
@@ -174,7 +192,7 @@ export default function BMICalculator () {
           </p>
         </Container>
       </RowContainer>
-      <div className='w-full flex flex-col gap-10 mt-10'>
+      <div className='w-full flex flex-col gap-10 mt-10 sm:text-xs md:text-sm'>
         <Content
           content={bmiMedicalInterpretation}
           title='Medical Interpretation'
@@ -184,9 +202,12 @@ export default function BMICalculator () {
           title='Statistical Interpretation'
         />
         <Content
-          content = {citations.map((level, index) => (
-            <div className='pb-2 text-sm font-content'>
-              {level}
+          content = {citations.map((citation, index) => (
+            <div className='mb-5 text-wrap text-justify'>
+              <div key = {index}>
+                {citation.name}
+                <a href={citation.link} target='_blank' className='text-blue-400 hover:underline'> {citation.link} </a>
+              </div>
             </div>
           ))}
           title='Citations'

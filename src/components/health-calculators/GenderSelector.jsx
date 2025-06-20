@@ -1,9 +1,9 @@
 export default function GenderSelector ({ gender, setGender }) {
   return (
-    <div className='flex flex-row justify-between w-full font-content'>
-      <p className='text-lg'>Gender</p>
-      <div className='w-2/3 flex justify-around'>
-        <label className='text-lg'>
+    <div className='flex flex-col justify-between w-full font-content md:flex-row'>
+      <p className='text-sm md:text-lg pb-2 sm:pb-0'>Gender</p>
+      <div className='w-full flex justify-around align-middle text-xs md:text-s'>
+        <label className='text-xs md:text-sm'>
           <input
             type='radio'
             name='gender'
@@ -14,7 +14,7 @@ export default function GenderSelector ({ gender, setGender }) {
           />
           Male
         </label>
-        <label className='text-lg'>
+        <label className='text-xs md:text-sm'>
           <input
             type='radio'
             name='gender'

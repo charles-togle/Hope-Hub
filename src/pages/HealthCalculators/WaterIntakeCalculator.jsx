@@ -11,7 +11,7 @@ import RadioButton from '@/components/health-calculators/RadioButtons';
 
 export default function WaterIntakeCalculator () {
     const [weightUnit, setWeightUnit] = useState('kg');
-    const [weight, setWeight] = useState('81');
+    const [weight, setWeight] = useState('');
     const [waterIntakeCategory, setWaterIntakeCategory] = useState('...');
     const [activityLevel, setActivityLevel] = useState('Sedentary (Little to No Exercise)');
     const [intakeResult, setIntakeResult] = useState('');
@@ -101,11 +101,24 @@ export default function WaterIntakeCalculator () {
     ]
 
     const citations = [
-        'Institute of Medicine. (2005). Dietary reference intakes for water, potassium, sodium, chloride, and sulfate. The National Academies Press. https://doi.org/10.17226/10925',
-        'Popkin, B. M., D’Anci, K. E., & Rosenberg, I. H. (2010). Water, hydration, and health. Nutrition Reviews, 68(8), 439–458. https://doi.org/10.1111/j.1753-4887.2010.00304.x',    
-        'European Food Safety Authority. (2010). Scientific opinion on dietary reference values for water. EFSA Journal, 8(3), 1459. https://doi.org/10.2903/j.efsa.2010.1459',
-        'El Milad, H. S., Chughtai, M., & Stoinski, S. (2020). Hydration and kidney stone risk: A systematic review. Nutrition Reviews, 78(7), 535–546. https://doi.org/10.1093/nutrit/nuz082',
+        {
+            name: '[1] Institute of Medicine. (2005). Dietary reference intakes for water, potassium, sodium, chloride, and sulfate. The National Academies Press.',
+            link: 'https://doi.org/10.17226/10925',
+        },
+        {
+            name: '[2] Popkin, B. M., D’Anci, K. E., & Rosenberg, I. H. (2010). Water, hydration, and health. Nutrition Reviews, 68(8), 439–458.',
+            link: 'https://doi.org/10.1111/j.1753-4887.2010.00304.x',
+        },
+        {
+            name: '[3] European Food Safety Authority. (2010). Scientific opinion on dietary reference values for water. EFSA Journal, 8(3), 1459.',
+            link: 'https://doi.org/10.2903/j.efsa.2010.1459',
+        },
+        {
+            name: '[4] El Milad, H. S., Chughtai, M., & Stoinski, S. (2020). Hydration and kidney stone risk: A systematic review. Nutrition Reviews, 78(7), 535–546.',
+            link: 'https://doi.org/10.1093/nutrit/nuz082',
+        },
     ];
+
 
   return(
     <>
@@ -167,9 +180,12 @@ export default function WaterIntakeCalculator () {
             title='Statistical Interpretation'
             />
             <Content
-            content = {citations.map((level, index) => (
-                <div className='pb-2 text-sm font-content'>
-                {level}
+            content = {citations.map((citation, index) => (
+                <div className='mb-5 text-wrap text-justify'>
+                <div key = {index}>
+                    {citation.name}
+                    <a href={citation.link} target='_blank' className='text-blue-400 hover:underline'> {citation.link} </a>
+                </div>
                 </div>
             ))}
             title='Citations'

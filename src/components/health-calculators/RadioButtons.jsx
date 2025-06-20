@@ -17,13 +17,13 @@ export default function RadioButton ({
   const [shown, setShown] = useState(false);
 
   return (
-    <div className='radio-group font-content border-1 border-black rounded-2xl p-3'>
+    <div className='radio-group font-content border-1 border-black rounded-2xl px-3 pt-3 pb-2'>
       <div
         className='flex gap-5 items-center  mb-3 cursor-pointer'
         onClick={() => setShown(prev => !prev)}
       >
         {text && (
-          <label className='text-lg font-medium text-gray cursor-pointer'>
+          <label className='text-xs md:text-sm font-medium text-gray cursor-pointer'>
             {text}
           </label>
         )}
@@ -58,19 +58,19 @@ export default function RadioButton ({
                     />
                     <label
                       htmlFor={`${name}-${index}`}
-                      className='ml-2 text-sm text-gray-900 cursor-pointer'
+                      className='ml-2 text-xs md:text-sm text-gray-900 cursor-pointer'
                     >
                       {choice.label || choice}
                     </label>
                   </div>
 
                   {isLastChoice && showBodyFat && (
-                    <div className='flex items-center gap-2 bg-gray-50 px-2 rounded-lg border'>
+                    <div className='flex flex-col md:flex-row p-1 items-center gap-1 bg-gray-50 px-2 rounded-lg border'>
                       <label
                         htmlFor='body-fat'
-                        className='text-sm text-gray-700'
+                        className='text-xs md:text-sm text-gray-700'
                       >
-                        Body Fat
+                        Body Fat %
                       </label>
                       <input
                         type='number'
@@ -81,9 +81,8 @@ export default function RadioButton ({
                         min='5'
                         max='50'
                         step='0.1'
-                        className='bg-white border border-gray-300 rounded-md w-20 px-2 py-1 text-sm focus:ring-2 focus:ring-primary-blue focus:border-primary-blue'
+                        className='text-xs md:text-sm my-1 bg-white border border-gray-300 rounded-md w-20 sm:w-20 px-2 py-1 focus:ring-2 focus:ring-primary-blue focus:border-primary-blue'
                       />
-                      <span className='text-sm text-gray-600'>%</span>
                     </div>
                   )}
                 </div>

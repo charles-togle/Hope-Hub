@@ -5,7 +5,7 @@ export default function Content ({ title, content }) {
         {title}:
       </h2>
       <hr className='h-0 w-60 border-1 border-primary-yellow mt-2 mb-4' />
-      <p className='font-content'>{content}</p>
+      <p className='font-content text-sm text-wrap md:text-lg'>{content}</p>
     </div>
   );
 }
