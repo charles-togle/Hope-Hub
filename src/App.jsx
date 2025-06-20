@@ -42,7 +42,7 @@ function SidebarLayout () {
 
     if (currentScroll > lastScrollY && currentScroll > 200) {
       setShowMenu(false);
-    } else if (currentScroll < lastScrollY && currentScroll > 400) {
+    } else if (currentScroll < lastScrollY > 400 || currentScroll <= 0) {
       setShowMenu(true);
     }
 

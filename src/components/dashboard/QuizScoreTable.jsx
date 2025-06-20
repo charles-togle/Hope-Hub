@@ -15,16 +15,19 @@ export default function QuizScoreTable ({ quizData, quizCount }) {
   }, [quizData]);
 
   return (
-    <Container className='p-0!'>
-      <table className='w-full font-content overflow-hidden mt-5 mb-5'>
+    <Container className='p-0! mb-3'>
+      <table className='w-full font-content overflow-hidden'>
         <tbody>
-          <tr className='bg-neutral-dark-blue text-white h-15 w-full'>
+          <tr className='bg-neutral-dark-blue text-white h-15 w-full text-sm md:text-base lg:text-base'>
             <th className='w-1/3'>Quiz No.</th>
             <th className='w-1/3'>Date Taken</th>
             <th className='w-1/3'>Score</th>
           </tr>
           {sortedQuizData.map((data, index) => (
-            <tr key={data.quiz_id || index} className='font-semibold h-10'>
+            <tr
+              key={data.quiz_id || index}
+              className='font-semibold h-10 text-xs lg:text-base md:text-base'
+            >
               <td>Quiz No.{data.quiz_id}</td>
               <td
                 className={
