@@ -7,49 +7,126 @@ export function Timer ({
   time = 320,
   className,
   setTimerCustom = null,
+  storageKey = 'timer',
 }) {
   const timerRef = useRef(null);
-  const [timer, setTimer] = useState(time);
+  const [currentTime, setCurrentTime] = useState(time);
+  const [hasInitialized, setHasInitialized] = useState(false);
 
-  const startTimer = useCallback(() => {
-    if (!timerRef.current) {
-      timerRef.current = setInterval(() => {
-        if (setTimerCustom !== null) {
-          setTimerCustom(prev => Math.max(prev - 1, 0));
-        } else {
-          setTimer(prev => Math.max(prev - 1, 0));
-        }
-      }, 1000);
-    }
-  }, [setTimerCustom]);
-
-  const stopTimer = () => {
+  const updateTime = useCallback(
+    secondsLeft => {
+      if (typeof setTimerCustom === 'function') {
+        setTimerCustom(secondsLeft);
+      } else {
+        setCurrentTime(secondsLeft);
+      }
+    },
+    [setTimerCustom],
+  );
+  const stopTimer = useCallback(() => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
-  };
-
-  useEffect(() => {
-    startTimer();
-    onStart();
-    return () => {
-      stopTimer();
-    };
-  }, [onStart, startTimer]);
-
-  useEffect(() => {
-    if (timer === 0) {
-      onEnd();
+    localStorage.removeItem(`${storageKey}RemainingTime`);
+    localStorage.removeItem(`${storageKey}IsRunning`);
+  }, [storageKey]);
+  const pauseTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
     }
-  }, [onEnd, timer]);
+  }, []);
+  const startTimer = useCallback(
+    durationInSeconds => {
+      localStorage.setItem(
+        `${storageKey}RemainingTime`,
+        durationInSeconds.toString(),
+      );
+      localStorage.setItem(`${storageKey}IsRunning`, 'true');
+
+      timerRef.current = setInterval(() => {
+        const currentRemaining =
+          parseInt(localStorage.getItem(`${storageKey}RemainingTime`)) || 0;
+        const newTime = currentRemaining - 1;
+
+        if (newTime > 0) {
+          updateTime(newTime);
+          localStorage.setItem(
+            `${storageKey}RemainingTime`,
+            newTime.toString(),
+          );
+        } else {
+          updateTime(0);
+          stopTimer();
+          onEnd();
+        }
+      }, 1000);
+    },
+    [updateTime, stopTimer, onEnd, storageKey],
+  );
+  useEffect(() => {
+    if (hasInitialized) return; // Only run once
+
+    const savedRemainingTime = localStorage.getItem(
+      `${storageKey}RemainingTime`,
+    );
+    const savedIsRunning = localStorage.getItem(`${storageKey}IsRunning`);
+
+    const remainingTime = parseInt(savedRemainingTime);
+    const isRunning = savedIsRunning === 'true';
+
+    if (
+      savedRemainingTime &&
+      isRunning &&
+      !isNaN(remainingTime) &&
+      remainingTime > 0
+    ) {
+      updateTime(remainingTime);
+
+      // Continue timer from saved remaining time
+      timerRef.current = setInterval(() => {
+        const currentRemaining =
+          parseInt(localStorage.getItem(`${storageKey}RemainingTime`)) || 0;
+        const newTime = currentRemaining - 1;
+
+        if (newTime > 0) {
+          updateTime(newTime);
+          localStorage.setItem(
+            `${storageKey}RemainingTime`,
+            newTime.toString(),
+          );
+        } else {
+          updateTime(0);
+          stopTimer();
+          onEnd();
+        }
+      }, 1000);
+
+      onStart();
+    } else {
+      // No saved timer or timer finished - start fresh
+      updateTime(time);
+      startTimer(time);
+      onStart();
+    }
+    setHasInitialized(true);
+
+    return () => {
+      pauseTimer(); // Only pause, don't clear localStorage on unmount
+    };
+  }, [storageKey]);
+
+  const displayTime =
+    typeof setTimerCustom === 'function' ? currentTime : currentTime;
 
   return (
-    <div className={`${className}`}>
+    <div className={className}>
       <img src={timerIcon} alt='rest-timer' className='w-[15%]' />
       <p className='text-wrap text-sm'>
-        {Math.floor(timer / 60)} : {String(timer % 60).padStart(2, '0')}{' '}
-        <span>{timer < 60 ? 'seconds' : 'mins'}</span>
+        {Math.floor(displayTime / 60)} :{' '}
+        {String(displayTime % 60).padStart(2, '0')}{' '}
+        <span>{displayTime < 60 ? 'seconds' : 'mins'}</span>
       </p>
     </div>
   );

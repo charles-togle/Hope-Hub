@@ -22,7 +22,7 @@ export default function QuizDashboard () {
   }, []);
 
   return (
-    <div>
+    <div className='h-screen overflow-y-auto'>
       <PageHeading text='Quizzes' className='bg-background z-2'></PageHeading>
       {isLoading ? (
         <div className='flex justify-center items-center h-[60vh] p-4'>
@@ -32,7 +32,7 @@ export default function QuizDashboard () {
         <>
           <div
             id='header'
-            className='flex flex-wrap lg:justify-between justify-center sticky top-0 pt-5 pb-1 z-10 bg-background lg:w-full lg:px-20'
+            className='flex flex-wrap lg:justify-between md:justify-between justify-start sticky top-0 pt-5 lg:pt-5 md:pt-0 pb-1 z-10 bg-background lg:w-full lg:px-20 md:px-20 px-7 '
           >
             <h2 className='font-heading-small text-2xl lg:text-3xl text-primary-blue border-primary-yellow border-b-3 pb-2'>
               Dashboard

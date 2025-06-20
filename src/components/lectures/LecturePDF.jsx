@@ -46,6 +46,7 @@ export default function LecturePDF ({
               onEnd={() => {
                 onTimerEnd();
               }}
+              storageKey={`Lecture${lectureNumber}Timer`}
             ></Timer>
           </div>
           <ul className='pt-3 pb-5 text-sm lg:text-base'>
