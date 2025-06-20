@@ -9,7 +9,7 @@ import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
 import LectureProgress from '@/utilities/LectureProgress';
 import Loading from '@/components/Loading';
-export default function LecturePage () {
+export default function LecturePage() {
   const { lessonNumber, lectureType } = useParams();
   const navigate = useNavigate();
   const userId = useUserId();
@@ -21,7 +21,7 @@ export default function LecturePage () {
   const selectedLessonNumber = Number(lessonNumber);
 
   const lessonDetails = Lessons.find(
-    lesson => lesson.key === selectedLessonNumber,
+    (lesson) => lesson.key === selectedLessonNumber,
   );
 
   // Fetch lecture progress from DB on mount
@@ -68,7 +68,7 @@ export default function LecturePage () {
     if (!dataLoaded) return;
     if (!lectureProgress || lectureProgress.length === 0) return;
     const updateProgress = async () => {
-      const updatedProgress = lectureProgress.map(progress => {
+      const updatedProgress = lectureProgress.map((progress) => {
         if (progress.key === selectedLessonNumber) {
           if (progress.status === 'Done') setIsLectureDone(true);
           if (progress.status === 'Incomplete')
@@ -93,11 +93,11 @@ export default function LecturePage () {
   const handleLectureFinish = async () => {
     if (isLectureDone) return;
     const lectureToUpdate = lectureProgress.find(
-      p => p.key === selectedLessonNumber,
+      (p) => p.key === selectedLessonNumber,
     );
     if (!lectureToUpdate)
       return console.error('Lecture not found in progress!');
-    const updatedProgress = lectureProgress.map(p =>
+    const updatedProgress = lectureProgress.map((p) =>
       p.key === selectedLessonNumber ? { ...p, status: 'Done' } : p,
     );
     setLectureProgress(updatedProgress);
@@ -107,15 +107,18 @@ export default function LecturePage () {
       .from('lecture_progress')
       .update({ lecture_progress: updatedProgress })
       .eq('uuid', userId);
-
-
-
     //add unlocking quiz
+
+    await supabase
+      .from('quiz_progress')
+      .insert([
+        { user_id: userId, quiz_id: selectedLessonNumber, status: 'Pending' },
+      ]);
   };
 
   // Render: error message
   if (!lessonDetails || isError) {
-    return <ErrorMessage text='Error 404' subText='Page not found' />;
+    return <ErrorMessage text="Error 404" subText="Page not found" />;
   }
   if (!dataLoaded) {
     return <Loading />;
@@ -124,13 +127,13 @@ export default function LecturePage () {
   const { pdf, introduction, title, videoLecture, quizLink } = lessonDetails;
 
   return (
-    <section id='lecture-page' className='min-h-screen bg-gray-background'>
-      <PageHeading text='Lecture & Video Lessons' />
-      <div className='w-[90%] lg:w-[80%] mx-auto mt-5 flex flex-col items-center pb-10'>
+    <section id="lecture-page" className="min-h-screen bg-gray-background">
+      <PageHeading text="Lecture & Video Lessons" />
+      <div className="w-[90%] lg:w-[80%] mx-auto mt-5 flex flex-col items-center pb-10">
         <button
-          id='switch'
-          onClick={() => setIsVideo(prev => !prev)}
-          className='px-5 mb-3 py-2 text-xl self-start font-content border-2 border-accent-blue bg-secondary-dark-blue text-white hover:bg-accent-blue transition-all'
+          id="switch"
+          onClick={() => setIsVideo((prev) => !prev)}
+          className="px-5 mb-3 py-2 text-xl self-start font-content border-2 border-accent-blue bg-secondary-dark-blue text-white hover:bg-accent-blue transition-all"
         >
           {isVideo ? 'READ DOCUMENT' : 'WATCH VIDEO LECTURE'}
         </button>

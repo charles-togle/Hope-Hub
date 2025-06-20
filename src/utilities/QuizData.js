@@ -1,12 +1,26 @@
 import supabase from '@/client/supabase';
 import { shuffleArray } from '@/utilities/utils';
+import { use } from 'react';
 
 async function fetchQuizzes() {
   const user = await getCurrentUser();
 
-  const { data, error } = user
-    ? await fetchQuizzesOfUser(user)
-    : await fetchQuizzesDefault();
+  const userData = await supabase
+    .from('profile')
+    .select(
+      `
+    user_type
+    `,
+    )
+    .eq('uuid', user.id)
+    .single();
+
+  const userType = userData.data.user_type;
+
+  const { data, error } =
+    user && userType === 'student'
+      ? await fetchQuizzesOfUser(user)
+      : await fetchQuizzesDefault();
 
   if (error) {
     console.error('Error fetching quizzes:', error);
