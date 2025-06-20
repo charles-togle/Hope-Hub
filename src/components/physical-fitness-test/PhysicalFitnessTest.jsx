@@ -244,6 +244,7 @@ export default function PhysicalFitnessTest ({
               className='flex flex-row justify-start items-center space-x-5 lg:relative lg:right-0 lg:w-[50%] lg:mt-2'
               onEnd={() => setIsTimeout(true)}
               time={timerTime}
+              storageKey={`${testName}TimerPFT`}
             ></Timer>
           </div>
           <iframe
