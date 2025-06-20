@@ -6,7 +6,7 @@ export function HealthCalculatorWrapper () {
   return (
     <div>
       <PageHeading text='Fitness & Health Calculators' />
-      <div className='content-container w-[90%]! px-2! pb-20'>
+      <div className='content-container w-[90%]! pb-20'>
         <div className='w-full flex'>
           <CalculatorDropdown />
         </div>

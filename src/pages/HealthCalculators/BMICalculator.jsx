@@ -161,10 +161,10 @@ export default function BMICalculator () {
               value={weight}
               units={weightUnits}
             />
-          </div>
+          </div>{' '}
         </CalculatorContainer>
         <Container heading='Instructions'>
-          <ol className='list-decimal font-content text-sm md:text-lg'>
+          <ol className='list-decimal font-content text-base'>
             {instructions.map((instruction, index) => (
               <li key={`Instruction ${index}`}>{instruction}</li>
             ))}

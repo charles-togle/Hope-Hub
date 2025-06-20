@@ -117,10 +117,10 @@ export default function IBWCalculator () {
               units={heightUnits}
             />
           </div>
-        </CalculatorContainer>
+        </CalculatorContainer>{' '}
         <Container heading='Instructions'>
           <div className=''>
-            <ol className='list-decimal font-content'>
+            <ol className='list-decimal font-content text-base'>
               {instructions.map((instruction, index) => (
                 <li key={`Instruction ${index}`}>{instruction}</li>
               ))}
