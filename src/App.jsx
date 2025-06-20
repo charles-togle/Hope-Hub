@@ -25,6 +25,12 @@ import HamburgerMenu from './assets/icons/hamburger_icon.png';
 import AccountVerification from './pages/Auth/AccountVerification';
 import TeacherDashboard from './pages/Dashboard/TeacherDashboard';
 import supabase from './client/supabase';
+import BMICalculator from './pages/HealthCalculators/BMICalculator';
+import BMRCalculator from './pages/HealthCalculators/BMRCalculator';
+import IBWCalculator from './pages/HealthCalculators/IBWCalculator';
+import BodyFatPercentageCalculator from './pages/HealthCalculators/BodyFatPercentageCalculator';
+import WaterIntakeCalculator from './pages/HealthCalculators/WaterIntakeCalculator';
+import { HealthCalculatorWrapper } from './pages/HealthCalculators/HealthCalculatorsWrapper';
 import ViewClass from './pages/Dashboard/ViewClass';
 import { useUserId } from './hooks/useUserId';
 import Loading from './components/Loading';
@@ -159,8 +165,19 @@ function App () {
         <Route element={<SidebarLayout />} path='/'>
           <Route index element={<Home />}></Route>
           <Route path='home' element={<Home />}></Route>
-          <Route path='about' element={<About />} />
-          <Route path='health-calculators' element={<HealthCalculator />} />
+          <Route path='about' element={<About />} />{' '}
+
+          <Route path = 'health-calculators' element = {<HealthCalculator/>}> </Route>
+          <Route
+            path='health-calculators'
+            element={<HealthCalculatorWrapper />}
+          >
+            <Route path='bmi' element={<BMICalculator />} />
+            <Route path='bmr' element={<BMRCalculator />} />
+            <Route path='ibw' element={<IBWCalculator />} />
+            <Route path='waterintake' element={<WaterIntakeCalculator/>}/>
+            <Route path='bodyfatpercentage' element={<BodyFatPercentageCalculator/>}/>
+          </Route>
           <Route path='lectures' element={<LectureWrapper />}>
             <Route index element={<Lectures />} />
             <Route

@@ -1,0 +1,197 @@
+import { getBMI } from '@/services/Calculations';
+import { CalculatorData } from '@/utilities/CalculatorData';
+import Container from '@/components/health-calculators/Container';
+import CalculatorContainer from '@/components/health-calculators/CalculatorContainer';
+import { CalculatorDetails } from '@/components/health-calculators/CalculatorDetails';
+import GenderSelector from '@/components/health-calculators/GenderSelector';
+import { useState } from 'react';
+import CalculatorInput from '@/components/health-calculators/CalculatorInput';
+import Content from '@/components/health-calculators/Content';
+import RowContainer from '@/components/health-calculators/RowContainer';
+
+export default function BMICalculator () {
+  const [gender, setGender] = useState('male');
+  const [age, setAge] = useState('20');
+  const [heightUnit, setHeightUnit] = useState('cm');
+  const [weightUnit, setWeightUnit] = useState('kg');
+  const [height, setHeight] = useState('172');
+  const [weight, setWeight] = useState('81');
+  const [bmiResult, setBmiResult] = useState(null);
+  const [bmiCategory, setBmiCategory] = useState('No data');
+  const [bmiMedicalInterpretation, setBmiMedicalInterpretation] = useState(
+    'Perform a BMI calculation to receive personalized medical interpretation based on your results. This will include information about health risks, recommended actions, and medical considerations specific to your BMI category.',
+  );
+  const [bmiStatisticalInterpretation, setBmiStatisticalInterpretation] =
+    useState(
+      'After calculating your BMI, you will see how your result compares to population distributions and statistical norms. This provides context for understanding where your BMI falls within broader health statistics.',
+    );
+
+  const { BMI } = CalculatorData;
+  const {
+    description,
+    instructions,
+    results,
+    statisticalInterpretation,
+    medicalInterpretation,
+  } = BMI;
+
+  const heightUnits = ['cm', 'ft', 'm'];
+  const weightUnits = ['kg', 'lbs'];
+  const getBMICategory = bmi => {
+    if (bmi < 18.5) return 'Underweight';
+    if (bmi < 25) return 'Normal';
+    if (bmi < 30) return 'Overweight';
+    return 'Obese';
+  };
+  const getBMICategoryColor = category => {
+    switch (category) {
+      case 'Underweight':
+      case 'Obese':
+        return 'text-red-600';
+      case 'Overweight':
+        return 'text-orange-500';
+      case 'Normal':
+        return 'text-green-600';
+      default:
+        return 'text-gray-500';
+    }
+  };
+
+  const getBMIInterpretations = category => {
+    const categoryKey = category.toLowerCase().replace(' weight', '');
+    return {
+      medical:
+        medicalInterpretation[categoryKey] || 'No interpretation available',
+      statistical:
+        statisticalInterpretation[categoryKey] || 'No interpretation available',
+    };
+  };
+  const handleCalculate = () => {
+    if (!height || !weight || height <= 0 || weight <= 0) {
+      alert('Please enter valid height and weight values');
+      return;
+    }
+
+    const bmi = getBMI(
+      parseFloat(height),
+      parseFloat(weight),
+      heightUnit,
+      weightUnit,
+    );
+
+    const roundedBmi = Math.round(bmi * 10) / 10;
+    const category = getBMICategory(roundedBmi);
+    const interpretations = getBMIInterpretations(category);
+
+    setBmiResult(roundedBmi);
+    setBmiCategory(category);
+    setBmiMedicalInterpretation(interpretations.medical);
+    setBmiStatisticalInterpretation(interpretations.statistical);
+  };
+  const handleClear = () => {
+    setGender('');
+    setAge('');
+    setHeight('');
+    setWeight('');
+    setBmiResult(null);
+    setBmiCategory('No data');
+    setBmiMedicalInterpretation(
+      'Perform a BMI calculation to receive personalized medical interpretation based on your results. This will include information about health risks, recommended actions, and medical considerations specific to your BMI category.',
+    );
+    setBmiStatisticalInterpretation(
+      'After calculating your BMI, you will see how your result compares to population distributions and statistical norms. This provides context for understanding where your BMI falls within broader health statistics.',
+    );
+  };
+
+  const citations = [
+    'World Health Organization. (2021). Obesity and overweight: Key facts. https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight',
+    'Centers for Disease Control and Prevention. (2022). About adult BMI. U.S. Department of Health & Human Services. https://www.cdc.gov/bmi/faq/?CDC_AAref_Val=https://www.cdc.gov/healthyweight/assessing/bmi/adult_bmi/index.html',
+    'National Institutes of Health. (1998). Clinical guidelines on the identification, evaluation, and treatment of overweight and obesity in adults: The evidence report (NIH Publication No. 98–4083). https://www.nhlbi.nih.gov/files/docs/guidelines/ob_gdlns.pdf',
+    'Prospective Studies Collaboration. (2009). Body-mass index and cause-specific mortality in 900,000 adults: Collaborative analyses of 57 prospective studies. The Lancet, 373(9669), 1083–1096. https://doi.org/10.1016/S0140-6736(09)60318-4',
+    'Flegal, K. M., Kit, B. K., Orpana, H., & Graubard, B. I. (2013). Association of all‑cause mortality with overweight and obesity using standard body mass index categories: A systematic review and meta‑analysis. JAMA, 309(1), 71–82. https://doi.org/10.1001/jama.2012.113905',
+    'Di Angelantonio, E., Bhupathiraju, S. N., Wormser, D., Gao, P., Kaptoge, S., Berrington de Gonzalez, A., … Woodward, M. (2016). Body-mass index and all-cause mortality: Individual‑participant-data meta‑analysis of 239 prospective studies in four continents. The Lancet, 388(10046), 776–786. https://pubmed.ncbi.nlm.nih.gov/27423262/',
+  ];
+
+  return (
+    <>
+      <CalculatorDetails
+        name='Body Mass Index Calculator'
+        details={description}
+      />
+      <RowContainer>
+        <CalculatorContainer
+          heading='Body Mass Index (BMI) Calculator'
+          onCalculate={handleCalculate}
+          onClear={handleClear}
+        >
+          <div className='flex flex-col gap-3'>
+            <GenderSelector gender={gender} setGender={setGender} />
+            <CalculatorInput label='Age' value={age} setValue={setAge} />
+            <CalculatorInput
+              label='Height'
+              setUnit={setHeightUnit}
+              unit={heightUnit}
+              setValue={setHeight}
+              value={height}
+              units={heightUnits}
+            />
+            <CalculatorInput
+              label='Weight'
+              setUnit={setWeightUnit}
+              unit={weightUnit}
+              setValue={setWeight}
+              value={weight}
+              units={weightUnits}
+            />
+          </div>
+        </CalculatorContainer>
+        <Container heading='Instructions'>
+          <ol className='list-decimal font-content'>
+            {instructions.map((instruction, index) => (
+              <li key={`Instruction ${index}`}>{instruction}</li>
+            ))}
+          </ol>
+        </Container>
+      </RowContainer>
+      <RowContainer>
+        <Container heading='Results'>
+          <p className='font-content w-full text-center text-lg'>
+            BMI: {bmiResult || '0.00'} kg/m²{' '}
+            <span className={getBMICategoryColor(bmiCategory)}>
+              ({bmiCategory})
+            </span>
+          </p>
+        </Container>
+        <Container heading='BMI POINTERS' className='w-1/2'>
+          <ol className='list-decimal font-content'>
+            <li>Healthy Range: 18.5 – 24.9</li>
+            <li>Underweight: Below 18.5</li>
+            <li>Overweight: 25.0 – 29.9</li>
+            <li>Obese: 30.0 and above</li>
+          </ol>
+          <p className='font-content text-red mt-2'>
+            Note: BMI doesn't account for muscle mass or body composition.
+          </p>
+        </Container>
+      </RowContainer>
+      <div className='w-full flex flex-col gap-10 mt-10'>
+        <Content
+          content={bmiMedicalInterpretation}
+          title='Medical Interpretation'
+        />
+        <Content
+          content={bmiStatisticalInterpretation}
+          title='Statistical Interpretation'
+        />
+        <Content
+          content = {citations.map((level, index) => (
+            <div className='pb-2 text-sm font-content'>
+              {level}
+            </div>
+          ))}
+          title='Citations'
+        />
+      </div>
+    </>
+  );
+}
