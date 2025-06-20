@@ -34,15 +34,15 @@ export default function IBWCalculator () {
   const heightUnits = ['cm', 'ft', 'm'];
   const weightUnits = ['kg', 'lbs'];
 
-  console.log("Height Unit:", heightUnit);
-  
+  console.log('Height Unit:', heightUnit);
+
   const handleCalculate = () => {
-      if (!height || /* !weight || */ height <= 0 /* || weight <= 0 */) {
+    if (!height || /* !weight || */ height <= 0 /* || weight <= 0 */) {
       alert('Please enter valid height values');
       return;
     }
 
-    const ibw = getIBW(parseFloat(height), heightUnit, gender,);
+    const ibw = getIBW(parseFloat(height), heightUnit, gender);
 
     setIbwMedicalInterpretation(IBW.medicalInterpretation);
     setIbwStatisticalInterpretation(IBW.statisticalInterpretation);
@@ -70,28 +70,28 @@ export default function IBWCalculator () {
     );
   };
 
-const citations = [
-  {
-    name: '[1] Chumlea, W. C., Guo, S. S., Steinbaugh, M. L. (1998). Prediction of body weight for the nonambulatory elderly population. Journal of the American Dietetic Association, 98(9), 1028–1031.',
-    link: 'https://doi.org/10.1016/S0002-8223(98)00236-3',
-  },
-  {
-    name: '[2] Devine, B. J. (1974). Gentamicin therapy. Drug Intelligence & Clinical Pharmacy, 8, 650–655.',
-    link: 'https://journals.sagepub.com/doi/10.1177/106002807400801104',
-  },
-  {
-    name: '[3] Danowski, T.S. (1964) Diabetes Mellitus: Diagnosis and Treatment. Vol. 1, American Diabetes Association, New York, 73-78.',
-    link: 'https://www.scirp.org/reference/referencespapers?referenceid=3110698',
-  },
-  {
-    name: '[4] Robinson, J. D., Lupkiewicz, S. M., Palenik, L., Lopez, L. M., & Ariet, M. (1983). Determination of ideal body weight for drug dosage calculations. The American Journal of Hospital Pharmacy, 40(6), 1016–1019.',
-    link: 'https://pubmed.ncbi.nlm.nih.gov/6869387/',
-  },
-  {
-    name: '[5] Kyriakopoulos, C., & Gupta, V. (2024, July 27). Renal failure drug dose adjustments. StatPearls - NCBI Bookshelf.',
-    link: 'https://www.ncbi.nlm.nih.gov/books/NBK560512/',
-  },
-];
+  const citations = [
+    {
+      name: '[1] Chumlea, W. C., Guo, S. S., Steinbaugh, M. L. (1998). Prediction of body weight for the nonambulatory elderly population. Journal of the American Dietetic Association, 98(9), 1028–1031.',
+      link: 'https://doi.org/10.1016/S0002-8223(98)00236-3',
+    },
+    {
+      name: '[2] Devine, B. J. (1974). Gentamicin therapy. Drug Intelligence & Clinical Pharmacy, 8, 650–655.',
+      link: 'https://journals.sagepub.com/doi/10.1177/106002807400801104',
+    },
+    {
+      name: '[3] Danowski, T.S. (1964) Diabetes Mellitus: Diagnosis and Treatment. Vol. 1, American Diabetes Association, New York, 73-78.',
+      link: 'https://www.scirp.org/reference/referencespapers?referenceid=3110698',
+    },
+    {
+      name: '[4] Robinson, J. D., Lupkiewicz, S. M., Palenik, L., Lopez, L. M., & Ariet, M. (1983). Determination of ideal body weight for drug dosage calculations. The American Journal of Hospital Pharmacy, 40(6), 1016–1019.',
+      link: 'https://pubmed.ncbi.nlm.nih.gov/6869387/',
+    },
+    {
+      name: '[5] Kyriakopoulos, C., & Gupta, V. (2024, July 27). Renal failure drug dose adjustments. StatPearls - NCBI Bookshelf.',
+      link: 'https://www.ncbi.nlm.nih.gov/books/NBK560512/',
+    },
+  ];
 
   return (
     <>
@@ -131,55 +131,55 @@ const citations = [
 
       <div className='text-sm font-content flex flex-row mt-10 justify-between self-center'>
         <Container heading='Results'>
-          <div className="right-0 border-b-2 border-primary-yellow w-35 absolute"/>
+          <div className='right-0 border-b-2 border-primary-yellow w-35 absolute' />
           <div className='w-full border-b-2 border-primary-blue pb-2 text-center'>
-            <p className='p-2 pt-5 text-lg'> Ideal weight based on popular formulas:</p>
+            <p className='p-2 pt-5 text-lg'>
+              {' '}
+              Ideal weight based on popular formulas:
+            </p>
           </div>
 
-          <table className='border-collapse '> 
+          <table className='border-collapse '>
             <tr className=''>
               <th className=''>
                 <p className='text-left mt-8 text-red-400'> Formula </p>
-                <div className="border-b-2 mb-3 border-primary-blue w-10"/>
+                <div className='border-b-2 mb-3 border-primary-blue w-10' />
               </th>
-              <th className = "pl-3 w-1/2">
+              <th className='pl-3 w-1/2'>
                 <p className='text-left mt-8 text-green-400'> Ideal Weight </p>
-                <div className="border-b-2 mb-3 border-primary-blue w-10"/>
+                <div className='border-b-2 mb-3 border-primary-blue w-10' />
               </th>
             </tr>
 
             <tbody>
               {results && (
                 <>
-                {Object.entries(results.IBW).map(([formula, value]) =>(
-                  <tr key = {formula}>
-                    <td className='pl-3 text-xs md:text-base font-content border-r-2 border-primary-yellow'> 
-                      {formula}
-                    </td>
-                    <td className = 'pl-6 text-xs md:text-base'>
-                      {value} kg
-                    </td>
-                  </tr>
-                ))}
+                  {Object.entries(results.IBW).map(([formula, value]) => (
+                    <tr key={formula}>
+                      <td className='pl-3 text-xs md:text-base font-content border-r-2 border-primary-yellow'>
+                        {formula}
+                      </td>
+                      <td className='pl-6 text-xs md:text-base'>{value} kg</td>
+                    </tr>
+                  ))}
                 </>
               )}
 
               {results?.HealthyBMIRange && (
-                <tr className='text-xs md:text-sm font-content' >
-                <td className = "p-3"> 
-                  Healthy Weight Range:
-                </td>
-                <td className = "pl-6">
-                  
-                    <p> {results.HealthyBMIRange.min} - {results.HealthyBMIRange.max} kg </p>
-                  
-                </td>
+                <tr className='text-xs md:text-sm font-content'>
+                  <td className='p-3'>Healthy Weight Range:</td>
+                  <td className='pl-6'>
+                    <p>
+                      {' '}
+                      {results.HealthyBMIRange.min} -{' '}
+                      {results.HealthyBMIRange.max} kg{' '}
+                    </p>
+                  </td>
                 </tr>
               )}
             </tbody>
-          </table>          
+          </table>
         </Container>
-
       </div>
       <div className='w-full flex flex-col gap-10 mt-10'>
         <Content
@@ -191,15 +191,22 @@ const citations = [
           title='Statistical Interpretation'
         />
         <Content
-          content = {citations.map((citation, index) => (
+          content={citations.map((citation, index) => (
             <div className='mb-5 text-wrap text-justify'>
-              <div key = {index}>
+              <div key={index}>
                 {citation.name}
-                <a href={citation.link} target='_blank' className='text-blue-400 hover:underline'> {citation.link} </a>
+                <a
+                  href={citation.link}
+                  target='_blank'
+                  className='text-blue-400 hover:underline'
+                >
+                  {' '}
+                  {citation.link}{' '}
+                </a>
               </div>
             </div>
           ))}
-          title='Citations'
+          title='References'
         />
       </div>
     </>

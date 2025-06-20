@@ -141,20 +141,20 @@ export default function BMRCalculator () {
     'Extra Active: very intense exercise daily, or physical job',
   ];
 
-const citations = [
-  {
-    name: '[1] Mifflin, M. D., St Jeor, S. T., Hill, L. A., Scott, B. J., Daugherty, S. A., & Koh, Y. O. (1990). A new predictive equation for resting energy expenditure in healthy individuals. The American Journal of Clinical Nutrition, 51(2), 241–247.',
-    link: 'https://doi.org/10.1093/ajcn/51.2.241',
-  },
-  {
-    name: '[2] Harris, J. A., & Benedict, F. G. (1919). A biometric study of human basal metabolism. Carnegie Institution of Washington.',
-    link: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC1091498/',
-  },
-  {
-    name: '[3] Food and Agriculture Organization, World Health Organization, & United Nations University. (2001). Human energy requirements: Report of a joint FAO/WHO/UNU expert consultation (FAO Food and Nutrition Technical Report Series No. 1). FAO.',
-    link: 'https://www.fao.org/3/y5686e/y5686e00.htm',
-  },
-];
+  const citations = [
+    {
+      name: '[1] Mifflin, M. D., St Jeor, S. T., Hill, L. A., Scott, B. J., Daugherty, S. A., & Koh, Y. O. (1990). A new predictive equation for resting energy expenditure in healthy individuals. The American Journal of Clinical Nutrition, 51(2), 241–247.',
+      link: 'https://doi.org/10.1093/ajcn/51.2.241',
+    },
+    {
+      name: '[2] Harris, J. A., & Benedict, F. G. (1919). A biometric study of human basal metabolism. Carnegie Institution of Washington.',
+      link: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC1091498/',
+    },
+    {
+      name: '[3] Food and Agriculture Organization, World Health Organization, & United Nations University. (2001). Human energy requirements: Report of a joint FAO/WHO/UNU expert consultation (FAO Food and Nutrition Technical Report Series No. 1). FAO.',
+      link: 'https://www.fao.org/3/y5686e/y5686e00.htm',
+    },
+  ];
 
   return (
     <>
@@ -278,17 +278,23 @@ const citations = [
           title='Statistical Interpretation'
         />
         <Content
-          content = {citations.map((citation, index) => (
+          content={citations.map((citation, index) => (
             <div className='mb-5 text-wrap text-justify'>
-              <div key = {index}>
-                {citation.name}
-                <a href={citation.link} target='_blank' className='text-blue-400 hover:underline'> {citation.link} </a>
+              <div key={index}>
+                {citation.name}{' '}
+                <a
+                  href={citation.link}
+                  target='_blank'
+                  className='text-blue-400 hover:underline'
+                >
+                  {' '}
+                  {citation.link}{' '}
+                </a>
               </div>
             </div>
           ))}
-          title='Citations'
+          title='References'
         />
-
       </div>
     </>
   );
