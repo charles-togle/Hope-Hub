@@ -29,10 +29,10 @@ export default function CalculatorDropdown () {
     navigate(option.path);
   };
   return (
-    <div className='relative w-1/4 ml-auto mb-8'>
+    <div className='relative w-auto ml-auto mb-10'>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className='w-full bg-secondary-dark-blue border-2 border-secondary-dark-blue rounded-lg px-4 py-3 text-left flex justify-between items-center hover:bg-blue-800 transition-colors'
+        className='w-full bg-secondary-dark-blue border-2 border-secondary-dark-blue rounded-lg px-4 py-3 text-left flex justify-between items-center hover:bg-blue-800 transition-colors pr-10'
       >
         <span className='font-content text-white font-medium'>
           {getCurrentCalculator()}

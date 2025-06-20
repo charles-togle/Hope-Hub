@@ -10,16 +10,16 @@ import Content from '@/components/health-calculators/Content';
 import RowContainer from '@/components/health-calculators/RowContainer';
 
 export default function BodyFatPercentageCalculator () {
-    const [gender, setGender] = useState('female');
-    const [age, setAge] = useState('25');
-    const [height, setHeight] = useState('165');
+    const [gender, setGender] = useState('');
+    const [age, setAge] = useState('');
+    const [height, setHeight] = useState('');
     const [heightUnit, setHeightUnit] = useState('cm');
-    const [weight, setWeight] = useState('60');
+    const [weight, setWeight] = useState('');
     const [weightUnit, setWeightUnit] = useState('kg');
     
-    const [neck, setNeck] = useState('34');
-    const [waist, setWaist] = useState('70');
-    const [hips, setHips] = useState('100');
+    const [neck, setNeck] = useState('');
+    const [waist, setWaist] = useState('');
+    const [hips, setHips] = useState('');
     const [neckUnit, setNeckUnit] = useState('cm');
     const [waistUnit, setWaistUnit] = useState('cm');
     const [hipsUnit, setHipsUnit] = useState('cm');
@@ -126,11 +126,24 @@ const handleCalculate = () => {
     };
 
     const citations = [
-        'Hodgdon, J. A., & Beckett, M. B. (1984). Prediction of percent body fat for U.S. Navy men and women from body circumferences and height (Naval Health Research Center Report No. 84-29). Naval Health Research Center. https://apps.dtic.mil/sti/citations/ADA143890',
-        'Lindberg, S. (2025, March 20). Ideal body fat percentage for men and women. Healthline. https://www.healthline.com/health/exercise-fitness/ideal-body-fat-percentage',
-        'Lee, B., & Kim, J. Y. (2022). Body fat and risk of all‑cause mortality: A systematic review and dose–response meta‑analysis. Journal of the Academy of Nutrition and Dietetics. Advance online publication. https://doi.org/10.1016/j.jand.2022.01.011',
-        'Popkin, B. M., D’Anci, K. E., & Rosenberg, I. H. (2010). Water, hydration, and health. Nutrition Reviews, 68(8), 439–458. https://doi.org/10.1111/j.1753-4887.2010.00304.x',
+    {
+        name: '[1] Hodgdon, J. A., & Beckett, M. B. (1984). Prediction of percent body fat for U.S. Navy men and women from body circumferences and height (Naval Health Research Center Report No. 84-29). Naval Health Research Center.',
+        link: 'https://apps.dtic.mil/sti/citations/ADA143890',
+    },
+    {
+        name: '[2] Lindberg, S. (2025, March 20). Ideal body fat percentage for men and women. Healthline.',
+        link: 'https://www.healthline.com/health/exercise-fitness/ideal-body-fat-percentage',
+    },
+    {
+        name: '[3] Lee, B., & Kim, J. Y. (2022). Body fat and risk of all‑cause mortality: A systematic review and dose–response meta‑analysis. Journal of the Academy of Nutrition and Dietetics. Advance online publication.',
+        link: 'https://doi.org/10.1016/j.jand.2022.01.011',
+    },
+    {
+        name: '[4] Popkin, B. M., D’Anci, K. E., & Rosenberg, I. H. (2010). Water, hydration, and health. Nutrition Reviews, 68(8), 439–458.',
+        link: 'https://doi.org/10.1111/j.1753-4887.2010.00304.x',
+    },
     ];
+
 
   return(
     <>
@@ -146,7 +159,7 @@ const handleCalculate = () => {
                 onClear={handleClear}>
                 <div className='flex flex-col gap-3'>
                     <GenderSelector gender = {gender} setGender={setGender}/>
-                    <CalculatorInput label= 'age' value={age} setValue={setAge}/>
+                    <CalculatorInput label= 'Age' value={age} setValue={setAge}/>
                     <CalculatorInput
                         label='Height'
                         setUnit={setHeightUnit}
@@ -264,9 +277,12 @@ const handleCalculate = () => {
             title='Statistical Interpretation'
             />
             <Content
-            content = {citations.map((level) => (
-                <div className='pb-2 text-sm font-content'>
-                {level}
+            content = {citations.map((citation, index) => (
+                <div className='mb-5 text-wrap text-justify'>
+                <div key = {index}>
+                    {citation.name}
+                    <a href={citation.link} target='_blank' className='text-blue-400 hover:underline'> {citation.link} </a>
+                </div>
                 </div>
             ))}
             title='Citations'
