@@ -164,7 +164,7 @@ export default function BMRCalculator () {
       />
       <RowContainer>
         <CalculatorContainer
-          heading='Basal Metabolid Rate (BMR) Calculator'
+          heading='Basal Metabolic Rate (BMR) Calculator'
           onCalculate={handleCalculate}
           onClear={handleClear}
         >
@@ -210,9 +210,9 @@ export default function BMRCalculator () {
               />
             </div>
           </div>
-        </CalculatorContainer>
+        </CalculatorContainer>{' '}
         <Container heading='Instructions'>
-          <ol className='list-decimal font-content'>
+          <ol className='list-decimal font-content text-base'>
             {instructions.map((instruction, index) => (
               <li key={`Instruction ${index}`}>{instruction}</li>
             ))}
