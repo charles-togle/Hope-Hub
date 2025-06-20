@@ -48,7 +48,10 @@ function SidebarLayout () {
 
     if (currentScroll > lastScrollY && currentScroll > 200) {
       setShowMenu(false);
-    } else if (currentScroll < lastScrollY > 400 || currentScroll <= 0) {
+    } else if (
+      (currentScroll < lastScrollY && currentScroll > 400) ||
+      currentScroll <= 0
+    ) {
       setShowMenu(true);
     }
 
@@ -166,8 +169,9 @@ function App () {
           <Route index element={<Home />}></Route>
           <Route path='home' element={<Home />}></Route>
           <Route path='about' element={<About />} />{' '}
-
-          <Route path = 'health-calculators' element = {<HealthCalculator/>}> </Route>
+          <Route path='health-calculators' element={<HealthCalculator />}>
+            {' '}
+          </Route>
           <Route
             path='health-calculators'
             element={<HealthCalculatorWrapper />}
@@ -175,8 +179,11 @@ function App () {
             <Route path='bmi' element={<BMICalculator />} />
             <Route path='bmr' element={<BMRCalculator />} />
             <Route path='ibw' element={<IBWCalculator />} />
-            <Route path='waterintake' element={<WaterIntakeCalculator/>}/>
-            <Route path='bodyfatpercentage' element={<BodyFatPercentageCalculator/>}/>
+            <Route path='waterintake' element={<WaterIntakeCalculator />} />
+            <Route
+              path='bodyfatpercentage'
+              element={<BodyFatPercentageCalculator />}
+            />
           </Route>
           <Route path='lectures' element={<LectureWrapper />}>
             <Route index element={<Lectures />} />
@@ -215,7 +222,6 @@ function App () {
             path='dashboard/view-class/:classCode'
             element={<ViewClass />}
           ></Route>
-
           <Route path='*' element={<NotFound />} />
         </Route>
         <Route path='auth' element={<AuthWrapper />}>
