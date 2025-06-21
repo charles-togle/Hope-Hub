@@ -10,7 +10,13 @@ import PhysicalActivityReadinessQuestionnaire from './pages/PhysicalActivityRead
 import NotFound from './pages/NotFound';
 import QuizDashboard from './pages/QuizDashboard';
 import Quiz from './pages/Quiz';
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Outlet,
+  useLocation,
+} from 'react-router-dom';
 import HealthCalculator from './pages/HealthCalculators/HealthCalculator';
 import LectureProgressProvider from './providers/LectureProvider';
 import Home from './pages/Home';
@@ -69,9 +75,21 @@ function SidebarLayout () {
     };
   }, [handleScroll]);
 
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname.includes('/quizzes/')) {
+      setSidebarOpen(false);
+    }
+  }, [location]);
+
   return (
     <div className='flex h-screen overflow-hidden'>
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        setShowMenu={setShowMenu}
+      />
       <div className='relative lg:pt-0 flex-1 h-[100dvh] overflow-x-hidden overflow-y-auto justify-center'>
         <div
           className={`fixed transition-transform  ease-in-out z-40 ${

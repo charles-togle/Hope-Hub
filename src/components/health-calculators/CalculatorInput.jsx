@@ -14,7 +14,7 @@ export default function CalculatorInput ({
           type='number'
           value={value}
           onChange={e => setValue(e.target.value)}
-          className='border-1 border-black rounded-lg p-1 w-full text-xs md:text-sm'
+          className='border-1 border-black rounded-lg p-1 w-full text-xs md:text-sm pr-15 '
         />
         {label !== 'Age' && units && (
           <select
