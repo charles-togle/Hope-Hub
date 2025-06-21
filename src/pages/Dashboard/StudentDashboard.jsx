@@ -12,6 +12,7 @@ import { onProfileChange as onProfileChangeUtil } from '@/utilities/onProfileCha
 import { LogOut } from 'lucide-react';
 import QuizScoreTable from '@/components/dashboard/QuizScoreTable';
 import Loading from '@/components/Loading';
+import { clearAllTimerData } from '@/utilities/clearTimerData';
 
 export default function StudentDashboard () {
   const userID = useUserId();
@@ -284,8 +285,10 @@ export default function StudentDashboard () {
   if (!userID || isLoading) {
     return <Loading />;
   }
-
   const handleLogout = async () => {
+    // Clear all timer data before logging out
+    clearAllTimerData();
+
     supabase.auth.signOut().then(navigate('/auth/login'));
     localStorage.removeItem('lectureProgress');
     localStorage.removeItem('physicalFitnessData');
