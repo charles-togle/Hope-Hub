@@ -14,11 +14,11 @@ import { useCallback } from 'react';
 
 export default function BMRCalculator () {
   const [gender, setGender] = useState('');
-  const [age, setAge] = useState('');
+  const [age, setAge] = useState('0');
   const [heightUnit, setHeightUnit] = useState('cm');
   const [weightUnit, setWeightUnit] = useState('kg');
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState('0');
+  const [weight, setWeight] = useState('0');
   const [formulaVariant, setFormulaVariant] = useState('Mifflin St Jeor');
   const [bodyFat, setBodyFat] = useState(20);
   const [bmrResult, setBmrResult] = useState(0);
@@ -80,6 +80,9 @@ export default function BMRCalculator () {
 
   const handleCalculate = useCallback(() => {
     if (!height || !weight || height <= 0 || weight <= 0) {
+      console.log(weight);
+      console.log(height);
+      console.log('ito siya');
       alert('Please enter valid height and weight values');
       return;
     }
@@ -122,7 +125,8 @@ export default function BMRCalculator () {
     setWeightGain(calorieGoals.weightGain);
     setWeightLoss(calorieGoals.weightLoss);
     setMaintainingCalories(calorieGoals.weightGain['Maintain Weight']);
-  }, []);
+  }, [height, weight, age, gender]);
+
   const handleClear = useCallback(() => {
     setGender('');
     setAge('');
@@ -279,8 +283,8 @@ export default function BMRCalculator () {
         />
         <Content
           content={citations.map((citation, index) => (
-            <div className='mb-5 text-wrap text-justify'>
-              <div key={index}>
+            <div className='mb-5 text-wrap text-justify' key={index}>
+              <div>
                 {citation.name}{' '}
                 <a
                   href={citation.link}

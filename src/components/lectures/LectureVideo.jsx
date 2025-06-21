@@ -61,15 +61,12 @@ export default function LectureVideo ({
   useEffect(() => {
     if (!isDone && progressSeconds >= duration - 1 && duration > 0) {
       setIsDone(true);
+      if (!isSaved) {
+        onVideoFinish();
+        setIsSaved(true);
+      }
     }
-  }, [progressSeconds, duration, isDone]);
-
-  useEffect(() => {
-    if (isDone && !isSaved) {
-      onVideoFinish();
-      setIsSaved(true);
-    }
-  }, [isDone, onVideoFinish, isSaved]);
+  }, [progressSeconds, duration, isDone, isSaved, onVideoFinish]);
 
   return (
     <div

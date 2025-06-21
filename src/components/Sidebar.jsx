@@ -20,45 +20,44 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '@/styles/sidebar.css';
 
-export default function Sidebar ({ isOpen, onClose }) {
-  const SidebarButtons = [
-    { text: 'Home', icon: HomeIcon, route: '/home' },
-    {
-      text: 'Health Calculators',
-      icon: CalculatorIcon,
-      route: '/health-calculators',
-    },
-    { text: 'Lectures', icon: LecturesIcon, route: '/lectures' },
-    {
-      text: 'Quizzes',
-      icon: QuizIcon,
-      route: '/quizzes',
-    },
-    {
-      text: 'Physical Fitness Test',
-      icon: PhysicalFitnessIcon,
-      route: '/physical-fitness-test/parq',
-    },
-    {
-      text: 'Discover More',
-      icon: DiscoverIcon,
-      route: '/discover-more',
-    },
-    { text: 'About', icon: AboutIcon, route: '/about' },
-    { text: 'Dashboard', icon: ProfileIcon, route: '/dashboard' },
-  ];
-
+const SidebarButtons = [
+  { text: 'Home', icon: HomeIcon, route: '/home' },
+  {
+    text: 'Health Calculators',
+    icon: CalculatorIcon,
+    route: '/health-calculators',
+  },
+  { text: 'Lectures', icon: LecturesIcon, route: '/lectures' },
+  {
+    text: 'Quizzes',
+    icon: QuizIcon,
+    route: '/quizzes',
+  },
+  {
+    text: 'Physical Fitness Test',
+    icon: PhysicalFitnessIcon,
+    route: '/physical-fitness-test/parq',
+  },
+  {
+    text: 'Discover More',
+    icon: DiscoverIcon,
+    route: '/discover-more',
+  },
+  { text: 'About', icon: AboutIcon, route: '/about' },
+  { text: 'Dashboard', icon: ProfileIcon, route: '/dashboard' },
+];
+const ActiveIconVariants = {
+  Home: ActiveHomeIcon,
+  'Health Calculators': ActiveCalculatorIcon,
+  Lectures: ActiveLecturesIcon,
+  Quizzes: ActiveQuizIcon,
+  'Physical Fitness Test': ActivePhysicalFitnessIcon,
+  'Discover More': ActiveDiscoverIcon,
+  About: ActiveAboutIcon,
+  Dashboard: ActiveProfileIcon,
+};
+export default function Sidebar ({ isOpen, onClose, setShowMenu }) {
   // Complete ActiveIconVariants for all sidebar buttons
-  const ActiveIconVariants = {
-    Home: ActiveHomeIcon,
-    'Health Calculators': ActiveCalculatorIcon,
-    Lectures: ActiveLecturesIcon,
-    Quizzes: ActiveQuizIcon,
-    'Physical Fitness Test': ActivePhysicalFitnessIcon,
-    'Discover More': ActiveDiscoverIcon,
-    About: ActiveAboutIcon,
-    Dashboard: ActiveProfileIcon,
-  };
 
   const location = useLocation();
   const [active, setActive] = useState(-1);
@@ -93,6 +92,7 @@ export default function Sidebar ({ isOpen, onClose }) {
   }, [location.pathname]);
 
   const handleClick = (index, route) => {
+    setShowMenu(true);
     navigate(route);
     setActive(index);
     if (isMobile && typeof onClose === 'function') {
