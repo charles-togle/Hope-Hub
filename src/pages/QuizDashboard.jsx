@@ -6,14 +6,14 @@ import { motion, AnimatePresence } from 'motion/react';
 import Loading from '@/components/Loading';
 import Footer from '@/components/Footer';
 
-export default function QuizDashboard () {
+export default function QuizDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [quizzes, setQuizzes] = useState([]);
   const [activeFilter, setActiveFilter] = useState('All');
   const filters = ['All', 'Done', 'Pending', 'Locked'];
 
   useEffect(() => {
-    async function fetchAndSetQuizzes () {
+    async function fetchAndSetQuizzes() {
       const data = extractQuizDetails(await fetchQuizzes());
       setQuizzes(data);
       setTimeout(() => setIsLoading(false), 1000);
@@ -22,22 +22,22 @@ export default function QuizDashboard () {
   }, []);
 
   return (
-    <div className='h-screen overflow-y-auto'>
-      <PageHeading text='Quizzes' className='bg-background z-2'></PageHeading>
+    <div className="h-screen overflow-y-auto">
+      <PageHeading text="Quizzes" className="bg-background z-2"></PageHeading>
       {isLoading ? (
-        <div className='flex justify-center items-center h-[60vh] p-4'>
+        <div className="flex justify-center items-center h-[60vh] p-4">
           <Loading />
         </div>
       ) : (
         <>
           <div
-            id='header'
-            className='flex flex-wrap lg:justify-between md:justify-between justify-start sticky top-0 pt-5 lg:pt-5 md:pt-0 pb-1 z-10 bg-background lg:w-full lg:px-20 md:px-20 px-7 '
+            id="header"
+            className="flex flex-wrap lg:justify-between md:justify-between justify-start sticky top-0 pt-5 lg:pt-5 md:pt-0 pb-1 z-10 bg-background lg:w-full lg:px-20 md:px-20 px-7 "
           >
-            <h2 className='font-heading-small text-2xl lg:text-3xl text-primary-blue border-primary-yellow border-b-3 pb-2'>
+            <h2 className="font-heading-small text-2xl lg:text-3xl text-primary-blue border-primary-yellow border-b-3 pb-2">
               Dashboard
             </h2>{' '}
-            <ul className='flex mt-4 lg:mt-0 rounded-sm bg-secondary-dark-blue font-content text-sm lg:text-base'>
+            <ul className="flex mt-4 lg:mt-0 rounded-sm bg-secondary-dark-blue font-content text-sm lg:text-base">
               {filters.map((filter, index) => {
                 return (
                   <motion.li
@@ -64,16 +64,17 @@ export default function QuizDashboard () {
             </ul>
           </div>
           <div
-            id='quizzes'
-            className='flex flex-col items-center justify-center w-5/6 mx-auto mb-8 relative'
+            id="quizzes"
+            className="flex flex-col items-center justify-center w-5/6 mx-auto mb-8 relative"
           >
-            <div className='flex flex-col items-center mt-4 lg:mt-8 justify-center min-h-[40vh] w-full'>
+            <div className="flex flex-col items-center mt-4 lg:mt-8 justify-center min-h-[40vh] w-full">
               {Array.isArray(quizzes) &&
               quizzes.filter(
-                quiz => quiz.status === activeFilter || activeFilter === 'All',
+                (quiz) =>
+                  quiz.status === activeFilter || activeFilter === 'All',
               ).length > 0 ? (
-                <div className='w-full'>
-                  {quizzes.map(quiz => {
+                <div className="w-full">
+                  {quizzes.map((quiz) => {
                     return (
                       (quiz.status === activeFilter ||
                         activeFilter === 'All') && (
@@ -83,7 +84,7 @@ export default function QuizDashboard () {
                   })}
                 </div>
               ) : (
-                <p className='font-content font-bold text-2xl pt-15'>
+                <p className="font-content font-bold text-2xl pt-10 lg:pt-5">
                   No Available Data
                 </p>
               )}
@@ -96,7 +97,7 @@ export default function QuizDashboard () {
   );
 }
 
-function Card ({ quiz }) {
+function Card({ quiz }) {
   const statusColors = {
     Done: 'bg-green',
     Pending: 'bg-primary-yellow',
@@ -113,10 +114,10 @@ function Card ({ quiz }) {
         scale: 0.97,
         transition: { duration: 0.3 },
       }}
-      className='rounded-2xl flex flex-col border-2 border-secondary-dark-blue overflow-clip mb-5'
+      className="rounded-2xl flex flex-col border-2 border-secondary-dark-blue overflow-clip mb-5"
     >
-      <div className='flex justify-between items-center px-5 lg:px-10  bg-secondary-dark-blue font-content text-white h-[10vh] lg:h-[8vh]'>
-        <h2 className='text-lg lg:text-2xl w-[60%]'>
+      <div className="flex justify-between items-center px-5 lg:px-10  bg-secondary-dark-blue font-content text-white h-[10vh] lg:h-[8vh]">
+        <h2 className="text-lg lg:text-2xl w-[60%]">
           <strong>{'Quiz ' + quiz.number + ': '}</strong>
           {quiz.title}
         </h2>
@@ -128,13 +129,14 @@ function Card ({ quiz }) {
           {quiz.status}
         </h3>
       </div>
-      <div className='flex justify-between items-center py-4 pl-5 pr-2 lg:pl-10 lg:pr-15 w-full min-h-[20vh]'>
+      <div className="flex justify-between items-center py-4 pl-5 pr-2 lg:pl-10 lg:pr-15 w-full min-h-[20vh]">
         <Results
           status={quiz.status}
           details={quiz.details}
           lectureTitle={`Lecture #${quiz.number + ' ' + quiz.lecture_title}`}
+          isTeacher={quiz.userType === 'teacher'}
         />
-        <div className='w-[3px] min-h-[20vh] lg:min-h-[20vh] bg-primary-yellow'></div>
+        <div className="w-[3px] min-h-[20vh] lg:min-h-[20vh] bg-primary-yellow"></div>
         <Overview content={quiz.content} />
       </div>
     </motion.div>
@@ -147,7 +149,7 @@ function Card ({ quiz }) {
   );
 }
 
-function Results ({ status, details, lectureTitle }) {
+function Results({ status, details, lectureTitle, isTeacher }) {
   const resultsView = {
     Done: details
       ? Object.entries(details).map(([key, value]) => {
@@ -176,7 +178,11 @@ function Results ({ status, details, lectureTitle }) {
           <i>LOCKED</i>
         </strong>
         <br />
-        <i>(Finish the {lectureTitle} to Access)</i>
+        {isTeacher ? (
+          <i>(Only students can take the quiz)</i>
+        ) : (
+          <i>(Finish the {lectureTitle} to Access)</i>
+        )}
       </h4>
     ),
   };
@@ -192,11 +198,11 @@ function Results ({ status, details, lectureTitle }) {
   );
 }
 
-function Overview ({ content }) {
+function Overview({ content }) {
   return (
-    <div className='font-content text-sm lg:text-base w-[62%]'>
-      <h4 className='text-primary-blue'>Introduction: </h4>
-      <ul className='list-disc list-outside pl-5'>
+    <div className="font-content text-sm lg:text-base w-[62%]">
+      <h4 className="text-primary-blue">Introduction: </h4>
+      <ul className="list-disc list-outside pl-5">
         <li>{content}</li>
       </ul>
     </div>

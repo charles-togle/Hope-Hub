@@ -27,6 +27,7 @@ async function fetchQuizzes() {
     return;
   }
 
+  data.userType = userType;
   return data;
 }
 
@@ -79,6 +80,7 @@ function extractQuizDetails(quizData) {
     let progress = (quiz.quiz_progress && quiz.quiz_progress[0]) || [];
     quiz.number = quiz.id;
     quiz.status = (progress && progress.status) || 'Locked';
+    quiz.userType = quizData.userType;
     quiz.details = !progress.date_taken
       ? {}
       : {
