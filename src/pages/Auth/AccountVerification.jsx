@@ -49,7 +49,6 @@ export default function AccountVerification () {
       p_lecture_progress: lectureProgress,
     });
 
-    console.log(arrayClassCode);
 
     if (rpcError) {
       setErrorMessage('Error during registration: ' + rpcError.message);

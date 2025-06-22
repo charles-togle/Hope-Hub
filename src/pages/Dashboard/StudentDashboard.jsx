@@ -303,7 +303,7 @@ export default function StudentDashboard () {
           handleJoinClass={handleJoinClass}
         ></JoinClass>
       )}
-      <div className='px-10 mt-5 mb-5 lg:mb-0 grid grid-cols-2 place-content-center w-full lg:w-fit lg:block '>
+      <div className='lg:px-10 px-5 md:px-10 mt-5 mb-5 lg:mb-0 grid grid-cols-2 place-content-center w-full lg:w-fit lg:block '>
         <div>
           <h1 className='font-heading text-primary-blue text-4xl lg:text-5xl'>
             Dashboard

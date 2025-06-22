@@ -20,13 +20,18 @@ export const PhysicalFitnessTestList = [
     classification: [
       { min: 6, interpretation: 'Excellent' },
       { min: 4, max: 5.9, interpretation: 'Very Good' },
-      { min: 31, max: 4.9, interpretation: 'Good' },
+      { min: 2, max: 3.9, interpretation: 'Good' },
       { min: 0.1, max: 1.9, interpretation: 'Fair' },
       { exact: 0, interpretation: 'Needs Improvement' },
-      { exact: -1, interpretation: 'Poor' }, // negative overlap = gap
+      { exact: -1, interpretation: 'Poor' },
     ],
     videoInstructions:
       'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    tips: [
+      'Warm up your shoulders with gentle arm circles before attempting the zipper test.',
+      'Keep your spine straight and avoid forcing the stretch to prevent shoulder injury.',
+      'Practice daily shoulder stretches to improve flexibility and reach over time gradually.',
+    ],
   },
   {
     title: 'Zipper Test (Left hand)',
@@ -48,13 +53,18 @@ export const PhysicalFitnessTestList = [
     classification: [
       { min: 6, interpretation: 'Excellent' },
       { min: 4, max: 5.9, interpretation: 'Very Good' },
-      { min: 31, max: 4.9, interpretation: 'Good' },
+      { min: 2, max: 3.9, interpretation: 'Good' },
       { min: 0.1, max: 1.9, interpretation: 'Fair' },
       { exact: 0, interpretation: 'Needs Improvement' },
-      { exact: -1, interpretation: 'Poor' }, // negative overlap = gap
+      { exact: -1, interpretation: 'Poor' },
     ],
     videoInstructions:
       'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    tips: [
+      'Alternate which arm goes over your shoulder to test both sides equally well.',
+      'Breathe normally during the test and do not hold your breath while stretching.',
+      'If fingers do not touch, focus on gradually improving shoulder mobility through exercise.',
+    ],
   },
   {
     title: 'Sit and Reach (First Attempt)',
@@ -85,6 +95,11 @@ export const PhysicalFitnessTestList = [
     ],
     videoInstructions:
       'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    tips: [
+      'Keep your back flat against the wall and avoid rounding your shoulders forward.',
+      'Reach slowly and smoothly without bouncing or jerking movements for better results.',
+      'Regular hamstring and lower back stretches will help improve your reach distance.',
+    ],
   },
   {
     title: 'Sit and Reach (Second Attempt)',
@@ -115,6 +130,11 @@ export const PhysicalFitnessTestList = [
     ],
     videoInstructions:
       'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    tips: [
+      'This is your second attempt, so apply what you learned from the first.',
+      'Focus on controlled breathing and relaxation to achieve a better reach distance.',
+      'Use the better score from both attempts as your final sit and reach.',
+    ],
   },
   {
     title: 'Pre 3-Minute Step Test',
@@ -134,6 +154,11 @@ export const PhysicalFitnessTestList = [
     instructionsScoring: ['Record the resting pulse of the tester'],
     videoInstructions:
       'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    tips: [
+      'Sit quietly and breathe normally for a few minutes before taking pulse.',
+      'Practice finding your pulse on your wrist or neck before the actual test.',
+      'Count accurately for ten seconds then multiply by six for heart rate.',
+    ],
   },
   {
     title: '3-Minute Step Test',
@@ -161,6 +186,11 @@ export const PhysicalFitnessTestList = [
     ],
     videoInstructions:
       'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    tips: [
+      'Maintain steady rhythm throughout the test and do not rush the movements.',
+      'Take your pulse immediately after finishing to get an accurate heart rate.',
+      'Practice the stepping pattern beforehand to maintain proper form during test.',
+    ],
   },
   {
     title: 'Push-Up',
@@ -215,6 +245,11 @@ export const PhysicalFitnessTestList = [
     },
     videoInstructions:
       'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    tips: [
+      'Keep your body straight from head to toes throughout the entire movement.',
+      'Focus on controlled movements rather than speed to maintain proper push-up form.',
+      'Build strength gradually with modified push-ups if you cannot complete standard ones.',
+    ],
   },
   {
     title: 'Basic Plank',
@@ -247,5 +282,10 @@ export const PhysicalFitnessTestList = [
     ],
     videoInstructions:
       'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    tips: [
+      'Engage your core muscles and breathe steadily throughout the entire plank hold.',
+      'Keep your body in a straight line from head to heels without sagging.',
+      'Start with shorter holds and gradually increase time to build core strength.',
+    ],
   },
 ];

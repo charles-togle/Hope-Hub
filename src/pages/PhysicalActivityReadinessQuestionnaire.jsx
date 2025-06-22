@@ -40,14 +40,14 @@ export default function PhysicalActivityReadinessQuestionnaire () {
     'Do you feel pain in your chest when you do physical activity?',
     'In the past month, have you had chest pain when you were not doing physical activity?',
     'Do you have a bone or joint problem that could be made worse by a change in your physical activity?',
-    'Is your doctor currently prescribing drugs (for example, water pills) for your blood pressure or heart condition?',
-    'Do you know of any other reason why you should not do physical activity? if yes ? please include reason.',
+    'Is your doctor currently prescribing drugs (for example, water pills) for your blood pressure or heart condition?',    'Do you know of any other reason why you should not do physical activity? if yes ? please include reason.',
+    'Hope Hub and its affiliated parties shall not be liable for any property damage or injuries that occur during this test. Do you agree?'
   ];
 
   const handleAnswerChange = (index, value) => {
     const currentAnswers = [...answers];
     currentAnswers[index] = value;
-    const allNo = currentAnswers.every(answer => answer === 'No');
+    const allNo = currentAnswers.every((answer, index) => index !== questions.length - 1 ? answer === 'No' : answer === 'Yes');
     const allAnswered = currentAnswers.every(answer => answer !== null);
     setAnswers(currentAnswers);
     setAreAllAnswersNo(allNo);

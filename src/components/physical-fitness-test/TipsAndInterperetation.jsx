@@ -1,4 +1,4 @@
-export function TipsAndInterpretation ({ testResults, testName }) {
+export function TipsAndInterpretation ({ testResults, testName, tips }) {
   return (
     <div
       id='interpretation-and-tips'
@@ -20,18 +20,24 @@ export function TipsAndInterpretation ({ testResults, testName }) {
       <div id='tips' className='pb-10'>
         <h2 className='font-content text-sm font-semibold'>Tips to Improve</h2>
         <ul className='list-decimal ml-6 font-content text-sm font-medium'>
-          <li>
-            Lorem ipsum dolor sit amet consectetur. Sed augue ultrices phasellus
-            mi nulla nisi sollicitudin sagittis.
-          </li>
-          <li>
-            Pharetra tellus pellentesque faucibus fusce eget sagittis. Cursus
-            sed gravida pellentesque quam.
-          </li>
-          <li>
-            Eget justo sit tortor amet in eu diam velit. Id facilisi metus in
-            fames faucibus viverra ullamcorper bibendum.
-          </li>
+          {tips && tips.length > 0 ? (
+            tips.map((tip, index) => <li key={index}>{tip}</li>)
+          ) : (
+            <>
+              <li>
+                Lorem ipsum dolor sit amet consectetur. Sed augue ultrices
+                phasellus mi nulla nisi sollicitudin sagittis.
+              </li>
+              <li>
+                Pharetra tellus pellentesque faucibus fusce eget sagittis.
+                Cursus sed gravida pellentesque quam.
+              </li>
+              <li>
+                Eget justo sit tortor amet in eu diam velit. Id facilisi metus
+                in fames faucibus viverra ullamcorper bibendum.
+              </li>
+            </>
+          )}
         </ul>
       </div>
       <hr className='-ml-10 border-1 border-black w-[50%]' />
