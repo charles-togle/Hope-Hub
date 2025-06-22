@@ -14,10 +14,12 @@ export default function Login () {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const handleLogin = async () => {
     setErrorMessage('');
     try {
+      setIsLoading(true);
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -34,6 +36,9 @@ export default function Login () {
     } catch (err) {
       console.error('Unexpected error during login:', err);
       setErrorMessage('An unexpected error occurred. Please try again.');
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -84,7 +89,11 @@ export default function Login () {
             Forgot Password?
           </button>
         </div>
-        <FormButton text='Login' onClick={handleLogin}></FormButton>
+        <FormButton
+          text={isLoading ? 'Logging you in...' : 'Login'}
+          onClick={handleLogin}
+          disabled={isLoading}
+        ></FormButton>
       </FormContainer>
     </AuthContainer>
   );
