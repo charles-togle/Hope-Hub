@@ -10,7 +10,9 @@ export default function RadioButton ({
   bodyFatValue = '',
   onBodyFatChange,
 }) {
+  const [displayValue, setDisplayValue] = useState(value);
   const handleChange = selectedValue => {
+    setDisplayValue(selectedValue);
     setValue(selectedValue);
   };
 
@@ -19,14 +21,17 @@ export default function RadioButton ({
   return (
     <div className='radio-group font-content border-1 border-black rounded-2xl px-3 pt-3 pb-2'>
       <div
-        className='flex gap-5 items-center  mb-3 cursor-pointer'
+        className='flex gap-5 items-center justify-between mb-3 cursor-pointer'
         onClick={() => setShown(prev => !prev)}
       >
         {text && (
-          <label className='text-xs md:text-sm font-medium text-gray cursor-pointer'>
+          <label className='text-xs md:text-sm font-medium text-gray cursor-pointer text-nowrap'>
             {text}
           </label>
         )}
+        <span className='text-xs'>
+          <span className='font-semibold'>Selected:</span> {displayValue}
+        </span>
         <p className='contrast-25 cursor-pointer'>{shown ? '▲' : '▼'}</p>
       </div>
       <div
