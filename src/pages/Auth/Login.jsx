@@ -4,7 +4,7 @@ import FormHeading from '@/components/auth/FormHeading';
 import FormInput from '@/components/auth/FormInput';
 import InputContainer from '../../components/auth/InputContainer';
 import FormButton from '../../components/auth/FormButton';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import supabase from '@/client/supabase';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,11 +13,13 @@ export default function Login () {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     setErrorMessage('');
     try {
+      await supabase.auth.setAuthPersistence(rememberMe ? 'local' : 'session');
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -68,7 +70,11 @@ export default function Login () {
         )}
         <div className='flex flex-row justify-between font-content text-sm'>
           <div className='text-accent-gray flex gap-4 pl-2'>
-            <input type='checkbox' id='remember-me' />
+            <input
+              type='checkbox'
+              id='remember-me'
+              onChange={e => setRememberMe(e.target.checked)}
+            />
             <label htmlFor='remember-me'>Remember me</label>
           </div>
           <button
