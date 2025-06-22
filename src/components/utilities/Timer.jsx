@@ -122,7 +122,7 @@ export function Timer ({
 
   return (
     <div className={className}>
-      <img src={timerIcon} alt='rest-timer' className='w-[15%]' />
+      <img src={timerIcon} alt='timer' className='w-[15%]' />
       <p className='text-wrap text-sm'>
         {Math.floor(displayTime / 60)} :{' '}
         {String(displayTime % 60).padStart(2, '0')}{' '}

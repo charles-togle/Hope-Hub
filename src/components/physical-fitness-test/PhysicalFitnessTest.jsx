@@ -6,7 +6,7 @@ import { usePhysicalFitnessData } from '@/hooks/usePhysicalFitnessData';
 import { AlertMessage } from '@/components/utilities/AlertMessage';
 import setDataToStorage from '@/utilities/setDataToStorage';
 import getDataFromStorage from '@/utilities/getDataFromStorage';
-import { Timer } from '@/components/utilities/Timer';
+import { SimpleTimer } from '@/components/utilities/SimpleTimer';
 import { ResultSection } from './ResultSection';
 import { TipsAndInterpretation } from './TipsAndInterperetation';
 import supabase from '@/client/supabase';
@@ -98,9 +98,8 @@ export default function PhysicalFitnessTest ({
       classification: value,
     }));
   };
-
   const handleInterpretation = updatedTestResults => {
-    const reps = updatedTestResults.reps;
+    const reps = parseFloat(updatedTestResults.reps);
     const storedData = getDataFromStorage('physicalFitnessData');
     setCategory(storedData.category);
     let classificationDetails = testDetails.classification?.[category];
@@ -123,14 +122,18 @@ export default function PhysicalFitnessTest ({
       return;
     } else if (Array.isArray(classificationDetails)) {
       classificationDetails.forEach(item => {
-        if (reps === item.exact) {
+        if (item.exact !== undefined && reps === item.exact) {
           setClassification(item.interpretation);
           return;
-        } else if (item.min <= reps && item.max >= reps) {
+        } else if (
+          item.min !== undefined &&
+          item.max !== undefined &&
+          item.min <= reps &&
+          item.max >= reps
+        ) {
           setClassification(item.interpretation);
-
           return;
-        } else if (!item.max && item.min <= reps) {
+        } else if (item.min !== undefined && !item.max && item.min <= reps) {
           setClassification(item.interpretation);
           return;
         }
@@ -240,12 +243,11 @@ export default function PhysicalFitnessTest ({
             className='absolute -top-20 flex pl-5 flex-row w-full justify-center gap-5 items-center lg:relative lg:top-0 lg:block lg:w-auto lg:p-0'
           >
             <p className='text-lg font-bold italic'>Timeout in:</p>
-            <Timer
+            <SimpleTimer
+              time={timerTime}
               className='flex flex-row justify-start items-center space-x-5 lg:relative lg:right-0 lg:w-[50%] lg:mt-2'
               onEnd={() => setIsTimeout(true)}
-              time={timerTime}
-              storageKey={`${testName}TimerPFT`}
-            ></Timer>
+            />
           </div>
           <iframe
             src={videoInstructions}
@@ -288,10 +290,11 @@ export default function PhysicalFitnessTest ({
             handleSubmit={handleSubmit}
             testResults={testResults}
             currentTime={currentTime}
-          />
+          />{' '}
           <TipsAndInterpretation
             testName={testName}
             testResults={testResults}
+            tips={testDetails?.tips}
           />
         </div>
       </div>

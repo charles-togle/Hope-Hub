@@ -15,11 +15,9 @@ export default function Login () {
   const [successMessage, setSuccessMessage] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
-
   const handleLogin = async () => {
     setErrorMessage('');
     try {
-      await supabase.auth.setAuthPersistence(rememberMe ? 'local' : 'session');
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -28,6 +26,8 @@ export default function Login () {
       if (error) {
         setErrorMessage(error.message);
       } else {
+        // Store remember me preference for future sessions
+        localStorage.setItem('rememberMe', rememberMe.toString());
         setSuccessMessage('Login Success');
         navigate('/dashboard');
       }

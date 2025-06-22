@@ -181,7 +181,7 @@ export default function AddClassCode ({ onAdd = () => {}, setModalShown }) {
           id='backdrop'
           className='w-full h-full absolute top-0 bg-black opacity-40 -z-1'
         ></div>
-        <div className='md:scale-90 scale-90 lg:scale-0'>
+        <div className='md:scale-90 scale-90 lg:scale-100'>
           <FormContainer ref={formRef}>
             <FormHeading heading='Create a New Class'></FormHeading>{' '}
             <FormInput

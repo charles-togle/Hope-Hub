@@ -13,6 +13,7 @@ export default function ForgotPassword () {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleForgotPassword = async () => {
     setSuccessMessage('');
@@ -22,9 +23,12 @@ export default function ForgotPassword () {
       return;
     }
 
+    setIsLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: 'https://hope-hub-dcvm.vercel.app/auth/change-password',
     });
+    setIsLoading(false);
+
     if (error) {
       setErrorMessage(error.message);
     } else {
@@ -58,10 +62,11 @@ export default function ForgotPassword () {
           <p className='text-green font-content font-semibold'>
             {successMessage}
           </p>
-        )}
+        )}{' '}
         <FormButton
-          text='Confirm'
+          text={isLoading ? 'Waiting...' : 'Confirm'}
           onClick={() => handleForgotPassword()}
+          disabled={isLoading}
         ></FormButton>
         <FormButton
           text='Back to login'
