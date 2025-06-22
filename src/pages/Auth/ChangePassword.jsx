@@ -14,6 +14,7 @@ export default function ChangePassword () {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const access_token = searchParams.get('access_token');
   const type = searchParams.get('type');
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ export default function ChangePassword () {
       return;
     }
 
+    setIsLoading(true);
     const { error } = await supabase.auth.updateUser({
       password: password,
     });
@@ -73,6 +75,7 @@ export default function ChangePassword () {
           navigate('/auth/login');
         }
       }, 1000);
+      setIsLoading(false);
     }
   };
 
@@ -108,8 +111,9 @@ export default function ChangePassword () {
           </p>
         )}
         <FormButton
-          text='Change Password'
+          text={isLoading ? 'Changing Password...' : 'Change Password'}
           onClick={() => handleChangePassword()}
+          disabled={isLoading}
         ></FormButton>
       </FormContainer>
     </AuthContainer>
