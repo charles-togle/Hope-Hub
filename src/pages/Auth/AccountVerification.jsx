@@ -189,7 +189,7 @@ export default function AccountVerification () {
             heading='Verification Link Expired'
             callToAction='Your email verification link has expired'
           />
-          <div className='text-center mb-4'>
+          <div className='text-center'>
             <p className='text-red font-content font-semibold'>
               {errorMessage}
             </p>
