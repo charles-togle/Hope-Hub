@@ -125,6 +125,19 @@ export default function AccountVerification () {
       return;
     }
 
+    // Check if user is already registered in profile table
+    const { data: existingProfile, error: profileCheckError } = await supabase
+      .from('profile')
+      .select('user_id')
+      .eq('user_id', user.id)
+      .single();
+
+    if (existingProfile && !profileCheckError) {
+      setErrorMessage('User is already logged in');
+      setIsLoading(false);
+      return;
+    }
+
     const { fullName, userType, classCode, lectureProgress } =
       user.user_metadata;
     const userId = user.id;
@@ -177,7 +190,7 @@ export default function AccountVerification () {
             callToAction='Your email verification link has expired'
           />
           <div className='text-center mb-4'>
-            <p className='text-red font-content font-semibold mb-4'>
+            <p className='text-red font-content font-semibold'>
               {errorMessage}
             </p>
           </div>
@@ -211,10 +224,18 @@ export default function AccountVerification () {
         <FormButton
           text='Go to dashboard'
           onClick={() => navigate('/dashboard')}
-          disabled={!!errorMessage}
+          disabled={
+            !!errorMessage && errorMessage !== 'User is already logged in'
+          }
         ></FormButton>
         {errorMessage && (
-          <p className='text-red font-content font-semibold mt-2'>
+          <p
+            className={`font-content font-semibold mt-2 ${
+              errorMessage === 'User is already logged in'
+                ? 'text-green'
+                : 'text-red'
+            }`}
+          >
             {errorMessage}
           </p>
         )}
