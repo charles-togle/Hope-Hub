@@ -20,29 +20,21 @@ export default function AccountVerification () {
 
   const handleRegister = async (retryCount = 0) => {
     setIsLoading(true);
-
-    // Check for verification tokens in URL using useSearchParams (query params)
     let accessToken = searchParams.get('access_token');
     let refreshToken = searchParams.get('refresh_token');
 
-    // Also check hash fragments (common with Supabase)
     if (!accessToken && window.location.hash) {
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
       accessToken = hashParams.get('access_token');
       refreshToken = hashParams.get('refresh_token');
-      console.log('Found tokens in hash:', {
-        accessToken: !!accessToken,
-        refreshToken: !!refreshToken,
-      });
     }
 
     if (accessToken && refreshToken) {
       console.log('Setting session from URL tokens...');
-      const { data: sessionData, error: sessionError } =
-        await supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken,
-        });
+      const { error: sessionError } = await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      });
 
       if (sessionError) {
         console.error('Session error:', sessionError);
@@ -51,7 +43,6 @@ export default function AccountVerification () {
         return;
       }
 
-      // Wait a moment for the session to propagate
       await new Promise(resolve => setTimeout(resolve, 500));
     }
 
@@ -116,7 +107,7 @@ export default function AccountVerification () {
   }, []);
 
   if (isLoading) {
-    return <Loading></Loading>;
+    return <Loading />;
   }
 
   if (isBadRequest) {
