@@ -18,6 +18,7 @@ export default function AccountVerification () {
   const [errorMessage, setErrorMessage] = useState('');
   const [isExpiredLink, setIsExpiredLink] = useState(false);
   const [shouldShowLogin, setShouldShowLogin] = useState(false);
+  const [shouldShowRegister, setShouldShowRegister] = useState(false);
   const userRegistered = useRef(false);
 
   const handleRegister = async (retryCount = 0) => {
@@ -28,7 +29,6 @@ export default function AccountVerification () {
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
       const error = hashParams.get('error');
       const errorCode = hashParams.get('error_code');
-      const errorDescription = hashParams.get('error_description');
 
       if (error && errorCode === 'otp_expired') {
         console.log('OTP expired, checking if user exists in profile table...');
@@ -121,6 +121,7 @@ export default function AccountVerification () {
       }
 
       setErrorMessage('User data not found. Please try registering again.');
+      setShouldShowRegister(true);
       setIsLoading(false);
       return;
     }
@@ -228,6 +229,13 @@ export default function AccountVerification () {
             !!errorMessage && errorMessage !== 'User is already logged in'
           }
         ></FormButton>
+        {shouldShowRegister && (
+          <FormButton
+            text='Register Again'
+            onClick={() => navigate('/auth/register')}
+            disabled={false}
+          />
+        )}
         {errorMessage && (
           <p
             className={`font-content font-semibold mt-2 ${
