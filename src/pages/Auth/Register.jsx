@@ -84,7 +84,7 @@ export default function Register () {
       password: trimmedPassword,
       options: {
         emailRedirectTo:
-          'https://hope-hub-dcvm.vercel.app/auth/account-verification',
+          'https://hope-hub-fitness.vercel.app/auth/account-verification',
         data: {
           fullName: trimmedName,
           userType: userType,

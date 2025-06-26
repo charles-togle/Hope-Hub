@@ -2,26 +2,64 @@ import AuthContainer from '@/components/auth/AuthContainer';
 import FormContainer from '@/components/auth/FormContainer';
 import FormHeading from '@/components/auth/FormHeading';
 import FormButton from '../../components/auth/FormButton';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
 import supabase from '@/client/supabase';
 import { useRef } from 'react';
+import Loading from '@/components/Loading';
 
 export default function AccountVerification () {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [isBadRequest, setIsBadRequest] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const userRegistered = useRef(false);
 
-  const handleRegister = async () => {
+  const handleRegister = async (retryCount = 0) => {
+    setIsLoading(true);
+    let accessToken = searchParams.get('access_token');
+    let refreshToken = searchParams.get('refresh_token');
+
+    if (!accessToken && window.location.hash) {
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      accessToken = hashParams.get('access_token');
+      refreshToken = hashParams.get('refresh_token');
+    }
+
+    if (accessToken && refreshToken) {
+      console.log('Setting session from URL tokens...');
+      const { error: sessionError } = await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      });
+
+      if (sessionError) {
+        console.error('Session error:', sessionError);
+        setErrorMessage('Error setting session: ' + sessionError.message);
+        setIsLoading(false);
+        return;
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
 
     if (!user || !user.user_metadata) {
-      setIsBadRequest(true);
+      if (retryCount < 3) {
+        setTimeout(() => {
+          handleRegister(retryCount + 1);
+        }, (retryCount + 1) * 1000);
+        return;
+      }
+
+      setErrorMessage('User data not found. Please try registering again.');
+      setIsLoading(false);
       return;
     }
 
@@ -36,6 +74,7 @@ export default function AccountVerification () {
       setTimeout(() => {
         navigate('auth/register');
       }, 1000);
+      setIsLoading(false);
       return;
     }
 
@@ -49,14 +88,15 @@ export default function AccountVerification () {
       p_lecture_progress: lectureProgress,
     });
 
-
     if (rpcError) {
       setErrorMessage('Error during registration: ' + rpcError.message);
+      setIsLoading(false);
       setTimeout(() => {
         supabase.auth.signOut();
       }, 1500);
       return;
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -65,6 +105,10 @@ export default function AccountVerification () {
       handleRegister();
     }
   }, []);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   if (isBadRequest) {
     return <ErrorMessage text='Error 400' subText='Bad Request'></ErrorMessage>;
