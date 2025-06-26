@@ -16,10 +16,73 @@ export default function AccountVerification () {
   const [isBadRequest, setIsBadRequest] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isExpiredLink, setIsExpiredLink] = useState(false);
+  const [shouldShowLogin, setShouldShowLogin] = useState(false);
   const userRegistered = useRef(false);
 
   const handleRegister = async (retryCount = 0) => {
     setIsLoading(true);
+
+    // Check for errors in URL hash first
+    if (window.location.hash) {
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const error = hashParams.get('error');
+      const errorCode = hashParams.get('error_code');
+      const errorDescription = hashParams.get('error_description');
+
+      if (error && errorCode === 'otp_expired') {
+        console.log('OTP expired, checking if user exists in profile table...');
+
+        try {
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
+          if (user) {
+            const { data: profileData, error: profileError } = await supabase
+              .from('profile')
+              .select('user_id')
+              .eq('user_id', user.id)
+              .single();
+
+            if (profileData && !profileError) {
+              console.log('User exists in profile table, not deleting account');
+              setErrorMessage(
+                'Email verification link has expired. Your account still exists. Please try logging in instead.',
+              );
+              setShouldShowLogin(true);
+            } else {
+              console.log(
+                'User does not exist in profile table, attempting to delete account...',
+              );
+              try {
+                await supabase.auth.admin.deleteUser(user.id);
+                console.log('Account deleted successfully');
+              } catch (deleteError) {
+                console.error('Error deleting user:', deleteError);
+              }
+              setErrorMessage(
+                'Email verification link has expired. Account has been reset. Please register again.',
+              );
+            }
+          } else {
+            setErrorMessage(
+              'Email verification link has expired. Please register again.',
+            );
+          }
+        } catch (checkError) {
+          console.error('Error checking user profile:', checkError);
+          setErrorMessage(
+            'Email verification link has expired. Please try registering again.',
+          );
+        }
+
+        await supabase.auth.signOut();
+        setIsExpiredLink(true);
+        setIsLoading(false);
+        return;
+      }
+    }
+
     let accessToken = searchParams.get('access_token');
     let refreshToken = searchParams.get('refresh_token');
 
@@ -30,7 +93,6 @@ export default function AccountVerification () {
     }
 
     if (accessToken && refreshToken) {
-      console.log('Setting session from URL tokens...');
       const { error: sessionError } = await supabase.auth.setSession({
         access_token: accessToken,
         refresh_token: refreshToken,
@@ -106,6 +168,31 @@ export default function AccountVerification () {
     }
   }, []);
 
+  if (isExpiredLink) {
+    return (
+      <AuthContainer>
+        <FormContainer>
+          <FormHeading
+            heading='Verification Link Expired'
+            callToAction='Your email verification link has expired'
+          />
+          <div className='text-center mb-4'>
+            <p className='text-red font-content font-semibold mb-4'>
+              {errorMessage}
+            </p>
+          </div>
+          <FormButton
+            text={shouldShowLogin ? 'Go to Login' : 'Register Again'}
+            onClick={() =>
+              navigate(shouldShowLogin ? '/auth/login' : '/auth/register')
+            }
+            disabled={false}
+          />
+        </FormContainer>
+      </AuthContainer>
+    );
+  }
+
   if (isLoading) {
     return <Loading />;
   }
@@ -124,6 +211,7 @@ export default function AccountVerification () {
         <FormButton
           text='Go to dashboard'
           onClick={() => navigate('/dashboard')}
+          disabled={!!errorMessage}
         ></FormButton>
         {errorMessage && (
           <p className='text-red font-content font-semibold mt-2'>
