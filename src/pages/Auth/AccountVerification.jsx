@@ -222,19 +222,21 @@ export default function AccountVerification () {
           heading='Account Verified'
           callToAction='Thank you for choosing hope hub'
         ></FormHeading>
-        <FormButton
-          text='Go to dashboard'
-          onClick={() => navigate('/dashboard')}
-          disabled={
-            !!errorMessage && errorMessage !== 'User is already logged in'
-          }
-        ></FormButton>
-        {shouldShowRegister && (
+
+        {(shouldShowRegister && (
           <FormButton
             text='Register Again'
             onClick={() => navigate('/auth/register')}
             disabled={false}
           />
+        )) || (
+          <FormButton
+            text='Go to dashboard'
+            onClick={() => navigate('/dashboard')}
+            disabled={
+              !!errorMessage && errorMessage !== 'User is already logged in'
+            }
+          ></FormButton>
         )}
         {errorMessage && (
           <p
