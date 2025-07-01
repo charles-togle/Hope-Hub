@@ -3,15 +3,13 @@ import { CalculatorData } from '@/utilities/CalculatorData';
 import Container from '@/components/health-calculators/Container';
 import CalculatorContainer from '@/components/health-calculators/CalculatorContainer';
 import { CalculatorDetails } from '@/components/health-calculators/CalculatorDetails';
-import GenderSelector from '@/components/health-calculators/GenderSelector';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import CalculatorInput from '@/components/health-calculators/CalculatorInput';
 import Content from '@/components/health-calculators/Content';
 import RowContainer from '@/components/health-calculators/RowContainer';
+import useMobile from '@/hooks/useMobile';
 
 export default function BMICalculator () {
-  const [gender, setGender] = useState('');
-  const [age, setAge] = useState('');
   const [heightUnit, setHeightUnit] = useState('cm');
   const [weightUnit, setWeightUnit] = useState('kg');
   const [height, setHeight] = useState('');
@@ -26,11 +24,13 @@ export default function BMICalculator () {
       'After calculating your BMI, you will see how your result compares to population distributions and statistical norms. This provides context for understanding where your BMI falls within broader health statistics.',
     );
 
+  const resultsRef = useRef(null);
+  const isMobile = useMobile();
+
   const { BMI } = CalculatorData;
   const {
     description,
     instructions,
-    results,
     statisticalInterpretation,
     medicalInterpretation,
   } = BMI;
@@ -87,10 +87,18 @@ export default function BMICalculator () {
     setBmiCategory(category);
     setBmiMedicalInterpretation(interpretations.medical);
     setBmiStatisticalInterpretation(interpretations.statistical);
+
+    // Scroll to results on mobile after successful calculation
+    if (isMobile && resultsRef.current) {
+      setTimeout(() => {
+        resultsRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }, 100);
+    }
   };
   const handleClear = () => {
-    setGender('');
-    setAge('');
     setHeight('');
     setWeight('');
     setBmiResult(null);
@@ -143,8 +151,6 @@ export default function BMICalculator () {
           onClear={handleClear}
         >
           <div className='flex flex-col gap-3'>
-            <GenderSelector gender={gender} setGender={setGender} />
-            <CalculatorInput label='Age' value={age} setValue={setAge} />
             <CalculatorInput
               label='Height'
               setUnit={setHeightUnit}
@@ -172,7 +178,7 @@ export default function BMICalculator () {
         </Container>
       </RowContainer>
       <RowContainer>
-        <Container heading='Results'>
+        <Container heading='Results' ref={resultsRef}>
           <p className='font-content w-full text-center text-sm md:text-lg'>
             BMI: {bmiResult || '0.00'} kg/m²{' '}
             <span className={getBMICategoryColor(bmiCategory)}>

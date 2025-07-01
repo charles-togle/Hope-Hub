@@ -1,6 +1,8 @@
-export default function Container ({ children, heading, className }) {
+import React from 'react';
+
+const Container = React.forwardRef(({ children, heading, className }, ref) => {
   return (
-    <div className={`${className} w-full`}>
+    <div className={`${className} w-full`} ref={ref}>
       <h1 className='text-xl px-15 py-7 rounded-t-lg bg-secondary-dark-blue text-white font-content text-center'>
         {heading}
       </h1>
@@ -10,4 +12,8 @@ export default function Container ({ children, heading, className }) {
       </div>
     </div>
   );
-}
+});
+
+Container.displayName = 'Container';
+
+export default Container;
