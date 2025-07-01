@@ -1,5 +1,5 @@
 //import { error } from "console";
-import { ActivityIcon } from "lucide-react";
+import { ActivityIcon } from 'lucide-react';
 
 const convertLbsToKg = number => number * 0.4536;
 const convertKgToLbs = number => number / 0.4536;
@@ -24,8 +24,7 @@ export const getBMI = (height, weight, heightUnit, weightUnit) => {
   }
   const weightInKg = weightUnit === 'lbs' ? convertLbsToKg(weight) : weight;
 
-  console.log('Height in meters:', heightInMeters);
-  console.log('Weight in kg:', weightInKg);
+
 
   return weightInKg / (heightInMeters * heightInMeters);
 };
@@ -195,36 +194,45 @@ export const getTDEE = (
     case 'Sedentary (Little to No Exercise)':
       tdee =
         gender === 'male'
-          ? (10 * weightInKg + 6.25 * heightInCm - 5 * age + 5) * activityMultipliers['Sedentary (Little to No Exercise)']
-          : (10 * weightInKg + 6.25 * heightInCm - 5 * age - 161) * activityMultipliers['Sedentary (Little to No Exercise)'];
+          ? (10 * weightInKg + 6.25 * heightInCm - 5 * age + 5) *
+            activityMultipliers['Sedentary (Little to No Exercise)']
+          : (10 * weightInKg + 6.25 * heightInCm - 5 * age - 161) *
+            activityMultipliers['Sedentary (Little to No Exercise)'];
       break;
 
     case 'Light Exercise (1-2 times/week)':
       tdee =
         gender === 'male'
-          ? (10 * weightInKg + 6.25 * heightInCm - 5 * age + 5) * activityMultipliers['Light Exercise (1-2 times/week)']
-          : (10 * weightInKg + 6.25 * heightInCm - 5 * age + 161) * activityMultipliers['Light Exercise (1-2 times/week)'];
+          ? (10 * weightInKg + 6.25 * heightInCm - 5 * age + 5) *
+            activityMultipliers['Light Exercise (1-2 times/week)']
+          : (10 * weightInKg + 6.25 * heightInCm - 5 * age + 161) *
+            activityMultipliers['Light Exercise (1-2 times/week)'];
       break;
 
     case 'Moderate Exercise (3-5 times/week)':
       tdee =
         gender === 'male'
-          ? (13.397 * weightInKg + 6.25 * heightInCm - 5 * age + 5) * activityMultipliers['Moderate Exercise (3-5 times/week)']
-          : (9.247 * weightInKg + 6.25 * heightInCm - 5 * age - 161) * activityMultipliers['Moderate Exercise (3-5 times/week)'];
+          ? (13.397 * weightInKg + 6.25 * heightInCm - 5 * age + 5) *
+            activityMultipliers['Moderate Exercise (3-5 times/week)']
+          : (9.247 * weightInKg + 6.25 * heightInCm - 5 * age - 161) *
+            activityMultipliers['Moderate Exercise (3-5 times/week)'];
       break;
 
     case 'Heavy Exercise (6-7 times/week)':
       tdee =
         gender === 'male'
-          ? (13.397 * weightInKg + 6.25 * heightInCm - 5 * age + 5) * activityMultipliers['Heavy Exercise (6-7 times/week)']
-          : (9.247 * weightInKg + 6.25 * heightInCm - 5 * age - 161) * activityMultipliers['Heavy Exercise (6-7 times/week)'];
+          ? (13.397 * weightInKg + 6.25 * heightInCm - 5 * age + 5) *
+            activityMultipliers['Heavy Exercise (6-7 times/week)']
+          : (9.247 * weightInKg + 6.25 * heightInCm - 5 * age - 161) *
+            activityMultipliers['Heavy Exercise (6-7 times/week)'];
       break;
 
     case 'Athlete (2x per day)':
       tdee =
         (gender === 'male'
           ? 13.397 * weightInKg + 6.25 * heightInCm - 5 * age + 5
-          : 9.247 * weightInKg + 6.25 * heightInCm - 5 * age + 5) * activityMultipliers['Athlete (2x per day)'];
+          : 9.247 * weightInKg + 6.25 * heightInCm - 5 * age + 5) *
+        activityMultipliers['Athlete (2x per day)'];
       break;
 
     default:
@@ -242,9 +250,8 @@ export const getTDEE = (
   };
 };
 
-export const getIBW = (height, heightUnit, gender ) => {
+export const getIBW = (height, heightUnit, gender) => {
   // convert height to inches/feet
-  console.log(heightUnit)
   let heightInInches;
   if (heightUnit === 'm') {
     heightInInches = convertMToInches(height);
@@ -282,7 +289,7 @@ export const getIBW = (height, heightUnit, gender ) => {
     Hamwi = 48 + 2.7 * overFiveFt;
   }
 
- return {
+  return {
     IBW: {
       Robinson: parseFloat(Robinson.toFixed(2)),
       Miller: parseFloat(Miller.toFixed(2)),
@@ -298,37 +305,46 @@ export const getIBW = (height, heightUnit, gender ) => {
 
 export const getWaterIntake = (weight, activityLevel, weightUnit) => {
   const weightInKg = weightUnit === 'lbs' ? convertLbsToKg(weight) : weight;
-  
-  const activityMultipliers = {
-    'Sedentary (Little to No Exercise)': 0,
-    'Light Exercise (1-2 times/week)': 0.2,
-    'Moderate Exercise (3-5 times/week)': 0.35,
-    'High Exercise (6-7 times/week)': 0.5,
-    'Extreme (2x per day)': 0.7,
-  };
 
   let waterIntake = weightInKg * 0.033;
-  console.log(waterIntake);
 
-  switch(activityLevel) {
-    case 'Sedentary (Little to No Exercise)': waterIntake += 0; break;
-    case 'Light Exercise (1-2 times/week)': waterIntake += 0.2; break;
-    case 'Moderate Exercise (3-5 times/week)': waterIntake += 0.35; break;
-    case 'High Exercise (6-7 times/week)': waterIntake += 0.5; break;
-    case 'Extreme (2x per day)': waterIntake += 0.7; break;
-    default: throw new Error(`Unknown formula variant.`);
+  switch (activityLevel) {
+    case 'Sedentary (Little to No Exercise)':
+      waterIntake += 0;
+      break;
+    case 'Light Exercise (1-2 times/week)':
+      waterIntake += 0.2;
+      break;
+    case 'Moderate Exercise (3-5 times/week)':
+      waterIntake += 0.35;
+      break;
+    case 'High Exercise (6-7 times/week)':
+      waterIntake += 0.5;
+      break;
+    case 'Extreme (2x per day)':
+      waterIntake += 0.7;
+      break;
+    default:
+      throw new Error(`Unknown formula variant.`);
   }
 
   return parseFloat(waterIntake.toFixed(2));
-
-}
+};
 
 export const getBodyFatPercentage = (
-  age, gender, height, weight, neck, waist, hips,
-  heightUnit, weightUnit, neckUnit, waistUnit, hipsUnit
+  age,
+  gender,
+  height,
+  weight,
+  neck,
+  waist,
+  hips,
+  heightUnit,
+  weightUnit,
+  neckUnit,
+  waistUnit,
+  hipsUnit,
 ) => {
-  // convert height to inches/feet
-  console.log(heightUnit)
   let neckInInches, waistInInches, hipsInInches;
   let heightInInches, heightInMeters;
   if (heightUnit === 'ft') {
@@ -372,110 +388,80 @@ export const getBodyFatPercentage = (
       hipsInInches = convertFtToInches(hips);
     }
   }
-  
+
   const weightInKg = weightUnit === 'lbs' ? convertLbsToKg(weight) : weight;
-  console.log(gender);
-  // const idealPercent = parseFloat(idealForAgeList(gender, age));
-  // const categoryName = (gender, usMethod) => {
-  //   switch(gender){
-  //     case 'female':
-  //       if(usMethod >= 10 && usMethod <= 13) return "Essential";
-  //       if(usMethod >=14 && usMethod <= 20) return "Athletes";
-  //       if(usMethod >=21 && usMethod <= 24) return "Fitness";
-  //       if(usMethod >=25 && usMethod <= 31) return "Average";
-  //       if(usMethod >=32 ) return "Obese";
-  //       return "Below essential";
-  //     case 'male':
-  //       if(usMethod >= 10 && usMethod <= 13) return "Essential";
-  //       if(usMethod >=14 && usMethod <= 20) return "Athletes";
-  //       if(usMethod >=21 && usMethod <= 24) return "Fitness";
-  //       if(usMethod >=25 && usMethod <= 31) return "Average";
-  //       if(usMethod >=32 ) return "Obese";
-  //       return "Below essential";
-  //     default:
-  //       //throw new Error("Gender must be 'male' or 'female'.");
-  //       break;
-  //   }
-
-  // };
-
   let idealForAge, usMethod, massInKg, leanMassInKg, idealLoss, bmi, bmiMethod;
-  
+
   const idealForAgeList = (gender, age) => {
     switch (gender) {
       case 'male':
-        if(age < 20) return idealForAge = 13;
-        if(age < 40) return idealForAge = 13.5;
-        if(age < 60) return idealForAge = 16;
-        if(age < 80) return idealForAge = 18.5;
-        return idealForAge = 20;
+        if (age < 20) return (idealForAge = 13);
+        if (age < 40) return (idealForAge = 13.5);
+        if (age < 60) return (idealForAge = 16);
+        if (age < 80) return (idealForAge = 18.5);
+        return (idealForAge = 20);
       case 'female':
-        if(age < 20) return idealForAge = 22;
-        if(age < 40) return idealForAge = 26.5;
-        if(age < 60) return idealForAge = 28;
-        if(age < 80) return idealForAge = 29.5;
-        return idealForAge = 30.5;
-    };
+        if (age < 20) return (idealForAge = 22);
+        if (age < 40) return (idealForAge = 26.5);
+        if (age < 60) return (idealForAge = 28);
+        if (age < 80) return (idealForAge = 29.5);
+        return (idealForAge = 30.5);
+    }
   };
-  
+
   const idealPercent = parseFloat(idealForAgeList(gender, age));
 
   switch (gender) {
     case 'male':
-      usMethod = 86.010 * Math.log10(waistInInches - neckInInches) - 70.041 * Math.log10(heightInInches) + 36.76;
-      //category = categoryName(gender, usMethod);
+      usMethod =
+        86.01 * Math.log10(waistInInches - neckInInches) -
+        70.041 * Math.log10(heightInInches) +
+        36.76;
 
       massInKg = (usMethod / 100) * weightInKg;
       leanMassInKg = weightInKg - massInKg;
 
       idealForAge = idealForAgeList(gender, age);
-      bmi = weightInKg / (heightInMeters ** 2 );
-      
-      idealLoss = massInKg - (idealPercent / 100 * weightInKg);
-      bmiMethod = (1.20 * bmi) + (0.23 * age) - (10.8 * 1) - 5.4;
-      
-        console.log("us method: " + usMethod);
-  console.log("mass in kg: " + massInKg);
-  console.log("lean mass in kg: " + leanMassInKg);
-  console.log("bmi: " + bmi);
-  console.log("ideal loss: " + idealLoss);
-  console.log("bmi method: " + bmiMethod);
-      
+      bmi = weightInKg / heightInMeters ** 2;
+
+      idealLoss = massInKg - (idealPercent / 100) * weightInKg;
+      bmiMethod = 1.2 * bmi + 0.23 * age - 10.8 * 1 - 5.4;
+
+
       break;
     case 'female':
-      usMethod = 163.205 * Math.log10(waistInInches + hipsInInches - neckInInches) - 97.684 * Math.log10(heightInInches) - 78.387;
-      //category = categoryName(gender, usMethod);
+      usMethod =
+        163.205 * Math.log10(waistInInches + hipsInInches - neckInInches) -
+        97.684 * Math.log10(heightInInches) -
+        78.387;
 
       massInKg = (usMethod / 100) * weightInKg;
       leanMassInKg = weightInKg - massInKg;
 
       idealForAgeList(gender, age);
-      bmi = weightInKg / (heightInMeters ** 2 );
+      bmi = weightInKg / heightInMeters ** 2;
 
-      idealLoss = massInKg - (parseFloat(idealForAgeList(gender, age).toFixed(2)) / 100 * weightInKg);
-      bmiMethod = (1.20 * bmi) + (0.23 * age) - (10.8 * 0) - 5.4;
-      
-      console.log("us method: " + usMethod);
-  console.log("mass in kg: " + massInKg);
-  console.log("lean mass in kg: " + leanMassInKg);
-  console.log("bmi: " + bmi);
-  console.log("ideal loss: " + idealLoss);
-  console.log("bmi method: " + bmiMethod);
+      idealLoss =
+        massInKg -
+        (parseFloat(idealForAgeList(gender, age).toFixed(2)) / 100) *
+          weightInKg;
+      bmiMethod = 1.2 * bmi + 0.23 * age - 10.8 * 0 - 5.4;
+
+
       break;
     default:
-      console.log(gender);
       throw new Error("Gender must be 'male' or 'female'.");
       break;
   }
 
   return {
     results: {
-      'Body Fat: U.S. Navy Method': parseFloat(usMethod.toFixed(2)) + "%",
-      'Body Fat Mass': parseFloat(massInKg.toFixed(2)) + "kg",
-      'Lean Body Mass': parseFloat(leanMassInKg.toFixed(2)) + "kg",
-      'Lean Body Fat for Given Age': parseFloat(idealForAge.toFixed(2)) + "%",
-      'Body Fat Loss to Reach Ideal': parseFloat(idealLoss.toFixed(2)) + "%",
-      'Body Fat: BMI Method': parseFloat(bmiMethod.toFixed(2)) + "%",
-    }
-  }
+      'Body Fat: U.S. Navy Method': parseFloat(usMethod.toFixed(2)) + '%',
+      'Body Fat Mass': parseFloat(massInKg.toFixed(2)) + 'kg',
+      'Lean Body Mass': parseFloat(leanMassInKg.toFixed(2)) + 'kg',
+      'Lean Body Fat for Given Age': parseFloat(idealForAge.toFixed(2)) + '%',
+      'Body Fat Loss to Reach Ideal': parseFloat(idealLoss.toFixed(2)) + '%',
+      'Body Fat: BMI Method': parseFloat(bmiMethod.toFixed(2)) + '%',
+    },
+  };
 };

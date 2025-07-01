@@ -1,17 +1,14 @@
-import {
-  getBMI,
-  getBodyFatPercentage,
-  getWaterIntake,
-} from '@/services/Calculations';
+import { getBodyFatPercentage } from '@/services/Calculations';
 import { CalculatorData } from '@/utilities/CalculatorData';
 import Container from '@/components/health-calculators/Container';
 import CalculatorContainer from '@/components/health-calculators/CalculatorContainer';
 import { CalculatorDetails } from '@/components/health-calculators/CalculatorDetails';
 import GenderSelector from '@/components/health-calculators/GenderSelector';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import CalculatorInput from '@/components/health-calculators/CalculatorInput';
 import Content from '@/components/health-calculators/Content';
 import RowContainer from '@/components/health-calculators/RowContainer';
+import useMobile from '@/hooks/useMobile';
 
 export default function BodyFatPercentageCalculator () {
   const [gender, setGender] = useState('');
@@ -20,30 +17,31 @@ export default function BodyFatPercentageCalculator () {
   const [heightUnit, setHeightUnit] = useState('cm');
   const [weight, setWeight] = useState('');
   const [weightUnit, setWeightUnit] = useState('kg');
-
   const [neck, setNeck] = useState('');
   const [waist, setWaist] = useState('');
   const [hips, setHips] = useState('');
   const [neckUnit, setNeckUnit] = useState('cm');
   const [waistUnit, setWaistUnit] = useState('cm');
   const [hipsUnit, setHipsUnit] = useState('cm');
-
   const [results, setResults] = useState(null);
   const [bodyFatPercentageCategory, setBodyFatPercentageCategory] =
     useState('...');
-  const [BodyFatPercentageResult, setBodyFatPercentageResult] = useState('');
+  const [bodyFatPercentageResult, setBodyFatPercentageResult] = useState('');
   const [
-    FatPercentageMedicalInterpretation,
+    fatPercentageMedicalInterpretation,
     setFatPercentageMedicalInterpretation,
   ] = useState(
     'Once you calculate your result, this section will provide a general medical interpretation of your body fat percentage. It will explain what your level may mean for your health, including potential benefits or risks, based on established clinical guidelines. Always consult a healthcare provider for personal advice.',
   );
   const [
-    FatPercentageStatisticalIntepretation,
-    setFatPercentageStatisticalIntepretation,
+    fatPercentageStatisticalInterpretation,
+    setFatPercentageStatisticalInterpretation,
   ] = useState(
     "After calculating your body fat percentage, this section will show how your result compares to typical ranges in the general population. It helps you understand where your number falls statistically — whether it's common, rare, or above average — and offers context based on observed health trends.",
   );
+
+  const resultsRef = useRef(null);
+  const isMobile = useMobile();
 
   const { BodyFatPercentage } = CalculatorData;
   const {
@@ -75,13 +73,11 @@ export default function BodyFatPercentageCalculator () {
     }
   };
 
-  const getFatPercentageIntepretations = category => {
-    const categoryKey = category;
+  const getFatPercentageInterpretations = category => {
     return {
-      medical:
-        medicalInterpretation[categoryKey] || 'No interpretation available',
+      medical: medicalInterpretation[category] || 'No interpretation available',
       statistical:
-        statisticalInterpretation[categoryKey] || 'No interpretation available',
+        statisticalInterpretation[category] || 'No interpretation available',
     };
   };
 
@@ -108,27 +104,28 @@ export default function BodyFatPercentageCalculator () {
 
     const raw = bodyFatPercentage.results['Body Fat: U.S. Navy Method'];
     const category = getBodyFatPercentageCategory(gender, parseFloat(raw));
-    const interpretations = getFatPercentageIntepretations(category);
-
-    console.log('US %:', raw);
-    console.log('Resolved category:', category);
-    console.log('Interpretations:', interpretations);
-    console.log('Raw Body Fat (US Method):', raw, typeof raw);
+    const interpretations = getFatPercentageInterpretations(category);
 
     setResults(bodyFatPercentage);
     setBodyFatPercentageResult(raw);
     setBodyFatPercentageCategory(category);
     setFatPercentageMedicalInterpretation(interpretations.medical);
-    setFatPercentageStatisticalIntepretation(interpretations.statistical);
+    setFatPercentageStatisticalInterpretation(interpretations.statistical);
+
+    if (isMobile && resultsRef.current) {
+      setTimeout(() => {
+        resultsRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }, 100);
+    }
   };
 
-  const raw = results?.results?.['Body Fat: U.S. Navy Method'].replace(
-    '%',
-    ' ',
-  );
+  const raw =
+    results?.results?.['Body Fat: U.S. Navy Method']?.replace('%', '') || '0';
   const rawNum = parseFloat(raw);
-  const rawPercent = Math.min(Math.max(raw, 0), 100);
-  console.log('navyValue', rawNum);
+  const rawPercent = Math.min(Math.max(rawNum, 0), 100);
 
   const handleClear = () => {
     setGender('');
@@ -138,12 +135,13 @@ export default function BodyFatPercentageCalculator () {
     setHips('');
     setWaist('');
     setNeck('');
+    setResults(null);
     setBodyFatPercentageResult('');
     setBodyFatPercentageCategory('...');
     setFatPercentageMedicalInterpretation(
       'Once you calculate your result, this section will provide a general medical interpretation of your body fat percentage. It will explain what your level may mean for your health, including potential benefits or risks, based on established clinical guidelines. Always consult a healthcare provider for personal advice.',
     );
-    setFatPercentageStatisticalIntepretation(
+    setFatPercentageStatisticalInterpretation(
       "After calculating your body fat percentage, this section will show how your result compares to typical ranges in the general population. It helps you understand where your number falls statistically — whether it's common, rare, or above average — and offers context based on observed health trends.",
     );
   };
@@ -233,7 +231,7 @@ export default function BodyFatPercentageCalculator () {
           </ol>
         </Container>
       </RowContainer>
-      <RowContainer>
+      <RowContainer ref={resultsRef}>
         <Container heading='Results'>
           <span className='mt-5 font-content text-xl text-center font-bold'>
             {' '}
@@ -262,20 +260,17 @@ export default function BodyFatPercentageCalculator () {
 
           {/* <span className = {getPercentCategoryLevel(BodyFatPercentageResult)}> ◣ </span> */}
 
-          <table className='border-collapse font-content text-sm'>
+          <table className='border-collapse font-content text-sm w-full'>
             <tbody>
-              {results?.results && (
-                <td className='list-disc list-inside space-y-1'>
-                  {Object.entries(results.results).map(([label, value]) => (
-                    <tr key={label}>
-                      <td className='p-2'>{label}</td>
-                      <td className='p-2'>
-                        <span className='ml-10'> {value} </span>
-                      </td>
-                    </tr>
-                  ))}
-                </td>
-              )}
+              {results?.results &&
+                Object.entries(results.results).map(([label, value]) => (
+                  <tr key={label}>
+                    <td className='p-2'>{label}</td>
+                    <td className='p-2'>
+                      <span className='ml-10'> {value} </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
           <div className='right-0 border-b-2 border-primary-yellow w-25 absolute' />
@@ -325,11 +320,11 @@ export default function BodyFatPercentageCalculator () {
 
       <div className='w-full flex flex-col gap-10 mt-10'>
         <Content
-          content={FatPercentageMedicalInterpretation}
+          content={fatPercentageMedicalInterpretation}
           title='Medical Interpretation'
         />
         <Content
-          content={FatPercentageStatisticalIntepretation}
+          content={fatPercentageStatisticalInterpretation}
           title='Statistical Interpretation'
         />
         <Content

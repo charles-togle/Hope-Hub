@@ -3,11 +3,12 @@ import { CalculatorData } from '@/utilities/CalculatorData';
 import Container from '@/components/health-calculators/Container';
 import CalculatorContainer from '@/components/health-calculators/CalculatorContainer';
 import { CalculatorDetails } from '@/components/health-calculators/CalculatorDetails';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import CalculatorInput from '@/components/health-calculators/CalculatorInput';
 import Content from '@/components/health-calculators/Content';
 import RowContainer from '@/components/health-calculators/RowContainer';
 import RadioButton from '@/components/health-calculators/RadioButtons';
+import useMobile from '@/hooks/useMobile';
 
 export default function WaterIntakeCalculator () {
   const [weightUnit, setWeightUnit] = useState('kg');
@@ -26,16 +27,17 @@ export default function WaterIntakeCalculator () {
       'Once your result is calculated, this section will show how your water intake compares to typical hydration ranges for your weight and activity level. It gives context for whether your current or recommended intake aligns with common population averages.',
     );
 
+  const resultsRef = useRef(null);
+  const isMobile = useMobile();
+
   const { WaterIntake } = CalculatorData;
   const {
     description,
     instructions,
-    results,
     statisticalInterpretation,
     medicalInterpretation,
   } = WaterIntake;
 
-  const heightUnits = ['cm', 'ft', 'm'];
   const weightUnits = ['kg', 'lbs'];
   const getWaterIntakeCategory = waterIntake => {
     if (waterIntake < 2.3) return 'below the recommended intake';
@@ -68,7 +70,7 @@ export default function WaterIntakeCalculator () {
   const handleCalculate = () => {
     if (!weight || weight <= 0) {
       alert('Please enter a valid weight value.');
-      weight = 0;
+      return;
     }
 
     const waterIntake = getWaterIntake(
@@ -84,11 +86,18 @@ export default function WaterIntakeCalculator () {
     setWaterIntakeCategory(category);
     setIntakeMedicalInterpretation(interpretations.medical);
     setIntakeStatisticalInterpretation(interpretations.statistical);
+    
+    if (isMobile && resultsRef.current) {
+      setTimeout(() => {
+        resultsRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }, 100);
+    }
   };
 
   const handleClear = () => {
-    setGender('');
-    setAge('');
     setWeight('');
     setIntakeResult('');
     setWaterIntakeCategory('...');
@@ -166,7 +175,7 @@ export default function WaterIntakeCalculator () {
       </RowContainer>
 
       <div className='text-sm font-content flex flex-row mt-10 justify-between self-center'>
-        <Container heading='Results'>
+        <Container heading='Results' ref={resultsRef}>
           <div className='right-0 border-b-2 border-primary-yellow w-25 absolute' />
           <p className='mt-5 text-center '> Estimated Water Intake: </p>
           <p className='mb-3 text-center '>

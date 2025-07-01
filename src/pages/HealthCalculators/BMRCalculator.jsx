@@ -4,13 +4,14 @@ import Container from '@/components/health-calculators/Container';
 import CalculatorContainer from '@/components/health-calculators/CalculatorContainer';
 import { CalculatorDetails } from '@/components/health-calculators/CalculatorDetails';
 import GenderSelector from '@/components/health-calculators/GenderSelector';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import CalculatorInput from '@/components/health-calculators/CalculatorInput';
 import Content from '@/components/health-calculators/Content';
 import RadioButton from '@/components/health-calculators/RadioButtons';
 import RowContainer from '@/components/health-calculators/RowContainer';
 import ResultGroup from '@/components/health-calculators/ResultGroup';
 import { useCallback } from 'react';
+import useMobile from '@/hooks/useMobile';
 
 export default function BMRCalculator () {
   const [gender, setGender] = useState('');
@@ -46,6 +47,9 @@ export default function BMRCalculator () {
   const [veryActiveLevel, setVeryActiveLevel] = useState(1.725);
   const [extremelyActiveLevel, setExtremelyActiveLevel] = useState(1.9);
   const [superActiveLevel, setSuperActiveLevel] = useState(2.0);
+
+  const resultsRef = useRef(null);
+  const isMobile = useMobile();
 
   const { BMR } = CalculatorData;
   const {
@@ -125,7 +129,17 @@ export default function BMRCalculator () {
     setWeightGain(calorieGoals.weightGain);
     setWeightLoss(calorieGoals.weightLoss);
     setMaintainingCalories(calorieGoals.weightGain['Maintain Weight']);
-  }, [height, weight, age, gender]);
+
+    // Scroll to results on mobile after successful calculation
+    if (isMobile && resultsRef.current) {
+      setTimeout(() => {
+        resultsRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }, 100);
+    }
+  }, [height, weight, age, gender, isMobile]);
 
   const handleClear = useCallback(() => {
     setGender('');
@@ -223,7 +237,7 @@ export default function BMRCalculator () {
           </ol>
         </Container>
       </RowContainer>
-      <RowContainer>
+      <RowContainer ref={resultsRef}>
         <ResultGroup
           variant='weight-gain'
           maintainingCalories={maintainingCalories}

@@ -1,7 +1,6 @@
 import React from 'react';
 import PageHeading from '@/components/PageHeading';
 import HealthCalculatorButton from '@/components/health-calculators/HealthCalculatorButtons';
-import { Link } from 'react-router-dom';
 import Footer from '@/components/Footer';
 
 export default function HealthCalculator () {
@@ -57,10 +56,9 @@ export default function HealthCalculator () {
         </h1>
         <hr className='border-1 w-25 border-primary-yellow yellow self-start mt-1 mb-7'></hr>
         <p className='font-content ml-10 mb-10 lg:text-base text-sm'>
-          {' '}
           {description.split('\n').map((line, idx) => (
             <p key={idx}>{line}</p>
-          ))}{' '}
+          ))}
         </p>
       </div>
       <Footer></Footer>
