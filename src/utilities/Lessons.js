@@ -12,9 +12,8 @@ export const Lessons = [
      safety protocols, recognizing weather-related risks, and adopting preventive strategies
      to maintain health and performance during exercise in both hot and cold conditions.`,
     videoStatus: 0,
-    pdf: 'https://file.garden/Z-9MLal_RynAMoBV/PDFs/PERSONAL%20SAFETY%20PROTOCOLS_PDF.pdf',
-    videoLecture:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    pdf: 'https://hope-hub-files.netlify.app/personal-safety-protocol.pdf',
+    videoLecture: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
     quizLink: '/quizzes/',
   },
   {
@@ -22,18 +21,16 @@ export const Lessons = [
     title: 'Physiological Indicators',
     introduction: `Physiological indicators are key measurements that show how the body responds to physical activity, helping us monitor and improve our fitness and overall health. These indicators include heart rate, resting heart rate, maximum heart rate, heart rate reserve, and target heart rate. By understanding and tracking these values, we can determine how hard the body is working during exercise, adjust the intensity of workouts, and ensure we are training safely and effectively. Physiological indicators also play a vital role in setting fitness goals and evaluating progress over time.`,
     videoStatus: 0,
-    pdf: 'https://file.garden/Z-9MLal_RynAMoBV/PDFs/LESSON%202_PHYSIOLOGICAL%20INDICATORS.pdf',
-    videoLecture:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    pdf: 'https://hope-hub-files.netlify.app/personal-safety-protocol.pdf',
+    videoLecture: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
     quizLink: '/quizzes/',
   },
   {
     key: 3,
     title: 'The FITT Principle',
     introduction: `The FITT Principle is a simple yet powerful framework for building a safe and effective fitness routine. It stands for Frequency, Intensity, Time, and Type—four key factors that help guide how often, how hard, how long, and what kind of exercise a person should do. Understanding FITT allows individuals to create personalized workout plans that match their fitness level and goals. `,
-    pdf: 'https://file.garden/Z-9MLal_RynAMoBV/PDFs/LESSON%202_PHYSIOLOGICAL%20INDICATORS.pdf',
-    videoLecture:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    pdf: 'https://hope-hub-files.netlify.app/personal-safety-protocol.pdf',
+    videoLecture: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
     quizLink: '/quizzes/',
   },
 ];
