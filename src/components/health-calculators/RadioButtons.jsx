@@ -25,11 +25,11 @@ export default function RadioButton ({
         onClick={() => setShown(prev => !prev)}
       >
         {text && (
-          <label className='text-xs md:text-sm font-medium text-gray cursor-pointer text-nowrap'>
+          <label className='text-base md:text-base font-medium text-gray cursor-pointer text-nowrap'>
             {text}
           </label>
         )}
-        <span className='text-xs'>
+        <span className='text-base'>
           <span className='font-semibold'>Selected:</span> {displayValue}
         </span>
         <p className='contrast-25 cursor-pointer'>{shown ? '▲' : '▼'}</p>
@@ -63,7 +63,7 @@ export default function RadioButton ({
                     />
                     <label
                       htmlFor={`${name}-${index}`}
-                      className='ml-2 text-xs md:text-sm text-gray-900 cursor-pointer'
+                      className='ml-2 text-base md:text-base text-gray-900 cursor-pointer'
                     >
                       {choice.label || choice}
                     </label>
@@ -73,7 +73,7 @@ export default function RadioButton ({
                     <div className='flex flex-col md:flex-row p-1 items-center gap-1 bg-gray-50 px-2 rounded-lg border'>
                       <label
                         htmlFor='body-fat'
-                        className='text-xs md:text-sm text-gray-700'
+                        className='text-base md:text-base text-gray-700'
                       >
                         Body Fat %
                       </label>
@@ -86,7 +86,7 @@ export default function RadioButton ({
                         min='5'
                         max='50'
                         step='0.1'
-                        className='text-xs md:text-sm my-1 bg-white border border-gray-300 rounded-md w-20 sm:w-20 px-2 py-1 focus:ring-2 focus:ring-primary-blue focus:border-primary-blue'
+                        className='text-base md:text-base my-1 bg-white border border-gray-300 rounded-md w-20 sm:w-20 px-2 py-1 focus:ring-2 focus:ring-primary-blue focus:border-primary-blue'
                       />
                     </div>
                   )}

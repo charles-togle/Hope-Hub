@@ -61,9 +61,9 @@ export default function WaterIntakeCalculator () {
     switch (categoryKey) {
       case 'below the recommended intake':
       case 'above the recommended intake':
-        return 'text-yellow-500 text-2xl mb-3';
+        return 'text-yellow-500 mb-3';
       case 'within the recommended intake':
-        return 'text-green-600 text-2xl mb-3';
+        return 'text-green-600 mb-3';
     }
   };
 
@@ -119,20 +119,20 @@ export default function WaterIntakeCalculator () {
 
   const citations = [
     {
-      name: '[1] Institute of Medicine. (2005). Dietary reference intakes for water, potassium, sodium, chloride, and sulfate. The National Academies Press.',
-      link: 'https://doi.org/10.17226/10925',
+      name: '[1] El Milad, H. S., Chughtai, M., & Stoinski, S. (2020). Hydration and kidney stone risk: A systematic review. Nutrition Reviews, 78(7), 535–546. ',
+      link: 'https://doi.org/10.1093/nutrit/nuz082',
     },
     {
-      name: '[2] Popkin, B. M., D’Anci, K. E., & Rosenberg, I. H. (2010). Water, hydration, and health. Nutrition Reviews, 68(8), 439–458.',
-      link: 'https://doi.org/10.1111/j.1753-4887.2010.00304.x',
-    },
-    {
-      name: '[3] European Food Safety Authority. (2010). Scientific opinion on dietary reference values for water. EFSA Journal, 8(3), 1459.',
+      name: '[2] European Food Safety Authority. (2010). Scientific opinion on dietary reference values for water. EFSA Journal, 8(3), 1459. ',
       link: 'https://doi.org/10.2903/j.efsa.2010.1459',
     },
     {
-      name: '[4] El Milad, H. S., Chughtai, M., & Stoinski, S. (2020). Hydration and kidney stone risk: A systematic review. Nutrition Reviews, 78(7), 535–546.',
-      link: 'https://doi.org/10.1093/nutrit/nuz082',
+      name: '[3] Institute of Medicine. (2005). Dietary reference intakes for water, potassium, sodium, chloride, and sulfate. The National Academies Press. ',
+      link: 'https://doi.org/10.17226/10925',
+    },
+    {
+      name: '[4] Popkin, B. M., D’Anci, K. E., & Rosenberg, I. H. (2010). Water, hydration, and health. Nutrition Reviews, 68(8), 439–458. ',
+      link: 'https://doi.org/10.1111/j.1753-4887.2010.00304.x',
     },
   ];
 
@@ -174,7 +174,7 @@ export default function WaterIntakeCalculator () {
         </Container>
       </RowContainer>
 
-      <div className='text-sm font-content flex flex-row mt-10 justify-between self-center'>
+      <div className='text-base font-content flex flex-row mt-10 justify-between self-center'>
         <Container heading='Results' ref={resultsRef}>
           <div className='right-0 border-b-2 border-primary-yellow w-25 absolute' />
           <p className='mt-5 text-center '> Estimated Water Intake: </p>

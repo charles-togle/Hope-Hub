@@ -148,19 +148,19 @@ export default function BodyFatPercentageCalculator () {
 
   const citations = [
     {
-      name: '[1] Hodgdon, J. A., & Beckett, M. B. (1984). Prediction of percent body fat for U.S. Navy men and women from body circumferences and height (Naval Health Research Center Report No. 84-29). Naval Health Research Center.',
+      name: '[1] Hodgdon, J. A., & Beckett, M. B. (1984). Prediction of percent body fat for U.S. Navy men and women from body circumferences and height (Naval Health Research Center Report No. 84-29). Naval Health Research Center. ',
       link: 'https://apps.dtic.mil/sti/citations/ADA143890',
     },
     {
-      name: '[2] Lindberg, S. (2025, March 20). Ideal body fat percentage for men and women. Healthline.',
-      link: 'https://www.healthline.com/health/exercise-fitness/ideal-body-fat-percentage',
-    },
-    {
-      name: '[3] Lee, B., & Kim, J. Y. (2022). Body fat and risk of all‑cause mortality: A systematic review and dose–response meta‑analysis. Journal of the Academy of Nutrition and Dietetics. Advance online publication.',
+      name: '[2] Lee, B., & Kim, J. Y. (2022). Body fat and risk of all‑cause mortality: A systematic review and dose–response meta‑analysis. Journal of the Academy of Nutrition and Dietetics. Advance online publication. ',
       link: 'https://doi.org/10.1016/j.jand.2022.01.011',
     },
     {
-      name: '[4] Popkin, B. M., D’Anci, K. E., & Rosenberg, I. H. (2010). Water, hydration, and health. Nutrition Reviews, 68(8), 439–458.',
+      name: '[3] Lindberg, S. (2025, March 20). Ideal body fat percentage for men and women. Healthline. ',
+      link: 'https://www.healthline.com/health/exercise-fitness/ideal-body-fat-percentage',
+    },
+    {
+      name: '[4] Popkin, B. M., D’Anci, K. E., & Rosenberg, I. H. (2010). Water, hydration, and health. Nutrition Reviews, 68(8), 439–458. ',
       link: 'https://doi.org/10.1111/j.1753-4887.2010.00304.x',
     },
   ];
@@ -233,7 +233,7 @@ export default function BodyFatPercentageCalculator () {
       </RowContainer>
       <RowContainer ref={resultsRef}>
         <Container heading='Results'>
-          <span className='mt-5 font-content text-xl text-center font-bold'>
+          <span className='mt-5 font-content text-base text-center font-bold'>
             {' '}
             Body Fat: {raw}%{' '}
           </span>
@@ -252,7 +252,7 @@ export default function BodyFatPercentageCalculator () {
             <div className='h-8 shadow-md bg-red-800 w-[31%]' /> {/* Obese */}
             <span
               style={{ marginLeft: `${rawPercent}%` }}
-              className='w-auto mt-5 absolute font-extrabold text-3xl text-shadow-black'
+              className='w-auto mt-5 absolute font-extrabold text-base text-shadow-black'
             >
               ◣
             </span>
@@ -260,7 +260,7 @@ export default function BodyFatPercentageCalculator () {
 
           {/* <span className = {getPercentCategoryLevel(BodyFatPercentageResult)}> ◣ </span> */}
 
-          <table className='border-collapse font-content text-sm w-full'>
+          <table className='border-collapse font-content text-base w-full'>
             <tbody>
               {results?.results &&
                 Object.entries(results.results).map(([label, value]) => (
@@ -277,10 +277,10 @@ export default function BodyFatPercentageCalculator () {
         </Container>
 
         <Container heading='Data Reference'>
-          <div className='font-content text-sm'>
+          <div className='font-content text-base'>
             <div className='relative grid grid-cols-2 fr gap-3 items-center'>
-              <span className='text-1xl font-bold'> Percentage </span>{' '}
-              <span className='text-1xl font-bold'> Bar Visualizer </span>
+              <span className='text-base font-bold'> Percentage </span>{' '}
+              <span className='text-base font-bold'> Bar Visualizer </span>
               <div className='border-b-2 border-primary-blue w-10 self-center' />{' '}
               <div className='border-b-2 border-primary-blue w-10 self-center' />
               <span className='flex mb-2 text-red-800'>

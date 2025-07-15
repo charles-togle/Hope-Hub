@@ -113,28 +113,28 @@ export default function BMICalculator () {
 
   const citations = [
     {
-      name: '[1] World Health Organization. (2021). Obesity and overweight: Key facts.',
-      link: 'https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight',
-    },
-    {
-      name: '[2] Centers for Disease Control and Prevention. (2022). About adult BMI. U.S. Department of Health & Human Services.',
+      name: '[1] Centers for Disease Control and Prevention. (2022). About adult BMI. U.S. Department of Health & Human Services. ',
       link: 'https://www.cdc.gov/bmi/faq/?CDC_AAref_Val=https://www.cdc.gov/healthyweight/assessing/bmi/adult_bmi/index.html',
     },
     {
-      name: '[3] National Institutes of Health. (1998). Clinical guidelines on the identification, evaluation, and treatment of overweight and obesity in adults: The evidence report (NIH Publication No. 98–4083).',
-      link: 'https://www.nhlbi.nih.gov/files/docs/guidelines/ob_gdlns.pdf',
+      name: '[2] Di Angelantonio, E., Bhupathiraju, S. N., Wormser, D., Gao, P., Kaptoge, S., Berrington de Gonzalez, A., … Woodward, M. (2016). Body-mass index and all-cause mortality: Individual‑participant-data meta‑analysis of 239 prospective studies in four continents. The Lancet, 388(10046), 776–786. ',
+      link: 'https://pubmed.ncbi.nlm.nih.gov/27423262/',
     },
     {
-      name: '[4] Prospective Studies Collaboration. (2009). Body-mass index and cause-specific mortality in 900,000 adults: Collaborative analyses of 57 prospective studies. The Lancet, 373(9669), 1083–1096.',
-      link: 'https://doi.org/10.1016/S0140-6736(09)60318-4',
-    },
-    {
-      name: '[5] Flegal, K. M., Kit, B. K., Orpana, H., & Graubard, B. I. (2013). Association of all‑cause mortality with overweight and obesity using standard body mass index categories: A systematic review and meta‑analysis. JAMA, 309(1), 71–82.',
+      name: '[3] Flegal, K. M., Kit, B. K., Orpana, H., & Graubard, B. I. (2013). Association of all‑cause mortality with overweight and obesity using standard body mass index categories: A systematic review and meta‑analysis. JAMA, 309(1), 71–82. ',
       link: 'https://doi.org/10.1001/jama.2012.113905',
     },
     {
-      name: '[6] Di Angelantonio, E., Bhupathiraju, S. N., Wormser, D., Gao, P., Kaptoge, S., Berrington de Gonzalez, A., … Woodward, M. (2016). Body-mass index and all-cause mortality: Individual‑participant-data meta‑analysis of 239 prospective studies in four continents. The Lancet, 388(10046), 776–786.',
-      link: 'https://pubmed.ncbi.nlm.nih.gov/27423262/',
+      name: '[4] National Institutes of Health. (1998). Clinical guidelines on the identification, evaluation, and treatment of overweight and obesity in adults: The evidence report (NIH Publication No. 98–4083). ',
+      link: 'https://www.nhlbi.nih.gov/files/docs/guidelines/ob_gdlns.pdf',
+    },
+    {
+      name: '[5] Prospective Studies Collaboration. (2009). Body-mass index and cause-specific mortality in 900,000 adults: Collaborative analyses of 57 prospective studies. The Lancet, 373(9669), 1083–1096. ',
+      link: 'https://doi.org/10.1016/S0140-6736(09)60318-4',
+    },
+    {
+      name: '[6] World Health Organization. (2021). Obesity and overweight: Key facts. ',
+      link: 'https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight',
     },
   ];
 
@@ -179,21 +179,21 @@ export default function BMICalculator () {
       </RowContainer>
       <RowContainer>
         <Container heading='Results' ref={resultsRef}>
-          <p className='font-content w-full text-center text-sm md:text-lg'>
+          <p className='font-content w-full text-center'>
             BMI: {bmiResult || '0.00'} kg/m²{' '}
             <span className={getBMICategoryColor(bmiCategory)}>
               ({bmiCategory})
             </span>
           </p>
         </Container>
-        <Container heading='BMI POINTERS' className='text-sm md:text-lg w-1/2'>
-          <ol className='list-decimal font-content'>
+        <Container heading='BMI POINTERS' className='w-1/2'>
+          <ol className='list-decimal font-content text-base'>
             <li>Healthy Range: 18.5 – 24.9</li>
             <li>Underweight: Below 18.5</li>
             <li>Overweight: 25.0 – 29.9</li>
             <li>Obese: 30.0 and above</li>
           </ol>
-          <p className='font-content text-red mt-2'>
+          <p className='font-content text-red mt-2 text-base'>
             Note: BMI doesn't account for muscle mass or body composition.
           </p>
         </Container>

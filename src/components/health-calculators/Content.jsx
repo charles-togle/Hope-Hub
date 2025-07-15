@@ -5,7 +5,7 @@ export default function Content ({ title, content }) {
         {title}:
       </h2>
       <hr className='h-0 w-60 border-1 border-primary-yellow mt-2 mb-4' />
-      <div className='font-content text-sm text-wrap md:text-lg [&_a]:inline-block [&_a]:max-w-full [&_a]:truncate [&_a]:align-top'>
+      <div className='font-content text-justify text-wrap text-base [&_a]:inline-block [&_a]:max-w-full [&_a]:truncate [&_a]:align-top'>
         {content}
       </div>
     </div>

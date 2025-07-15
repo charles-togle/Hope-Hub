@@ -58,7 +58,7 @@ export default function ResultGroup ({
             className={`absolute right-0 min-w-1/4 border ${borderColorClass}`}
           />
         </div>
-        <p className='font-medium text-xs pt-2 pb-1'>
+        <p className='font-medium text-base pt-2 pb-1'>
           Energy intake to {isWeightGain ? 'gain' : 'lose'} weight:
         </p>{' '}
         {result &&
@@ -78,20 +78,20 @@ export default function ResultGroup ({
                 <div className='relative flex justify-center items-center w-full flex-col max-h-[85%] py-4'>
                   <img src={arrow} className='h-full absolute w-full -z-1' />{' '}
                   <p
-                    className={`${textColorClass} pr-6 text-xs md:text-sm text-center font-medium`}
+                    className={`${textColorClass} pr-6 text-base text-center font-medium`}
                   >
                     {labelValue}
                   </p>
-                  <p className='text-xs md:text-sm'> {weightLabel} kg/week</p>
+                  <p className='text-base'> {weightLabel} kg/week</p>
                 </div>{' '}
                 <div className='flex flex-col items-center justify-center border-2 border-black w-full h-[87%] -ml-[20%]  -z-2'>
-                  <p className={`${textColorClass} font-semibold text-xs md:text-sm`}>
+                  <p className={`${textColorClass} font-semibold text-base`}>
                     {formattedCalorieValue}{' '}
-                    <span className='font-light text-xs'>
+                    <span className='font-light text-base'>
                       {percentageValue}%
                     </span>
                   </p>
-                  <p className='text-xs md:text-sm'>Calories/day</p>
+                  <p className='text-base'>Calories/day</p>
                 </div>
               </div>
             );
