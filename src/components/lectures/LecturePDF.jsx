@@ -50,7 +50,7 @@ export default function LecturePDF ({
             ></Timer>
           </div>
           <ul className='pt-3 pb-5 text-sm lg:text-base'>
-            <li className='ml-5 list-disc'>{introduction}</li>
+            <li className='ml-5 list-disc text-justify'>{introduction}</li>
           </ul>
         </div>
 

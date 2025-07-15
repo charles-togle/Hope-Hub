@@ -102,7 +102,7 @@ export default function LectureVideo ({
             Introduction
           </p>
           <ul className='w-full pt-7 lg:pt-10'>
-            <li className='ml-7 text-sm list-disc text-left lg:text-base'>
+            <li className='ml-7 text-sm list-disc text-justify lg:text-base'>
               {introduction}
             </li>
           </ul>

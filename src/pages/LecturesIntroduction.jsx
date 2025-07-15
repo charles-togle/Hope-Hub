@@ -119,7 +119,7 @@ export default function Lectures () {
           </div>
           <div
             id='lecture-introductions'
-            className='flex justify-center space-y-3 flex-col items-center overflow-auto mt-5'
+            className='flex justify-center space-y-3 flex-col items-center overflow-x-visible mt-5'
           >
             {activeLessons.length !== 0 ? (
               activeLessons.map((lesson, index) => {
