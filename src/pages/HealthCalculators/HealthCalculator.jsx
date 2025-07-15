@@ -51,11 +51,11 @@ export default function HealthCalculator () {
           </div>
           <hr className='border-1 border-primary-yellow yellow absolute w-55 right-0 bottom-0'></hr>
         </div>
-        <h1 className='font-content font-semibold text-xl lg:text-3xl text-primary-blue self-start'>
+        <h1 className='font-heading-small text-xl lg:text-3xl text-primary-blue self-start'>
           Description:
         </h1>
         <hr className='border-1 w-25 border-primary-yellow yellow self-start mt-1 mb-7'></hr>
-        <p className='font-content ml-10 mb-10 lg:text-base text-sm'>
+        <p className='font-content text-justify ml-10 mb-10'>
           {description.split('\n').map((line, idx) => (
             <p key={idx}>{line}</p>
           ))}

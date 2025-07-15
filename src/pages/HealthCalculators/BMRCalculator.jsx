@@ -161,18 +161,19 @@ export default function BMRCalculator () {
 
   const citations = [
     {
-      name: '[1] Mifflin, M. D., St Jeor, S. T., Hill, L. A., Scott, B. J., Daugherty, S. A., & Koh, Y. O. (1990). A new predictive equation for resting energy expenditure in healthy individuals. The American Journal of Clinical Nutrition, 51(2), 241–247.',
-      link: 'https://doi.org/10.1093/ajcn/51.2.241',
+      name: '[1] Food and Agriculture Organization, World Health Organization, & United Nations University. (2001). Human energy requirements: Report of a joint FAO/WHO/UNU expert consultation (FAO Food and Nutrition Technical Report Series No. 1). FAO. ',
+      link: 'https://www.fao.org/3/y5686e/y5686e00.htm',
     },
     {
-      name: '[2] Harris, J. A., & Benedict, F. G. (1919). A biometric study of human basal metabolism. Carnegie Institution of Washington.',
+      name: '[2] Harris, J. A., & Benedict, F. G. (1919). A biometric study of human basal metabolism. Carnegie Institution of Washington. ',
       link: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC1091498/',
     },
     {
-      name: '[3] Food and Agriculture Organization, World Health Organization, & United Nations University. (2001). Human energy requirements: Report of a joint FAO/WHO/UNU expert consultation (FAO Food and Nutrition Technical Report Series No. 1). FAO.',
-      link: 'https://www.fao.org/3/y5686e/y5686e00.htm',
+      name: '[3] Mifflin, M. D., St Jeor, S. T., Hill, L. A., Scott, B. J., Daugherty, S. A., & Koh, Y. O. (1990). A new predictive equation for resting energy expenditure in healthy individuals. The American Journal of Clinical Nutrition, 51(2), 241–247. ',
+      link: 'https://doi.org/10.1093/ajcn/51.2.241',
     },
   ];
+
 
   return (
     <>
@@ -251,7 +252,7 @@ export default function BMRCalculator () {
       </RowContainer>
       <RowContainer>
         <Container heading='Results'>
-          <p className='font-content w-full text-sm md:text-lg text-center'>
+          <p className='font-content w-full text-base text-center'>
             BMR ={' '}
             <span className='font-bold'>{bmrResult.toLocaleString()}</span>{' '}
             Calories / day
@@ -261,10 +262,10 @@ export default function BMRCalculator () {
           <table className='w-full border-collapse'>
             <thead>
               <tr className='border-b-2 border-primary-yellow'>
-                <th className='text-left py-2 px-3 font-content font-semibold text-xs md:text-sm'>
+                <th className='text-left py-2 px-3 font-content font-semibold text-base md:text-base'>
                   Activity Level
                 </th>
-                <th className='text-center py-2 px-3 font-content font-semibold text-xs md:text-sm'>
+                <th className='text-center py-2 px-3 font-content font-semibold text-base md:text-base'>
                   Multiplier
                 </th>
               </tr>
@@ -272,10 +273,10 @@ export default function BMRCalculator () {
             <tbody>
               {activityLevels.map((level, index) => (
                 <tr key={index}>
-                  <td className='py-3 px-3 text-xs md:text-sm font-content text-b border-r-2 border-primary-yellow'>
+                  <td className='py-3 px-3 text-base md:text-base font-content text-b border-r-2 border-primary-yellow'>
                     {level.label}
                   </td>
-                  <td className='py-2 px-3 text-xs md:text-sm text-center'>
+                  <td className='py-2 px-3 text-base md:text-base text-center'>
                     <span className='font-medium text-primary-blue'>
                       {level.value}
                     </span>

@@ -6,7 +6,7 @@ export default function CalculatorContainer ({
 }) {
   return (
     <div>
-      <h1 className='text-lg md:text-xl p-10 py-7 rounded-t-lg bg-secondary-dark-blue text-white font-content text-center'>
+      <h1 className='text-xl p-10 py-7 rounded-t-lg bg-secondary-dark-blue text-white font-content text-center'>
         {heading}
       </h1>
       <div className='flex flex-col rounded-b-lg border-2 border-secondary-dark-blue pr-5 pl-5 pt-8 pb-5 md:pr-15 md:pl-15 md:pt-8 md:pb-5 relative'>
