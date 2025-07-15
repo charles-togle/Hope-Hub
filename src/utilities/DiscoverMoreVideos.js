@@ -11,8 +11,7 @@ export const UpperBodyVideos = [
       do: ['Keep your back straight.', 'Press the weights slowly.'],
       dont: ["Don't arch your back.", "Don't lock your elbows."],
     },
-    videoLink:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
     uploadDate: '2025-01-04T04:01:00.000Z',
   },
   {
@@ -28,8 +27,7 @@ export const UpperBodyVideos = [
       ],
       dont: ["Don't lift your shoulders.", "Don't rush the movement."],
     },
-    videoLink:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
     uploadDate: '2025-01-04T04:01:00.000Z',
   },
   {
@@ -45,8 +43,7 @@ export const UpperBodyVideos = [
         "Don't bounce the weights.",
       ],
     },
-    videoLink:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%202.mp4',
+    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
     uploadDate: '2025-01-04T04:01:00.000Z',
   },
   {
@@ -59,8 +56,7 @@ export const UpperBodyVideos = [
       do: ['Sit up tall.', 'Pull with your back muscles.'],
       dont: ["Don't lean back too far.", "Don't pull behind your head."],
     },
-    videoLink:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
     uploadDate: '2025-01-04T04:01:00.000Z',
   },
   {
@@ -73,8 +69,7 @@ export const UpperBodyVideos = [
       do: ['Keep your elbows close to your body.', 'Lift slowly.'],
       dont: ["Don't swing your body.", "Don't use your shoulders."],
     },
-    videoLink:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
     uploadDate: '2025-01-04T04:01:00.000Z',
   },
   {
@@ -87,8 +82,7 @@ export const UpperBodyVideos = [
       do: ['Sit up tall.', 'Pull with your back muscles.'],
       dont: ["Don't lean back too far.", "Don't pull behind your head."],
     },
-    videoLink:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
     uploadDate: '2025-01-04T04:01:00.000Z',
   },
   {
@@ -104,8 +98,7 @@ export const UpperBodyVideos = [
       ],
       dont: ["Don't move your shoulders.", "Don't lean too far forward."],
     },
-    videoLink:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
     uploadDate: '2025-01-04T04:01:00.000Z',
   },
 ];
@@ -129,8 +122,7 @@ export const LowerBodyVideos = [
         "Don't bounce off the back foot.",
       ],
     },
-    videoLink:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%201.mp4',
+    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
     uploadDate: '2025-01-04T04:01:00.000Z',
   },
   {
@@ -151,8 +143,7 @@ export const LowerBodyVideos = [
         "Don't hyperextend your back at the top.",
       ],
     },
-    videoLink:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%202.mp4',
+    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
     uploadDate: '2025-01-04T04:01:00.000Z',
   },
   {
@@ -173,8 +164,7 @@ export const LowerBodyVideos = [
         "Don't arch or round your back.",
       ],
     },
-    videoLink:
-      'https://file.garden/Z-9MLal_RynAMoBV/Videos/Stock%20Video%203.mp4',
+    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
     uploadDate: '2025-01-04T04:01:00.000Z',
   },
 ];
