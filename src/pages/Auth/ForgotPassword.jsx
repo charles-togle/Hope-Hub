@@ -64,7 +64,7 @@ export default function ForgotPassword () {
           </p>
         )}{' '}
         <FormButton
-          text={isLoading ? 'Waiting...' : 'Confirm'}
+          text={isLoading ? 'Hang in there...' : 'Confirm'}
           onClick={() => handleForgotPassword()}
           disabled={isLoading}
         ></FormButton>
