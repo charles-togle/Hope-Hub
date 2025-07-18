@@ -224,7 +224,7 @@ export default function BodyFatPercentageCalculator () {
           </div>
         </CalculatorContainer>{' '}
         <Container heading='Instructions'>
-          <ol className='list-decimal font-content text-base'>
+          <ol className='list-decimal text-justify mx-2 mb-3 md:mb-5 font-content text-xs md:text-base'>
             {instructions.map((instruction, index) => (
               <li key={`Instruction ${index}`}>{instruction}</li>
             ))}
@@ -233,7 +233,7 @@ export default function BodyFatPercentageCalculator () {
       </RowContainer>
       <RowContainer ref={resultsRef}>
         <Container heading='Results'>
-          <span className='mt-5 font-content text-base text-center font-bold'>
+          <span className='mt-5 font-content text-xs md:text-base text-center font-bold'>
             {' '}
             Body Fat: {raw}%{' '}
           </span>
@@ -252,7 +252,7 @@ export default function BodyFatPercentageCalculator () {
             <div className='h-8 shadow-md bg-red-800 w-[31%]' /> {/* Obese */}
             <span
               style={{ marginLeft: `${rawPercent}%` }}
-              className='w-auto mt-5 absolute font-extrabold text-base text-shadow-black'
+              className='w-auto mt-6 absolute font-extrabold text-xl text-shadow-black'
             >
               ◣
             </span>
@@ -260,7 +260,7 @@ export default function BodyFatPercentageCalculator () {
 
           {/* <span className = {getPercentCategoryLevel(BodyFatPercentageResult)}> ◣ </span> */}
 
-          <table className='border-collapse font-content text-base w-full'>
+          <table className='border-collapse font-content text-xs md:text-base w-full'>
             <tbody>
               {results?.results &&
                 Object.entries(results.results).map(([label, value]) => (
@@ -277,10 +277,10 @@ export default function BodyFatPercentageCalculator () {
         </Container>
 
         <Container heading='Data Reference'>
-          <div className='font-content text-base'>
+          <div className='font-content text-xs md:text-base'>
             <div className='relative grid grid-cols-2 fr gap-3 items-center'>
-              <span className='text-base font-bold'> Percentage </span>{' '}
-              <span className='text-base font-bold'> Bar Visualizer </span>
+              <span className='text-xs md:text-base font-bold'> Percentage </span>{' '}
+              <span className='text-xs md:text-base font-bold'> Bar Visualizer </span>
               <div className='border-b-2 border-primary-blue w-10 self-center' />{' '}
               <div className='border-b-2 border-primary-blue w-10 self-center' />
               <span className='flex mb-2 text-red-800'>

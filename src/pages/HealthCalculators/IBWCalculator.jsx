@@ -122,7 +122,7 @@ export default function IBWCalculator () {
         </CalculatorContainer>{' '}
         <Container heading='Instructions'>
           <div className=''>
-            <ol className='list-decimal font-content text-base'>
+            <ol className='list-decimal text-justify font-content mx-2 mb-3 md:mb-5 text-xs md:text-base'>
               {instructions.map((instruction, index) => (
                 <li key={`Instruction ${index}`}>{instruction}</li>
               ))}
@@ -131,11 +131,11 @@ export default function IBWCalculator () {
         </Container>
       </RowContainer>
 
-      <div className='text-base font-content flex flex-row mt-10 justify-between self-center'>
+      <div className='text-xs md:text-base font-content flex flex-row mt-10 justify-between self-center'>
         <Container heading='Results' ref={resultsRef}>
           <div className='right-0 border-b-2 border-primary-yellow w-35 absolute' />
           <div className='w-full border-b-2 border-primary-blue pb-2 text-center'>
-            <p className='p-2 pt-5 text-base'>
+            <p className='p-2 pt-5 text-xs md:text-base'>
               {' '}
               Ideal weight based on popular formulas:
             </p>
@@ -144,12 +144,12 @@ export default function IBWCalculator () {
           <table className='border-collapse w-full'>
             <thead>
               <tr>
-                <th className='text-left'>
-                  <p className='mt-8 text-red-400 font-content'> Formula </p>
+                <th className='text-left w-1/2'>
+                  <p className='mt-5 text-red-400 font-content text-xs md:text-base'> Formula </p>
                   <div className='border-b-2 mb-3 border-primary-blue w-10 font-content' />
                 </th>
-                <th className='pl-3 text-left'>
-                  <p className='mt-8 text-green-400 font-content'> Ideal Weight </p>
+                <th className='pl-3 text-left w-1/2'>
+                  <p className='mt-5 text-green-400 font-content text-xs md:text-base'> Ideal Weight </p>
                   <div className='border-b-2 mb-3 border-primary-blue w-10 font-content' />
                 </th>
               </tr>
@@ -160,17 +160,17 @@ export default function IBWCalculator () {
                 <>
                   {Object.entries(results.IBW).map(([formula, value]) => (
                     <tr key={formula}>
-                      <td className='pl-3 text-base md:text-base font-content border-r-2 border-primary-yellow'>
+                      <td className='pl-3 text-xs md:text-base font-content border-r-2 border-primary-yellow'>
                         {formula}
                       </td>
-                      <td className='pl-6 text-base md:text-base'>{value} kg</td>
+                      <td className='pl-6 text-xs md:text-base'>{value} kg</td>
                     </tr>
                   ))}
                 </>
               )}
 
               {results?.HealthyBMIRange && (
-                <tr className='text-base md:text-base font-content'>
+                <tr className='text-xs md:text-base font-content'>
                   <td className='p-3'>Healthy Weight Range:</td>
                   <td className='pl-6'>
                     <p>

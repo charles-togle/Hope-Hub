@@ -231,7 +231,7 @@ export default function BMRCalculator () {
           </div>
         </CalculatorContainer>{' '}
         <Container heading='Instructions'>
-          <ol className='list-decimal font-content text-base'>
+          <ol className='list-decimal font-content mx-2 mb-3 md:mb-5 text-xs md:text-basetext-xs md:text-base text-justify'>
             {instructions.map((instruction, index) => (
               <li key={`Instruction ${index}`}>{instruction}</li>
             ))}
@@ -252,7 +252,7 @@ export default function BMRCalculator () {
       </RowContainer>
       <RowContainer>
         <Container heading='Results'>
-          <p className='font-content w-full text-base text-center'>
+          <p className='font-content w-full text-xs md:text-base text-center'>
             BMR ={' '}
             <span className='font-bold'>{bmrResult.toLocaleString()}</span>{' '}
             Calories / day
@@ -262,10 +262,10 @@ export default function BMRCalculator () {
           <table className='w-full border-collapse'>
             <thead>
               <tr className='border-b-2 border-primary-yellow'>
-                <th className='text-left py-2 px-3 font-content font-semibold text-base md:text-base'>
+                <th className='text-left py-2 px-3 font-content font-semibold text-xs md:text-base'>
                   Activity Level
                 </th>
-                <th className='text-center py-2 px-3 font-content font-semibold text-base md:text-base'>
+                <th className='text-center py-2 px-3 font-content font-semibold text-xs md:text-base'>
                   Multiplier
                 </th>
               </tr>
@@ -273,10 +273,10 @@ export default function BMRCalculator () {
             <tbody>
               {activityLevels.map((level, index) => (
                 <tr key={index}>
-                  <td className='py-3 px-3 text-base md:text-base font-content text-b border-r-2 border-primary-yellow'>
+                  <td className='py-3 px-3 text-xs md:text-base font-content text-b border-r-2 border-primary-yellow'>
                     {level.label}
                   </td>
-                  <td className='py-2 px-3 text-base md:text-base text-center'>
+                  <td className='py-2 px-3 text-xs md:text-base text-center'>
                     <span className='font-medium text-primary-blue'>
                       {level.value}
                     </span>
