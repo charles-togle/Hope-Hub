@@ -166,7 +166,7 @@ export default function WaterIntakeCalculator () {
           </div>
         </CalculatorContainer>{' '}
         <Container heading='Instructions'>
-          <ol className='list-decimal font-content text-base'>
+          <ol className='list-decimal text-justify font-content mx-2 mb-3 md:mb-5 text-xs md:text-base'>
             {instructions.map((instruction, index) => (
               <li key={`Instruction ${index}`}>{instruction}</li>
             ))}
@@ -174,11 +174,11 @@ export default function WaterIntakeCalculator () {
         </Container>
       </RowContainer>
 
-      <div className='text-base font-content flex flex-row mt-10 justify-between self-center'>
+      <div className='mx-2 mb-3 md:mb-5 text-xs md:text-base font-content flex flex-row mt-10 justify-between self-center'>
         <Container heading='Results' ref={resultsRef}>
           <div className='right-0 border-b-2 border-primary-yellow w-25 absolute' />
-          <p className='mt-5 text-center '> Estimated Water Intake: </p>
-          <p className='mb-3 text-center '>
+          <p className='mt-5 text-center text-xs md:text-base'> Estimated Water Intake: </p>
+          <p className='mb-3 text-center text-xs md:text-base'>
             {' '}
             <p className={getIntakeCategoryColor(waterIntakeCategory)}>
               {intakeResult}L

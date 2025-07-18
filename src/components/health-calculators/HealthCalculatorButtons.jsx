@@ -7,7 +7,7 @@ export default function HealthCalculatorButton ({ text, className, linkTo }) {
         id='calculator-button'
         className={`${className} bg-secondary-dark-blue text-white py-6 rounded mb-6`}
       >
-        <p className='font-content text-sm sm:text-xs md:text-base lg:text-2xl text-center text-white'>
+        <p className='font-content text-xs md:text-base lg:text-2xl text-center text-white'>
           {text}
         </p>
       </div>

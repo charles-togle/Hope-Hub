@@ -40,7 +40,7 @@ export default function HealthCalculator () {
       <PageHeading text='Fitness & Health Calculators' />
       <div id='health-calculators-content' className='content-container'>
         <div className='relative mb-10 w-full'>
-          <div className='grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 md:gap-y-1 lg:px-0 gap-y-3 gap-x-10'>
+          <div className='grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 md:gap-y-1 lg:px-0 gap-y-1 gap-x-10'>
             {HealthCalculatorButtons.map((button, index) => (
               <HealthCalculatorButton
                 key={index}
