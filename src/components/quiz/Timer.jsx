@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 import { updateRemainingTime } from '@/utilities/QuizData';
 import { useParams } from 'react-router-dom';
 
-export default function Timer({ duration, color, onTimerEnd }) {
+export default function Timer ({ duration, color, onTimerEnd }) {
   const { quizId } = useParams();
   const [time, setTime] = useState(0);
   const [hasTimerEnded, setHasTimerEnded] = useState(false);
@@ -29,14 +29,14 @@ export default function Timer({ duration, color, onTimerEnd }) {
     return () => clearInterval(interval);
   }, [duration, quizId]);
 
-  // fix for race condition where onTimerEnd is called twice 
+  // fix for race condition where onTimerEnd is called twice
   if (hasTimerEnded) {
     onTimerEnd();
     setHasTimerEnded(false);
   }
 
   return (
-    <div className="flex items-center gap-4">
+    <div className='flex items-center gap-4'>
       <motion.img
         animate={{
           rotate: [-5, 5, -5, 5],
@@ -46,9 +46,9 @@ export default function Timer({ duration, color, onTimerEnd }) {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="size-7 lg:size-8"
+        className='size-7 lg:size-8'
         src={TimerIcon}
-        alt="timer"
+        alt='timer'
       />
       <motion.span
         animate={{

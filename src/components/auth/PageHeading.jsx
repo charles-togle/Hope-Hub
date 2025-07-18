@@ -5,7 +5,7 @@ export default function PageHeading ({ className }) {
   return (
     <div
       id='page-heading'
-      className={`${className} h-[15vh] md:h-[35vh] flex justify-center items-center flex-col text-center lg:h-[20vh]`}
+      className={`${className} h-[15vh] md:h-[20vh] flex justify-center items-center flex-col text-center lg:h-[20vh]`}
     >
       <h1
         className='text-center font-heading text-4xl lg:text-5xl text-white cursor-pointer'

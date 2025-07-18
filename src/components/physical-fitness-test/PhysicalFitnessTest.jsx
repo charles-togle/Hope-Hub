@@ -1,18 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PhysicalFitnessTestList } from '@/utilities/PhysicalFitnessTestList';
-import { Fragment } from 'react';
 import { usePhysicalFitnessData } from '@/hooks/usePhysicalFitnessData';
 import { AlertMessage } from '@/components/utilities/AlertMessage';
 import setDataToStorage from '@/utilities/setDataToStorage';
 import getDataFromStorage from '@/utilities/getDataFromStorage';
 import { SimpleTimer } from '@/components/utilities/SimpleTimer';
-import { ResultSection } from './ResultSection';
+import ResultSection from './ResultSection';
 import { TipsAndInterpretation } from './TipsAndInterperetation';
 import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
+import { memo } from 'react';
+import { useCallback } from 'react';
 
-const InstructionsGroup = ({ text, array, id }) => (
+const parseTime = timeString => {
+  const [hours, minutes] = timeString.split(':').map(Number);
+  return hours * 60 + minutes; // Convert to total minutes
+};
+
+const InstructionsGroup = memo(({ text, array, id }) => (
   <div id={id}>
     <h3 className='text-base font-semibold'>{text}</h3>
     <ol className='list-decimal ml-6'>
@@ -21,7 +27,7 @@ const InstructionsGroup = ({ text, array, id }) => (
       ))}
     </ol>
   </div>
-);
+));
 
 export default function PhysicalFitnessTest ({
   index,
@@ -45,7 +51,7 @@ export default function PhysicalFitnessTest ({
   const testDetails = PhysicalFitnessTestList[index];
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
-  const [timerTime, setTimerTime] = useState(600);
+  const [timerTime, setTimerTime] = useState(1200);
   const navigate = useNavigate();
   const userId = useUserId();
 
@@ -64,84 +70,126 @@ export default function PhysicalFitnessTest ({
     setCategory(storedData.category);
   }, []);
 
-  const handleResultChange = (type, value) => {
-    let key = '';
-    switch (type) {
-      case 'Record':
-        key = 'reps';
-        break;
-      case 'Time Started':
-        key = 'timeStarted';
-        break;
-      case 'Time End':
-        key = 'timeEnded';
-        break;
-    }
+  // Prevent page refresh during test
+  useEffect(() => {
+    const handleBeforeUnload = e => {
+      e.preventDefault();
+      e.returnValue =
+        'Are you sure you want to leave? Your test progress will be lost.';
+      return 'Are you sure you want to leave? Your test progress will be lost.';
+    };
 
-    console.log(key, value);
-    setTestResults(prev => {
-      const updatedTestResults = {
-        ...prev,
-        [key]: value.toString(),
-      };
-      if (key === 'reps') {
-        handleInterpretation(updatedTestResults);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  // Handle Enter key press to submit
+  useEffect(() => {
+    const handleKeyPress = e => {
+      if (e.key === 'Enter') {
+        handleSubmit();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleSubmit]);
+
+  const handleResultChange = useCallback(
+    (type, value) => {
+      let key = '';
+      switch (type) {
+        case 'Record':
+          key = 'reps';
+          break;
+        case 'Time Started':
+          key = 'timeStarted';
+          break;
+        case 'Time End':
+          key = 'timeEnded';
+          break;
       }
 
-      return updatedTestResults;
-    });
-  };
-
-  const setClassification = value => {
-    setTestResults(prev => ({
-      ...prev,
-      classification: value,
-    }));
-  };
-  const handleInterpretation = updatedTestResults => {
-    const reps = parseFloat(updatedTestResults.reps);
-    const storedData = getDataFromStorage('physicalFitnessData');
-    setCategory(storedData.category);
-    let classificationDetails = testDetails.classification?.[category];
-    if (testName === 'Push-Up') {
-      classificationDetails = testDetails.classification?.[storedData.category];
-    }
-    if (!classificationDetails) {
-      setCategory(prev => {
-        if (!prev) {
-          return storedData.category;
+      console.log(key, value);
+      setTestResults(prev => {
+        const updatedTestResults = {
+          ...prev,
+          [key]: value.toString(),
+        };
+        if (key === 'reps') {
+          handleInterpretation(updatedTestResults);
         }
-        let data = prev.slice(-4);
-        data = data === 'irls' ? 'Girls' : 'Boys';
-        return data;
-      });
-      classificationDetails = testDetails.classification;
-    }
-    if (!classificationDetails) {
-      setClassification('No information available');
-      return;
-    } else if (Array.isArray(classificationDetails)) {
-      classificationDetails.forEach(item => {
-        if (item.exact !== undefined && reps === item.exact) {
-          setClassification(item.interpretation);
-          return;
-        } else if (
-          item.min !== undefined &&
-          item.max !== undefined &&
-          item.min <= reps &&
-          item.max >= reps
-        ) {
-          setClassification(item.interpretation);
-          return;
-        } else if (item.min !== undefined && !item.max && item.min <= reps) {
-          setClassification(item.interpretation);
-          return;
-        }
-      });
-    }
-  };
 
-  const handleSubmit = async () => {
+        return updatedTestResults;
+      });
+    },
+    [handleInterpretation, setTestResults],
+  );
+
+  const setClassification = useCallback(
+    value => {
+      setTestResults(prev => ({
+        ...prev,
+        classification: value,
+      }));
+    },
+    [setTestResults],
+  );
+
+  const handleInterpretation = useCallback(
+    updatedTestResults => {
+      const reps = parseFloat(updatedTestResults.reps);
+      const storedData = getDataFromStorage('physicalFitnessData');
+      setCategory(storedData.category);
+      let classificationDetails = testDetails.classification?.[category];
+      if (testName === 'Push-Up') {
+        classificationDetails =
+          testDetails.classification?.[storedData.category];
+      }
+      if (!classificationDetails) {
+        setCategory(prev => {
+          if (!prev) {
+            return storedData.category;
+          }
+          let data = prev.slice(-4);
+          data = data === 'irls' ? 'Girls' : 'Boys';
+          return data;
+        });
+        classificationDetails = testDetails.classification;
+      }
+      if (!classificationDetails) {
+        setClassification('No information available');
+        return;
+      } else if (Array.isArray(classificationDetails)) {
+        classificationDetails.forEach(item => {
+          if (item.exact !== undefined && reps === item.exact) {
+            setClassification(item.interpretation);
+            return;
+          } else if (
+            item.min !== undefined &&
+            item.max !== undefined &&
+            item.min <= reps &&
+            item.max >= reps
+          ) {
+            setClassification(item.interpretation);
+            return;
+          } else if (item.min !== undefined && !item.max && item.min <= reps) {
+            setClassification(item.interpretation);
+            return;
+          }
+        });
+      }
+    },
+    [setClassification, setCategory, testDetails, category, testName],
+  );
+
+  const handleSubmit = useCallback(async () => {
     if (!userId) return;
     setCurrentTime(
       `${String(new Date().getHours()).padStart(2, '0')}:${String(
@@ -159,10 +207,33 @@ export default function PhysicalFitnessTest ({
       return;
     }
 
-    const isTimeInvalid = testResults.timeStarted > testResults.timeEnded;
-    if (isTimeInvalid) {
+    const startTimeInMinutes = parseTime(testResults.timeStarted);
+    const endTimeInMinutes = parseTime(testResults.timeEnded);
+
+    const isStartTimeAfterEndTime =
+      testResults.timeStarted > testResults.timeEnded;
+    const isTimeThresholdReached = endTimeInMinutes - startTimeInMinutes <= 5;
+    const isTimeEndValid = endTimeInMinutes - startTimeInMinutes > 20;
+
+    if (isStartTimeAfterEndTime) {
       setAlertMessage("Please input a valid time for 'Time End'");
-      setShowAlert(isTimeInvalid);
+      setShowAlert(isStartTimeAfterEndTime);
+      return;
+    }
+
+    if (isTimeThresholdReached) {
+      setAlertMessage(
+        'Test duration is too short. The test must last more than 5 minutes for accurate results.',
+      );
+      setShowAlert(isTimeThresholdReached);
+      return;
+    }
+
+    if (isTimeEndValid) {
+      setAlertMessage(
+        'Test duration is too long. The test should not exceed 20 minutes. Please check your time entries.',
+      );
+      setShowAlert(isTimeEndValid);
       return;
     }
 
@@ -202,15 +273,28 @@ export default function PhysicalFitnessTest ({
     });
     if (physicalFitnessData.finishedTestIndex.length >= Number(index)) {
       navigate(`/physical-fitness-test/test/${Number(index) + 1}`);
-      setTimerTime(600);
+      setTimerTime(1200);
+      console.log('dapat nagbago');
       setTestResults({
         reps: '',
         timeStarted: currentTime,
         timeEnded: '',
         classification: 'No data available',
       });
+      console.log(timerTime);
     }
-  };
+  }, [
+    userId,
+    testResults,
+    setPhysicalFitnessData,
+    testDetails,
+    testType,
+    physicalFitnessData.finishedTestIndex.length,
+    index,
+    navigate,
+    currentTime,
+    timerTime,
+  ]);
 
   return (
     <div id='test-container' className=''>
@@ -247,6 +331,7 @@ export default function PhysicalFitnessTest ({
               time={timerTime}
               className='flex flex-row justify-start items-center space-x-5 lg:relative lg:right-0 lg:w-[50%] lg:mt-2'
               onEnd={() => setIsTimeout(true)}
+              testName={testName}
             />
           </div>
           <iframe

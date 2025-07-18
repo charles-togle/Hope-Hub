@@ -3,14 +3,13 @@ import PageHeading from '@/components/auth/PageHeading';
 
 export default function AuthContainer ({ children }) {
   return (
-    <section id='auth-container relative'>
+    <section
+      id='auth-container relative'
+      className='min-h-screen min-w-screen bg-cover bg-center bg-no-repeat'
+      style={{ backgroundImage: `url(${AuthBG})` }}
+    >
       <PageHeading className={'border-0'}></PageHeading>
-      <img
-        src={AuthBG}
-        alt=''
-        className='w-full lg:max-h-[110vh] lg:h-full  md:h-[unset] h-full absolute -z-1 top-0'
-      />
-      <div className='flex justify-center items-center w-full min-h-[65svh] lg:min-h-0'>
+      <div className='flex justify-center items-center w-full min-h-[65svh] lg:min-h-0 md:scale-75 lg:scale-100 bg-cover bg-center bg-no-repeat'>
         {children}
       </div>
     </section>

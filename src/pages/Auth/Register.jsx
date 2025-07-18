@@ -12,7 +12,6 @@ import { useEffect } from 'react';
 export default function Register () {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [classCode, setClassCode] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isEducator, setEducator] = useState(false);
@@ -53,7 +52,6 @@ export default function Register () {
     const trimmedPassword = password.trim();
     const trimmedConfirmPassword = confirmPassword.trim();
     const trimmedName = name.trim();
-    const trimmedClassCode = classCode.trim();
 
     const fields = [
       trimmedEmail,
@@ -70,13 +68,6 @@ export default function Register () {
       return;
     }
 
-    if (trimmedClassCode && trimmedClassCode.length !== 6) {
-      setErrorMessage('Class code must be exactly 6 characters');
-      setSuccessMessage('');
-      setIsLoading(false);
-      return;
-    }
-
     const userType = isEducator ? 'teacher' : 'student';
 
     const { data, error } = await supabase.auth.signUp({
@@ -88,7 +79,7 @@ export default function Register () {
         data: {
           fullName: trimmedName,
           userType: userType,
-          classCode: trimmedClassCode !== '' ? trimmedClassCode : null,
+          classCode: null,
           lectureProgress: LectureProgress(),
           password: trimmedPassword,
         },
@@ -112,10 +103,6 @@ export default function Register () {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    setClassCode('');
-  }, [isEducator]);
-
   return (
     <AuthContainer>
       <FormContainer>
@@ -138,16 +125,6 @@ export default function Register () {
             type='email'
           ></FormInput>
           <FormInput
-            value={classCode}
-            placeholder={
-              isEducator
-                ? 'You can create a class later'
-                : 'Nothing going on yet? Join a class later'
-            }
-            disabled={isEducator}
-            setValue={setClassCode}
-          ></FormInput>
-          <FormInput
             value={password}
             placeholder='Password'
             setValue={handlePasswordChange}
@@ -165,7 +142,7 @@ export default function Register () {
               id='educator'
               onChange={() => setEducator(prev => !prev)}
             />
-            <label htmlFor='educator'>I am an educator</label>
+            <label htmlFor='educator'>I am an educator </label>
           </div>
         </InputContainer>
         {errorMessage && (
@@ -176,6 +153,14 @@ export default function Register () {
             {successMessage}
           </p>
         )}
+        <div className='relative flex items-center w-full'>
+          <span className='text-accent-gray font-content text-xs text-justify'>
+            By clicking Sign Up, you consent to Hope Hub gathering necessary
+            information to provide educational services and improve your
+            learning experience. This data collection is in accordance with the
+            Data Privacy Act of the Philippines (Republic Act No. 10173).
+          </span>
+        </div>
         <FormButton
           text={isLoading ? 'Signing you up...' : 'Sign Up'}
           onClick={handleRegister}

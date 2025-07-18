@@ -1,12 +1,12 @@
-import { Fragment } from 'react';
+import { Fragment, memo } from 'react';
 
-export function ResultSection ({
+const ResultSection = ({
   testResults,
   testName,
   handleResultChange,
   handleSubmit,
   currentTime,
-}) {
+}) => {
   return (
     <div
       id='results'
@@ -88,4 +88,6 @@ export function ResultSection ({
       </div>
     </div>
   );
-}
+};
+
+export default memo(ResultSection);
