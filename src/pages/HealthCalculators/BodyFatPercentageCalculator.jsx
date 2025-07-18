@@ -277,38 +277,38 @@ export default function BodyFatPercentageCalculator () {
         </Container>
 
         <Container heading='Data Reference'>
-          <div className='font-content text-xs md:text-base'>
+          <div className='mx-2 mb-3 md:mb-5 w-auto font-content text-xs md:text-base'>
             <div className='relative grid grid-cols-2 fr gap-3 items-center'>
               <span className='text-xs md:text-base font-bold'> Percentage </span>{' '}
               <span className='text-xs md:text-base font-bold'> Bar Visualizer </span>
               <div className='border-b-2 border-primary-blue w-10 self-center' />{' '}
               <div className='border-b-2 border-primary-blue w-10 self-center' />
-              <span className='flex mb-2 text-red-800'>
+              <span className='flex  text-red-800'>
                 {' '}
                 less than 4% <br /> Below Essential
               </span>{' '}
               <div className='h-6 flex shadow-md bg-red-800 w-[4%]' />
-              <span className='flex mb-2 text-yellow-400 '>
+              <span className='flex  text-yellow-400 '>
                 {' '}
                 4% - 10% <br /> Essential{' '}
               </span>{' '}
               <div className='h-6 shadow-md bg-yellow-400 w-[6%]' />
-              <span className='flex mb-2 text-green-400 '>
+              <span className='flex  text-green-400 '>
                 {' '}
                 11% - 26% <br /> Athlete{' '}
               </span>{' '}
               <div className='h-6 shadow-md bg-green-400 w-[16%]' />
-              <span className='flex mb-2 text-green-600 '>
+              <span className='flex  text-green-600 '>
                 {' '}
                 27% - 44% <br /> Fitness{' '}
               </span>{' '}
               <div className='h-6 shadow-md bg-green-600 w-[18%]' />
-              <span className='flex mb-2 text-yellow-400'>
+              <span className='flex  text-yellow-400'>
                 {' '}
                 45% - 69% <br /> Average{' '}
               </span>{' '}
               <div className='h-6 shadow-md bg-yellow-400 w-[25%]' />
-              <span className='flex mb-2 text-red-800'>
+              <span className='flex  text-red-800'>
                 {' '}
                 more than 70% <br /> Obese{' '}
               </span>{' '}

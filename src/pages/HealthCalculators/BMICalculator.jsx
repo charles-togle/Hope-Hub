@@ -187,7 +187,7 @@ export default function BMICalculator () {
           </p>
         </Container>
         <Container heading='BMI POINTERS' className='w-1/2'>
-          <ol className='list-decimal font-content text-xs md:text-base'>
+          <ol className='list-decimal font-content mx-2 mb-3 md:mb-5 text-xs md:text-base'>
             <li>Healthy Range: 18.5 – 24.9</li>
             <li>Underweight: Below 18.5</li>
             <li>Overweight: 25.0 – 29.9</li>
