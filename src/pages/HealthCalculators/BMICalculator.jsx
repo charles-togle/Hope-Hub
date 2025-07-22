@@ -172,7 +172,7 @@ export default function BMICalculator () {
           </div>{' '}
         </CalculatorContainer>
         <Container heading='Instructions'>
-          <ol className='list-decimal font-content text-base'>
+          <ol className='list-decimal text-justify font-content mx-2 mb-3 md:mb-5 text-xs md:text-base'>
             {instructions.map((instruction, index) => (
               <li key={`Instruction ${index}`}>{instruction}</li>
             ))}
@@ -181,7 +181,7 @@ export default function BMICalculator () {
       </RowContainer>
       <RowContainer>
         <Container heading='Results' ref={resultsRef}>
-          <p className='font-content w-full text-center'>
+          <p className='font-content w-full text-center text-xs md:text-base'>
             BMI: {bmiResult || '0.00'} kg/m²{' '}
             <span className={getBMICategoryColor(bmiCategory)}>
               ({bmiCategory})
@@ -189,13 +189,13 @@ export default function BMICalculator () {
           </p>
         </Container>
         <Container heading='BMI POINTERS' className='w-1/2'>
-          <ol className='list-decimal font-content text-base'>
+          <ol className='list-decimal font-content mx-2 mb-3 md:mb-5 text-xs md:text-base'>
             <li>Healthy Range: 18.5 – 24.9</li>
             <li>Underweight: Below 18.5</li>
             <li>Overweight: 25.0 – 29.9</li>
             <li>Obese: 30.0 and above</li>
           </ol>
-          <p className='font-content text-red mt-2 text-base'>
+          <p className='font-content text-red mt-2 text-xs md:text-base'>
             Note: BMI doesn't account for muscle mass or body composition.
           </p>
         </Container>

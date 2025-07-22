@@ -32,9 +32,9 @@ export default function CalculatorDropdown () {
     <div className='relative w-auto ml-auto mb-10'>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className='w-full bg-secondary-dark-blue border-2 border-secondary-dark-blue rounded-lg px-4 py-3 text-left flex justify-between items-center hover:bg-blue-800 transition-colors pr-10'
+        className='w-full bg-secondary-dark-blue border-2 border-secondary-dark-blue rounded-lg px-4 py-3 flex flex-row flex-1/2 justify-between items-center hover:bg-blue-800 transition-colors pr-3'
       >
-        <span className='font-content text-white font-medium'>
+        <span className='text-xs md:text-base font-content mr-5 text-white font-medium'>
           {getCurrentCalculator()}
         </span>
         <svg
@@ -59,7 +59,7 @@ export default function CalculatorDropdown () {
             <button
               key={option.value}
               onClick={() => handleOptionSelect(option)}
-              className='w-full px-4 py-3 text-left font-content text-white hover:bg-primary-yellow hover:text-secondary-dark-blue transition-colors first:rounded-t-md last:rounded-b-md'
+              className='w-full px-4 py-3 text-left text-xs md:text-base font-content text-white hover:bg-primary-yellow hover:text-secondary-dark-blue transition-colors first:rounded-t-md last:rounded-b-md'
             >
               {option.label}
             </button>
