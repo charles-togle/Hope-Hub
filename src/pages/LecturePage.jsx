@@ -18,6 +18,7 @@ export default function LecturePage () {
   const [isVideo, setIsVideo] = useState(lectureType === 'video');
   const [lectureProgress, setLectureProgress] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const selectedLessonNumber = Number(lessonNumber);
 
   const lessonDetails = Lessons.find(
@@ -26,7 +27,10 @@ export default function LecturePage () {
 
   // Fetch lecture progress from DB on mount
   useEffect(() => {
-    if (!userId) return;
+    if (!userId) {
+      setIsLoading(true);
+      return;
+    }
     const fetchProgress = async () => {
       const { data, error } = await supabase
         .from('lecture_progress')
@@ -41,9 +45,9 @@ export default function LecturePage () {
       setDataLoaded(true);
     };
     fetchProgress();
+    setIsLoading(false);
   }, [userId]);
 
-  // Guard: invalid lectureType or out of bounds lesson
   useEffect(() => {
     if (
       !['video', 'lecture'].includes(lectureType) ||
@@ -53,7 +57,6 @@ export default function LecturePage () {
     }
   }, [lectureType, selectedLessonNumber]);
 
-  // Ensure correct route format based on isVideo state
   useEffect(() => {
     navigate(
       `/lectures/lecture/${selectedLessonNumber}/${
@@ -62,7 +65,6 @@ export default function LecturePage () {
     );
   }, [isVideo, selectedLessonNumber, navigate]);
 
-  // Mark as pending if not done, and update DB
   useEffect(() => {
     if (!userId) return;
     if (!dataLoaded) return;
@@ -89,25 +91,21 @@ export default function LecturePage () {
     updateProgress();
   }, [lectureProgress, selectedLessonNumber, dataLoaded, userId]);
 
-  // Handler: when lecture/video is finished
   const handleLectureFinish = async () => {
     if (isLectureDone) return;
     const lectureToUpdate = lectureProgress.find(
       p => p.key === selectedLessonNumber,
     );
-    if (!lectureToUpdate)
-      return console.error('Lecture not found in progress!');
+    if (!lectureToUpdate) return;
     const updatedProgress = lectureProgress.map(p =>
       p.key === selectedLessonNumber ? { ...p, status: 'Done' } : p,
     );
     setLectureProgress(updatedProgress);
     setIsLectureDone(true);
-    // Update remote DB
     await supabase
       .from('lecture_progress')
       .update({ lecture_progress: updatedProgress })
       .eq('uuid', userId);
-    //add unlocking quiz
 
     await supabase
       .from('quiz_progress')
@@ -116,11 +114,10 @@ export default function LecturePage () {
       ]);
   };
 
-  // Render: error message
   if (!lessonDetails || isError) {
     return <ErrorMessage text='Error 404' subText='Page not found' />;
   }
-  if (!dataLoaded) {
+  if (!dataLoaded || isLoading) {
     return <Loading />;
   }
 
@@ -140,6 +137,7 @@ export default function LecturePage () {
 
         {!isVideo && (
           <LecturePDF
+            userID={userId}
             lectureNumber={selectedLessonNumber}
             title={title}
             introduction={introduction}

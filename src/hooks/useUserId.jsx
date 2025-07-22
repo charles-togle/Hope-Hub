@@ -11,7 +11,6 @@ export const useUserId = () => {
     const getSession = async () => {
       const { data, error } = await supabase.auth.getSession();
       if (error || !data.session) {
-        console.log('user not logged in');
         navigate('/auth/login');
         return;
       }

@@ -15,7 +15,6 @@ import supabase from '@/client/supabase';
 import { useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
 import Loading from '@/components/Loading';
-import { clearAllTimerData } from '@/utilities/clearTimerData';
 
 export default function TeacherDashboard () {
   const userID = useUserId();
@@ -57,7 +56,6 @@ export default function TeacherDashboard () {
         .eq('uuid', userID);
 
       if (error) {
-        console.error('Error fetching class codes:', error);
         return;
       }
       setClassCodes(data || []);
@@ -80,31 +78,23 @@ export default function TeacherDashboard () {
         .select();
 
       if (error) {
-        console.error('Error removing class:', error);
         return;
       }
 
       if (data && data.length === 0) {
-        console.warn('No class found to delete with code:', classCode);
         return;
       }
 
       setClassCodes(prevCodes =>
         prevCodes.filter(code => code.class_code !== classCode),
       );
-
-      console.log('Successfully deleted class:', classCode);
-    } catch (err) {
-      console.error('Error removing class:', err);
-    }
+    } catch (err) {}
   };
   const handleLogout = async () => {
-    // Clear all timer data before logging out
-    clearAllTimerData();
+
 
     const { error } = await supabase.auth.signOut();
     if (error) {
-      console.log('There was a problem logging you out', error.message);
       return;
     }
     navigate('/');

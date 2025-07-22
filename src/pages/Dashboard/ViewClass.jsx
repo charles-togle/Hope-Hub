@@ -117,7 +117,6 @@ export default function ViewClass () {
         setHasOwnership(true);
       }
     } catch (err) {
-      console.error('Error checking class ownership:', err);
       setHasOwnership(false);
     }
     setIsLoading(false);
@@ -145,7 +144,6 @@ export default function ViewClass () {
       setActiveStudentData(cleanedStudentData);
       setDefaultStudentData(cleanedStudentData);
     } catch (error) {
-      console.error('Error fetching student data:', error);
       setIsLoading(false);
     } finally {
       setIsLoading(false);

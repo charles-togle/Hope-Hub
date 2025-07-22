@@ -1,4 +1,3 @@
-//import { error } from "console";
 import { ActivityIcon } from 'lucide-react';
 
 const convertLbsToKg = number => number * 0.4536;
@@ -13,7 +12,6 @@ const convertFtToInches = number => number * 12;
 const convertInchesToM = number => number * 0.0254;
 
 export const getBMI = (height, weight, heightUnit, weightUnit) => {
-  // Convert height to meters
   let heightInMeters;
   if (heightUnit === 'ft') {
     heightInMeters = convertFtToM(height);
@@ -23,8 +21,6 @@ export const getBMI = (height, weight, heightUnit, weightUnit) => {
     heightInMeters = height;
   }
   const weightInKg = weightUnit === 'lbs' ? convertLbsToKg(weight) : weight;
-
-
 
   return weightInKg / (heightInMeters * heightInMeters);
 };
@@ -427,7 +423,6 @@ export const getBodyFatPercentage = (
       idealLoss = massInKg - (idealPercent / 100) * weightInKg;
       bmiMethod = 1.2 * bmi + 0.23 * age - 10.8 * 1 - 5.4;
 
-
       break;
     case 'female':
       usMethod =
@@ -446,7 +441,6 @@ export const getBodyFatPercentage = (
         (parseFloat(idealForAgeList(gender, age).toFixed(2)) / 100) *
           weightInKg;
       bmiMethod = 1.2 * bmi + 0.23 * age - 10.8 * 0 - 5.4;
-
 
       break;
     default:

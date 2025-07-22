@@ -70,7 +70,6 @@ export default function PhysicalFitnessTest ({
     setCategory(storedData.category);
   }, []);
 
-  // Prevent page refresh during test
   useEffect(() => {
     const handleBeforeUnload = e => {
       e.preventDefault();
@@ -85,52 +84,6 @@ export default function PhysicalFitnessTest ({
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
-
-  // Handle Enter key press to submit
-  useEffect(() => {
-    const handleKeyPress = e => {
-      if (e.key === 'Enter') {
-        handleSubmit();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyPress);
-    };
-  }, [handleSubmit]);
-
-  const handleResultChange = useCallback(
-    (type, value) => {
-      let key = '';
-      switch (type) {
-        case 'Record':
-          key = 'reps';
-          break;
-        case 'Time Started':
-          key = 'timeStarted';
-          break;
-        case 'Time End':
-          key = 'timeEnded';
-          break;
-      }
-
-      console.log(key, value);
-      setTestResults(prev => {
-        const updatedTestResults = {
-          ...prev,
-          [key]: value.toString(),
-        };
-        if (key === 'reps') {
-          handleInterpretation(updatedTestResults);
-        }
-
-        return updatedTestResults;
-      });
-    },
-    [handleInterpretation, setTestResults],
-  );
 
   const setClassification = useCallback(
     value => {
@@ -187,6 +140,36 @@ export default function PhysicalFitnessTest ({
       }
     },
     [setClassification, setCategory, testDetails, category, testName],
+  );
+
+  const handleResultChange = useCallback(
+    (type, value) => {
+      let key = '';
+      switch (type) {
+        case 'Record':
+          key = 'reps';
+          break;
+        case 'Time Started':
+          key = 'timeStarted';
+          break;
+        case 'Time End':
+          key = 'timeEnded';
+          break;
+      }
+
+      setTestResults(prev => {
+        const updatedTestResults = {
+          ...prev,
+          [key]: value.toString(),
+        };
+        if (key === 'reps') {
+          handleInterpretation(updatedTestResults);
+        }
+
+        return updatedTestResults;
+      });
+    },
+    [handleInterpretation, setTestResults],
   );
 
   const handleSubmit = useCallback(async () => {
@@ -262,11 +245,7 @@ export default function PhysicalFitnessTest ({
         .eq('uuid', userId)
         .then(({ data, error }) => {
           if (error) {
-            console.log(testType);
-            console.error('Supabase upsert error:', error.message);
-          } else {
-            console.log(data);
-            console.log('Supabase upserted data:', data);
+            // Handle error silently
           }
         });
       return updatedPhysicalFitnessData;
@@ -274,14 +253,12 @@ export default function PhysicalFitnessTest ({
     if (physicalFitnessData.finishedTestIndex.length >= Number(index)) {
       navigate(`/physical-fitness-test/test/${Number(index) + 1}`);
       setTimerTime(1200);
-      console.log('dapat nagbago');
       setTestResults({
         reps: '',
         timeStarted: currentTime,
         timeEnded: '',
         classification: 'No data available',
       });
-      console.log(timerTime);
     }
   }, [
     userId,
@@ -295,6 +272,20 @@ export default function PhysicalFitnessTest ({
     currentTime,
     timerTime,
   ]);
+
+  useEffect(() => {
+    const handleKeyPress = e => {
+      if (e.key === 'Enter') {
+        handleSubmit();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleSubmit]);
 
   return (
     <div id='test-container' className=''>

@@ -4,11 +4,8 @@ export default function Table ({ headings, content }) {
   const navigate = useNavigate();
   const handleViewTestRecord = (student, testType) => {
     if (!student || !student.uuid) {
-      console.error('Student data is missing or invalid:', student);
       return;
     }
-
-    console.log('Viewing test record for student:', student.uuid);
     const summaryType =
       testType === 'Pre Test Record' ? 'pre-test' : 'post-test';
     navigate(

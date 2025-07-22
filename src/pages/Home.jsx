@@ -71,7 +71,7 @@ export default function Home () {
         </p>
         <div className='px-3 md:flex md:items-center md:justify-center md:flex-col lg:flex lg:flex-row lg:justify-center lg:items-center lg:space-x-15'>
           <img src={GymPicture} alt='Umak Gym' />
-          <p className='mt-10 text-justify lg:mt-0 lg:w-4/10 pr-2 pl-2 lg:p-0 lg:text-center'>
+          <p className='mt-10 text-justify lg:mt-0 lg:w-4/10 pr-2 pl-2 lg:p-0 lg:text-justify'>
             The Hope Hub is dedicated to supporting both teachers and students
             in the field of Physical Education and Health. This platform
             provides resources designed to enhance learning experience and

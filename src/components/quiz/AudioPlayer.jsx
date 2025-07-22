@@ -13,7 +13,6 @@ export default function AudioPlayer({ source, shouldStop, children }) {
           setIsPlaying(true);
         })
         .catch((error) => {
-          console.log('Playback failed:', error);
         });
     }
   };

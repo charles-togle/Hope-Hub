@@ -24,15 +24,12 @@ export default function AccountVerification () {
   const handleRegister = async (retryCount = 0) => {
     setIsLoading(true);
 
-    // Check for errors in URL hash first
     if (window.location.hash) {
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
       const error = hashParams.get('error');
       const errorCode = hashParams.get('error_code');
 
       if (error && errorCode === 'otp_expired') {
-        console.log('OTP expired, checking if user exists in profile table...');
-
         try {
           const {
             data: { user },
@@ -45,20 +42,15 @@ export default function AccountVerification () {
               .single();
 
             if (profileData && !profileError) {
-              console.log('User exists in profile table, not deleting account');
               setErrorMessage(
                 'Email verification link has expired. Your account still exists. Please try logging in instead.',
               );
               setShouldShowLogin(true);
             } else {
-              console.log(
-                'User does not exist in profile table, attempting to delete account...',
-              );
               try {
                 await supabase.auth.admin.deleteUser(user.id);
-                console.log('Account deleted successfully');
               } catch (deleteError) {
-                console.error('Error deleting user:', deleteError);
+                // Handle error silently
               }
               setErrorMessage(
                 'Email verification link has expired. Account has been reset. Please register again.',
@@ -70,7 +62,6 @@ export default function AccountVerification () {
             );
           }
         } catch (checkError) {
-          console.error('Error checking user profile:', checkError);
           setErrorMessage(
             'Email verification link has expired. Please try registering again.',
           );
@@ -99,7 +90,6 @@ export default function AccountVerification () {
       });
 
       if (sessionError) {
-        console.error('Session error:', sessionError);
         setErrorMessage('Error setting session: ' + sessionError.message);
         setIsLoading(false);
         return;
@@ -153,8 +143,6 @@ export default function AccountVerification () {
       setIsLoading(false);
       return;
     }
-
-    console.log(userType);
     const { error: rpcError } = await supabase.rpc('register_user', {
       p_user_id: userId,
       p_full_name: fullName,

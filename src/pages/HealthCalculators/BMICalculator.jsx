@@ -9,6 +9,13 @@ import Content from '@/components/health-calculators/Content';
 import RowContainer from '@/components/health-calculators/RowContainer';
 import useMobile from '@/hooks/useMobile';
 
+export const getBMICategory = bmi => {
+  if (bmi < 18.5) return 'Underweight';
+  if (bmi < 25) return 'Normal';
+  if (bmi < 30) return 'Overweight';
+  return 'Obese';
+};
+
 export default function BMICalculator () {
   const [heightUnit, setHeightUnit] = useState('cm');
   const [weightUnit, setWeightUnit] = useState('kg');
@@ -37,12 +44,7 @@ export default function BMICalculator () {
 
   const heightUnits = ['cm', 'ft', 'm'];
   const weightUnits = ['kg', 'lbs'];
-  const getBMICategory = bmi => {
-    if (bmi < 18.5) return 'Underweight';
-    if (bmi < 25) return 'Normal';
-    if (bmi < 30) return 'Overweight';
-    return 'Obese';
-  };
+
   const getBMICategoryColor = category => {
     switch (category) {
       case 'Underweight':

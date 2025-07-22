@@ -156,10 +156,6 @@ const ProfileWrapper = () => {
         .eq('uuid', userID)
         .single();
       if (userTypeError) {
-        console.log(
-          'there was a problem fetching user type',
-          userTypeError.message,
-        );
         return;
       }
       setIsTeacher(data.user_type === 'teacher');

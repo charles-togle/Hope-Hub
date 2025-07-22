@@ -12,7 +12,6 @@ import { onProfileChange as onProfileChangeUtil } from '@/utilities/onProfileCha
 import { LogOut } from 'lucide-react';
 import QuizScoreTable from '@/components/dashboard/QuizScoreTable';
 import Loading from '@/components/Loading';
-import { clearAllTimerData } from '@/utilities/clearTimerData';
 
 export default function StudentDashboard () {
   const userID = useUserId();
@@ -31,6 +30,7 @@ export default function StudentDashboard () {
     total: 2,
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [isQuizLoading, setQuizLoading] = useState(false);
   const [classCode, setClassCode] = useState(null);
   const [tempClassCode, setTempClassCode] = useState('');
   const [isJoiningClass, setIsJoiningClass] = useState(false);
@@ -89,13 +89,16 @@ export default function StudentDashboard () {
       pending,
       total: quizCount,
     });
-    setIsLoading(false);
   };
+
   const getQuizData = async () => {
     if (!userID || quizCount === 0) {
       setIsLoading(true);
       return;
     }
+
+    setQuizLoading(true);
+
     const { data: quizData, error: quizDataError } = await supabase
       .from('quiz_progress')
       .select('quiz_id, status, score, total_items, date_taken')
@@ -129,8 +132,9 @@ export default function StudentDashboard () {
         });
       }
     }
-    setIsLoading(false);
     setQuizData(completeQuizData);
+    setQuizLoading(false);
+    setIsLoading(false);
   };
 
   const getLectureProgress = async () => {
@@ -165,7 +169,6 @@ export default function StudentDashboard () {
       pending,
       total: lectures.length,
     });
-    setIsLoading(false);
   };
 
   const getClassCode = async () => {
@@ -187,8 +190,6 @@ export default function StudentDashboard () {
     else {
       setClassCode(classCode);
     }
-
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -232,7 +233,6 @@ export default function StudentDashboard () {
         finishedTestIndex.includes(finishedTestIndex.length - 1)
       );
     }
-    setIsLoading(false);
   };
 
   const isPreTestFinished = async () => {
@@ -282,12 +282,10 @@ export default function StudentDashboard () {
   };
 
   // Optionally, add a guard for userID before rendering:
-  if (!userID || isLoading) {
+  if (!userID || isLoading || isQuizLoading) {
     return <Loading />;
   }
   const handleLogout = async () => {
-    // Clear all timer data before logging out
-    clearAllTimerData();
 
     supabase.auth.signOut().then(navigate('/auth/login'));
     localStorage.removeItem('lectureProgress');
