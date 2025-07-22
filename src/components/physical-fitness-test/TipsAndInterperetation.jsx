@@ -24,18 +24,7 @@ export function TipsAndInterpretation ({ testResults, testName, tips }) {
             tips.map((tip, index) => <li key={index}>{tip}</li>)
           ) : (
             <>
-              <li>
-                Lorem ipsum dolor sit amet consectetur. Sed augue ultrices
-                phasellus mi nulla nisi sollicitudin sagittis.
-              </li>
-              <li>
-                Pharetra tellus pellentesque faucibus fusce eget sagittis.
-                Cursus sed gravida pellentesque quam.
-              </li>
-              <li>
-                Eget justo sit tortor amet in eu diam velit. Id facilisi metus
-                in fames faucibus viverra ullamcorper bibendum.
-              </li>
+              <li>No Available Tip</li>
             </>
           )}
         </ul>

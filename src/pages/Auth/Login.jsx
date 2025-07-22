@@ -15,6 +15,7 @@ export default function Login () {
   const [successMessage, setSuccessMessage] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+
   const handleLogin = async () => {
     setErrorMessage('');
     try {
@@ -32,7 +33,6 @@ export default function Login () {
         navigate('/dashboard');
       }
     } catch (err) {
-      console.error('Unexpected error during login:', err);
       setErrorMessage('An unexpected error occurred. Please try again.');
     }
   };

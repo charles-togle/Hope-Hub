@@ -48,7 +48,6 @@ export function PhysicalFitnessTestPage () {
       }
       setIsDataReady(true);
     } else {
-      console.log('No data in storage or empty object');
       setIsBadRequest(true);
     }
   }, [setPhysicalFitnessData, testIndex, physicalFitnessData.length, navigate]);
@@ -71,7 +70,6 @@ export function PhysicalFitnessTestPage () {
     } // Wait until userId is defined
     const checkIfTestTaken = async () => {
       if (typeof userId !== 'string' || userId.trim() === '') {
-        console.log(userId);
         setIsBadRequest(true);
         return;
       }
@@ -83,7 +81,6 @@ export function PhysicalFitnessTestPage () {
         .single();
 
       if (fetchError) {
-        console.error('Fetch error:', fetchError.message);
         return;
       }
       const preTestFinishedTests =
@@ -122,7 +119,6 @@ export function PhysicalFitnessTestPage () {
         .single()
         .eq('uuid', userId);
 
-      console.log(data, error);
       if (error) {
         setUserType('student');
         return;

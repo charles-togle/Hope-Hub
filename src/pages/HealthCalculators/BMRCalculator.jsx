@@ -84,15 +84,11 @@ export default function BMRCalculator () {
 
   const handleCalculate = useCallback(() => {
     if (!height || !weight || height <= 0 || weight <= 0) {
-      console.log(weight);
-      console.log(height);
-      console.log('ito siya');
       alert('Please enter valid height and weight values');
       return;
     }
 
     let bmr;
-    console.log(gender);
     try {
       bmr = getBMR(
         gender,

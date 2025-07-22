@@ -77,7 +77,6 @@ export default function AddClassCode ({ onAdd = () => {}, setModalShown }) {
       .select('class_code')
       .eq('class_code', code);
     if (error) {
-      console.error('Error checking class code uniqueness:', error);
       return false;
     }
 

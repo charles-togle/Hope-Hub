@@ -2,7 +2,7 @@ import supabase from '@/client/supabase';
 import { shuffleArray } from '@/utilities/utils';
 import { use } from 'react';
 
-async function fetchQuizzes() {
+async function fetchQuizzes () {
   const user = await getCurrentUser();
 
   const userData = await supabase
@@ -23,14 +23,13 @@ async function fetchQuizzes() {
       : await fetchQuizzesDefault();
 
   if (error) {
-    console.error('Error fetching quizzes:', error);
     return;
   }
 
   return data;
 }
 
-async function fetchQuizzesDefault() {
+async function fetchQuizzesDefault () {
   const { data, error } = await supabase
     .from('quiz')
     .select(
@@ -46,7 +45,7 @@ async function fetchQuizzesDefault() {
   return { data, error };
 }
 
-async function fetchQuizzesOfUser(user) {
+async function fetchQuizzesOfUser (user) {
   const { data, error } = await supabase
     .from('quiz')
     .select(
@@ -73,7 +72,7 @@ async function fetchQuizzesOfUser(user) {
   return { data, error };
 }
 
-function extractQuizDetails(quizData) {
+function extractQuizDetails (quizData) {
   if (!Array.isArray(quizData) || quizData.length === 0) return;
   quizData.map(async (quiz, index) => {
     let progress = (quiz.quiz_progress && quiz.quiz_progress[0]) || [];
@@ -116,7 +115,7 @@ function extractQuizDetails(quizData) {
   return quizData;
 }
 
-async function fetchQuizQuestions(quizId) {
+async function fetchQuizQuestions (quizId) {
   const user = await getCurrentUser();
   let questions = await getQuestionsFromQuizProgressIfExists(quizId);
 
@@ -135,19 +134,16 @@ async function fetchQuizQuestions(quizId) {
       .eq('quiz_id', quizId);
 
     if (error) {
-      console.error(
-        'Error updating questions shuffled and starting quiz:',
-        error,
-      );
+      // Handle error silently
     }
   }
 
   return questions;
 }
 
-function shuffleQuizQuestionsAndChoices(questions) {
+function shuffleQuizQuestionsAndChoices (questions) {
   // shuffle questions
-  const shuffledQuestions = shuffleArray(questions).map((question) => {
+  const shuffledQuestions = shuffleArray(questions).map(question => {
     if (question.type === 'identification') return question; // skip identification questions
     return {
       ...question,
@@ -158,7 +154,7 @@ function shuffleQuizQuestionsAndChoices(questions) {
   return shuffledQuestions;
 }
 
-async function getQuestionsFromQuizProgressIfExists(quizId) {
+async function getQuestionsFromQuizProgressIfExists (quizId) {
   const user = await getCurrentUser();
   const { data, error } = await supabase
     .from('quiz_progress')
@@ -168,13 +164,12 @@ async function getQuestionsFromQuizProgressIfExists(quizId) {
     .single();
 
   if (error) {
-    console.error('Error fetching shuffled questions:', error);
   }
 
   return data ? data.questions_shuffled : null;
 }
 
-async function getQuestionsFromQuiz(quizId) {
+async function getQuestionsFromQuiz (quizId) {
   const { data, error } = await supabase
     .from('quiz')
     .select(`questions`)
@@ -182,26 +177,24 @@ async function getQuestionsFromQuiz(quizId) {
     .single();
 
   if (error) {
-    console.error('Error fetching questions:', error);
     return;
   }
 
   return data.questions.questions;
 }
 
-async function getCurrentUser() {
+async function getCurrentUser () {
   const {
     data: { user },
     error,
   } = await supabase.auth.getUser();
 
   if (error) {
-    console.error('Auth error:', error.message);
   }
   return user;
 }
 
-async function fetchQuizStateIfExists(quizId) {
+async function fetchQuizStateIfExists (quizId) {
   const user = await getCurrentUser();
   const { data, error } = await supabase
     .from('quiz_progress')
@@ -213,13 +206,12 @@ async function fetchQuizStateIfExists(quizId) {
     .single();
 
   if (error) {
-    console.error('Error fetching quiz state:', error.message);
   }
 
   return data;
 }
 
-function extractQuizState(quizState) {
+function extractQuizState (quizState) {
   if (!quizState) return null;
 
   return {
@@ -234,7 +226,7 @@ function extractQuizState(quizState) {
   };
 }
 
-async function submitAnswer(quizState) {
+async function submitAnswer (quizState) {
   const {
     quizId,
     questionIndex,
@@ -258,12 +250,11 @@ async function submitAnswer(quizState) {
     .eq('quiz_id', quizId);
 
   if (error) {
-    console.error('Error submitting answer:', error.message);
     return error;
   }
 }
 
-async function markQuizAsDone(quizState) {
+async function markQuizAsDone (quizState) {
   const { quizId, questionIndex, status } = quizState;
   const user = await getCurrentUser();
   const { data, error } = await supabase
@@ -279,12 +270,11 @@ async function markQuizAsDone(quizState) {
     .eq('quiz_id', quizId);
 
   if (error) {
-    console.error('Error marking quiz as done:', error.message);
     return error;
   }
 }
 
-async function updateRemainingTime(quizId, remainingTime) {
+async function updateRemainingTime (quizId, remainingTime) {
   const user = await getCurrentUser();
   const { data, error } = await supabase
     .from('quiz_progress')
@@ -295,12 +285,11 @@ async function updateRemainingTime(quizId, remainingTime) {
     .eq('quiz_id', quizId);
 
   if (error) {
-    console.error('Error updating remaining time:', error.message);
     return error;
   }
 }
 
-async function getUserRanking(quizId) {
+async function getUserRanking (quizId) {
   const user = await getCurrentUser();
   const { data, error } = await supabase
     .from('quiz_progress')
@@ -310,7 +299,6 @@ async function getUserRanking(quizId) {
     .order('points', { ascending: false });
 
   if (error) {
-    console.error('Error fetching ranking:', error);
     return;
   }
 
@@ -321,12 +309,12 @@ async function getUserRanking(quizId) {
       score: item.score,
       rank: index + 1,
     }))
-    .find((item) => item.user_id === user.id).rank;
+    .find(item => item.user_id === user.id).rank;
 
   return userRanking;
 }
 
-async function fetchLeaderboard(quizId) {
+async function fetchLeaderboard (quizId) {
   const { data, error } = await supabase
     .from('quiz_progress')
     .select(
@@ -355,7 +343,6 @@ async function fetchLeaderboard(quizId) {
   });
 
   if (error) {
-    console.error('Error fetching leaderboard:', error);
     return;
   }
 

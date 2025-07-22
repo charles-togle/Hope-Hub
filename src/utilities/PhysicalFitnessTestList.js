@@ -1,5 +1,42 @@
 export const PhysicalFitnessTestList = [
   {
+    title: 'BMI (Weight)',
+    key: 'bmiWeight',
+    equipment: ['Weighing Scale'],
+    instructionsForTester: [
+      'Wear light clothing before weighing.',
+      'On bare feet, stand erect and still with weight evenly distributed on the center of the scale.',
+    ],
+    instructionsForPartner: [
+      'Before the start of weighing, adjust the scale to zero point.',
+      'Record the score in kilograms',
+    ],
+    instructionsScoring: ['Record body mass to the nearest 0.5 kilograms'],
+    videoInstructions: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
+  },
+  {
+    title: 'BMI (Height)',
+    key: 'bmiHeight',
+    equipment: [
+      'Tape measure laid flat to a concrete wall where zero points starts on the floor.',
+      'L-square; and',
+      'An even and firm floor and flat wall.',
+    ],
+    instructionsForTester: [
+      'Stand erect on bare feet with heels, buttocks and shoulders pressed against the wall where the tape measure is attached.',
+    ],
+    instructionsForPartner: [
+      'Place the L-square against the wall with the base at the top of the head of the person being tested. Make sure the L-square when placed on the head of the student, is straight and parallel to the floor.',
+      'Record the score in meters',
+    ],
+    instructionsScoring: [
+      'Record standing height to the nearest 0.1 centimeter',
+      '1 meter = 100 centimeter',
+    ],
+    videoInstructions: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
+  },
+
+  {
     title: 'Zipper Test (Right hand)',
     key: 'zipperTestRight',
     equipment: ['Ruler'],

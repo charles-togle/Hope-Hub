@@ -20,8 +20,6 @@ export async function onProfileChange (
     .upload(filePath, file, { contentType: file.type, upsert: true });
 
   if (error) {
-    console.error('Profile picture upload error:', error.message);
   } else {
-    console.log('Profile picture uploaded:', data);
   }
 }

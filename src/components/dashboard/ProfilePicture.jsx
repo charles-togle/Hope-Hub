@@ -28,7 +28,6 @@ export default function ProfilePicture ({
   }, [initialFile, initialImage]);
 
   const handleImageChange = e => {
-    console.log(e.target.files[0]);
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();

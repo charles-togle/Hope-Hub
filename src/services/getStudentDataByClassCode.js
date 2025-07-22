@@ -6,7 +6,6 @@ export async function getStudentsByClassCode (classCode) {
   });
 
   if (error) {
-    console.error('Error:', error);
     return [];
   }
   return data;

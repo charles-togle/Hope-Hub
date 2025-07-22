@@ -6,6 +6,8 @@ import { useUserId } from '@/hooks/useUserId';
 import { useParams, useSearchParams } from 'react-router-dom';
 import Footer from '@/components/Footer';
 import Loading from '@/components/Loading';
+import { getBMI } from '@/services/Calculations';
+import { getBMICategory } from './HealthCalculators/BMICalculator';
 
 export function PhysicalFitnessTestSummary () {
   const { testType } = useParams();
@@ -46,7 +48,6 @@ export function PhysicalFitnessTestSummary () {
           .single();
 
         if (studentCheckError || !studentExists) {
-          console.error('Student not found:', targetUserId);
           setIsBadRequest(true);
           return;
         }
@@ -57,24 +58,20 @@ export function PhysicalFitnessTestSummary () {
         .select(columnName)
         .eq('uuid', targetUserId)
         .single();
-      console.log(existing);
 
       if (fetchError) {
-        console.error('Error fetching test data:', fetchError);
         setIsBadRequest(true);
         return;
       }
 
       const finishedTests = existing[columnName]?.finishedTestIndex;
       if (!finishedTests) {
-        console.error('No test data found for user:', targetUserId);
         setIsBadRequest(true);
         return;
       }
 
       const max = finishedTests.length - 1;
       if (!finishedTests.includes(max)) {
-        console.error('Test not completed for user:', targetUserId);
         setIsBadRequest(true);
       }
     }
@@ -145,9 +142,10 @@ export function PhysicalFitnessTestSummary () {
             <Fragment key={`${summary.title} ${index}`}>
               {(() => {
                 const sectionHeadings = {
-                  0: 'A. Cardiovascular Endurance',
-                  1: 'B. Strength',
-                  3: 'C. Flexibility',
+                  0: 'A. Body Mass Index',
+                  1: 'B. Cardiovascular Endurance',
+                  2: 'C. Strength',
+                  3: 'D. Flexibility',
                 };
                 const heading = sectionHeadings[index];
                 return (
@@ -271,8 +269,26 @@ function customHandleData ({
 }
 
 const getSummary = dataGathered => {
-  console.log(dataGathered);
   let dataResults = [];
+  const bmi = getBMI(
+    dataGathered.bmiHeight?.record,
+    dataGathered.bmiWeight?.record,
+    'cm',
+    'kg',
+  );
+  dataResults.push(
+    customHandleData({
+      title: 'Body Mass Index',
+      headings: ['Height', 'Weight', 'BMI', 'Classification'],
+      content: [
+        `${dataGathered.bmiHeight?.record} cm`,
+        `${dataGathered.bmiWeight?.record} kg`,
+        `${bmi.toFixed(2)}`,
+        `${getBMICategory(bmi)}`,
+      ],
+      number: 1,
+    }),
+  );
   dataResults.push(
     customHandleData({
       title: '3 Minute Step Test',
@@ -283,26 +299,17 @@ const getSummary = dataGathered => {
         `${dataGathered.preStepTest.record} Beats per Minute`,
         `${dataGathered.stepTest.record} Beats per Minute`,
       ],
-      number: 1,
+      number: 2,
     }),
   );
 
-  dataResults.push(handleData({ data: dataGathered.pushUp, number: 2 }));
+  dataResults.push(handleData({ data: dataGathered.pushUp, number: 3 }));
   dataResults.push(
-    handleData({ data: dataGathered.basicPlank, unit: 'Second(s)', number: 3 }),
+    handleData({ data: dataGathered.basicPlank, unit: 'Second(s)', number: 4 }),
   );
   dataResults.push(
     handleData({
       data: dataGathered.zipperTestRight,
-      hasParentHeading: true,
-      unit: 'cm',
-      parentHeading: 'Overlap/Gap (centimeters)',
-      number: 4,
-    }),
-  );
-  dataResults.push(
-    handleData({
-      data: dataGathered.zipperTestLeft,
       hasParentHeading: true,
       unit: 'cm',
       parentHeading: 'Overlap/Gap (centimeters)',
@@ -311,11 +318,20 @@ const getSummary = dataGathered => {
   );
   dataResults.push(
     handleData({
+      data: dataGathered.zipperTestLeft,
+      hasParentHeading: true,
+      unit: 'cm',
+      parentHeading: 'Overlap/Gap (centimeters)',
+      number: 6,
+    }),
+  );
+  dataResults.push(
+    handleData({
       data: dataGathered.sitAndReachFirst,
       hasParentHeading: true,
       unit: 'cm',
       parentHeading: 'Score (centimeters)',
-      number: 6,
+      number: 7,
     }),
   );
   dataResults.push(
@@ -324,7 +340,7 @@ const getSummary = dataGathered => {
       hasParentHeading: true,
       unit: 'cm',
       parentHeading: 'Score (centimeters)',
-      number: 7,
+      number: 8,
     }),
   );
   return dataResults;

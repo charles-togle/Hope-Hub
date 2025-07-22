@@ -8,9 +8,7 @@ export default function LectureVideo ({
   quizLink,
   videoLink,
   isLectureDone = false,
-  onVideoFinish = () => {
-    console.log('Video Finished');
-  },
+  onVideoFinish = () => {},
 }) {
   const [progressSeconds, setProgressSeconds] = useState(0);
   const [duration, setDuration] = useState(0);

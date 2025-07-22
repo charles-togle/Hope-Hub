@@ -17,5 +17,4 @@ export function clearAllTimerData () {
     localStorage.removeItem(key);
   });
 
-  console.log(`Cleared ${timerKeys.length} timer storage items on logout`);
 }

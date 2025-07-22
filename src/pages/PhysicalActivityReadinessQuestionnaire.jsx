@@ -86,7 +86,6 @@ export default function PhysicalActivityReadinessQuestionnaire () {
         setIsError(true);
         return;
       }
-      console.log(existing);
       const preFinished =
         existing?.pre_physical_fitness_test?.finishedTestIndex || [];
       const postFinished =

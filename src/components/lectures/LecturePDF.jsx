@@ -2,15 +2,14 @@ import { Timer } from '@/components/utilities/Timer';
 import { useNavigate } from 'react-router-dom';
 
 export default function LecturePDF ({
+  userID,
   lectureNumber,
   introduction,
   title,
   quizLink,
   pdfLink,
   isLectureDone = false,
-  onTimerEnd = () => {
-    console.log('end');
-  },
+  onTimerEnd = () => {},
 }) {
   const navigate = useNavigate();
 
@@ -46,7 +45,10 @@ export default function LecturePDF ({
               onEnd={() => {
                 onTimerEnd();
               }}
-              storageKey={`Lecture${lectureNumber}Timer`}
+              storageKey={`${userID?.substring(
+                0,
+                13,
+              )}-Lecture${lectureNumber}Timer`}
             ></Timer>
           </div>
           <ul className='pt-3 pb-5 text-sm lg:text-base'>
