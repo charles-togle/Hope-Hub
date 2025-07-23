@@ -1,4 +1,6 @@
-export function TipsAndInterpretation ({ testResults, testName, tips }) {
+import { memo } from "react";
+
+const TipsAndInterpretation = ({ testResults, testName, tips }) => {
   return (
     <div
       id='interpretation-and-tips'
@@ -32,4 +34,6 @@ export function TipsAndInterpretation ({ testResults, testName, tips }) {
       <hr className='-ml-10 border-1 border-black w-[50%]' />
     </div>
   );
-}
+};
+
+export default memo(TipsAndInterpretation);

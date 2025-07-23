@@ -3,7 +3,7 @@ import sampleThumbnail from '@/assets/images/gym3_homepage.png';
 export const UpperBodyVideos = [
   {
     thumbnail: sampleThumbnail,
-    duration: '8:45',
+    duration: '00:44',
     title: 'Shoulder Press',
     description: {
       howToDoIt:
@@ -11,8 +11,9 @@ export const UpperBodyVideos = [
       do: ['Keep your back straight.', 'Press the weights slowly.'],
       dont: ["Don't arch your back.", "Don't lock your elbows."],
     },
-    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
-    uploadDate: '2025-01-04T04:01:00.000Z',
+    videoLink:
+      'https://hope-hub-files.netlify.app/discover-more/shoulder-press.mp4',
+    uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
     thumbnail: sampleThumbnail,
@@ -28,7 +29,7 @@ export const UpperBodyVideos = [
       dont: ["Don't lift your shoulders.", "Don't rush the movement."],
     },
     videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
-    uploadDate: '2025-01-04T04:01:00.000Z',
+    uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
     thumbnail: sampleThumbnail,
@@ -44,20 +45,21 @@ export const UpperBodyVideos = [
       ],
     },
     videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
-    uploadDate: '2025-01-04T04:01:00.000Z',
+    uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
     thumbnail: sampleThumbnail,
-    duration: '10:20',
-    title: 'Lat Pulldown',
+    duration: '00:49',
+    title: 'Close Grip Lat Pulldown',
     description: {
       howToDoIt:
         'Sit at the lat pulldown machine. Pull the bar down to your chest, then let it go back up slowly.',
       do: ['Sit up tall.', 'Pull with your back muscles.'],
       dont: ["Don't lean back too far.", "Don't pull behind your head."],
     },
-    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
-    uploadDate: '2025-01-04T04:01:00.000Z',
+    videoLink:
+      'https://hope-hub-files.netlify.app/discover-more/close-grip-lat-pulldown.mp4',
+    uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
     thumbnail: sampleThumbnail,
@@ -70,20 +72,7 @@ export const UpperBodyVideos = [
       dont: ["Don't swing your body.", "Don't use your shoulders."],
     },
     videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
-    uploadDate: '2025-01-04T04:01:00.000Z',
-  },
-  {
-    thumbnail: sampleThumbnail,
-    duration: '10:20',
-    title: 'Lat Pulldown',
-    description: {
-      howToDoIt:
-        'Sit at the lat pulldown machine. Pull the bar down to your chest, then let it go back up slowly.',
-      do: ['Sit up tall.', 'Pull with your back muscles.'],
-      dont: ["Don't lean back too far.", "Don't pull behind your head."],
-    },
-    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
-    uploadDate: '2025-01-04T04:01:00.000Z',
+    uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
     thumbnail: sampleThumbnail,
@@ -99,7 +88,7 @@ export const UpperBodyVideos = [
       dont: ["Don't move your shoulders.", "Don't lean too far forward."],
     },
     videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
-    uploadDate: '2025-01-04T04:01:00.000Z',
+    uploadDate: '2025-07-23T14:00:00.000Z',
   },
 ];
 
@@ -123,11 +112,11 @@ export const LowerBodyVideos = [
       ],
     },
     videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
-    uploadDate: '2025-01-04T04:01:00.000Z',
+    uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
     thumbnail: sampleThumbnail,
-    duration: '10:40',
+    duration: '01:08',
     title: 'Deadlifts',
     description: {
       howToDoIt:
@@ -143,12 +132,12 @@ export const LowerBodyVideos = [
         "Don't hyperextend your back at the top.",
       ],
     },
-    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
-    uploadDate: '2025-01-04T04:01:00.000Z',
+    videoLink: 'https://hope-hub-files.netlify.app/discover-more/deadlft.mp4',
+    uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
     thumbnail: sampleThumbnail,
-    duration: '11:25',
+    duration: '00:43',
     title: 'Squats',
     description: {
       howToDoIt:
@@ -164,7 +153,7 @@ export const LowerBodyVideos = [
         "Don't arch or round your back.",
       ],
     },
-    videoLink: 'https://hope-hub-files.netlify.app/stock-video-3.mp4',
-    uploadDate: '2025-01-04T04:01:00.000Z',
+    videoLink: 'https://hope-hub-files.netlify.app/discover-more/squats.mp4',
+    uploadDate: '2025-07-23T14:00:00.000Z',
   },
 ];
