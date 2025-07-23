@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import timerIcon from '@/assets/icons/timer_pft.png';
 
-export function SimpleTimer ({
+const SimpleTimer = ({
   onEnd = () => {},
   onStart = () => {},
   time = 320,
   className,
   testName,
-}) {
+}) => {
   const [currentTime, setCurrentTime] = useState(time);
   const timerRef = useRef(null);
   const onEndRef = useRef(onEnd);
@@ -43,13 +43,15 @@ export function SimpleTimer ({
   }, [time, testName]);
 
   return (
-    <div className={className}>
+    <div className={`${className} w-fit`}>
       <img src={timerIcon} alt='rest-timer' className='w-[15%]' />
-      <p className='text-wrap text-sm'>
+      <p className='text-nowrap text-sm'>
         {Math.floor(currentTime / 60)}:{' '}
         {String(currentTime % 60).padStart(2, '0')}{' '}
         <span>{currentTime < 60 ? 'seconds' : 'mins'}</span>
       </p>
     </div>
   );
-}
+};
+
+export default memo(SimpleTimer);

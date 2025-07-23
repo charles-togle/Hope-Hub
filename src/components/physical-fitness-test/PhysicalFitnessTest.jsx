@@ -5,9 +5,9 @@ import { usePhysicalFitnessData } from '@/hooks/usePhysicalFitnessData';
 import { AlertMessage } from '@/components/utilities/AlertMessage';
 import setDataToStorage from '@/utilities/setDataToStorage';
 import getDataFromStorage from '@/utilities/getDataFromStorage';
-import { SimpleTimer } from '@/components/utilities/SimpleTimer';
+import SimpleTimer from '@/components/utilities/SimpleTimer';
 import ResultSection from './ResultSection';
-import { TipsAndInterpretation } from './TipsAndInterperetation';
+import TipsAndInterpretation from './TipsAndInterperetation';
 import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
 import { memo } from 'react';
@@ -195,7 +195,7 @@ export default function PhysicalFitnessTest ({
 
     const isStartTimeAfterEndTime =
       testResults.timeStarted > testResults.timeEnded;
-    const isTimeThresholdReached = endTimeInMinutes - startTimeInMinutes <= 5;
+    const isTimeThresholdReached = endTimeInMinutes - startTimeInMinutes <= 3;
     const isTimeEndValid = endTimeInMinutes - startTimeInMinutes > 20;
 
     if (isStartTimeAfterEndTime) {
@@ -206,7 +206,7 @@ export default function PhysicalFitnessTest ({
 
     if (isTimeThresholdReached) {
       setAlertMessage(
-        'Test duration is too short. The test must last more than 5 minutes for accurate results.',
+        'Test duration is too short. The test must last more than 3 minutes for accurate results.',
       );
       setShowAlert(isTimeThresholdReached);
       return;
@@ -325,10 +325,12 @@ export default function PhysicalFitnessTest ({
               testName={testName}
             />
           </div>
-          <iframe
+          <video
             src={videoInstructions}
             className='col-span-2 mt-10 mb-5 w-full aspect-video border-1 border-black rounded-sm'
-          ></iframe>
+            autoPlay
+            controls
+          ></video>
           <div id='instructions' className='col-span-2 text-sm font-medium'>
             <h2 className='text-xl font-bold mb-3'>Instructions:</h2>
             <InstructionsGroup
