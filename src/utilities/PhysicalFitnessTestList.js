@@ -12,7 +12,8 @@ export const PhysicalFitnessTestList = [
       'Record the score in kilograms',
     ],
     instructionsScoring: ['Record body mass to the nearest 0.5 kilograms'],
-    videoInstructions: 'https://hope-hub-files.netlify.app/pft/bmi.mp4',
+    videoInstructions:
+      'https://res.cloudinary.com/ddby2tevf/video/upload/bmi_x8q7ao.mp4',
   },
   {
     title: 'BMI (Height)',
@@ -33,7 +34,8 @@ export const PhysicalFitnessTestList = [
       'Record standing height to the nearest 0.1 centimeter',
       '1 meter = 100 centimeter',
     ],
-    videoInstructions: 'https://hope-hub-files.netlify.app/pft/bmi.mp4',
+    videoInstructions:
+      'https://res.cloudinary.com/ddby2tevf/video/upload/bmi_x8q7ao.mp4',
   },
 
   {
@@ -62,7 +64,8 @@ export const PhysicalFitnessTestList = [
       { exact: 0, interpretation: 'Needs Improvement' },
       { exact: -1, interpretation: 'Poor' },
     ],
-    videoInstructions: 'https://hope-hub-files.netlify.app/pft/zipper-test.mp4',
+    videoInstructions:
+      'https://res.cloudinary.com/ddby2tevf/video/upload/zipper-test_i2hamq.mp4',
     tips: [
       'Warm up your shoulders with gentle arm circles before attempting the zipper test.',
       'Keep your spine straight and avoid forcing the stretch to prevent shoulder injury.',
@@ -94,7 +97,8 @@ export const PhysicalFitnessTestList = [
       { exact: 0, interpretation: 'Needs Improvement' },
       { exact: -1, interpretation: 'Poor' },
     ],
-    videoInstructions: 'https://hope-hub-files.netlify.app/pft/zipper-test.mp4',
+    videoInstructions:
+      'https://res.cloudinary.com/ddby2tevf/video/upload/zipper-test_i2hamq.mp4',
     tips: [
       'Alternate which arm goes over your shoulder to test both sides equally well.',
       'Breathe normally during the test and do not hold your breath while stretching.',
@@ -129,7 +133,7 @@ export const PhysicalFitnessTestList = [
       { min: 0, max: 15.9, interpretation: 'Needs Improvement' },
     ],
     videoInstructions:
-      'https://hope-hub-files.netlify.app/pft/sit-and-reach.mp4',
+      'https://res.cloudinary.com/ddby2tevf/video/upload/sit-and-reach_dn9lsu.mp4',
     tips: [
       'Keep your back flat against the wall and avoid rounding your shoulders forward.',
       'Reach slowly and smoothly without bouncing or jerking movements for better results.',
@@ -164,7 +168,7 @@ export const PhysicalFitnessTestList = [
       { min: 0, max: 15.9, interpretation: 'Needs Improvement' },
     ],
     videoInstructions:
-      'https://hope-hub-files.netlify.app/pft/sit-and-reach.mp4',
+      'https://res.cloudinary.com/ddby2tevf/video/upload/sit-and-reach_dn9lsu.mp4',
     tips: [
       'This is your second attempt, so apply what you learned from the first.',
       'Focus on controlled breathing and relaxation to achieve a better reach distance.',
@@ -187,7 +191,8 @@ export const PhysicalFitnessTestList = [
       'Let the performer count his/her pulse beat for 10 seconds and multiply it by 6.',
     ],
     instructionsScoring: ['Record the resting pulse of the tester'],
-    videoInstructions: 'https://hope-hub-files.netlify.app/pft/step-test.mp4',
+    videoInstructions:
+      'https://res.cloudinary.com/ddby2tevf/video/upload/step-test_ec4hkk.mp4',
     tips: [
       'Sit quietly and breathe normally for a few minutes before taking pulse.',
       'Practice finding your pulse on your wrist or neck before the actual test.',
@@ -218,7 +223,8 @@ export const PhysicalFitnessTestList = [
     instructionsScoring: [
       'Record the 60-second pulse rate immediately after the activity.',
     ],
-    videoInstructions: 'https://hope-hub-files.netlify.app/pft/step-test.mp4',
+    videoInstructions:
+      'https://res.cloudinary.com/ddby2tevf/video/upload/step-test_ec4hkk.mp4',
     tips: [
       'Maintain steady rhythm throughout the test and do not rush the movements.',
       'Take your pulse immediately after finishing to get an accurate heart rate.',
@@ -276,7 +282,8 @@ export const PhysicalFitnessTestList = [
         { exact: 0, interpretation: 'Poor' },
       ],
     },
-    videoInstructions: 'https://hope-hub-files.netlify.app/pft/push-up.mp4',
+    videoInstructions:
+      'https://res.cloudinary.com/ddby2tevf/video/upload/push-up_sdflcv.mp4',
     tips: [
       'Keep your body straight from head to toes throughout the entire movement.',
       'Focus on controlled movements rather than speed to maintain proper push-up form.',
@@ -312,7 +319,8 @@ export const PhysicalFitnessTestList = [
       { min: 16, max: 30, interpretation: 'Fair' },
       { min: 1, max: 15, interpretation: 'Needs Improvement' },
     ],
-    videoInstructions: 'https://hope-hub-files.netlify.app/pft/basic-plank.mp4',
+    videoInstructions:
+      'https://res.cloudinary.com/ddby2tevf/video/upload/basic-plank_ynm0xy.mp4',
     tips: [
       'Engage your core muscles and breathe steadily throughout the entire plank hold.',
       'Keep your body in a straight line from head to heels without sagging.',
