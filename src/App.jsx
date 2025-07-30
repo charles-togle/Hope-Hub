@@ -1,5 +1,5 @@
 import './styles/global.css';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import Sidebar from './components/Sidebar';
 import About from './pages/About';
 import Lectures from './pages/LecturesIntroduction';
@@ -42,11 +42,35 @@ import { useUserId } from './hooks/useUserId';
 import Loading from './components/Loading';
 import { useRef } from 'react';
 
+const HamburgerMenuComponent = memo(({ showMenu, onHamburgerClick }) => {
+  return (
+    <div
+      className={`fixed transition-transform  ease-in-out z-40 ${
+        showMenu
+          ? 'translate-y-0 duration-600'
+          : '-translate-y-full duration-600'
+      }`}
+    >
+      <div className='hamburger-menu pl-5 flex items-center top-0 w-screen h-20 md:h-15 bg-secondary-dark-blue mb-5 lg:hidden z-999 '>
+        <img
+          src={HamburgerMenu}
+          className='w-10 md:w-7 pr-3 cursor-pointer'
+          onClick={onHamburgerClick}
+        />
+        <p className='text-white text-3xl md:text-2xl font-heading'>Hope Hub</p>
+      </div>
+    </div>
+  );
+});
+
 function SidebarLayout () {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const handleHamburgerClick = () => setSidebarOpen(open => !open);
+  const handleHamburgerClick = useCallback(
+    () => setSidebarOpen(open => !open),
+    [],
+  );
   const containerRef = useRef(undefined);
   const handleScroll = useCallback(() => {
     if (!containerRef.current) return;
@@ -91,24 +115,10 @@ function SidebarLayout () {
         setShowMenu={setShowMenu}
       />
       <div className='relative lg:pt-0 flex-1 h-[100dvh] overflow-x-hidden overflow-y-auto justify-center'>
-        <div
-          className={`fixed transition-transform  ease-in-out z-40 ${
-            showMenu
-              ? 'translate-y-0 duration-600'
-              : '-translate-y-full duration-600'
-          }`}
-        >
-          <div className='hamburger-menu pl-5 flex items-center top-0 w-screen h-20 md:h-15 bg-secondary-dark-blue mb-5 lg:hidden z-999 '>
-            <img
-              src={HamburgerMenu}
-              className='w-10 md:w-7 pr-3 cursor-pointer'
-              onClick={handleHamburgerClick}
-            />
-            <p className='text-white text-3xl md:text-2xl font-heading'>
-              Hope Hub
-            </p>
-          </div>
-        </div>
+        <HamburgerMenuComponent
+          showMenu={showMenu}
+          onHamburgerClick={handleHamburgerClick}
+        />
         <div
           className='pt-20 lg:pt-0  overflow-y-auto h-screen'
           ref={containerRef}
@@ -207,7 +217,11 @@ function App () {
             />
           </Route>
           <Route
-            path='discover-more'
+            path='discover-more/:videoUrl'
+            element={<DiscoverMore></DiscoverMore>}
+          ></Route>
+          <Route
+            path='discover-more/'
             element={<DiscoverMore></DiscoverMore>}
           ></Route>
           <Route

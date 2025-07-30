@@ -2,6 +2,7 @@ import Banner from '@/assets/banner_home.svg';
 import HomePageHero from '@/assets/images/gym_homepage.png';
 import Banner2 from '@/assets/images/gym_banner_home.jpg';
 import GymPicture from '@/assets/images/gym3_homepage.png';
+import HopeHubPicture from '@/assets/images/home-pic.jpg';
 import Footer from '@/components/Footer';
 import { useNavigate } from 'react-router-dom';
 export default function Home () {
@@ -54,23 +55,30 @@ export default function Home () {
         </div>
       </section>
       <section className='w-full flex justify-center flex-col items-center pb-10'>
-        <img
-          src={Banner2}
-          alt='umak students doing dance'
-          className='h-50 w-full mb-5 lg:h-auto lg:mb-10'
-        />
+        <video
+          src='https://res.cloudinary.com/ddby2tevf/video/upload/v1753783988/hope_hub_trailer_blwgvj.mp4'
+          autoPlay
+          muted
+          loop
+          controls
+          className='mb-10'
+        ></video>
         <p className='text-base mb-2 lg:text-lg'>With us, you are home</p>
         <h2 className='text-4xl pr-3 pl-3 text-primary-yellow font-heading text-center lg:p-0 lg:text-6xl '>
           Welcome to Hope Hub Web!
         </h2>
-        <p className='text-center w-[90%] mt-5 mb-10'>
+        <p className='lg:text-center text-justify w-[90%] mt-5 mb-10'>
           The Hope Hub, we believe in the Power of Physical Education to inspire
           change and create a lasting impact on well-being. Whether you're
           teaching the next generation of students or building your own fitness
           knowledge, we're here to guide you every step of the way.
         </p>
-        <div className='px-3 md:flex md:items-center md:justify-center md:flex-col lg:flex lg:flex-row lg:justify-center lg:items-center lg:space-x-15'>
-          <img src={GymPicture} alt='Umak Gym' />
+        <div className='px-3 lg:pt-10 md:flex md:items-center md:justify-center md:flex-col lg:flex lg:flex-row lg:justify-center lg:items-center lg:space-x-15'>
+          <img
+            src={HopeHubPicture}
+            alt='Umak Gym'
+            className='lg:w-1/2 w-full lg:h-[120%] object-cover '
+          />
           <p className='mt-10 text-justify lg:mt-0 lg:w-4/10 pr-2 pl-2 lg:p-0 lg:text-justify'>
             The Hope Hub is dedicated to supporting both teachers and students
             in the field of Physical Education and Health. This platform

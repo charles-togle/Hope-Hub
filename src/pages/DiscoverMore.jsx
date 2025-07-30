@@ -3,14 +3,36 @@ import VideoHeading from '@/components/discover-more/VideoHeading';
 import VideoList from '@/components/discover-more/VideoList';
 import VideoPlayer from '@/components/discover-more/VideoPlayer';
 import Footer from '@/components/Footer';
+import Content from '@/components/health-calculators/Content';
 import { UpperBodyVideos } from '@/utilities/DiscoverMoreVideos';
 import { LowerBodyVideos } from '@/utilities/DiscoverMoreVideos';
-import { useRef, useState } from 'react';
+import { References } from '@/utilities/DiscoverMoreVideos';
+import { useRef, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 export default function DiscoverMore () {
   const [videoDetails, setVideoDetails] = useState({});
   const parentContainerRef = useRef();
+  const navigate = useNavigate();
+  const { videoUrl } = useParams();
+
+  const combinedVideos = [...UpperBodyVideos, ...LowerBodyVideos];
+
+  useEffect(() => {
+    if (videoUrl) {
+      const foundVideo = combinedVideos.find(video => video.url === videoUrl);
+      if (foundVideo) {
+        setVideoDetails(foundVideo);
+      } else {
+        navigate('/discover-more', { replace: true });
+      }
+    } else {
+      setVideoDetails({});
+    }
+  }, [videoUrl, navigate]);
+
   const handleVideoClick = video => {
     setVideoDetails(video);
+    navigate(`/discover-more/${video.url}`);
     if (parentContainerRef.current) {
       parentContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -49,6 +71,31 @@ export default function DiscoverMore () {
             ></VideoList>
           </div>
         </div>
+      </div>
+      <div className='flex flex-col gap-10 mt-10 px-5 sm:text-xs md:text-sm w-[95%] mr-auto ml-auto '>
+        <Content
+          content={
+            <div className='grid grid-cols-2 gap-x-10'>
+              {References.map((citation, index) => (
+                <div className='mb-5 text-wrap text-justify' key={index}>
+                  <div>
+                    {citation.name}
+                    <a
+                      href={citation.link}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='text-blue-400 hover:underline'
+                    >
+                      {' '}
+                      {citation.link}{' '}
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          }
+          title='References'
+        />
       </div>
       <Footer></Footer>
     </section>
