@@ -10,6 +10,7 @@ export default function VideoList ({ videos, onVideoClick }) {
             <div
               onClick={() => onVideoClick(videoDetails)}
               className='cursor-pointer'
+              key={video.url}
             >
               <VideoPreview
                 duration={video.duration}
