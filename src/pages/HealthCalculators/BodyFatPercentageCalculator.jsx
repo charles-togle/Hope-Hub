@@ -9,6 +9,7 @@ import CalculatorInput from '@/components/health-calculators/CalculatorInput';
 import Content from '@/components/health-calculators/Content';
 import RowContainer from '@/components/health-calculators/RowContainer';
 import useMobile from '@/hooks/useMobile';
+import Citation from '@/components/Citations';
 
 export default function BodyFatPercentageCalculator () {
   const [gender, setGender] = useState('');
@@ -327,24 +328,7 @@ export default function BodyFatPercentageCalculator () {
           content={fatPercentageStatisticalInterpretation}
           title='Statistical Interpretation'
         />
-        <Content
-          content={citations.map((citation, index) => (
-            <div className='mb-5 text-wrap text-justify'>
-              <div key={index}>
-                {citation.name}
-                <a
-                  href={citation.link}
-                  target='_blank'
-                  className='text-blue-400 hover:underline'
-                >
-                  {' '}
-                  {citation.link}{' '}
-                </a>{' '}
-              </div>
-            </div>
-          ))}
-          title='References'
-        />
+        <Citation citations={citations} title='References' />
       </div>
     </>
   );
