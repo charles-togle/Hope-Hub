@@ -34,6 +34,7 @@ export default function PhysicalFitnessTest ({
   setIsTimeout,
   physicalFitnessData,
   testType,
+  userType,
 }) {
   const [currentTime, setCurrentTime] = useState(
     `${String(new Date().getHours()).padStart(2, '0')}:${String(
@@ -54,6 +55,7 @@ export default function PhysicalFitnessTest ({
   const [timerTime, setTimerTime] = useState(1200);
   const navigate = useNavigate();
   const userId = useUserId();
+  const isTeacher = userType === 'teacher';
 
   const {
     title,
@@ -62,6 +64,7 @@ export default function PhysicalFitnessTest ({
     instructionsForTester,
     instructionsScoring,
     videoInstructions,
+    unit,
   } = testDetails || {};
   const testName = title;
 
@@ -192,10 +195,12 @@ export default function PhysicalFitnessTest ({
 
     const startTimeInMinutes = parseTime(testResults.timeStarted);
     const endTimeInMinutes = parseTime(testResults.timeEnded);
+    const currentTimeInMinutes = parseTime(currentTime);
 
     const isStartTimeAfterEndTime =
       testResults.timeStarted > testResults.timeEnded;
-    const isTimeThresholdReached = endTimeInMinutes - startTimeInMinutes <= 3;
+    const isEndTimeAfterCurrentTime = endTimeInMinutes > currentTimeInMinutes;
+    let isTimeThresholdReached = endTimeInMinutes - startTimeInMinutes <= 2;
     const isTimeEndValid = endTimeInMinutes - startTimeInMinutes > 20;
 
     if (isStartTimeAfterEndTime) {
@@ -204,9 +209,19 @@ export default function PhysicalFitnessTest ({
       return;
     }
 
-    if (isTimeThresholdReached) {
+    if (isEndTimeAfterCurrentTime) {
+      setAlertMessage("Please input a valid time for 'Time End'");
+      setShowAlert(isEndTimeAfterCurrentTime);
+      return;
+    }
+
+    if (
+      isTimeThresholdReached &&
+      testName !== 'BMI (Weight)' &&
+      testName !== 'BMI (Height)'
+    ) {
       setAlertMessage(
-        'Test duration is too short. The test must last more than 3 minutes for accurate results.',
+        'Test duration is too short. The test must last more than 2 minutes for accurate results.',
       );
       setShowAlert(isTimeThresholdReached);
       return;
@@ -273,6 +288,49 @@ export default function PhysicalFitnessTest ({
     timerTime,
   ]);
 
+  const handleNextExerciseTeacher = () => {
+    setPhysicalFitnessData(prev => {
+      const updatedFinishedTestIndex = Array.isArray(prev.finishedTestIndex)
+        ? [...prev.finishedTestIndex]
+        : [];
+
+      updatedFinishedTestIndex[Number(index)] = Number(index);
+      const updatedPhysicalFitnessData = {
+        ...prev,
+        [testDetails.key]: {
+          title: testName,
+          reps: testResults.reps,
+          timeStarted: currentTime,
+          timeEnded: '',
+          classification: 'No data available',
+        },
+        finishedTestIndex: updatedFinishedTestIndex,
+      };
+
+      setDataToStorage('physicalFitnessData', updatedPhysicalFitnessData);
+      supabase
+        .from('physical_fitness_test')
+        .update({ [testType]: updatedPhysicalFitnessData })
+        .eq('uuid', userId)
+        .then(({ data, error }) => {
+          if (error) {
+            // Handle error silently
+          }
+        });
+      return updatedPhysicalFitnessData;
+    });
+    if (physicalFitnessData.finishedTestIndex.length >= Number(index)) {
+      navigate(`/physical-fitness-test/test/${Number(index) + 1}`);
+      setTimerTime(1200);
+      setTestResults({
+        reps: '',
+        timeStarted: currentTime,
+        timeEnded: '',
+        classification: 'No data available',
+      });
+    }
+  };
+
   useEffect(() => {
     const handleKeyPress = e => {
       if (e.key === 'Enter') {
@@ -313,18 +371,20 @@ export default function PhysicalFitnessTest ({
             </h1>
             <hr className='w-[50%] border-1 border-black' />
           </div>
-          <div
-            id='timer'
-            className='absolute -top-20 flex pl-5 flex-row w-full justify-center gap-5 items-center lg:relative lg:top-0 lg:block lg:w-auto lg:p-0'
-          >
-            <p className='text-lg font-bold italic'>Timeout in:</p>
-            <SimpleTimer
-              time={timerTime}
-              className='flex flex-row justify-start items-center space-x-5 lg:relative lg:right-0 lg:w-[50%] lg:mt-2'
-              onEnd={() => setIsTimeout(true)}
-              testName={testName}
-            />
-          </div>
+          {userType !== 'teacher' && (
+            <div
+              id='timer'
+              className='absolute -top-20 flex pl-5 flex-row w-full justify-center gap-5 items-center lg:relative lg:top-0 lg:block lg:w-auto lg:p-0'
+            >
+              <p className='text-lg font-bold italic'>Timeout in:</p>
+              <SimpleTimer
+                time={timerTime}
+                className='flex flex-row justify-start items-center space-x-5 lg:relative lg:right-0 lg:w-[50%] lg:mt-2'
+                onEnd={() => setIsTimeout(true)}
+                testName={testName}
+              />
+            </div>
+          )}
           <video
             src={videoInstructions}
             className='col-span-2 mt-10 mb-5 w-full aspect-video border-1 border-black rounded-sm'
@@ -365,9 +425,11 @@ export default function PhysicalFitnessTest ({
           <ResultSection
             testName={testName}
             handleResultChange={handleResultChange}
-            handleSubmit={handleSubmit}
+            handleSubmit={isTeacher ? handleNextExerciseTeacher : handleSubmit}
             testResults={testResults}
             currentTime={currentTime}
+            unit={unit}
+            isTeacher={isTeacher}
           />{' '}
           <TipsAndInterpretation
             testName={testName}

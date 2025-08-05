@@ -13,7 +13,9 @@ export const PhysicalFitnessTestList = [
     ],
     instructionsScoring: ['Record body mass to the nearest 0.5 kilograms'],
     videoInstructions:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/bmi_x8q7ao.mp4',
+      'https://res.cloudinary.com/ddby2tevf/video/upload/bmi_x8q7ao.mp4?randomSeed=' +
+      Math.random(),
+    unit: 'kg',
   },
   {
     title: 'BMI (Height)',
@@ -35,7 +37,9 @@ export const PhysicalFitnessTestList = [
       '1 meter = 100 centimeter',
     ],
     videoInstructions:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/bmi_x8q7ao.mp4',
+      'https://res.cloudinary.com/ddby2tevf/video/upload/bmi_x8q7ao.mp4?randomSeed=' +
+      Math.random(),
+    unit: 'cm',
   },
 
   {
@@ -65,13 +69,14 @@ export const PhysicalFitnessTestList = [
       { exact: -1, interpretation: 'Poor' },
     ],
     videoInstructions:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/zipper-test_i2hamq.mp4' +
+      'https://res.cloudinary.com/ddby2tevf/video/upload/zipper-test_i2hamq.mp4?randomSeed=' +
       Math.random(),
     tips: [
       'Warm up your shoulders with gentle arm circles before attempting the zipper test.',
       'Keep your spine straight and avoid forcing the stretch to prevent shoulder injury.',
       'Practice daily shoulder stretches to improve flexibility and reach over time gradually.',
     ],
+    unit: 'cm',
   },
   {
     title: 'Zipper Test (Left hand)',
@@ -99,7 +104,7 @@ export const PhysicalFitnessTestList = [
       { exact: -1, interpretation: 'Poor' },
     ],
     videoInstructions:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/zipper-test_i2hamq.mp4' +
+      'https://res.cloudinary.com/ddby2tevf/video/upload/zipper-test_i2hamq.mp4?randomSeed=' +
       Math.random(),
     tips: [
       'Alternate which arm goes over your shoulder to test both sides equally well.',
@@ -135,13 +140,14 @@ export const PhysicalFitnessTestList = [
       { min: 0, max: 15.9, interpretation: 'Needs Improvement' },
     ],
     videoInstructions:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/sit-and-reach_dn9lsu.mp4' +
+      'https://res.cloudinary.com/ddby2tevf/video/upload/sit-and-reach_dn9lsu.mp4?randomSeed=' +
       Math.random(),
     tips: [
       'Keep your back flat against the wall and avoid rounding your shoulders forward.',
       'Reach slowly and smoothly without bouncing or jerking movements for better results.',
       'Regular hamstring and lower back stretches will help improve your reach distance.',
     ],
+    unit: 'cm',
   },
   {
     title: 'Sit and Reach (Second Attempt)',
@@ -171,13 +177,14 @@ export const PhysicalFitnessTestList = [
       { min: 0, max: 15.9, interpretation: 'Needs Improvement' },
     ],
     videoInstructions:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/sit-and-reach_dn9lsu.mp4' +
+      'https://res.cloudinary.com/ddby2tevf/video/upload/sit-and-reach_dn9lsu.mp4?randomSeed=' +
       Math.random(),
     tips: [
       'This is your second attempt, so apply what you learned from the first.',
       'Focus on controlled breathing and relaxation to achieve a better reach distance.',
       'Use the better score from both attempts as your final sit and reach.',
     ],
+    unit: 'cm',
   },
   {
     title: 'Pre 3-Minute Step Test',
@@ -196,13 +203,14 @@ export const PhysicalFitnessTestList = [
     ],
     instructionsScoring: ['Record the resting pulse of the tester'],
     videoInstructions:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/step-test_ec4hkk.mp4' +
+      'https://res.cloudinary.com/ddby2tevf/video/upload/step-test_ec4hkk.mp4?randomSeed=' +
       Math.random(),
     tips: [
       'Sit quietly and breathe normally for a few minutes before taking pulse.',
       'Practice finding your pulse on your wrist or neck before the actual test.',
       'Count accurately for ten seconds then multiply by six for heart rate.',
     ],
+    unit: 'bpm',
   },
   {
     title: '3-Minute Step Test',
@@ -229,13 +237,14 @@ export const PhysicalFitnessTestList = [
       'Record the 60-second pulse rate immediately after the activity.',
     ],
     videoInstructions:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/step-test_ec4hkk.mp4' +
+      'https://res.cloudinary.com/ddby2tevf/video/upload/step-test_ec4hkk.mp4?randomSeed=' +
       Math.random(),
     tips: [
       'Maintain steady rhythm throughout the test and do not rush the movements.',
       'Take your pulse immediately after finishing to get an accurate heart rate.',
       'Practice the stepping pattern beforehand to maintain proper form during test.',
     ],
+    unit: 'bpm',
   },
   {
     title: 'Push-Up',
@@ -289,13 +298,14 @@ export const PhysicalFitnessTestList = [
       ],
     },
     videoInstructions:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/push-up_sdflcv.mp4' +
+      'https://res.cloudinary.com/ddby2tevf/video/upload/push-up_sdflcv.mp4?randomSeed=' +
       Math.random(),
     tips: [
       'Keep your body straight from head to toes throughout the entire movement.',
       'Focus on controlled movements rather than speed to maintain proper push-up form.',
       'Build strength gradually with modified push-ups if you cannot complete standard ones.',
     ],
+    unit: 'reps',
   },
   {
     title: 'Basic Plank',
@@ -327,12 +337,13 @@ export const PhysicalFitnessTestList = [
       { min: 1, max: 15, interpretation: 'Needs Improvement' },
     ],
     videoInstructions:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/basic-plank_ynm0xy.mp4' +
+      'https://res.cloudinary.com/ddby2tevf/video/upload/basic-plank_ynm0xy.mp4?randomSeed=' +
       Math.random(),
     tips: [
       'Engage your core muscles and breathe steadily throughout the entire plank hold.',
       'Keep your body in a straight line from head to heels without sagging.',
       'Start with shorter holds and gradually increase time to build core strength.',
     ],
+    unit: 'seconds',
   },
 ];

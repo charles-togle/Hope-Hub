@@ -6,6 +6,8 @@ const ResultSection = ({
   handleResultChange,
   handleSubmit,
   currentTime,
+  unit,
+  isTeacher,
 }) => {
   return (
     <div
@@ -21,56 +23,65 @@ const ResultSection = ({
         <h2 className='font-semibold text-lg pointer-events-none'>
           {testName}
         </h2>
-        <div
-          id='inputs'
-          className='ml-2 grid grid-cols-2 divide-x divide-black'
-        >
+        <div id='inputs' className='ml-2 grid grid-cols-2'>
+          {isTeacher && (
+            <div className='w-full text-center h-full absolute z-999 bg-gray-800 flex justify-center items-center font-semibold text-white'>
+              <p>Teachers are to conduct exercises only</p>
+            </div>
+          )}
           {['Record', 'Time Started', 'Time End'].map((label, index) => (
             <Fragment key={`${index} ${label}`}>
               <label
                 htmlFor={label}
-                className='p-1 lg:text-lg md:text-sm sm:text-xs'
+                className='p-1 lg:text-lg md:text-sm sm:text-xs border-r border-r-black'
               >
-                {label}:{' '}
+                {label}
               </label>
-              <input
-                onChange={e => {
-                  let value = e.target.value;
+              <div className='relative ml-2 flex items-center justify-end'>
+                <input
+                  onChange={e => {
+                    let value = e.target.value;
 
-                  if (label !== 'Time Started' && label !== 'Time End') {
-                    value = Math.max(-1, Math.min(999, value));
+                    if (label !== 'Time Started' && label !== 'Time End') {
+                      value = Math.max(-1, Math.min(999, value));
+                    }
+                    handleResultChange(label, value);
+                  }}
+                  type={
+                    label === 'Time Started' || label === 'Time End'
+                      ? 'time'
+                      : 'number'
                   }
-                  handleResultChange(label, value);
-                }}
-                type={
-                  label === 'Time Started' || label === 'Time End'
-                    ? 'time'
-                    : 'number'
-                }
-                min={
-                  label === 'Time Started'
-                    ? ''
-                    : label === 'Time End'
-                    ? currentTime
-                    : '-1'
-                }
-                max={
-                  label !== 'Time Started' && label !== 'Time End'
-                    ? '999'
-                    : undefined
-                }
-                value={
-                  label === 'Record'
-                    ? testResults.reps
-                    : label === 'Time Started'
-                    ? testResults.timeStarted
-                    : testResults.timeEnded
-                }
-                disabled={label === 'Time Started'}
-                name={label}
-                id={label}
-                className='w-[85%] place-self-center h-fit border-1 border-black text-center font-content rounded-sm lg:px-2 '
-              />
+                  min={
+                    label === 'Time Started'
+                      ? ''
+                      : label === 'Time End'
+                      ? currentTime
+                      : '-1'
+                  }
+                  max={
+                    label !== 'Time Started' && label !== 'Time End'
+                      ? '999'
+                      : undefined
+                  }
+                  value={
+                    label === 'Record'
+                      ? testResults.reps
+                      : label === 'Time Started'
+                      ? testResults.timeStarted
+                      : testResults.timeEnded
+                  }
+                  disabled={label === 'Time Started' || isTeacher}
+                  name={label}
+                  id={label}
+                  className='w-[95%] place-self-center h-fit border-1 border-black text-center font-content rounded-sm lg:px-2 '
+                />
+                {label === 'Record' && unit && (
+                  <span className='right-0 lg:mr-6 mr-5 absolute font-semibold z-990'>
+                    {unit}
+                  </span>
+                )}
+              </div>
             </Fragment>
           ))}
         </div>
@@ -81,9 +92,11 @@ const ResultSection = ({
         <button
           onClick={() => handleSubmit()}
           type='button'
-          className='border-1 border-black rounded-md px-5 py-1 mt-5 text-sm bg-white hover:brightness-95'
+          className={`border-1 border-black rounded-md px-5 py-2 mt-5 text-sm bg-white hover:brightness-95 cursor-pointer ${
+            isTeacher && 'mt-8!'
+          }`}
         >
-          Submit
+          {isTeacher ? 'Next' : 'Submit'}
         </button>
       </div>
     </div>

@@ -9,6 +9,7 @@ import { LowerBodyVideos } from '@/utilities/DiscoverMoreVideos';
 import { References } from '@/utilities/DiscoverMoreVideos';
 import { useRef, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Citation from '@/components/Citations';
 export default function DiscoverMore () {
   const [videoDetails, setVideoDetails] = useState({});
   const parentContainerRef = useRef();
@@ -73,29 +74,7 @@ export default function DiscoverMore () {
         </div>
       </div>
       <div className='flex flex-col gap-10 mt-10 px-5 sm:text-xs md:text-sm w-[95%] mr-auto ml-auto '>
-        <Content
-          content={
-            <div className='grid grid-cols-2 gap-x-10'>
-              {References.map((citation, index) => (
-                <div className='mb-5 text-wrap text-justify' key={index}>
-                  <div>
-                    {citation.name}
-                    <a
-                      href={citation.link}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      className='text-blue-400 hover:underline'
-                    >
-                      {' '}
-                      {citation.link}{' '}
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-          }
-          title='References'
-        />
+        <Citation citations={References} title='References' />
       </div>
       <Footer></Footer>
     </section>
