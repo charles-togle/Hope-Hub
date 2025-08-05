@@ -17,7 +17,6 @@ export function PhysicalFitnessTestSummary () {
   const [isBadRequest, setIsBadRequest] = useState(false);
   const [studentInfo, setStudentInfo] = useState(null);
   const userId = useUserId();
-
   // Check if this is a teacher viewing a student's record
   const studentId = searchParams.get('student');
   const targetUserId = studentId || userId;

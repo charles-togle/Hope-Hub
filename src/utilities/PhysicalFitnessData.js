@@ -1,11 +1,11 @@
 import { PhysicalFitnessTestList } from './PhysicalFitnessTestList';
 
-const numberOfTests = PhysicalFitnessTestList.length;
+export const numberOfTests = PhysicalFitnessTestList.length;
 export const PhysicalFitnessData = {
   name: '',
   gender: '',
   email: '',
   category: '',
   isPARQFinished: false,
-  finishedTestIndex: Array.from({ length: numberOfTests }, () => -1),
+  finishedTestIndex: Array.from({ length: numberOfTests.length }, () => -1),
 };

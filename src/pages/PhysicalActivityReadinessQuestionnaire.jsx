@@ -7,6 +7,8 @@ import setDataToStorage from '@/utilities/setDataToStorage';
 import { useUserId } from '@/hooks/useUserId';
 import supabase from '@/client/supabase';
 import Footer from '@/components/Footer';
+import Loading from '@/components/Loading';
+import { numberOfTests } from '@/utilities/PhysicalFitnessData';
 export default function PhysicalActivityReadinessQuestionnaire () {
   const { physicalFitnessData, setPhysicalFitnessData } =
     usePhysicalFitnessData();
@@ -17,9 +19,34 @@ export default function PhysicalActivityReadinessQuestionnaire () {
   const [answers, setAnswers] = useState(Array(6).fill(null));
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [userType, setUserType] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const userId = useUserId();
+
+  useEffect(() => {
+    if (!userId) {
+      setIsLoading(true);
+      return;
+    }
+    const checkUserType = async () => {
+      const { data, error } = await supabase
+        .from('profile')
+        .select('user_type')
+        .single()
+        .eq('uuid', userId);
+
+      if (error) {
+        setUserType('student');
+        return;
+      }
+      setUserType(data.user_type);
+      setIsLoading(false);
+    };
+
+    checkUserType();
+  }, [userId]);
 
   useEffect(() => {
     if (areAllAnswered && areAllAnswersNo && areAllUserDataFilled) {
@@ -40,14 +67,17 @@ export default function PhysicalActivityReadinessQuestionnaire () {
     'Do you feel pain in your chest when you do physical activity?',
     'In the past month, have you had chest pain when you were not doing physical activity?',
     'Do you have a bone or joint problem that could be made worse by a change in your physical activity?',
-    'Is your doctor currently prescribing drugs (for example, water pills) for your blood pressure or heart condition?',    'Do you know of any other reason why you should not do physical activity? if yes ? please include reason.',
-    'Hope Hub and its affiliated parties shall not be liable for any property damage or injuries that occur during this test. Do you agree?'
+    'Is your doctor currently prescribing drugs (for example, water pills) for your blood pressure or heart condition?',
+    'Do you know of any other reason why you should not do physical activity?',
+    'Hope Hub and its affiliated parties shall not be liable for any property damage or injuries that occur during this test. Do you agree?',
   ];
 
   const handleAnswerChange = (index, value) => {
     const currentAnswers = [...answers];
     currentAnswers[index] = value;
-    const allNo = currentAnswers.every((answer, index) => index !== questions.length - 1 ? answer === 'No' : answer === 'Yes');
+    const allNo = currentAnswers.every((answer, index) =>
+      index !== questions.length - 1 ? answer === 'No' : answer === 'Yes',
+    );
     const allAnswered = currentAnswers.every(answer => answer !== null);
     setAnswers(currentAnswers);
     setAreAllAnswersNo(allNo);
@@ -62,25 +92,49 @@ export default function PhysicalActivityReadinessQuestionnaire () {
       areAllUserDataFilled &&
       isEmailValid
     ) {
-      const updatedData = {
-        ...physicalFitnessData,
-        isPARQFinished: true,
-      };
-      setPhysicalFitnessData(updatedData);
-      setDataToStorage('physicalFitnessData', updatedData);
-
       if (!userId) {
         setErrorMessage('User not found.');
         setIsError(true);
         return;
       }
+
+      if (userType === 'teacher') {
+        alert(
+          'You are using a teacher account and is about to view the content of the physical fitness test, any data will not be recorded',
+        );
+        const updatedData = {
+          ...physicalFitnessData,
+          isPARQFinished: true,
+          ...{
+            finishedTestIndex: Array.from({ length: numberOfTests }, () => -1),
+          },
+        };
+        setPhysicalFitnessData(updatedData);
+        setDataToStorage('physicalFitnessData', updatedData);
+        const { error: updateError } = await supabase
+          .from('physical_fitness_test')
+          .update({ pre_physical_fitness_test: updatedData })
+          .eq('uuid', userId);
+        if (updateError) {
+          setErrorMessage('Error saving test data: ' + updateError.message);
+          setIsError(true);
+          return;
+        }
+        navigate(`/physical-fitness-test/test/0`);
+        return;
+      }
+
       // Fetch existing test record
       const { data: existing, error: fetchError } = await supabase
         .from('physical_fitness_test')
         .select('pre_physical_fitness_test, post_physical_fitness_test')
         .eq('uuid', userId)
         .single();
+
       let testType = '';
+      let testIndex = 0;
+      let newTest = true;
+      let testIndeces = [];
       if (fetchError) {
         setErrorMessage('Error fetching test record: ' + fetchError.message);
         setIsError(true);
@@ -93,14 +147,28 @@ export default function PhysicalActivityReadinessQuestionnaire () {
       const max = Math.max(preFinished.length, postFinished.length);
       if (!preFinished.includes(max - 1)) {
         testType = 'pre_physical_fitness_test';
+        testIndex = preFinished.findIndex(item => item === -1);
+        newTest = testIndex === -1;
+        testIndeces = preFinished;
       } else if (!postFinished.includes(max - 1)) {
         testType = 'post_physical_fitness_test';
+        testIndex = postFinished.findIndex(item => item === -1);
+        newTest = testIndex === -1;
+        testIndeces = postFinished;
       } else {
         setErrorMessage('You have already completed all tests.');
         setIsError(true);
         return;
       }
-      // Insert or update the test data
+      const updatedData = {
+        ...physicalFitnessData,
+        isPARQFinished: true,
+        ...(!newTest && { finishedTestIndex: testIndeces }),
+      };
+
+      setPhysicalFitnessData(updatedData);
+      setDataToStorage('physicalFitnessData', updatedData);
+
       const { error: updateError } = await supabase
         .from('physical_fitness_test')
         .update({ [testType]: updatedData })
@@ -110,7 +178,10 @@ export default function PhysicalActivityReadinessQuestionnaire () {
         setIsError(true);
         return;
       }
-      navigate('/physical-fitness-test/test/0');
+
+      navigate(
+        `/physical-fitness-test/test/${testIndex === -1 ? 0 : testIndex}`,
+      );
     } else {
       if (!areAllAnswered) {
         setErrorMessage('Make sure to answer all questions');
@@ -150,6 +221,10 @@ export default function PhysicalActivityReadinessQuestionnaire () {
       ),
     );
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div
@@ -213,7 +288,6 @@ export default function PhysicalActivityReadinessQuestionnaire () {
               <input
                 type='text'
                 onChange={e => handleInformationChange('name', e.target.value)}
-                defaultValue={physicalFitnessData?.name}
                 className='border-1 border-[#8B8989] w-full font-content px-1 rounded-sm mt-0.5'
               />
             </label>
@@ -252,7 +326,6 @@ export default function PhysicalActivityReadinessQuestionnaire () {
               </p>
               <input
                 type='email'
-                defaultValue={physicalFitnessData?.email}
                 onChange={e => handleInformationChange('email', e.target.value)}
                 className='border-1 border-[#8B8989] w-full font-content px-1 rounded-sm mt-0.5 not-valid:border-red'
               />
@@ -260,10 +333,10 @@ export default function PhysicalActivityReadinessQuestionnaire () {
             <label>
               <p>Category:</p>
               <select
-                defaultValue={physicalFitnessData?.category}
                 onChange={e =>
                   handleInformationChange('category', e.target.value)
                 }
+                defaultValue={physicalFitnessData?.category}
                 className='border-1 border-[#8B8989]! w-full font-content px-1 rounded-sm mt-0.5'
               >
                 <option disabled value=''>
@@ -328,7 +401,7 @@ export default function PhysicalActivityReadinessQuestionnaire () {
             className='w-[95%] drop-shadow-none! border-0! flex justify-end p-0! mb-5'
           >
             <button
-              className='px-10 py-3 bg-secondary-dark-blue text-white hover:brightness-70'
+              className='px-10 py-3 bg-secondary-dark-blue text-white hover:brightness-70 cursor-pointer'
               onClick={() => handleSubmit()}
             >
               Submit

@@ -26,13 +26,35 @@ export function PhysicalFitnessTestPage () {
   const userId = useUserId();
 
   useEffect(() => {
+    if (!userId) {
+      setIsLoading(true);
+      return;
+    }
+    const checkUserType = async () => {
+      const { data, error } = await supabase
+        .from('profile')
+        .select('user_type')
+        .single()
+        .eq('uuid', userId);
+
+      if (error) {
+        setUserType('student');
+        return;
+      }
+      setUserType(data.user_type); //student or teacher
+      setIsLoading(false);
+    };
+
+    checkUserType();
+  }, [userId]);
+
+  useEffect(() => {
     const dataFromStorage = getDataFromStorage('physicalFitnessData');
     if (dataFromStorage && Object.keys(dataFromStorage).length > 0) {
       setPhysicalFitnessData(dataFromStorage);
 
       let finishedTestIndex = [];
       let currentTestIndex = 0;
-
       if (dataFromStorage) {
         finishedTestIndex = dataFromStorage.finishedTestIndex;
         currentTestIndex = Number(testIndex);
@@ -51,10 +73,18 @@ export function PhysicalFitnessTestPage () {
       setIsBadRequest(true);
     }
   }, [setPhysicalFitnessData, testIndex, physicalFitnessData.length, navigate]);
+
   useEffect(() => {
     const finishedTestIndex = physicalFitnessData.finishedTestIndex || [];
     if (finishedTestIndex.includes(finishedTestIndex.length - 1)) {
       localStorage.removeItem('physicalFitnessData');
+      if (userType === 'teacher') {
+        alert(
+          'Physical Fitness Test completed. You are about to be redirected to your dashboard.',
+        );
+        navigate(`/dashboard`);
+        return;
+      }
       navigate(
         `/physical-fitness-test/summary/${
           testType === 'pre_physical_fitness_test' ? 'pre-test' : 'post-test'
@@ -107,36 +137,6 @@ export function PhysicalFitnessTestPage () {
     checkIfTestTaken();
   }, [userId]);
 
-  useEffect(() => {
-    if (!userId) {
-      setIsLoading(true);
-      return;
-    }
-    const checkUserType = async () => {
-      const { data, error } = await supabase
-        .from('profile')
-        .select('user_type')
-        .single()
-        .eq('uuid', userId);
-
-      if (error) {
-        setUserType('student');
-        return;
-      }
-      setUserType(data.user_type);
-      setIsLoading(false);
-    };
-
-    checkUserType(); // Call the function once
-  }, [userId]);
-
-  //remove item from localStorage everytime it is unmounted
-  // useEffect(()=>{
-  //   return () => {
-  //     localStorage.removeItem('physicalFitnessdata')
-  //   }
-  // },[])
-
   const handleTimeoutConfirm = () => {
     if (testIndex === '0') {
       setIsTimeout(false);
@@ -172,15 +172,6 @@ export function PhysicalFitnessTestPage () {
     );
   }
 
-  if (userType === 'teacher') {
-    return (
-      <ErrorMessage
-        text={'User Type Error'}
-        subText='Only students can take the test'
-      />
-    );
-  }
-
   if (isTaken) {
     return (
       <ErrorMessage
@@ -203,6 +194,7 @@ export function PhysicalFitnessTestPage () {
             index={testIndex}
             setIsTimeout={setIsTimeout}
             testType={testType}
+            userType={userType}
           />
         </div>
       )}
