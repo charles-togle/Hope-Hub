@@ -12,6 +12,7 @@ import RowContainer from '@/components/health-calculators/RowContainer';
 import ResultGroup from '@/components/health-calculators/ResultGroup';
 import { useCallback } from 'react';
 import useMobile from '@/hooks/useMobile';
+import Citation from '@/components/Citations';
 
 export default function BMRCalculator () {
   const [gender, setGender] = useState('');
@@ -292,24 +293,7 @@ export default function BMRCalculator () {
           content='Statistically, BMR varies widely across the population and is influenced by biological and lifestyle factors. For example, younger individuals, males, and those with more muscle mass tend to have higher BMRs, while older adults or individuals with less lean mass typically have lower rates. There are no standard classification ranges (such as “low” or “high”) for BMR, since calorie requirements are personal and context-specific. Instead, your result should be viewed as a baseline estimate of how much energy your body needs before accounting for physical activity. When combined with your activity level, it helps determine your Total Daily Energy Expenditure (TDEE).'
           title='Statistical Interpretation'
         />
-        <Content
-          content={citations.map((citation, index) => (
-            <div className='mb-5 text-wrap text-justify' key={index}>
-              <div>
-                {citation.name}{' '}
-                <a
-                  href={citation.link}
-                  target='_blank'
-                  className='text-blue-400 hover:underline'
-                >
-                  {' '}
-                  {citation.link}{' '}
-                </a>
-              </div>
-            </div>
-          ))}
-          title='References'
-        />
+      <Citation citations={citations} title='References' />
       </div>
     </>
   );
