@@ -20,6 +20,7 @@ export function PhysicalFitnessTestPage () {
   const [userType, setUserType] = useState('');
   const [testType, setTestType] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [teacherReady, setTeacherReady] = useState(false);
   const { physicalFitnessData, setPhysicalFitnessData } =
     usePhysicalFitnessData();
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export function PhysicalFitnessTestPage () {
 
   useEffect(() => {
     if (!userId) {
-      setIsLoading(true);
+      setTeacherReady(false);
       return;
     }
     const checkUserType = async () => {
@@ -42,7 +43,7 @@ export function PhysicalFitnessTestPage () {
         return;
       }
       setUserType(data.user_type); //student or teacher
-      setIsLoading(false);
+      setTeacherReady(true);
     };
 
     checkUserType();
@@ -150,7 +151,7 @@ export function PhysicalFitnessTestPage () {
     navigate('/physical-fitness-test/parq');
   };
 
-  if (isLoading) {
+  if (isLoading || teacherReady) {
     return <Loading />;
   }
 
