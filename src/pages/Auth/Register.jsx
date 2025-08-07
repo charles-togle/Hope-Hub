@@ -4,10 +4,9 @@ import FormHeading from '@/components/auth/FormHeading';
 import FormInput from '@/components/auth/FormInput';
 import InputContainer from '../../components/auth/InputContainer';
 import FormButton from '../../components/auth/FormButton';
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import supabase from '@/client/supabase';
 import LectureProgress from '@/utilities/LectureProgress';
-import { useEffect } from 'react';
 
 export default function Register () {
   const [name, setName] = useState('');
@@ -18,6 +17,31 @@ export default function Register () {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Rate limiting state
+  const attemptCount = useRef(0);
+  const lastAttemptTime = useRef(0);
+
+  const isRateLimited = useCallback(() => {
+    const now = Date.now();
+    const timeDiff = now - lastAttemptTime.current;
+
+    if (timeDiff > 300000) {
+      attemptCount.current = 0;
+    }
+
+    if (attemptCount.current >= 5) {
+      return true;
+    }
+
+    if (timeDiff < 3000 && attemptCount.current > 0) {
+      return true;
+    }
+
+    attemptCount.current++;
+    lastAttemptTime.current = now;
+    return false;
+  }, []);
 
   const handlePasswordChange = value => {
     setPassword(value);
@@ -40,6 +64,15 @@ export default function Register () {
     setErrorMessage('');
     setIsLoading(true);
     setSuccessMessage('');
+
+    // Check rate limiting
+    if (isRateLimited()) {
+      setErrorMessage(
+        'Too many registration attempts. Please wait 5 minutes or try again in a few seconds.',
+      );
+      setIsLoading(false);
+      return;
+    }
 
     if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match');

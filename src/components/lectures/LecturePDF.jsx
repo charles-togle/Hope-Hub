@@ -29,6 +29,7 @@ export default function LecturePDF ({
         <iframe
           src={pdfLink}
           className='mt-5 row-start-2 h-150 rounded-lg w-full lg:h-full lg:row-span-2 lg:mt-0 md:row-span-2'
+          
         ></iframe>
         <div
           id='lecture-description'
