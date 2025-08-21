@@ -30,7 +30,7 @@ export default function VideoPreview ({
   return (
     <div
       id='video-preview'
-      className='aspect-video pb-5 lg:pb-0 lg:min-w-10 max-w-full hover:brightness-80 hover:rounded-none overflow-hidden h-35 lg:h-50'
+      className='aspect-video pb-5 lg:pb-0 lg:min-w-10 max-w-full hover:brightness-80 hover:rounded-none h-fit'
     >
       <div className='relative w-fit'>
         {loading ? (
@@ -38,7 +38,7 @@ export default function VideoPreview ({
         ) : (
           <img
             src={thumbnail}
-            className=' rounded-lg hover:rounded-none'
+            className=' rounded-lg hover:rounded-none h-35 lg:h-50'
             alt={title}
           />
         )}

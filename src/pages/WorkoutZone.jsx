@@ -4,8 +4,12 @@ import VideoList from '@/components/workout-zone/VideoList';
 import VideoPlayer from '@/components/workout-zone/VideoPlayer';
 import Footer from '@/components/Footer';
 import Content from '@/components/health-calculators/Content';
-import { UpperBodyVideos } from '@/utilities/WorkoutZoneVideos';
-import { LowerBodyVideos } from '@/utilities/WorkoutZoneVideos';
+import {
+  WarmUpVideo,
+  UpperBodyVideos,
+  LowerBodyVideos,
+} from '@/utilities/WorkoutZoneVideos';
+import {} from '@/utilities/WorkoutZoneVideos';
 import { References } from '@/utilities/WorkoutZoneVideos';
 import { useRef, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -50,7 +54,20 @@ export default function WorkoutZone () {
         {Object.keys(videoDetails).length !== 0 && (
           <VideoPlayer video={videoDetails}></VideoPlayer>
         )}
+        {/* Warm up */}
         <div className='relative w-full'>
+          <div className='absolute left-0'>
+            <VideoHeading text='Warm Up'></VideoHeading>
+          </div>
+          <div className='mt-20 w-9/10 mr-auto ml-auto '>
+            <VideoList
+              videos={WarmUpVideo}
+              onVideoClick={handleVideoClick}
+            ></VideoList>
+          </div>
+        </div>
+        {/* Upper body */}
+        <div className='relative w-full mt-10'>
           <div className='absolute left-0'>
             <VideoHeading text='Upper Body'></VideoHeading>
           </div>
@@ -61,6 +78,7 @@ export default function WorkoutZone () {
             ></VideoList>
           </div>
         </div>
+        {/* Lower Body */}
         <div className='relative w-full mt-10'>
           <div className='absolute left-0'>
             <VideoHeading text='Lower Body'></VideoHeading>
