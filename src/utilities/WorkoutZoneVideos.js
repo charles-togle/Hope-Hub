@@ -1,3 +1,21 @@
+export const WarmUpVideo = [
+  {
+    thumbnail: '',
+    url: 'warm-up',
+    duration: '02:17',
+    title: 'Warm Up',
+    description: {
+      howToDoIt:
+        'Sit or stand up straight with a weight in each hand at shoulder height. Push the weights straight up until your arms are straight, then lower them slowly back down.',
+      do: ['Keep your back straight.', 'Press the weights slowly.'],
+      dont: ["Don't arch your back.", "Don't lock your elbows."],
+    },
+    videoLink:
+      '',
+    uploadDate: '2025-08-21T14:48:00.000Z',
+  },
+];
+
 export const UpperBodyVideos = [
   {
     thumbnail:
@@ -12,7 +30,8 @@ export const UpperBodyVideos = [
       dont: ["Don't arch your back.", "Don't lock your elbows."],
     },
     videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_rb48ea.mp4?randomSeed=' + Math.random(),
+      'https://res.cloudinary.com/ddby2tevf/video/upload/video_rb48ea.mp4?randomSeed=' +
+      Math.random(),
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
@@ -28,7 +47,8 @@ export const UpperBodyVideos = [
       dont: ["Don't arch your back.", "Don't lock your elbows."],
     },
     videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_or8j2t.mp4?randomSeed=' + Math.random(),
+      'https://res.cloudinary.com/ddby2tevf/video/upload/video_or8j2t.mp4?randomSeed=' +
+      Math.random(),
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
@@ -44,7 +64,8 @@ export const UpperBodyVideos = [
       dont: ["Don't arch your back.", "Don't lock your elbows."],
     },
     videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_nvytzd.mp4?randomSeed=' + Math.random(),
+      'https://res.cloudinary.com/ddby2tevf/video/upload/video_nvytzd.mp4?randomSeed=' +
+      Math.random(),
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
@@ -60,7 +81,8 @@ export const UpperBodyVideos = [
       dont: ["Don't lean back too far.", "Don't pull behind your head."],
     },
     videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_d12i9i.mp4?randomSeed=' + Math.random(),
+      'https://res.cloudinary.com/ddby2tevf/video/upload/video_d12i9i.mp4?randomSeed=' +
+      Math.random(),
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
@@ -79,7 +101,8 @@ export const UpperBodyVideos = [
       dont: ["Don't move your shoulders.", "Don't lean too far forward."],
     },
     videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_yrizfb.mp4?randomSeed=' + Math.random(),
+      'https://res.cloudinary.com/ddby2tevf/video/upload/video_yrizfb.mp4?randomSeed=' +
+      Math.random(),
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
@@ -98,7 +121,8 @@ export const UpperBodyVideos = [
       dont: ["Don't lift your shoulders.", "Don't rush the movement."],
     },
     videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_or8j2t.mp4?randomSeed=' + Math.random(),
+      'https://res.cloudinary.com/ddby2tevf/video/upload/video_or8j2t.mp4?randomSeed=' +
+      Math.random(),
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
@@ -117,7 +141,8 @@ export const UpperBodyVideos = [
       ],
     },
     videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_nvytzd.mp4?randomSeed=' + Math.random(),
+      'https://res.cloudinary.com/ddby2tevf/video/upload/video_nvytzd.mp4?randomSeed=' +
+      Math.random(),
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
@@ -133,7 +158,8 @@ export const UpperBodyVideos = [
       dont: ["Don't swing your body.", "Don't use your shoulders."],
     },
     videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_yrizfb.mp4?randomSeed=' + Math.random(),
+      'https://res.cloudinary.com/ddby2tevf/video/upload/video_yrizfb.mp4?randomSeed=' +
+      Math.random(),
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
 ];
@@ -160,7 +186,8 @@ export const LowerBodyVideos = [
       ],
     },
     videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_ir7ixx.mp4?randomSeed=' + Math.random(),
+      'https://res.cloudinary.com/ddby2tevf/video/upload/video_ir7ixx.mp4?randomSeed=' +
+      Math.random(),
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
@@ -184,7 +211,8 @@ export const LowerBodyVideos = [
       ],
     },
     videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/final_squats_bx2s3u.mp4?randomSeed=' + Math.random(),
+      'https://res.cloudinary.com/ddby2tevf/video/upload/final_squats_bx2s3u.mp4?randomSeed=' +
+      Math.random(),
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
@@ -208,7 +236,8 @@ export const LowerBodyVideos = [
       ],
     },
     videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_rb48ea.mp4?randomSeed=' + Math.random(),
+      'https://res.cloudinary.com/ddby2tevf/video/upload/video_rb48ea.mp4?randomSeed=' +
+      Math.random(),
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
@@ -232,7 +261,8 @@ export const LowerBodyVideos = [
       ],
     },
     videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_or8j2t.mp4?randomSeed=' + Math.random(),
+      'https://res.cloudinary.com/ddby2tevf/video/upload/video_or8j2t.mp4?randomSeed=' +
+      Math.random(),
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
@@ -256,7 +286,8 @@ export const LowerBodyVideos = [
       ],
     },
     videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_nvytzd.mp4?randomSeed=' + Math.random(),
+      'https://res.cloudinary.com/ddby2tevf/video/upload/video_nvytzd.mp4?randomSeed=' +
+      Math.random(),
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
 ];

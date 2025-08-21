@@ -25,7 +25,7 @@ import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import ForgotPassword from './pages/Auth/ForgotPassword';
 import ChangePassword from './pages/Auth/ChangePassword';
-import DiscoverMore from './pages/DiscoverMore';
+import WorkoutZone from './pages/WorkoutZone';
 import StudentDashboard from './pages/Dashboard/StudentDashboard';
 import HamburgerMenu from './assets/icons/hamburger_icon.png';
 import AccountVerification from './pages/Auth/AccountVerification';
@@ -217,12 +217,12 @@ function App () {
             />
           </Route>
           <Route
-            path='discover-more/:videoUrl'
-            element={<DiscoverMore></DiscoverMore>}
+            path='workout-zone/:videoUrl'
+            element={<WorkoutZone/>}
           ></Route>
           <Route
-            path='discover-more/'
-            element={<DiscoverMore></DiscoverMore>}
+            path='workout-zone/'
+            element={<WorkoutZone/>}
           ></Route>
           <Route
             path='physical-fitness-test'

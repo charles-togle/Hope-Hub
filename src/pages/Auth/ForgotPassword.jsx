@@ -7,6 +7,7 @@ import FormButton from '../../components/auth/FormButton';
 import { useState } from 'react';
 import supabase from '@/client/supabase';
 import { useNavigate } from 'react-router-dom';
+import useRateLimiter from '@/hooks/useRateLimiter';
 
 export default function ForgotPassword () {
   const [email, setEmail] = useState('');
@@ -14,10 +15,27 @@ export default function ForgotPassword () {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const isRateLimited = useRateLimiter({ minIntervalMs: 5000, maxAttempts: 7 });
 
   const handleForgotPassword = async () => {
     setSuccessMessage('');
     setErrorMessage('');
+
+    const rateLimited = isRateLimited().type;
+
+    if (rateLimited === 'exceeded') {
+      setErrorMessage(
+        'Too many Login attempts. Please wait 5 minutes or try again in a few seconds.',
+      );
+      return;
+    }
+
+    if (rateLimited === 'too-fast') {
+      setErrorMessage(
+        'You are attempting too fast. Please wait for 5 seconds and try again',
+      );
+      return;
+    }
     if (email.trim() === '') {
       setErrorMessage('Please fill out all fields');
       return;
