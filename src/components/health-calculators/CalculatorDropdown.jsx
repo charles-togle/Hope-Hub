@@ -13,6 +13,7 @@ export default function CalculatorDropdown () {
     { label: 'IBW Calculator', value: 'ibw', path: '/health-calculators/ibw' },
     { label: 'Water Intake Calculator', value: 'waterintake', path: '/health-calculators/waterintake' },
     { label: 'Body Fat Percentage Calculator', value: 'bodyfatpercentage', path: '/health-calculators/bodyfatpercentage'},
+    { label: 'Heart Rate Calculator', value: 'heartrate', path: '/health-calculators/heartrate'},
   ];
 
   // Get current calculator based on URL
