@@ -464,24 +464,16 @@ export const getHeartRate = (
   age,
   restingHeartRate,
 ) => {
-  maxHeartRate = 206.9 - (0.67 * age)
-  heartRateResolve = maxHeartRate - restingHeartRate
-  // THR = Target Heart Rate
-  THR_vlLight = (heartRateResolve * 0.19) + HRrest
-  THR_liMin = (heartRateResolve * 0.20) + HRrest
-  THR_liMax = (heartRateResolve * 0.39) + HRrest
-  THR_moMin = (heartRateResolve * 0.40) + HRrest
-  THR_moMax = (heartRateResolve * 0.59) + HRrest
-  THR_haMin = (heartRateResolve * 0.60) + HRrest
-  THR_haMax = (heartRateResolve * 0.84) + HRrest
-  THR_vhMin = (heartRateResolve * 0.85) + HRrest
-  THR_vhMax = heartRateResolve + HRrest
+  const maxHeartRate = 206.9 - (0.67 * age)
+  let heartRateReserve = maxHeartRate - restingHeartRate;
 
-  return {
-    THR_veryLight: parseFloat(THR_vlLight.toFixed(0)),
-    THR_light: parseFloat(THR_liMin.toFixed(0)) + " - " + parseFloat(THR_liMax.toFixed(0)),
-    THR_moderate: parseFloat(THR_moMin.toFixed(0)) + " - " + parseFloat(THR_moMax.toFixed(0)),
-    THR_hard: parseFloat(THR_haMin.toFixed(0)) + " - " + parseFloat(THR_haMax.toFixed(0)),
-    THR_veryHard: parseFloat(THR_vhMin.toFixed(0)) + " - " + parseFloat(THR_vhMax.toFixed(0)),
-  };
+  const targetHeartRate = [
+    parseFloat(heartRateReserve * 0.19 + restingHeartRate).toFixed(0) + " or less",
+    parseFloat(heartRateReserve * 0.20 + restingHeartRate).toFixed(0) + " - " + parseFloat(heartRateReserve * 0.39 + restingHeartRate).toFixed(0),
+    parseFloat(heartRateReserve * 0.40 + restingHeartRate).toFixed(0) + " - " + parseFloat(heartRateReserve * 0.59 + restingHeartRate).toFixed(0),
+    parseFloat(heartRateReserve * 0.60 + restingHeartRate).toFixed(0) + " - " + parseFloat(heartRateReserve * 0.84 + restingHeartRate).toFixed(0),
+    parseFloat(heartRateReserve * 0.85 + restingHeartRate).toFixed(0) + " - " + parseFloat(heartRateReserve + restingHeartRate).toFixed(0)
+  ]
+
+  return targetHeartRate;
 };

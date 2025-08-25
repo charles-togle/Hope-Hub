@@ -9,6 +9,7 @@ import Content from '@/components/health-calculators/Content';
 import RowContainer from '@/components/health-calculators/RowContainer';
 import useMobile from '@/hooks/useMobile';
 import Citation from '@/components/Citations';
+import { Result } from 'postcss';
 
 export const getHeartRateCategory = bmi => {
   if (bmi < 18.5) return 'Underweight';
@@ -22,11 +23,11 @@ export default function HeartRateCalculator () {
   const [heartrate, setHeartrate] = useState(70);
   const [thrResult, setThrResult] = useState(null);
   const [thrMedicalInterpretation, setThrMedicalInterpretation] = useState(
-    'Perform a BMI calculation to receive personalized medical interpretation based on your results. This will include information about health risks, recommended actions, and medical considerations specific to your BMI category.',
+    'Target Heart Rate (THR) ranges calculated with the Karvonen method provide structured intensity zones from very light to very hard exercise. Population studies show that most adults achieve improvements in cardiovascular fitness, blood pressure, and overall endurance when training consistently within moderate to hard zones (≈40–85% HRR). Very light activity is statistically common in older adults or beginners, while vigorous activity is more common among trained or athletic individuals. Long-term population data confirm that maintaining activity within these ranges is strongly associated with reduced risk of cardiovascular disease and premature mortality.',
   );
   const [thrStatisticalInterpretation, setThrStatisticalInterpretation] =
   useState(
-    'After calculating your BMI, you will see how your result compares to population distributions and statistical norms. This provides context for understanding where your BMI falls within broader health statistics.',
+    "The Karvonen formula adjusts training intensity based on both resting and maximum heart rate, providing a more individualized target zone. Medical evidence indicates that exercising within moderate to vigorous zones supports heart health, blood sugar regulation, and weight control, while very light activity may be appropriate for recovery, older adults, or individuals with chronic conditions. Conversely, consistently training above 85% HRR may increase risk of injury, arrhythmia, or overtraining, particularly without medical clearance. These ranges are intended as general guidance; individual health status, medications (e.g., beta-blockers), and physician recommendations should always be considered when applying target heart rate zones."
   );
 
   const resultsRef = useRef(null);
@@ -46,11 +47,9 @@ export default function HeartRateCalculator () {
       return;
     }
 
-    const thr = getHeartRate(
-      age,
-      restingHeartRate
-    );
+    const thr = getHeartRate(age,heartrate);
     
+    setThrResult(thr);
     setThrMedicalInterpretation(THR.medicalInterpretation);
     setThrStatisticalInterpretation(THR.statisticalInterpretation);
 
@@ -69,39 +68,33 @@ export default function HeartRateCalculator () {
     setHeartrate(70);
     setAge();
     setThrMedicalInterpretation(
-      'Perform a BMI calculation to receive personalized medical interpretation based on your results. This will include information about health risks, recommended actions, and medical considerations specific to your BMI category.',
+      "Target Heart Rate (THR) ranges calculated with the Karvonen method provide structured intensity zones from very light to very hard exercise. Population studies show that most adults achieve improvements in cardiovascular fitness, blood pressure, and overall endurance when training consistently within moderate to hard zones (≈40–85% HRR). Very light activity is statistically common in older adults or beginners, while vigorous activity is more common among trained or athletic individuals. Long-term population data confirm that maintaining activity within these ranges is strongly associated with reduced risk of cardiovascular disease and premature mortality."
     );
     setThrStatisticalInterpretation(
-      'After calculating your BMI, you will see how your result compares to population distributions and statistical norms. This provides context for understanding where your BMI falls within broader health statistics.',
+      "The Karvonen formula adjusts training intensity based on both resting and maximum heart rate, providing a more individualized target zone. Medical evidence indicates that exercising within moderate to vigorous zones supports heart health, blood sugar regulation, and weight control, while very light activity may be appropriate for recovery, older adults, or individuals with chronic conditions. Conversely, consistently training above 85% HRR may increase risk of injury, arrhythmia, or overtraining, particularly without medical clearance. These ranges are intended as general guidance; individual health status, medications (e.g., beta-blockers), and physician recommendations should always be considered when applying target heart rate zones."
     );
   };
 
   const citations = [
     {
-      name: '[1] Centers for Disease Control and Prevention. (2022). About adult BMI. U.S. Department of Health & Human Services. ',
-      link: 'https://www.cdc.gov/bmi/faq/?CDC_AAref_Val=https://www.cdc.gov/healthyweight/assessing/bmi/adult_bmi/index.html',
+      name: '[1] American College of Sports Medicine. (n.d.). Target heart rate zones: Percent of HRR and % of HRmax. In ACSM CPT Chapter 15: Cardiorespiratory Training Programs. PTPioneer.',
+      link: 'https://www.ptpioneer.com/personal-training/certifications/acsm/acsm-cpt-chapter-15/',
     },
     {
-      name: '[2] Di Angelantonio, E., Bhupathiraju, S. N., Wormser, D., Gao, P., Kaptoge, S., Berrington de Gonzalez, A., … Woodward, M. (2016). Body-mass index and all-cause mortality: Individual-participant-data meta-analysis of 239 prospective studies in four continents. The Lancet, 388(10046), 776–786. ',
-      link: 'https://pubmed.ncbi.nlm.nih.gov/27423262/',
+      name: '[2] Cleveland Clinic. (2023, January 25). Heart rate reserve: How to calculate it & what it means. Cleveland Clinic.',
+      link: 'https://my.clevelandclinic.org/health/articles/24649-heart-rate-reserve',
     },
     {
-      name: '[3] Flegal, K. M., Kit, B. K., Orpana, H., & Graubard, B. I. (2013). Association of all-cause mortality with overweight and obesity using standard body mass index categories: A systematic review and meta-analysis. JAMA, 309(1), 71-82. ',
-      link: 'https://doi.org/10.1001/jama.2012.113905',
+      name: '[3] HeartOnline. (n.d.). Target heart rate calculator.',
+      link: 'https://www.heartonline.org.au/resources/calculators/target-heart-rate-calculator',
     },
     {
-      name: '[4] National Institutes of Health. (1998). Clinical guidelines on the identification, evaluation, and treatment of overweight and obesity in adults: The evidence report (NIH Publication No. 98–4083). ',
-      link: 'https://www.nhlbi.nih.gov/files/docs/guidelines/ob_gdlns.pdf',
-    },
-    {
-      name: '[5] Prospective Studies Collaboration. (2009). Body-mass index and cause-specific mortality in 900,000 adults: Collaborative analyses of 57 prospective studies. The Lancet, 373(9669), 1083–1096. ',
-      link: 'https://doi.org/10.1016/S0140-6736(09)60318-4',
-    },
-    {
-      name: '[6] World Health Organization. (2021). Obesity and overweight: Key facts. ',
-      link: 'https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight',
+      name: '[4] Mandal, A. (2023, July 14). Heart rate reserve. News-Medical.',
+      link: 'https://www.news-medical.net/health/Heart-Rate-Reserve.aspx',
     },
   ];
+
+  console.log({thrResult});
 
   return (
     <>
@@ -128,24 +121,57 @@ export default function HeartRateCalculator () {
           </ol>
         </Container>
       </RowContainer>
-      <RowContainer>
-        <Container heading='Results' ref={resultsRef}>
-          <p className='font-content w-full text-center text-xs md:text-base'>
 
-          </p>
+      <div className='w-auto'>
+        <Container heading='Results' ref={resultsRef}>
+          <div className='right-0 border-b-2 border-primary-yellow w-25 absolute' />
+
+          <table className='justify-around content-around'>
+            <thead>
+              <th className='text-left'>
+                <p className='mt-5 text-red-400 font-content text-xs md:text-base'> Intensity </p>
+                <div className='border-b-2 mb-3 border-primary-blue w-10 font-content' />
+              </th>
+              <th className='text-left pr-20 pl-20 font-content'>
+                <p className='mt-5 text-primary-blue'> Heart Rate Reserve </p>
+                <div className='border-b-2 mb-3 border-primary-yellow w-10 font-content' />
+              </th>
+              <th className='pl-3 text-left'>
+                <p className='mt-5 text-green-400 font-content text-xs md:text-base'> Target Heart Rate </p>
+                <div className='border-b-2 mb-3 border-primary-blue w-10 font-content' />
+              </th>
+            </thead>
+            <tbody>
+              <tr>
+              <td>
+                <li className='list-none font-content'> 
+                <ol> Very Light </ol>
+                <ol> Light </ol>
+                <ol> Moderate </ol>
+                <ol> Hard </ol>
+                <ol> Very Hard </ol>
+                </li>
+              </td>
+              <td className='text-center pr-20 pl-20 font-content'>
+                <ol> 19% and less </ol>
+                <ol> 20% - 39% </ol>
+                <ol> 40% - 59% </ol>
+                <ol> 60% - 84% </ol>
+                <ol> 85% and more </ol>
+              </td>
+              <td>
+                <p className='font-content text-center text-xs md:text-base'> 
+                {thrResult?.map((results, index) => (
+                <li key={`${index}`} className='list-none'>{results}</li>
+                ))}
+                </p>
+              </td>
+              </tr>
+            </tbody>
+          </table>
         </Container>
-        <Container heading='BMI POINTERS' className='w-1/2'>
-          <ol className='list-decimal font-content mx-2 mb-3 md:mb-5 text-xs md:text-base'>
-            <li>Healthy Range: 18.5 – 24.9</li>
-            <li>Underweight: Below 18.5</li>
-            <li>Overweight: 25.0 – 29.9</li>
-            <li>Obese: 30.0 and above</li>
-          </ol>
-          <p className='font-content text-red mt-2 text-xs md:text-base'>
-            Note: BMI doesn't account for muscle mass or body composition.
-          </p>
-        </Container>
-      </RowContainer>
+      </div>
+
       <div className='w-full flex flex-col gap-10 mt-10 sm:text-xs md:text-sm'>
         <Content
           content={thrMedicalInterpretation}

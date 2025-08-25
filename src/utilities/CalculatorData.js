@@ -162,7 +162,7 @@ export const CalculatorData = {
   },
   THR: {
     description:
-      'The Body Mass Index (BMI) Calculator estimates whether your weight is appropriate for your height. It uses a simple formula — weight divided by height squared — to classify your body size into categories like underweight, normal, overweight, or obese. BMI is commonly used in public health and clinical settings as a general indicator of potential weight-related health risks. A BMI within the “normal” range is associated with a lower likelihood of chronic conditions such as heart disease, diabetes, and high blood pressure. Higher or lower values may suggest the need for lifestyle changes or further medical evaluation. Although BMI is not a direct measure of body fat or overall health, it is a useful screening tool that can help guide awareness and decisions about physical well-being.',
+      'The Karvonen Heart Rate Calculator helps you find your ideal Target Heart Rate (THR) zones for exercise. Unlike simple age-based formulas, it takes into account both your resting heart rate and maximum heart rate to give you results of your intended target heart rate. By using the Karvonen formula, the calculator shows training zones from very light to very hard intensity, helping you tailor your workouts to match your fitness goals—whether that’s fat burning, improving endurance, or boosting cardiovascular health. This method is widely recommended in fitness and medical settings for creating safe and effective exercise plans.',
     instructions: [
       'Input your age in years.',
       'Enter your resting heart rate. If you do not know your resting heart rate, you may enter 70.',
