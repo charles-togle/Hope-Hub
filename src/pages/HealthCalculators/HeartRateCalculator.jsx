@@ -1,4 +1,4 @@
-import { getBMI } from '@/services/Calculations';
+import { getBMI, getHeartRate } from '@/services/Calculations';
 import { CalculatorData } from '@/utilities/CalculatorData';
 import Container from '@/components/health-calculators/Container';
 import CalculatorContainer from '@/components/health-calculators/CalculatorContainer';
@@ -10,7 +10,7 @@ import RowContainer from '@/components/health-calculators/RowContainer';
 import useMobile from '@/hooks/useMobile';
 import Citation from '@/components/Citations';
 
-export const getBMICategory = bmi => {
+export const getHeartRateCategory = bmi => {
   if (bmi < 18.5) return 'Underweight';
   if (bmi < 25) return 'Normal';
   if (bmi < 30) return 'Overweight';
@@ -18,78 +18,41 @@ export const getBMICategory = bmi => {
 };
 
 export default function HeartRateCalculator () {
-  const [heightUnit, setHeightUnit] = useState('cm');
-  const [weightUnit, setWeightUnit] = useState('kg');
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
-  const [bmiResult, setBmiResult] = useState(null);
-  const [bmiCategory, setBmiCategory] = useState('No data');
-  const [bmiMedicalInterpretation, setBmiMedicalInterpretation] = useState(
+  const [age, setAge] = useState();
+  const [heartrate, setHeartrate] = useState(70);
+  const [thrResult, setThrResult] = useState(null);
+  const [thrMedicalInterpretation, setThrMedicalInterpretation] = useState(
     'Perform a BMI calculation to receive personalized medical interpretation based on your results. This will include information about health risks, recommended actions, and medical considerations specific to your BMI category.',
   );
-  const [bmiStatisticalInterpretation, setBmiStatisticalInterpretation] =
-    useState(
-      'After calculating your BMI, you will see how your result compares to population distributions and statistical norms. This provides context for understanding where your BMI falls within broader health statistics.',
-    );
+  const [thrStatisticalInterpretation, setThrStatisticalInterpretation] =
+  useState(
+    'After calculating your BMI, you will see how your result compares to population distributions and statistical norms. This provides context for understanding where your BMI falls within broader health statistics.',
+  );
 
   const resultsRef = useRef(null);
   const isMobile = useMobile();
 
-  const { BMI } = CalculatorData;
+  const { THR } = CalculatorData;
   const {
     description,
     instructions,
     statisticalInterpretation,
     medicalInterpretation,
-  } = BMI;
+  } = THR;
 
-  const heightUnits = ['cm', 'ft', 'm'];
-  const weightUnits = ['kg', 'lbs'];
-
-  const getBMICategoryColor = category => {
-    switch (category) {
-      case 'Underweight':
-      case 'Obese':
-        return 'text-red-600';
-      case 'Overweight':
-        return 'text-orange-500';
-      case 'Normal':
-        return 'text-green-600';
-      default:
-        return 'text-gray-500';
-    }
-  };
-
-  const getBMIInterpretations = category => {
-    const categoryKey = category.toLowerCase().replace(' weight', '');
-    return {
-      medical:
-        medicalInterpretation[categoryKey] || 'No interpretation available',
-      statistical:
-        statisticalInterpretation[categoryKey] || 'No interpretation available',
-    };
-  };
   const handleCalculate = () => {
-    if (!height || !weight || height <= 0 || weight <= 0) {
-      alert('Please enter valid height and weight values');
+    if (!age || !heartrate) {
+      alert('Please enter valid age and heart rate values');
       return;
     }
 
-    const bmi = getBMI(
-      parseFloat(height),
-      parseFloat(weight),
-      heightUnit,
-      weightUnit,
+    const thr = getHeartRate(
+      age,
+      restingHeartRate
     );
-
-    const roundedBmi = Math.round(bmi * 10) / 10;
-    const category = getBMICategory(roundedBmi);
-    const interpretations = getBMIInterpretations(category);
-
-    setBmiResult(roundedBmi);
-    setBmiCategory(category);
-    setBmiMedicalInterpretation(interpretations.medical);
-    setBmiStatisticalInterpretation(interpretations.statistical);
+    
+    setThrMedicalInterpretation(THR.medicalInterpretation);
+    setThrStatisticalInterpretation(THR.statisticalInterpretation);
 
     // Scroll to results on mobile after successful calculation
     if (isMobile && resultsRef.current) {
@@ -102,14 +65,13 @@ export default function HeartRateCalculator () {
     }
   };
   const handleClear = () => {
-    setHeight('');
-    setWeight('');
-    setBmiResult(null);
-    setBmiCategory('No data');
-    setBmiMedicalInterpretation(
+    setThrResult(null);
+    setHeartrate(70);
+    setAge();
+    setThrMedicalInterpretation(
       'Perform a BMI calculation to receive personalized medical interpretation based on your results. This will include information about health risks, recommended actions, and medical considerations specific to your BMI category.',
     );
-    setBmiStatisticalInterpretation(
+    setThrStatisticalInterpretation(
       'After calculating your BMI, you will see how your result compares to population distributions and statistical norms. This provides context for understanding where your BMI falls within broader health statistics.',
     );
   };
@@ -120,11 +82,11 @@ export default function HeartRateCalculator () {
       link: 'https://www.cdc.gov/bmi/faq/?CDC_AAref_Val=https://www.cdc.gov/healthyweight/assessing/bmi/adult_bmi/index.html',
     },
     {
-      name: '[2] Di Angelantonio, E., Bhupathiraju, S. N., Wormser, D., Gao, P., Kaptoge, S., Berrington de Gonzalez, A., … Woodward, M. (2016). Body-mass index and all-cause mortality: Individual‑participant-data meta‑analysis of 239 prospective studies in four continents. The Lancet, 388(10046), 776–786. ',
+      name: '[2] Di Angelantonio, E., Bhupathiraju, S. N., Wormser, D., Gao, P., Kaptoge, S., Berrington de Gonzalez, A., … Woodward, M. (2016). Body-mass index and all-cause mortality: Individual-participant-data meta-analysis of 239 prospective studies in four continents. The Lancet, 388(10046), 776–786. ',
       link: 'https://pubmed.ncbi.nlm.nih.gov/27423262/',
     },
     {
-      name: '[3] Flegal, K. M., Kit, B. K., Orpana, H., & Graubard, B. I. (2013). Association of all‑cause mortality with overweight and obesity using standard body mass index categories: A systematic review and meta‑analysis. JAMA, 309(1), 71–82. ',
+      name: '[3] Flegal, K. M., Kit, B. K., Orpana, H., & Graubard, B. I. (2013). Association of all-cause mortality with overweight and obesity using standard body mass index categories: A systematic review and meta-analysis. JAMA, 309(1), 71-82. ',
       link: 'https://doi.org/10.1001/jama.2012.113905',
     },
     {
@@ -149,27 +111,13 @@ export default function HeartRateCalculator () {
       />
       <RowContainer>
         <CalculatorContainer
-          heading='Body Mass Index (BMI) Calculator'
+          heading='Karvonen Heart Rate Calculator'
           onCalculate={handleCalculate}
           onClear={handleClear}
         >
           <div className='flex flex-col gap-3'>
-            <CalculatorInput
-              label='Height'
-              setUnit={setHeightUnit}
-              unit={heightUnit}
-              setValue={setHeight}
-              value={height}
-              units={heightUnits}
-            />
-            <CalculatorInput
-              label='Weight'
-              setUnit={setWeightUnit}
-              unit={weightUnit}
-              setValue={setWeight}
-              value={weight}
-              units={weightUnits}
-            />
+          <CalculatorInput label='Age' value={age} setValue={setAge} />
+          <CalculatorInput label='Heart Rate' value={heartrate} setValue={setHeartrate} />
           </div>{' '}
         </CalculatorContainer>
         <Container heading='Instructions'>
@@ -183,10 +131,7 @@ export default function HeartRateCalculator () {
       <RowContainer>
         <Container heading='Results' ref={resultsRef}>
           <p className='font-content w-full text-center text-xs md:text-base'>
-            BMI: {bmiResult || '0.00'} kg/m²{' '}
-            <span className={getBMICategoryColor(bmiCategory)}>
-              ({bmiCategory})
-            </span>
+
           </p>
         </Container>
         <Container heading='BMI POINTERS' className='w-1/2'>
@@ -203,11 +148,11 @@ export default function HeartRateCalculator () {
       </RowContainer>
       <div className='w-full flex flex-col gap-10 mt-10 sm:text-xs md:text-sm'>
         <Content
-          content={bmiMedicalInterpretation}
+          content={thrMedicalInterpretation}
           title='Medical Interpretation'
         />
         <Content
-          content={bmiStatisticalInterpretation}
+          content={thrStatisticalInterpretation}
           title='Statistical Interpretation'
         />{' '}
         <Citation citations={citations} title='References' />

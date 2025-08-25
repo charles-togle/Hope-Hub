@@ -459,3 +459,29 @@ export const getBodyFatPercentage = (
     },
   };
 };
+
+export const getHeartRate = (
+  age,
+  restingHeartRate,
+) => {
+  maxHeartRate = 206.9 - (0.67 * age)
+  heartRateResolve = maxHeartRate - restingHeartRate
+  // THR = Target Heart Rate
+  THR_vlLight = (heartRateResolve * 0.19) + HRrest
+  THR_liMin = (heartRateResolve * 0.20) + HRrest
+  THR_liMax = (heartRateResolve * 0.39) + HRrest
+  THR_moMin = (heartRateResolve * 0.40) + HRrest
+  THR_moMax = (heartRateResolve * 0.59) + HRrest
+  THR_haMin = (heartRateResolve * 0.60) + HRrest
+  THR_haMax = (heartRateResolve * 0.84) + HRrest
+  THR_vhMin = (heartRateResolve * 0.85) + HRrest
+  THR_vhMax = heartRateResolve + HRrest
+
+  return {
+    THR_veryLight: parseFloat(THR_vlLight.toFixed(0)),
+    THR_light: parseFloat(THR_liMin.toFixed(0)) + " - " + parseFloat(THR_liMax.toFixed(0)),
+    THR_moderate: parseFloat(THR_moMin.toFixed(0)) + " - " + parseFloat(THR_moMax.toFixed(0)),
+    THR_hard: parseFloat(THR_haMin.toFixed(0)) + " - " + parseFloat(THR_haMax.toFixed(0)),
+    THR_veryHard: parseFloat(THR_vhMin.toFixed(0)) + " - " + parseFloat(THR_vhMax.toFixed(0)),
+  };
+};
