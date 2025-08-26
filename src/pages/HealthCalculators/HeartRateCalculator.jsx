@@ -99,7 +99,7 @@ export default function HeartRateCalculator () {
   return (
     <>
       <CalculatorDetails
-        name='Karvonen Calculator'
+        name='Karvonen Heart Rate Calculator'
         details={description}
       />
       <RowContainer>
@@ -122,29 +122,29 @@ export default function HeartRateCalculator () {
         </Container>
       </RowContainer>
 
-      <div className='w-auto'>
+      <div className='grid grid-cols-1 gap-5 ml-2 mr-2 md:gap-10 md:my-5 w-auto'>
         <Container heading='Results' ref={resultsRef}>
           <div className='right-0 border-b-2 border-primary-yellow w-25 absolute' />
 
           <table className='justify-around content-around'>
             <thead>
-              <th className='text-left'>
-                <p className='mt-5 text-red-400 font-content text-xs md:text-base'> Intensity </p>
+              <th className='text-left align-bottom pr-5'>
+                <p className='mt-5 align-text-bottom text-red-400 font-content text-xs md:text-base'> Intensity </p>
                 <div className='border-b-2 mb-3 border-primary-blue w-10 font-content' />
               </th>
-              <th className='text-left pr-20 pl-20 font-content'>
-                <p className='mt-5 text-primary-blue'> Heart Rate Reserve </p>
+              <th className='text-left align-bottom pr-10 md:pr-20 md:pl-20 font-content text-xs md:text-base'>
+                <p className='mt-5 text-primary-blue align-text-bottom'> Heart Rate Reserve </p>
                 <div className='border-b-2 mb-3 border-primary-yellow w-10 font-content' />
               </th>
-              <th className='pl-3 text-left'>
-                <p className='mt-5 text-green-400 font-content text-xs md:text-base'> Target Heart Rate </p>
+              <th className='text-left align-bottom pr-5'>
+                <p className='mt-5 text-green-400 align-text-bottom font-content text-xs md:text-base'> Target Heart Rate </p>
                 <div className='border-b-2 mb-3 border-primary-blue w-10 font-content' />
               </th>
             </thead>
             <tbody>
               <tr>
               <td>
-                <li className='list-none font-content'> 
+                <li className='list-none font-content text-xs md:text-base'> 
                 <ol> Very Light </ol>
                 <ol> Light </ol>
                 <ol> Moderate </ol>
@@ -152,18 +152,18 @@ export default function HeartRateCalculator () {
                 <ol> Very Hard </ol>
                 </li>
               </td>
-              <td className='text-center pr-20 pl-20 font-content'>
-                <ol> 19% and less </ol>
+              <td className='text-left mr-5 md:text-center md:pr-20 md:pl-20 font-content text-xs md:text-base'>
+                <ol> 19% & less </ol>
                 <ol> 20% - 39% </ol>
                 <ol> 40% - 59% </ol>
                 <ol> 60% - 84% </ol>
-                <ol> 85% and more </ol>
+                <ol> 85% & more </ol>
               </td>
               <td>
-                <p className='font-content text-center text-xs md:text-base'> 
-                {thrResult?.map((results, index) => (
-                <li key={`${index}`} className='list-none'>{results}</li>
-                ))}
+                <p className='text-left font-content md:text-center text-xs md:text-base'> 
+                  {thrResult?.map((results, index) => (
+                  <li key={`${index}`} className='list-none'>{results}</li>
+                  ))}
                 </p>
               </td>
               </tr>
