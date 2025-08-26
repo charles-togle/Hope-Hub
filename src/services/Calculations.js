@@ -459,3 +459,21 @@ export const getBodyFatPercentage = (
     },
   };
 };
+
+export const getHeartRate = (
+  age,
+  restingHeartRate,
+) => {
+  const maxHeartRate = 206.9 - (0.67 * age)
+  let heartRateReserve = maxHeartRate - restingHeartRate;
+
+  const targetHeartRate = [
+    parseFloat(heartRateReserve * 0.19 + restingHeartRate).toFixed(0) + " or less",
+    parseFloat(heartRateReserve * 0.20 + restingHeartRate).toFixed(0) + " - " + parseFloat(heartRateReserve * 0.39 + restingHeartRate).toFixed(0),
+    parseFloat(heartRateReserve * 0.40 + restingHeartRate).toFixed(0) + " - " + parseFloat(heartRateReserve * 0.59 + restingHeartRate).toFixed(0),
+    parseFloat(heartRateReserve * 0.60 + restingHeartRate).toFixed(0) + " - " + parseFloat(heartRateReserve * 0.84 + restingHeartRate).toFixed(0),
+    parseFloat(heartRateReserve * 0.85 + restingHeartRate).toFixed(0) + " - " + parseFloat(heartRateReserve + restingHeartRate).toFixed(0)
+  ]
+
+  return targetHeartRate;
+};
