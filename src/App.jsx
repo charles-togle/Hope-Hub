@@ -36,6 +36,7 @@ import BMRCalculator from './pages/HealthCalculators/BMRCalculator';
 import IBWCalculator from './pages/HealthCalculators/IBWCalculator';
 import BodyFatPercentageCalculator from './pages/HealthCalculators/BodyFatPercentageCalculator';
 import WaterIntakeCalculator from './pages/HealthCalculators/WaterIntakeCalculator';
+import HeartRateCalculator from './pages/HealthCalculators/HeartRateCalculator';
 import { HealthCalculatorWrapper } from './pages/HealthCalculators/HealthCalculatorsWrapper';
 import ViewClass from './pages/Dashboard/ViewClass';
 import { useUserId } from './hooks/useUserId';
@@ -208,6 +209,7 @@ function App () {
               path='bodyfatpercentage'
               element={<BodyFatPercentageCalculator />}
             />
+            <Route path='heartrate' element={<HeartRateCalculator/>} />
           </Route>
           <Route path='lectures' element={<LectureWrapper />}>
             <Route index element={<Lectures />} />

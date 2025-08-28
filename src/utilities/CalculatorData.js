@@ -160,4 +160,19 @@ export const CalculatorData = {
   }
 
   },
+  THR: {
+    description:
+      'The Karvonen Heart Rate Calculator helps you find your ideal Target Heart Rate (THR) zones for exercise. Unlike simple age-based formulas, it takes into account both your resting heart rate and maximum heart rate to give you results of your intended target heart rate. By using the Karvonen formula, the calculator shows training zones from very light to very hard intensity, helping you tailor your workouts to match your fitness goals—whether that’s fat burning, improving endurance, or boosting cardiovascular health. This method is widely recommended in fitness and medical settings for creating safe and effective exercise plans.',
+    instructions: [
+      'Input your age in years.',
+      'Enter your resting heart rate. If you do not know your resting heart rate, you may enter 70.',
+      'Click calculate.',
+      'Read results below. Medical and statistical interpretations are also viewable. All outputs are for informational use only and not a substitute for professional & medical advice.',
+    ],
+    statisticalInterpretation: 
+      "Target Heart Rate (THR) ranges calculated with the Karvonen method provide structured intensity zones from very light to very hard exercise. Population studies show that most adults achieve improvements in cardiovascular fitness, blood pressure, and overall endurance when training consistently within moderate to hard zones (≈40–85% HRR). Very light activity is statistically common in older adults or beginners, while vigorous activity is more common among trained or athletic individuals. Long-term population data confirm that maintaining activity within these ranges is strongly associated with reduced risk of cardiovascular disease and premature mortality.",
+
+    medicalInterpretation: 
+      "The Karvonen formula adjusts training intensity based on both resting and maximum heart rate, providing a more individualized target zone. Medical evidence indicates that exercising within moderate to vigorous zones supports heart health, blood sugar regulation, and weight control, while very light activity may be appropriate for recovery, older adults, or individuals with chronic conditions. Conversely, consistently training above 85% HRR may increase risk of injury, arrhythmia, or overtraining, particularly without medical clearance. These ranges are intended as general guidance; individual health status, medications (e.g., beta-blockers), and physician recommendations should always be considered when applying target heart rate zones."
+  },
 };

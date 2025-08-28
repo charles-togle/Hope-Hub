@@ -33,6 +33,11 @@ export default function HealthCalculator () {
       className: '',
       linkTo: '/health-calculators/waterintake',
     },
+    {
+      text: 'Karvonen Heart Rate Calculator',
+      className: '',
+      linkTo: '/health-calculators/heartrate',
+    }
   ];
 
   return (
