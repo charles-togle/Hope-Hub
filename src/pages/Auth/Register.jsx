@@ -111,9 +111,6 @@ export default function Register () {
       return;
     }
 
-<<<<<<< Updated upstream
-    const userType = isEducator ? 'teacher' : 'student';
-=======
     const strongPasswordRegex =
       /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
     if (!strongPasswordRegex.test(trimmedPassword)) {
@@ -146,7 +143,6 @@ export default function Register () {
       setIsLoading(false);
       return;
     }
->>>>>>> Stashed changes
 
     const { data, error } = await supabase.auth.signUp({
       email: trimmedEmail,
