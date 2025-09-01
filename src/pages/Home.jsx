@@ -1,7 +1,6 @@
-import Banner from '@/assets/banner_home.svg';
+import bannerHome from '@/assets/banner_home.svg';
+import trailerVideo from '@/assets/videos/hope_hub_trailer.mp4';
 import HomePageHero from '@/assets/images/gym_homepage.png';
-import Banner2 from '@/assets/images/gym_banner_home.jpg';
-import GymPicture from '@/assets/images/gym3_homepage.png';
 import HopeHubPicture from '@/assets/images/home-pic.jpg';
 import Footer from '@/components/Footer';
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +16,11 @@ export default function Home () {
       className='flex items-center w-full font-content h-full flex-col pt-5'
     >
       <section id='hero' className='relative w-full flex items-center flex-col'>
-        <img src={Banner} alt='home-banner' className='w-[95%] lg:w-[85%]' />
+        <img
+          src={bannerHome}
+          alt='home-banner'
+          className='w-[95%] lg:w-[85%]'
+        />
         <div className='absolute  aspect-square border-2 border-primary-yellow lg:w-40 lg:right-275 lg:top-50 -z-1'></div>
         <div className='absolute border-2 border-secondary-dark-blue lg:w-70 lg:h-40 lg:top-55 lg:right-110 -z-1'></div>
         <div className='absolute aspect-square border-2 border-primary-yellow lg:w-40 lg:top-25 lg:right-60 -z-1'></div>
@@ -56,7 +59,7 @@ export default function Home () {
       </section>
       <section className='w-full flex justify-center flex-col items-center pb-10'>
         <video
-          src='https://res.cloudinary.com/ddby2tevf/video/upload/v1753783988/hope_hub_trailer_blwgvj.mp4'
+          src={trailerVideo}
           autoPlay
           muted
           loop

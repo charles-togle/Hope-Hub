@@ -4,7 +4,8 @@ import FormHeading from '@/components/auth/FormHeading';
 import FormInput from '@/components/auth/FormInput';
 import InputContainer from '../../components/auth/InputContainer';
 import FormButton from '../../components/auth/FormButton';
-import { useState, useRef, useCallback } from 'react';
+import { useState } from 'react';
+import useRateLimiter from '@/hooks/useRateLimiter';
 import supabase from '@/client/supabase';
 import LectureProgress from '@/utilities/LectureProgress';
 
@@ -13,35 +14,14 @@ export default function Register () {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isEducator, setEducator] = useState(false);
+  const [userType, setUserType] = useState('student');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isDataPrivacyChecked, setIsDataPrivacyChecked] = useState(false);
 
-  // Rate limiting state
-  const attemptCount = useRef(0);
-  const lastAttemptTime = useRef(0);
-
-  const isRateLimited = useCallback(() => {
-    const now = Date.now();
-    const timeDiff = now - lastAttemptTime.current;
-
-    if (timeDiff > 300000) {
-      attemptCount.current = 0;
-    }
-
-    if (attemptCount.current >= 5) {
-      return true;
-    }
-
-    if (timeDiff < 3000 && attemptCount.current > 0) {
-      return true;
-    }
-
-    attemptCount.current++;
-    lastAttemptTime.current = now;
-    return false;
-  }, []);
+  // Rate limiting hook
+  const isRateLimited = useRateLimiter();
 
   const handlePasswordChange = value => {
     setPassword(value);
@@ -75,15 +55,6 @@ export default function Register () {
     setIsLoading(true);
     setSuccessMessage('');
 
-    // Check rate limiting
-    if (isRateLimited()) {
-      setErrorMessage(
-        'Too many registration attempts. Please wait 5 minutes or try again in a few seconds.',
-      );
-      setIsLoading(false);
-      return;
-    }
-
     if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match');
       setIsLoading(false);
@@ -102,6 +73,8 @@ export default function Register () {
       trimmedConfirmPassword,
       trimmedName,
     ];
+
+    const rateLimited = isRateLimited().type;
 
     const areAllFieldsFilled = fields.every(field => field !== '');
     if (!areAllFieldsFilled) {
@@ -179,7 +152,7 @@ export default function Register () {
 
   return (
     <AuthContainer>
-      <FormContainer>
+      <FormContainer className='scale-40'>
         <FormHeading
           heading='SIGN UP'
           link='/auth/login'
@@ -188,35 +161,50 @@ export default function Register () {
         ></FormHeading>
         <InputContainer>
           <FormInput
-            value={name}
-            placeholder='Name'
-            setValue={setName}
-          ></FormInput>
-          <FormInput
             value={email}
             placeholder='Email'
             setValue={setEmail}
             type='email'
-          ></FormInput>
+          />
+          <FormInput value={name} placeholder='Name' setValue={setName} />
           <FormInput
             value={password}
             placeholder='Password'
             setValue={handlePasswordChange}
             type='password'
-          ></FormInput>
+          />
           <FormInput
             value={confirmPassword}
             placeholder='Confirm Password'
             setValue={handleConfirmPasswordChange}
             type='password'
-          ></FormInput>
-          <div className='flex gap-3 text-accent-gray items-center font-content'>
-            <input
-              type='checkbox'
-              id='educator'
-              onChange={() => setEducator(prev => !prev)}
-            />
-            <label htmlFor='educator'>I am an educator </label>
+          />
+          <div className='flex flex-col text-accent-gray font-content'>
+            <p className=''>I am creating account for a</p>
+            <div className='flex flex-col'>
+              <label htmlFor='student'>
+                <input
+                  type='radio'
+                  name='userType'
+                  id='student'
+                  className='mr-2 cursor-pointer'
+                  checked={userType === 'student'}
+                  onChange={() => setUserType('student')}
+                />
+                Student
+              </label>
+              <label htmlFor='teacher'>
+                <input
+                  type='radio'
+                  name='userType'
+                  id='teacher'
+                  className='mr-2 cursor-pointer'
+                  checked={userType === 'teacher'}
+                  onChange={() => setUserType('teacher')}
+                />
+                Teacher
+              </label>
+            </div>
           </div>
         </InputContainer>
         {errorMessage && (
@@ -227,13 +215,26 @@ export default function Register () {
             {successMessage}
           </p>
         )}
-        <div className='relative flex items-center w-full'>
-          <span className='text-accent-gray font-content text-xs text-justify'>
-            By clicking Sign Up, you consent to Hope Hub gathering necessary
-            information to provide educational services and improve your
-            learning experience. This data collection is in accordance with the
-            Data Privacy Act of the Philippines (Republic Act No. 10173).
-          </span>
+        <div className='relative flex items-start flex-row gap-3'>
+          <input
+            type='checkbox'
+            className='scale-110'
+            id='consent-checkbox'
+            onChange={() => setIsDataPrivacyChecked(prev => !prev)}
+          />
+          <div className='flex flex-col'>
+            <label
+              htmlFor='consent-checkbox'
+              className='text-accent-gray font-content text-xs text-justify'
+            >
+              I agree to Hope Hub collecting and using my data for educational
+              purposes, in line with the Data Privacy Act of the Philippines
+              (Republic Act. 10173).
+            </label>
+            <span className='text-red-500 font-content text-xs font-semibold mt-1'>
+              * Required
+            </span>
+          </div>
         </div>
         <FormButton
           text={isLoading ? 'Signing you up...' : 'Sign Up'}

@@ -1,7 +1,59 @@
+// Import videos
+import warmUpVideo from '@/assets/videos/exercises/video_warm_ups.mp4';
+
+// Upper Body
+import shoulderPressVideo from '@/assets/videos/exercises/video_shoulder_press.mp4';
+import inclineChestPressVideo from '@/assets/videos/exercises/video_incline_chest_press.mp4';
+import standingDumbbellOverheadPressVideo from '@/assets/videos/exercises/video_standing_dumbbell_overhead_press.mp4';
+import closeGripLatPulldownVideo from '@/assets/videos/exercises/video_close_grip_lat_pulldown.mp4';
+import tricepPulldownVideo from '@/assets/videos/exercises/video_triceps_pulldown.mp4';
+import russianTwist from '@/assets/videos/exercises/video_russian_twist.mp4';
+// import lyingChestPressVideo from '@/assets/videos/exercises/video_lying_chest_press.mp4';
+
+// Lower Body
+import deadliftVideo from '@/assets/videos/exercises/video_deadlift.mp4';
+import squatsVideo from '@/assets/videos/exercises/video_squats.mp4';
+import kettleBellSumoDeadlift from '@/assets/videos/exercises/video_kettle_bell_sumo_deadlift.mp4';
+
+// import lungesVideo from '@/assets/videos/exercises/video_lunges.mp4';
+// import splitSquatsVideo from '@/assets/videos/exercises/video_split_squats.mp4';
+// import calfRaisesVideo from '@/assets/videos/exercises/video_calf_raises.mp4';
+// import bicepCurlVideo from '@/assets/videos/exercises/video_bicep_curl.mp4';
+
+// Import covers
+import warmUpCover from '@/assets/covers/exercises/cover_warm_ups.jpg';
+import shoulderPressCover from '@/assets/covers/exercises/cover_shoulder_press.jpg';
+import inclineChestPressCover from '@/assets/covers/exercises/cover_incline_chest_press.jpg';
+import standingDumbbellOverheadPressCover from '@/assets/covers/exercises/cover_standing_dumbbell_overhead_press.jpg';
+import closeGripLatPulldownCover from '@/assets/covers/exercises/cover_close_grip_lat_pulldown.jpg';
+import tricepsPulldownCover from '@/assets/covers/exercises/cover_triceps_pulldown.jpg';
+// import seatedChestPressCover from '@/assets/covers/exercises/cover_seated_chest_press.jpg';
+// import lyingChestPressCover from '@/assets/covers/exercises/cover_lying_chest_press.jpg';
+import deadliftCover from '@/assets/covers/exercises/cover_deadlift.jpg';
+import squatsCover from '@/assets/covers/exercises/cover_squats.jpg';
+// import lungesCover from '@/assets/covers/exercises/cover_lunges.jpg';
+// import bicepCurlCover from '@/assets/covers/exercises/cover_bicep_curl.jpg';
+
+export const WarmUpVideo = [
+  {
+    thumbnail: warmUpCover,
+    url: 'warm-up',
+    duration: '02:17',
+    title: 'Warm Up',
+    description: {
+      howToDoIt:
+        'Sit or stand up straight with a weight in each hand at shoulder height. Push the weights straight up until your arms are straight, then lower them slowly back down.',
+      do: ['Keep your back straight.', 'Press the weights slowly.'],
+      dont: ["Don't arch your back.", "Don't lock your elbows."],
+    },
+    videoLink: warmUpVideo,
+    uploadDate: '2025-08-21T14:48:00.000Z',
+  },
+];
+
 export const UpperBodyVideos = [
   {
-    thumbnail:
-      'https://res.cloudinary.com/ddby2tevf/image/upload/final_shoulder_press-Cover_fctumo.jpg',
+    thumbnail: shoulderPressCover,
     url: 'shoulder-press',
     duration: '00:44',
     title: 'Shoulder Press',
@@ -11,13 +63,11 @@ export const UpperBodyVideos = [
       do: ['Keep your back straight.', 'Press the weights slowly.'],
       dont: ["Don't arch your back.", "Don't lock your elbows."],
     },
-    videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_rb48ea.mp4?randomSeed=' + Math.random(),
+    videoLink: shoulderPressVideo,
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail:
-      'https://res.cloudinary.com/ddby2tevf/image/upload/cover_mtnahi.jpg',
+    thumbnail: inclineChestPressCover,
     url: 'incline-chest-press',
     duration: '00:56',
     title: 'Incline Chest Press',
@@ -27,13 +77,11 @@ export const UpperBodyVideos = [
       do: ['Keep your back straight.', 'Press the weights slowly.'],
       dont: ["Don't arch your back.", "Don't lock your elbows."],
     },
-    videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_or8j2t.mp4?randomSeed=' + Math.random(),
+    videoLink: inclineChestPressVideo,
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail:
-      'https://res.cloudinary.com/ddby2tevf/image/upload/cover_tbxywi.jpg',
+    thumbnail: standingDumbbellOverheadPressCover,
     url: 'standing-dumbell-overhead',
     duration: '00:51',
     title: 'Standing Dumbbell Overhead Press',
@@ -43,13 +91,11 @@ export const UpperBodyVideos = [
       do: ['Keep your back straight.', 'Press the weights slowly.'],
       dont: ["Don't arch your back.", "Don't lock your elbows."],
     },
-    videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_nvytzd.mp4?randomSeed=' + Math.random(),
+    videoLink: standingDumbbellOverheadPressVideo,
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail:
-      'https://res.cloudinary.com/ddby2tevf/image/upload/cover_dxdibc.jpg',
+    thumbnail: closeGripLatPulldownCover,
     url: 'close-grip-lat-pulldown',
     duration: '00:49',
     title: 'Close Grip Lat Pulldown',
@@ -59,13 +105,11 @@ export const UpperBodyVideos = [
       do: ['Sit up tall.', 'Pull with your back muscles.'],
       dont: ["Don't lean back too far.", "Don't pull behind your head."],
     },
-    videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_d12i9i.mp4?randomSeed=' + Math.random(),
+    videoLink: closeGripLatPulldownVideo,
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail:
-      'https://res.cloudinary.com/ddby2tevf/image/upload/cover_ai8r8r.jpg',
+    thumbnail: tricepsPulldownCover,
     url: 'triceps-pulldown',
     duration: '00:33',
     title: 'Triceps Pulldown',
@@ -78,13 +122,11 @@ export const UpperBodyVideos = [
       ],
       dont: ["Don't move your shoulders.", "Don't lean too far forward."],
     },
-    videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_yrizfb.mp4?randomSeed=' + Math.random(),
+    videoLink: tricepPulldownVideo,
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail:
-      'https://res.cloudinary.com/ddby2tevf/image/upload/cover_dxdibc.jpg',
+    thumbnail: '',
     url: 'seated-chest-press',
     duration: '00:45',
     title: 'Seated Chest Press',
@@ -97,13 +139,11 @@ export const UpperBodyVideos = [
       ],
       dont: ["Don't lift your shoulders.", "Don't rush the movement."],
     },
-    videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_or8j2t.mp4?randomSeed=' + Math.random(),
+    videoLink: '',
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail:
-      'https://res.cloudinary.com/ddby2tevf/image/upload/cover_mtnahi.jpg',
+    thumbnail: '',
     url: 'lying-chest-press',
     duration: '00:46',
     title: 'Lying Chest Press',
@@ -116,13 +156,11 @@ export const UpperBodyVideos = [
         "Don't bounce the weights.",
       ],
     },
-    videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_nvytzd.mp4?randomSeed=' + Math.random(),
+    videoLink: '',
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail:
-      'https://res.cloudinary.com/ddby2tevf/image/upload/cover_ai8r8r.jpg',
+    thumbnail: '',
     url: 'bicep-curl',
     duration: '00:40',
     title: 'Bicep Curl',
@@ -132,16 +170,27 @@ export const UpperBodyVideos = [
       do: ['Keep your elbows close to your body.', 'Lift slowly.'],
       dont: ["Don't swing your body.", "Don't use your shoulders."],
     },
-    videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_yrizfb.mp4?randomSeed=' + Math.random(),
+    videoLink: '',
     uploadDate: '2025-07-23T14:00:00.000Z',
+  },
+  {
+    thumbnail: '',
+    url: 'russian-twist',
+    duration: '00:33',
+    title: 'Russian Twist',
+    description: {
+      howToDoIt: '',
+      do: [''],
+      dont: [''],
+    },
+    videoLink: russianTwist,
+    uploadDate: '2025-08-28T14:02:00.000Z',
   },
 ];
 
 export const LowerBodyVideos = [
   {
-    thumbnail:
-      'https://res.cloudinary.com/ddby2tevf/image/upload/cover_egmmkh.jpg',
+    thumbnail: deadliftCover,
     url: 'deadlift',
     duration: '01:08',
     title: 'Deadlifts',
@@ -159,13 +208,11 @@ export const LowerBodyVideos = [
         "Don't hyperextend your back at the top.",
       ],
     },
-    videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_ir7ixx.mp4?randomSeed=' + Math.random(),
+    videoLink: deadliftVideo,
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail:
-      'https://res.cloudinary.com/ddby2tevf/image/upload/final_squats-Cover_aghmcm.jpg',
+    thumbnail: squatsCover,
     url: 'squats',
     duration: '00:43',
     title: 'Squats',
@@ -183,13 +230,11 @@ export const LowerBodyVideos = [
         "Don't arch or round your back.",
       ],
     },
-    videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/final_squats_bx2s3u.mp4?randomSeed=' + Math.random(),
+    videoLink: squatsVideo,
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail:
-      'https://res.cloudinary.com/ddby2tevf/image/upload/cover_egmmkh.jpg',
+    thumbnail: '',
     url: 'lunges',
     duration: '00:50',
     title: 'Lunges',
@@ -207,13 +252,11 @@ export const LowerBodyVideos = [
         'Bounce off the back foot.',
       ],
     },
-    videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_rb48ea.mp4?randomSeed=' + Math.random(),
+    videoLink: '',
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail:
-      'https://res.cloudinary.com/ddby2tevf/image/upload/cover_dxdibc.jpg',
+    thumbnail: '',
     url: 'split-squats',
     duration: '00:48',
     title: 'Split Squats',
@@ -231,13 +274,11 @@ export const LowerBodyVideos = [
         'Rush the movement or lose balance.',
       ],
     },
-    videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_or8j2t.mp4?randomSeed=' + Math.random(),
+    videoLink: '',
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail:
-      'https://res.cloudinary.com/ddby2tevf/image/upload/final_shoulder_press-Cover_fctumo.jpg',
+    thumbnail: '',
     url: 'calf-raises',
     duration: '00:30',
     title: 'Calf Raises',
@@ -255,9 +296,21 @@ export const LowerBodyVideos = [
         "Don't lean your body forward.",
       ],
     },
-    videoLink:
-      'https://res.cloudinary.com/ddby2tevf/video/upload/video_nvytzd.mp4?randomSeed=' + Math.random(),
+    videoLink: '',
     uploadDate: '2025-07-23T14:00:00.000Z',
+  },
+  {
+    thumbnail: '',
+    url: 'kettle-bell-sumo-deadlift',
+    duration: '01:18',
+    title: 'Kettle Bell Sumo Deadlift',
+    description: {
+      howToDoIt: '',
+      do: [''],
+      dont: [''],
+    },
+    videoLink: kettleBellSumoDeadlift,
+    uploadDate: '2025-08-28T14:02:00.000Z',
   },
 ];
 
