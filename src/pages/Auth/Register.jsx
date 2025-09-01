@@ -45,6 +45,16 @@ export default function Register () {
 
   const handlePasswordChange = value => {
     setPassword(value);
+
+    const strongPasswordRegex =
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+    if (!strongPasswordRegex.test(value)) {
+      setErrorMessage(
+        'Password must be at least 8 characters long and include a letter, a number, and a special character.',
+      );
+      return;
+    }
+
     if (confirmPassword && value !== confirmPassword) {
       setErrorMessage('Passwords do not match');
     } else {
@@ -101,7 +111,42 @@ export default function Register () {
       return;
     }
 
+<<<<<<< Updated upstream
     const userType = isEducator ? 'teacher' : 'student';
+=======
+    const strongPasswordRegex =
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+    if (!strongPasswordRegex.test(trimmedPassword)) {
+      setErrorMessage(
+        'Password must be at least 8 characters long and include a letter, a number, and a special character.',
+      );
+      setIsLoading(false);
+      return;
+    }
+
+    if (!isDataPrivacyChecked) {
+      setErrorMessage('Please agree to the data collection consent');
+      setSuccessMessage('');
+      setIsLoading(false);
+      return;
+    }
+
+    if (rateLimited === 'exceeded') {
+      setErrorMessage(
+        'Too many registration attempts. Please wait 5 minutes or try again in a few seconds.',
+      );
+      setIsLoading(false);
+      return;
+    }
+
+    if (rateLimited === 'too-fast') {
+      setErrorMessage(
+        'You are attempting too fast. Please wait for 10 seconds and try again',
+      );
+      setIsLoading(false);
+      return;
+    }
+>>>>>>> Stashed changes
 
     const { data, error } = await supabase.auth.signUp({
       email: trimmedEmail,
