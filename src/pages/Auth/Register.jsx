@@ -117,21 +117,19 @@ export default function Register () {
       return;
     }
 
-    const { data, error } = await supabase.auth.signUp({
+    const userData = {
       email: trimmedEmail,
       password: trimmedPassword,
-      options: {
-        emailRedirectTo:
-          'https://hope-hub-fitness.vercel.app/auth/account-verification',
-        data: {
-          fullName: trimmedName,
-          userType: userType,
-          classCode: null,
-          lectureProgress: LectureProgress(),
-          password: trimmedPassword,
-        },
-      },
+      name: trimmedName,
+      userType: userType,
+      classCode: null,
+      lectureProgress: LectureProgress(),
+    };
+
+    const { data, error } = await supabase.functions.invoke('registration', {
+      body: { userData },
     });
+
     if (error) {
       setErrorMessage(error.message);
       setSuccessMessage('');
@@ -160,13 +158,13 @@ export default function Register () {
           action='Login'
         ></FormHeading>
         <InputContainer>
+          <FormInput value={name} placeholder='Name' setValue={setName} type='name'/>
           <FormInput
             value={email}
             placeholder='Email'
             setValue={setEmail}
             type='email'
           />
-          <FormInput value={name} placeholder='Name' setValue={setName} />
           <FormInput
             value={password}
             placeholder='Password'
