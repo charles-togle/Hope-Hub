@@ -1,6 +1,6 @@
-export default function InputContainer ({ children }) {
+export default function InputContainer ({ children, className }) {
   return (
-    <div id='form-inputs' className='flex flex-col gap-3'>
+    <div id='form-inputs' className={`flex flex-col gap-3 ${className}`}>
       {children}
     </div>
   );

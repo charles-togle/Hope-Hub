@@ -7,6 +7,7 @@ import FormButton from '../../components/auth/FormButton';
 import { useState } from 'react';
 import supabase from '@/client/supabase';
 import { useNavigate } from 'react-router-dom';
+import useRateLimiter from '@/hooks/useRateLimiter';
 
 export default function Login () {
   const [email, setEmail] = useState('');
@@ -16,8 +17,26 @@ export default function Login () {
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
+  const isRateLimited = useRateLimiter({ minIntervalMs: 5000, maxAttempts: 7 });
+
   const handleLogin = async () => {
     setErrorMessage('');
+
+    const rateLimited = isRateLimited().type;
+
+    if (rateLimited === 'exceeded') {
+      setErrorMessage(
+        'Too many Login attempts. Please wait 5 minutes or try again in a few seconds.',
+      );
+      return;
+    }
+
+    if (rateLimited === 'too-fast') {
+      setErrorMessage(
+        'You are attempting too fast. Please wait for 5 seconds and try again',
+      );
+      return;
+    }
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,

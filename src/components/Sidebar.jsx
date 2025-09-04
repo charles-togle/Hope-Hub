@@ -39,9 +39,9 @@ const SidebarButtons = [
     route: '/physical-fitness-test/parq',
   },
   {
-    text: 'Discover More',
+    text: 'Workout Zone',
     icon: DiscoverIcon,
-    route: '/discover-more',
+    route: '/workout-zone',
   },
   { text: 'About', icon: AboutIcon, route: '/about' },
   { text: 'Dashboard', icon: ProfileIcon, route: '/dashboard' },
@@ -52,7 +52,7 @@ const ActiveIconVariants = {
   Lectures: ActiveLecturesIcon,
   Quizzes: ActiveQuizIcon,
   'Physical Fitness Test': ActivePhysicalFitnessIcon,
-  'Discover More': ActiveDiscoverIcon,
+  'Workout Zone': ActiveDiscoverIcon,
   About: ActiveAboutIcon,
   Dashboard: ActiveProfileIcon,
 };
