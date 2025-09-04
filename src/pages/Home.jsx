@@ -1,5 +1,5 @@
 import bannerHome from '@/assets/banner_home.svg';
-import trailerVideo from '@/assets/videos/hope_hub_trailer.mp4';
+import trailerVideo from '/videos/hope_hub_trailer.mp4';
 import HomePageHero from '@/assets/images/gym_homepage.png';
 import HopeHubPicture from '@/assets/images/home-pic.jpg';
 import Footer from '@/components/Footer';
