@@ -1,5 +1,5 @@
 // Import videos
-import warmUpVideo from '/assets/videos/exercises/video_warm_ups.mp4';
+import warmUpVideo from '@/assets/videos/exercises/video_warm_ups.mp4';
 
 // Upper Body
 import shoulderPressVideo from '@/assets/videos/exercises/video_shoulder_press.mp4';
