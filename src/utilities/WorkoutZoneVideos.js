@@ -1,38 +1,38 @@
 // Import videos
-import warmUpVideo from '../../assets/videos/exercises/video_warm_ups.mp4';
+import warmUpVideo from '@/assets/videos/exercises/video_warm_ups.mp4';
 
 // Upper Body
-import shoulderPressVideo from '../../assets/videos/exercises/video_shoulder_press.mp4';
-import inclineChestPressVideo from '../../assets/videos/exercises/video_incline_chest_press.mp4';
-import standingDumbbellOverheadPressVideo from '../../assets/videos/exercises/video_standing_dumbbell_overhead_press.mp4';
-import closeGripLatPulldownVideo from '../../assets/videos/exercises/video_close_grip_lat_pulldown.mp4';
-import tricepPulldownVideo from '../../assets/videos/exercises/video_triceps_pulldown.mp4';
-import russianTwist from '../../assets/videos/exercises/video_russian_twist.mp4';
-// import lyingChestPressVideo from '../../assets/videos/exercises/video_lying_chest_press.mp4';
+import shoulderPressVideo from '@/assets/videos/exercises/video_shoulder_press.mp4';
+import inclineChestPressVideo from '@/assets/videos/exercises/video_incline_chest_press.mp4';
+import standingDumbbellOverheadPressVideo from '@/assets/videos/exercises/video_standing_dumbbell_overhead_press.mp4';
+import closeGripLatPulldownVideo from '@/assets/videos/exercises/video_close_grip_lat_pulldown.mp4';
+import tricepPulldownVideo from '@/assets/videos/exercises/video_triceps_pulldown.mp4';
+import russianTwist from '@/assets/videos/exercises/video_russian_twist.mp4';
+// import lyingChestPressVideo from '@/assets/videos/exercises/video_lying_chest_press.mp4';
 
 // Lower Body
-import deadliftVideo from '../../assets/videos/exercises/video_deadlift.mp4';
-import squatsVideo from '../../assets/videos/exercises/video_squats.mp4';
-import kettleBellSumoDeadlift from '../../assets/videos/exercises/video_kettle_bell_sumo_deadlift.mp4';
+import deadliftVideo from '@/assets/videos/exercises/video_deadlift.mp4';
+import squatsVideo from '@/assets/videos/exercises/video_squats.mp4';
+import kettleBellSumoDeadlift from '@/assets/videos/exercises/video_kettle_bell_sumo_deadlift.mp4';
 
-// import lungesVideo from '../../assets/videos/exercises/video_lunges.mp4';
-// import splitSquatsVideo from '../../assets/videos/exercises/video_split_squats.mp4';
-// import calfRaisesVideo from '../../assets/videos/exercises/video_calf_raises.mp4';
-// import bicepCurlVideo from '../../assets/videos/exercises/video_bicep_curl.mp4';
+// import lungesVideo from '@/assets/videos/exercises/video_lunges.mp4';
+// import splitSquatsVideo from '@/assets/videos/exercises/video_split_squats.mp4';
+// import calfRaisesVideo from '@/assets/videos/exercises/video_calf_raises.mp4';
+// import bicepCurlVideo from '@/assets/videos/exercises/video_bicep_curl.mp4';
 
 // Import covers
-import warmUpCover from '../../assets/covers/exercises/cover_warm_ups.jpg';
-import shoulderPressCover from '../../assets/covers/exercises/cover_shoulder_press.jpg';
-import inclineChestPressCover from '../../assets/covers/exercises/cover_incline_chest_press.jpg';
-import standingDumbbellOverheadPressCover from '../../assets/covers/exercises/cover_standing_dumbbell_overhead_press.jpg';
-import closeGripLatPulldownCover from '../../assets/covers/exercises/cover_close_grip_lat_pulldown.jpg';
-import tricepsPulldownCover from '../../assets/covers/exercises/cover_triceps_pulldown.jpg';
-// import seatedChestPressCover from '../../assets/covers/exercises/cover_seated_chest_press.jpg';
-// import lyingChestPressCover from '../../assets/covers/exercises/cover_lying_chest_press.jpg';
-import deadliftCover from '../../assets/covers/exercises/cover_deadlift.jpg';
-import squatsCover from '../../assets/covers/exercises/cover_squats.jpg';
-// import lungesCover from '../../assets/covers/exercises/cover_lunges.jpg';
-// import bicepCurlCover from '../../assets/covers/exercises/cover_bicep_curl.jpg';
+import warmUpCover from '@/assets/covers/exercises/cover_warm_ups.jpg';
+import shoulderPressCover from '@/assets/covers/exercises/cover_shoulder_press.jpg';
+import inclineChestPressCover from '@/assets/covers/exercises/cover_incline_chest_press.jpg';
+import standingDumbbellOverheadPressCover from '@/assets/covers/exercises/cover_standing_dumbbell_overhead_press.jpg';
+import closeGripLatPulldownCover from '@/assets/covers/exercises/cover_close_grip_lat_pulldown.jpg';
+import tricepsPulldownCover from '@/assets/covers/exercises/cover_triceps_pulldown.jpg';
+// import seatedChestPressCover from '@/assets/covers/exercises/cover_seated_chest_press.jpg';
+// import lyingChestPressCover from '@/assets/covers/exercises/cover_lying_chest_press.jpg';
+import deadliftCover from '@/assets/covers/exercises/cover_deadlift.jpg';
+import squatsCover from '@/assets/covers/exercises/cover_squats.jpg';
+// import lungesCover from '@/assets/covers/exercises/cover_lunges.jpg';
+// import bicepCurlCover from '@/assets/covers/exercises/cover_bicep_curl.jpg';
 
 export const WarmUpVideo = [
   {
