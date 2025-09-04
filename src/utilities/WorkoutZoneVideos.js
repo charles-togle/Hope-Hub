@@ -21,7 +21,7 @@ import kettleBellSumoDeadlift from '@/assets/videos/exercises/video_kettle_bell_
 // import bicepCurlVideo from '@/assets/videos/exercises/video_bicep_curl.mp4';
 
 // Import covers
-import warmUpCover from '../assets/covers/exercises/cover_warm_ups.jpg';
+import warmUpCover from '@/assets/covers/exercises/cover_warm_ups.jpg';
 import shoulderPressCover from '@/assets/covers/exercises/cover_shoulder_press.jpg';
 import inclineChestPressCover from '@/assets/covers/exercises/cover_incline_chest_press.jpg';
 import standingDumbbellOverheadPressCover from '@/assets/covers/exercises/cover_standing_dumbbell_overhead_press.jpg';
