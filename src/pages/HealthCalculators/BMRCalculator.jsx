@@ -1,5 +1,5 @@
 import { getBMR, getCalorieGoals } from '@/services/Calculations';
-import { CalculatorData } from '@/utilities/CalculatorData';
+import { CalculatorData, highlightedData } from '@/utilities/CalculatorData';
 import Container from '@/components/health-calculators/Container';
 import CalculatorContainer from '@/components/health-calculators/CalculatorContainer';
 import { CalculatorDetails } from '@/components/health-calculators/CalculatorDetails';
@@ -52,12 +52,10 @@ export default function BMRCalculator () {
   const resultsRef = useRef(null);
   const isMobile = useMobile();
 
-  const { BMR } = CalculatorData;
+  const { BMR } = highlightedData;
   const {
     description,
     instructions,
-    statisticalInterpretation,
-    medicalInterpretation,
   } = BMR;
   const formulaVariants = [
     'Mifflin St Jeor',
@@ -230,7 +228,7 @@ export default function BMRCalculator () {
         <Container heading='Instructions'>
           <ol className='list-decimal font-content mx-2 mb-3 md:mb-5 text-xs md:text-basetext-xs md:text-base text-justify'>
             {instructions.map((instruction, index) => (
-              <li key={`Instruction ${index}`}>{instruction}</li>
+              <li dangerouslySetInnerHTML={{ __html: instruction}} key={`Instruction ${index}`}/>
             ))}
           </ol>
         </Container>

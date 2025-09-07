@@ -1,5 +1,5 @@
 import { getIBW } from '@/services/Calculations';
-import { CalculatorData } from '@/utilities/CalculatorData';
+import { CalculatorData, highlightedData } from '@/utilities/CalculatorData';
 import Container from '@/components/health-calculators/Container';
 import CalculatorContainer from '@/components/health-calculators/CalculatorContainer';
 import { CalculatorDetails } from '@/components/health-calculators/CalculatorDetails';
@@ -28,7 +28,7 @@ export default function IBWCalculator () {
   const resultsRef = useRef(null);
   const isMobile = useMobile();
 
-  const { IBW } = CalculatorData;
+  const { IBW } = highlightedData;
   const { description, instructions } = IBW;
 
   const heightUnits = ['cm', 'ft', 'm'];
@@ -125,7 +125,7 @@ export default function IBWCalculator () {
           <div className=''>
             <ol className='list-decimal text-justify font-content mx-2 mb-3 md:mb-5 text-xs md:text-base'>
               {instructions.map((instruction, index) => (
-                <li key={`Instruction ${index}`}>{instruction}</li>
+                <li dangerouslySetInnerHTML={{ __html: instruction}} key={`Instruction ${index}`}/>
               ))}
             </ol>
           </div>
