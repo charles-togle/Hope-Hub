@@ -105,7 +105,7 @@ export const CalculatorData = {
       'The Karvonen Heart Rate Calculator helps you find your ideal Target Heart Rate (THR) zones for exercise. Unlike simple age-based formulas, it takes into account both your resting heart rate and maximum heart rate to give you results of your intended target heart rate. By using the Karvonen formula, the calculator shows training zones from very light to very hard intensity, helping you tailor your workouts to match your fitness goals—whether that’s fat burning, improving endurance, or boosting cardiovascular health. This method is widely recommended in fitness and medical settings for creating safe and effective exercise plans.',
     instructions: [
       'Input your age in years.',
-      'Enter your resting heart rate. If you do not know your resting heart rate, you may enter 70.',
+      'Enter your resting heart rate. If you do not know your resting heart rate, you may enter 70. If the resting rate is too high relative to age, it will not produce results.',
       'Click calculate.',
       'Read results below. Medical and statistical interpretations are also viewable. All outputs are for informational use only and not a substitute for professional & medical advice.',
     ],
