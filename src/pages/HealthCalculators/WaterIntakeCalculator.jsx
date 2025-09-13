@@ -1,5 +1,5 @@
 import { getWaterIntake } from '@/services/Calculations';
-import { CalculatorData } from '@/utilities/CalculatorData';
+import { CalculatorData, highlightedData } from '@/utilities/CalculatorData';
 import Container from '@/components/health-calculators/Container';
 import CalculatorContainer from '@/components/health-calculators/CalculatorContainer';
 import { CalculatorDetails } from '@/components/health-calculators/CalculatorDetails';
@@ -31,7 +31,7 @@ export default function WaterIntakeCalculator () {
   const resultsRef = useRef(null);
   const isMobile = useMobile();
 
-  const { WaterIntake } = CalculatorData;
+  const { WaterIntake } = highlightedData;
   const {
     description,
     instructions,
@@ -169,7 +169,7 @@ export default function WaterIntakeCalculator () {
         <Container heading='Instructions'>
           <ol className='list-decimal text-justify font-content mx-2 mb-3 md:mb-5 text-xs md:text-base'>
             {instructions.map((instruction, index) => (
-              <li key={`Instruction ${index}`}>{instruction}</li>
+              <li dangerouslySetInnerHTML={{ __html: instruction}} key={`Instruction ${index}`}/>
             ))}
           </ol>
         </Container>

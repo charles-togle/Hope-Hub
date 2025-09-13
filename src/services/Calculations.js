@@ -464,16 +464,32 @@ export const getHeartRate = (
   age,
   restingHeartRate,
 ) => {
-  const maxHeartRate = 206.9 - (0.67 * age)
-  let heartRateReserve = maxHeartRate - restingHeartRate;
+  // const maxHeartRate = 206.9 - (0.67 * age)
+  // let heartRateReserve = maxHeartRate - restingHeartRate;
 
-  const targetHeartRate = [
-    parseFloat(heartRateReserve * 0.19 + restingHeartRate).toFixed(0) + " or less",
-    parseFloat(heartRateReserve * 0.20 + restingHeartRate).toFixed(0) + " - " + parseFloat(heartRateReserve * 0.39 + restingHeartRate).toFixed(0),
-    parseFloat(heartRateReserve * 0.40 + restingHeartRate).toFixed(0) + " - " + parseFloat(heartRateReserve * 0.59 + restingHeartRate).toFixed(0),
-    parseFloat(heartRateReserve * 0.60 + restingHeartRate).toFixed(0) + " - " + parseFloat(heartRateReserve * 0.84 + restingHeartRate).toFixed(0),
-    parseFloat(heartRateReserve * 0.85 + restingHeartRate).toFixed(0) + " - " + parseFloat(heartRateReserve + restingHeartRate).toFixed(0)
-  ]
+  // const targetHeartRate = [
+  //   parseFloat((heartRateReserve * 0.19) + restingHeartRate).toFixed(0) + " or less",
+  //   parseFloat((heartRateReserve * 0.20 + restingHeartRate) + restingHeartRate).toFixed(0) + " - " + parseFloat((heartRateReserve * 0.39 + restingHeartRate) + restingHeartRate).toFixed(0),
+  //   parseFloat((heartRateReserve * 0.40 + restingHeartRate) + restingHeartRate).toFixed(0) + " - " + parseFloat((heartRateReserve * 0.59 + restingHeartRate) + restingHeartRate).toFixed(0),
+  //   parseFloat((heartRateReserve * 0.60 + restingHeartRate) + restingHeartRate).toFixed(0) + " - " + parseFloat((heartRateReserve * 0.84 + restingHeartRate + restingHeartRate)).toFixed(0),
+  //   parseFloat((heartRateReserve * 0.85 + restingHeartRate) + restingHeartRate).toFixed(0) + " - " + parseFloat((heartRateReserve + restingHeartRate)).toFixed(0)
+  // ]
 
-  return targetHeartRate;
+  // return targetHeartRate;
+  age = Number(age);
+  restingHeartRate = Number(restingHeartRate)
+
+  const maxHeartRate = 220 - age;
+  const heartRateReserve = maxHeartRate - restingHeartRate;
+
+  const toInt = (num) => Number(num).toFixed(0);
+
+  return [
+    `${toInt(heartRateReserve * 0.19 + restingHeartRate)} or less`, // Very Light: ≤19%
+    `${toInt(heartRateReserve * 0.20 + restingHeartRate)} - ${toInt(heartRateReserve * 0.39 + restingHeartRate)}`, // Light: 20–39%
+    `${toInt(heartRateReserve * 0.40 + restingHeartRate)} - ${toInt(heartRateReserve * 0.59 + restingHeartRate)}`, // Moderate: 40–59%
+    `${toInt(heartRateReserve * 0.60 + restingHeartRate)} - ${toInt(heartRateReserve * 0.84 + restingHeartRate)}`, // Hard: 60–84%
+    `${toInt(heartRateReserve * 0.85 + restingHeartRate)} - ${toInt(heartRateReserve * 1.00 + restingHeartRate)}`, // Very Hard: 85–100%
+  ];
+
 };
