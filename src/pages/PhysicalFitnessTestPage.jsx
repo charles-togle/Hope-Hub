@@ -29,6 +29,7 @@ export function PhysicalFitnessTestPage () {
   useEffect(() => {
     if (!userId) {
       setTeacherReady(false);
+      console.log('here');
       return;
     }
     const checkUserType = async () => {
@@ -151,7 +152,7 @@ export function PhysicalFitnessTestPage () {
     navigate('/physical-fitness-test/parq');
   };
 
-  if (isLoading || teacherReady) {
+  if (isLoading || !teacherReady) {
     return <Loading />;
   }
 
