@@ -1,7 +1,7 @@
 import bannerHome from '@/assets/banner_home.svg';
-import trailerVideo from '/videos/hope_hub_trailer.mp4';
 import HomePageHero from '@/assets/images/gym_homepage.png';
 import HopeHubPicture from '@/assets/images/home-pic.jpg';
+import HopeHubTrailer from '@/assets/hope_hub_trailer.mp4';
 import Footer from '@/components/Footer';
 import { useNavigate } from 'react-router-dom';
 export default function Home () {
@@ -59,7 +59,7 @@ export default function Home () {
       </section>
       <section className='w-full flex justify-center flex-col items-center pb-10'>
         <video
-          src={trailerVideo}
+          src={HopeHubTrailer}
           autoPlay
           muted
           loop
