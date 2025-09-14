@@ -5,13 +5,17 @@ export default function VideoPlayer ({ video }) {
     <>
       <div id='video-player' className='w-full lg:w-7/10'>
         <div className='lg:w-full lg:min-h-100 max-h-fit'>
-          <video
+          <iframe
+            width='560'
+            height='315'
             src={video.videoLink}
-            about={video.videoTitle}
-            controls
-            autoPlay
-            className={`rounded-lg px-2 w-full lg:w-full lg:min-h-100`}
-          />
+            title='YouTube video player'
+            frameborder='0'
+            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+            referrerpolicy='strict-origin-when-cross-origin'
+            allowfullscreen
+            className={`rounded-lg px-2 w-full lg:w-full lg:min-h-150`}
+          ></iframe>
         </div>
         <div id='video-details' className={`mt-5 mb-20 px-3`}>
           <h2 className='text-3xl font-content text-primary-blue font-medium'>

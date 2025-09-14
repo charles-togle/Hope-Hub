@@ -1,5 +1,4 @@
-
-
+// Exercise cover images
 export const PhysicalFitnessTestList = [
   {
     title: 'BMI (Weight)',
@@ -14,11 +13,13 @@ export const PhysicalFitnessTestList = [
       'Record the score in kilograms',
     ],
     instructionsScoring: ['Record body mass to the nearest 0.5 kilograms'],
-    videoInstructions: '/videos/fitness-tests/video_bmi.mp4',
+    videoInstructions:
+      'https://www.youtube.com/embed/iiyquWDuw5M?si=3k3Qkvhu1_G6A0Ot',
     unit: 'kg',
   },
   {
     title: 'BMI (Height)',
+
     key: 'bmiHeight',
     equipment: [
       'Tape measure laid flat to a concrete wall where zero points starts on the floor.',
@@ -36,7 +37,8 @@ export const PhysicalFitnessTestList = [
       'Record standing height to the nearest 0.1 centimeter',
       '1 meter = 100 centimeter',
     ],
-    videoInstructions: '/videos/fitness-tests/video_bmi.mp4',
+    videoInstructions:
+      'https://www.youtube.com/embed/iiyquWDuw5M?si=3k3Qkvhu1_G6A0Ot',
     unit: 'cm',
   },
 
@@ -66,7 +68,8 @@ export const PhysicalFitnessTestList = [
       { exact: 0, interpretation: 'Needs Improvement' },
       { exact: -1, interpretation: 'Poor' },
     ],
-    videoInstructions: '/videos/fitness-tests/video_zipper_test.mp4',
+    videoInstructions:
+      'https://www.youtube.com/embed/fr7cj6TwBAI?si=yzhor91UOsxSklyX',
     tips: [
       'Warm up your shoulders with gentle arm circles before attempting the zipper test.',
       'Keep your spine straight and avoid forcing the stretch to prevent shoulder injury.',
@@ -99,7 +102,8 @@ export const PhysicalFitnessTestList = [
       { exact: 0, interpretation: 'Needs Improvement' },
       { exact: -1, interpretation: 'Poor' },
     ],
-    videoInstructions: '/videos/fitness-tests/video_zipper_test.mp4',
+    videoInstructions:
+      'https://www.youtube.com/embed/fr7cj6TwBAI?si=yzhor91UOsxSklyX',
     tips: [
       'Alternate which arm goes over your shoulder to test both sides equally well.',
       'Breathe normally during the test and do not hold your breath while stretching.',
@@ -133,7 +137,8 @@ export const PhysicalFitnessTestList = [
       { min: 16, max: 30.9, interpretation: 'Fair' },
       { min: 0, max: 15.9, interpretation: 'Needs Improvement' },
     ],
-    videoInstructions: '/videos/fitness-tests/video_sit_and_reach.mp4',
+    videoInstructions:
+      'https://www.youtube.com/embed/4HhIr3nkrsI?si=hqQE1TX-MID9KrP0',
     tips: [
       'Keep your back flat against the wall and avoid rounding your shoulders forward.',
       'Reach slowly and smoothly without bouncing or jerking movements for better results.',
@@ -168,7 +173,8 @@ export const PhysicalFitnessTestList = [
       { min: 16, max: 30.9, interpretation: 'Fair' },
       { min: 0, max: 15.9, interpretation: 'Needs Improvement' },
     ],
-    videoInstructions: '/videos/fitness-tests/video_sit_and_reach.mp4',
+    videoInstructions:
+      'https://www.youtube.com/embed/4HhIr3nkrsI?si=hqQE1TX-MID9KrP0',
     tips: [
       'This is your second attempt, so apply what you learned from the first.',
       'Focus on controlled breathing and relaxation to achieve a better reach distance.',
@@ -192,7 +198,8 @@ export const PhysicalFitnessTestList = [
       'Let the performer count his/her pulse beat for 10 seconds and multiply it by 6.',
     ],
     instructionsScoring: ['Record the resting pulse of the tester'],
-    videoInstructions: '/videos/fitness-tests/video_step_test.mp4',
+    videoInstructions:
+      'https://www.youtube.com/embed/lg9dYlCQvnY?si=0lCp3v-zMOYoOMIE',
     tips: [
       'Sit quietly and breathe normally for a few minutes before taking pulse.',
       'Practice finding your pulse on your wrist or neck before the actual test.',
@@ -224,7 +231,8 @@ export const PhysicalFitnessTestList = [
     instructionsScoring: [
       'Record the 60-second pulse rate immediately after the activity.',
     ],
-    videoInstructions: '/videos/fitness-tests/video_step_test.mp4',
+    videoInstructions:
+      'https://www.youtube.com/embed/lg9dYlCQvnY?si=0lCp3v-zMOYoOMIE',
     tips: [
       'Maintain steady rhythm throughout the test and do not rush the movements.',
       'Take your pulse immediately after finishing to get an accurate heart rate.',
@@ -283,7 +291,8 @@ export const PhysicalFitnessTestList = [
         { exact: 0, interpretation: 'Poor' },
       ],
     },
-    videoInstructions: '/videos/fitness-tests/video_push_up.mp4',
+    videoInstructions:
+      'https://www.youtube.com/embed/b3rcKKnRfSI?si=dc7bPGUIylNECmd-',
     tips: [
       'Keep your body straight from head to toes throughout the entire movement.',
       'Focus on controlled movements rather than speed to maintain proper push-up form.',
@@ -320,7 +329,8 @@ export const PhysicalFitnessTestList = [
       { min: 16, max: 30, interpretation: 'Fair' },
       { min: 1, max: 15, interpretation: 'Needs Improvement' },
     ],
-    videoInstructions: '/videos/fitness-tests/video_plank.mp4',
+    videoInstructions:
+      'https://www.youtube.com/embed/XVKH1MdJNTY?si=a_ofVPZ3byzbDK4X',
     tips: [
       'Engage your core muscles and breathe steadily throughout the entire plank hold.',
       'Keep your body in a straight line from head to heels without sagging.',
