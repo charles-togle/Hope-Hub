@@ -7,8 +7,7 @@ import coverSquats from '@/assets/covers/exercises/cover_squats.jpg';
 import coverStandingDumbbellOverheadPress from '@/assets/covers/exercises/cover_standing_dumbbell_overhead_press.jpg';
 import coverTricepsPulldown from '@/assets/covers/exercises/cover_triceps_pulldown.jpg';
 import coverWarmUps from '@/assets/covers/exercises/cover_warm_ups.jpg';
-import coverCloseGripLatPulldown from '@/assets/covers/exercises/cover_close_grip_lat_pulldown.jpg';
-import coverDeadlift from '@/assets/covers/exercises/cover_deadlift.jpg';
+// ...existing code...
 
 export const WarmUpVideo = [
   {
