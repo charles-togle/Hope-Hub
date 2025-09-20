@@ -175,6 +175,11 @@ export default function PhysicalFitnessTest ({
     [handleInterpretation, setTestResults],
   );
 
+  const handleBackForTeacher = useCallback(() => {
+    if (userType === 'teacher' && Number(index) !== 0) {
+      navigate(`/physical-fitness-test/test/${Number(index) - 1}`);
+    }
+  });
   const handleSubmit = useCallback(async () => {
     if (!userId) return;
     setCurrentTime(
@@ -346,7 +351,7 @@ export default function PhysicalFitnessTest ({
   }, [handleSubmit]);
 
   return (
-    <div id='test-container' className=''>
+    <div id='test-container' className='min-w-[100%]'>
       {showAlert && (
         <AlertMessage
           text={alertMessage}
@@ -385,12 +390,11 @@ export default function PhysicalFitnessTest ({
               />
             </div>
           )}
-          <video
+          <iframe
             src={videoInstructions}
             className='col-span-2 mt-10 mb-5 w-full aspect-video border-1 border-black rounded-sm'
-            autoPlay
-            controls
-          ></video>
+            allow='autoplay'
+          ></iframe>
           <div id='instructions' className='col-span-2 text-sm font-medium'>
             <h2 className='text-xl font-bold mb-3'>Instructions:</h2>
             <InstructionsGroup
@@ -426,10 +430,12 @@ export default function PhysicalFitnessTest ({
             testName={testName}
             handleResultChange={handleResultChange}
             handleSubmit={isTeacher ? handleNextExerciseTeacher : handleSubmit}
+            handleBack={handleBackForTeacher}
             testResults={testResults}
             currentTime={currentTime}
             unit={unit}
             isTeacher={isTeacher}
+            testNumber={Number(index)}
           />{' '}
           <TipsAndInterpretation
             testName={testName}

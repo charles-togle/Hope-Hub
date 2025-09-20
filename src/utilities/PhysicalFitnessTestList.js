@@ -14,7 +14,7 @@ export const PhysicalFitnessTestList = [
     ],
     instructionsScoring: ['Record body mass to the nearest 0.5 kilograms'],
     videoInstructions:
-      'https://www.youtube.com/embed/iiyquWDuw5M?si=3k3Qkvhu1_G6A0Ot',
+      'https://www.youtube.com/embed/iiyquWDuw5M?si=3k3Qkvhu1_G6A0Ot?autoplay=1',
     unit: 'kg',
   },
   {
@@ -38,7 +38,7 @@ export const PhysicalFitnessTestList = [
       '1 meter = 100 centimeter',
     ],
     videoInstructions:
-      'https://www.youtube.com/embed/iiyquWDuw5M?si=3k3Qkvhu1_G6A0Ot',
+      'https://www.youtube.com/embed/iiyquWDuw5M?si=3k3Qkvhu1_G6A0Ot?autoplay=1',
     unit: 'cm',
   },
 
@@ -69,7 +69,7 @@ export const PhysicalFitnessTestList = [
       { exact: -1, interpretation: 'Poor' },
     ],
     videoInstructions:
-      'https://www.youtube.com/embed/fr7cj6TwBAI?si=yzhor91UOsxSklyX',
+      'https://www.youtube.com/embed/fr7cj6TwBAI?si=yzhor91UOsxSklyX?autoplay=1',
     tips: [
       'Warm up your shoulders with gentle arm circles before attempting the zipper test.',
       'Keep your spine straight and avoid forcing the stretch to prevent shoulder injury.',
@@ -103,7 +103,7 @@ export const PhysicalFitnessTestList = [
       { exact: -1, interpretation: 'Poor' },
     ],
     videoInstructions:
-      'https://www.youtube.com/embed/fr7cj6TwBAI?si=yzhor91UOsxSklyX',
+      'https://www.youtube.com/embed/fr7cj6TwBAI?si=yzhor91UOsxSklyX?autoplay=1',
     tips: [
       'Alternate which arm goes over your shoulder to test both sides equally well.',
       'Breathe normally during the test and do not hold your breath while stretching.',
@@ -138,7 +138,7 @@ export const PhysicalFitnessTestList = [
       { min: 0, max: 15.9, interpretation: 'Needs Improvement' },
     ],
     videoInstructions:
-      'https://www.youtube.com/embed/4HhIr3nkrsI?si=hqQE1TX-MID9KrP0',
+      'https://www.youtube.com/embed/4HhIr3nkrsI?si=hqQE1TX-MID9KrP0?autoplay=1',
     tips: [
       'Keep your back flat against the wall and avoid rounding your shoulders forward.',
       'Reach slowly and smoothly without bouncing or jerking movements for better results.',
@@ -174,7 +174,7 @@ export const PhysicalFitnessTestList = [
       { min: 0, max: 15.9, interpretation: 'Needs Improvement' },
     ],
     videoInstructions:
-      'https://www.youtube.com/embed/4HhIr3nkrsI?si=hqQE1TX-MID9KrP0',
+      'https://www.youtube.com/embed/4HhIr3nkrsI?si=hqQE1TX-MID9KrP0?autoplay=1',
     tips: [
       'This is your second attempt, so apply what you learned from the first.',
       'Focus on controlled breathing and relaxation to achieve a better reach distance.',
@@ -199,7 +199,7 @@ export const PhysicalFitnessTestList = [
     ],
     instructionsScoring: ['Record the resting pulse of the tester'],
     videoInstructions:
-      'https://www.youtube.com/embed/lg9dYlCQvnY?si=0lCp3v-zMOYoOMIE',
+      'https://www.youtube.com/embed/lg9dYlCQvnY?si=0lCp3v-zMOYoOMIE?autoplay=1',
     tips: [
       'Sit quietly and breathe normally for a few minutes before taking pulse.',
       'Practice finding your pulse on your wrist or neck before the actual test.',
@@ -232,7 +232,7 @@ export const PhysicalFitnessTestList = [
       'Record the 60-second pulse rate immediately after the activity.',
     ],
     videoInstructions:
-      'https://www.youtube.com/embed/lg9dYlCQvnY?si=0lCp3v-zMOYoOMIE',
+      'https://www.youtube.com/embed/lg9dYlCQvnY?si=0lCp3v-zMOYoOMIE?autoplay=1',
     tips: [
       'Maintain steady rhythm throughout the test and do not rush the movements.',
       'Take your pulse immediately after finishing to get an accurate heart rate.',
@@ -292,7 +292,7 @@ export const PhysicalFitnessTestList = [
       ],
     },
     videoInstructions:
-      'https://www.youtube.com/embed/b3rcKKnRfSI?si=dc7bPGUIylNECmd-',
+      'https://www.youtube.com/embed/b3rcKKnRfSI?si=dc7bPGUIylNECmd-?autoplay=1',
     tips: [
       'Keep your body straight from head to toes throughout the entire movement.',
       'Focus on controlled movements rather than speed to maintain proper push-up form.',
@@ -330,7 +330,7 @@ export const PhysicalFitnessTestList = [
       { min: 1, max: 15, interpretation: 'Needs Improvement' },
     ],
     videoInstructions:
-      'https://www.youtube.com/embed/XVKH1MdJNTY?si=a_ofVPZ3byzbDK4X',
+      'https://www.youtube.com/embed/XVKH1MdJNTY?si=a_ofVPZ3byzbDK4X?autoplay=1',
     tips: [
       'Engage your core muscles and breathe steadily throughout the entire plank hold.',
       'Keep your body in a straight line from head to heels without sagging.',

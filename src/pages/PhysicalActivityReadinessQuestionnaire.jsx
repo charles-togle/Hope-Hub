@@ -19,15 +19,37 @@ export default function PhysicalActivityReadinessQuestionnaire () {
   const [answers, setAnswers] = useState(Array(6).fill(null));
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [userType, setUserType] = useState('');
+  const [userType, setUserType] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const userId = useUserId();
 
+  const navigateTeacher = async () => {
+    const updatedData = {
+      ...physicalFitnessData,
+      isPARQFinished: true,
+      ...{
+        finishedTestIndex: Array.from({ length: numberOfTests }, () => -1),
+      },
+    };
+    setPhysicalFitnessData(updatedData);
+    setDataToStorage('physicalFitnessData', updatedData);
+    const { error: updateError } = await supabase
+      .from('physical_fitness_test')
+      .update({ pre_physical_fitness_test: updatedData })
+      .eq('uuid', userId);
+    if (updateError) {
+      setErrorMessage('Error saving test data: ' + updateError.message);
+      setIsError(true);
+      return;
+    }
+    navigate(`/physical-fitness-test/test/0`);
+    return;
+  };
+
   useEffect(() => {
     if (!userId) {
-      setIsLoading(true);
       return;
     }
     const checkUserType = async () => {
@@ -42,6 +64,9 @@ export default function PhysicalActivityReadinessQuestionnaire () {
         return;
       }
       setUserType(data.user_type);
+      if (data.user_type === 'teacher') {
+        await navigateTeacher();
+      }
       setIsLoading(false);
     };
 
@@ -95,32 +120,6 @@ export default function PhysicalActivityReadinessQuestionnaire () {
       if (!userId) {
         setErrorMessage('User not found.');
         setIsError(true);
-        return;
-      }
-
-      if (userType === 'teacher') {
-        alert(
-          'You are using a teacher account and is about to view the content of the physical fitness test, any data will not be recorded',
-        );
-        const updatedData = {
-          ...physicalFitnessData,
-          isPARQFinished: true,
-          ...{
-            finishedTestIndex: Array.from({ length: numberOfTests }, () => -1),
-          },
-        };
-        setPhysicalFitnessData(updatedData);
-        setDataToStorage('physicalFitnessData', updatedData);
-        const { error: updateError } = await supabase
-          .from('physical_fitness_test')
-          .update({ pre_physical_fitness_test: updatedData })
-          .eq('uuid', userId);
-        if (updateError) {
-          setErrorMessage('Error saving test data: ' + updateError.message);
-          setIsError(true);
-          return;
-        }
-        navigate(`/physical-fitness-test/test/0`);
         return;
       }
 

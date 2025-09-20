@@ -58,14 +58,12 @@ export default function Home () {
         </div>
       </section>
       <section className='w-full flex justify-center flex-col items-center pb-10'>
-        <video
-          src={HopeHubTrailer}
-          autoPlay
-          muted
-          loop
-          controls
-          className='mb-10'
-        ></video>
+        <iframe
+          src='https://www.youtube.com/embed/IGxerNuSnoo?si=GA9kKbt6alZFR-lQ&loop=1'
+          frameborder='0'
+          className='mb-10 w-full aspect-video'
+        ></iframe>
+
         <p className='text-base mb-2 lg:text-lg'>With us, you are home</p>
         <h2 className='text-4xl pr-3 pl-3 text-primary-yellow font-heading text-center lg:p-0 lg:text-6xl '>
           Welcome to Hope Hub Web!
