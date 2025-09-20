@@ -38,7 +38,7 @@ export default function VideoPreview ({
         ) : (
           <img
             src={thumbnail}
-            className=' rounded-lg hover:rounded-none h-35 lg:h-50'
+            className=' rounded-lg hover:rounded-none aspect-video h-35 lg:h-50'
             alt={title}
           />
         )}
