@@ -1,7 +1,6 @@
 import bannerHome from '@/assets/banner_home.svg';
 import HomePageHero from '@/assets/images/gym_homepage.png';
-import HopeHubPicture from '@/assets/images/home-pic.jpg';
-import HopeHubTrailer from '@/assets/hope_hub_trailer.mp4';
+import HopeHubPicture from '@/assets/images/home-pic.png';
 import Footer from '@/components/Footer';
 import { useNavigate } from 'react-router-dom';
 export default function Home () {
@@ -77,7 +76,7 @@ export default function Home () {
         <div className='px-3 lg:pt-10 md:flex md:items-center md:justify-center md:flex-col lg:flex lg:flex-row lg:justify-center lg:items-center lg:space-x-15'>
           <img
             src={HopeHubPicture}
-            alt='Umak Gym'
+            alt='Hope Hub Picture'
             className='lg:w-1/2 w-full lg:h-[120%] object-cover '
           />
           <p className='mt-10 text-justify lg:mt-0 lg:w-4/10 pr-2 pl-2 lg:p-0 lg:text-justify'>
