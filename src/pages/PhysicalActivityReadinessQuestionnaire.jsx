@@ -15,14 +15,13 @@ export default function PhysicalActivityReadinessQuestionnaire () {
   const [areAllAnswersNo, setAreAllAnswersNo] = useState(false);
   const [areAllAnswered, setAreAllAnswered] = useState(false);
   const [areAllUserDataFilled, setAreAllUserDataFilled] = useState(false);
-  const [isEmailValid, setIsEmailValid] = useState(false);
   const [answers, setAnswers] = useState(Array(6).fill(null));
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [userType, setUserType] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const userId = useUserId();
 
   const navigateTeacher = async () => {
@@ -60,10 +59,8 @@ export default function PhysicalActivityReadinessQuestionnaire () {
         .eq('uuid', userId);
 
       if (error) {
-        setUserType('student');
         return;
       }
-      setUserType(data.user_type);
       if (data.user_type === 'teacher') {
         await navigateTeacher();
       }
@@ -107,16 +104,12 @@ export default function PhysicalActivityReadinessQuestionnaire () {
     setAnswers(currentAnswers);
     setAreAllAnswersNo(allNo);
     setAreAllAnswered(allAnswered);
+    console.log(currentAnswers);
   };
 
   const handleSubmit = async () => {
     setErrorMessage('');
-    if (
-      areAllAnswered &&
-      areAllAnswersNo &&
-      areAllUserDataFilled &&
-      isEmailValid
-    ) {
+    if (areAllAnswered && areAllAnswersNo && areAllUserDataFilled) {
       if (!userId) {
         setErrorMessage('User not found.');
         setIsError(true);
@@ -190,8 +183,6 @@ export default function PhysicalActivityReadinessQuestionnaire () {
         );
       } else if (!areAllUserDataFilled) {
         setErrorMessage('Please complete Student/User Data');
-      } else if (!isEmailValid) {
-        setErrorMessage('Please enter a valid email address');
       }
       setIsError(true);
     }
@@ -208,14 +199,9 @@ export default function PhysicalActivityReadinessQuestionnaire () {
     };
     setPhysicalFitnessData(updatedData);
 
-    // Handle email validation
-    if (keyName === 'email') {
-      setIsEmailValid(emailRegex.test(value.trim()));
-    }
-
     // Check if all required fields are filled
     setAreAllUserDataFilled(() =>
-      ['name', 'gender', 'email', 'category'].every(
+      ['gender', 'category'].every(
         key => !isNullOrWhiteSpace(updatedData[key]),
       ),
     );
@@ -276,20 +262,8 @@ export default function PhysicalActivityReadinessQuestionnaire () {
             id='information'
             className='w-[95%] min-h-10 flex flex-col space-y-2 text-sm lg:text-base'
           >
-            <label>
-              <p>
-                Full Name:
-                <span className='text-accent-gray'>
-                  {' '}
-                  (Surname, First Name, M.I. ex. Dela Cruz, Juan A.)
-                </span>
-              </p>
-              <input
-                type='text'
-                onChange={e => handleInformationChange('name', e.target.value)}
-                className='border-1 border-[#8B8989] w-full font-content px-1 rounded-sm mt-0.5'
-              />
-            </label>
+            <p className='text-base'>PHYSICAL INFORMATION</p>
+            <hr className='mb-7' />
             <div className='flex flex-row space-x-5'>
               <p>Gender</p>
               <label>
@@ -315,20 +289,6 @@ export default function PhysicalActivityReadinessQuestionnaire () {
                 Female
               </label>
             </div>
-            <label>
-              <p>
-                Email:{' '}
-                <span className='text-accent-gray'>
-                  {' '}
-                  (ex. juan_delacruz@email.com)
-                </span>
-              </p>
-              <input
-                type='email'
-                onChange={e => handleInformationChange('email', e.target.value)}
-                className='border-1 border-[#8B8989] w-full font-content px-1 rounded-sm mt-0.5 not-valid:border-red'
-              />
-            </label>{' '}
             <label>
               <p>Category:</p>
               <select

@@ -336,6 +336,6 @@ export const PhysicalFitnessTestList = [
       'Keep your body in a straight line from head to heels without sagging.',
       'Start with shorter holds and gradually increase time to build core strength.',
     ],
-    unit: 'seconds',
+    unit: 'sec(s)',
   },
 ];
