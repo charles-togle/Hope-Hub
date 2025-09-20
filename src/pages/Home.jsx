@@ -59,7 +59,7 @@ export default function Home () {
       </section>
       <section className='w-full flex justify-center flex-col items-center pb-10'>
         <iframe
-          src='https://www.youtube.com/embed/IGxerNuSnoo?si=GA9kKbt6alZFR-lQ'
+          src='https://www.youtube.com/embed/IGxerNuSnoo?si=GA9kKbt6alZFR-lQ&loop=1'
           frameborder='0'
           className='mb-10 w-full aspect-video'
         ></iframe>

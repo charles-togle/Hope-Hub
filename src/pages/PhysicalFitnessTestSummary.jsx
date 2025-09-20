@@ -47,6 +47,7 @@ export function PhysicalFitnessTestSummary () {
           .single();
 
         if (studentCheckError || !studentExists) {
+          ('this 1');
           setIsBadRequest(true);
           return;
         }
@@ -59,18 +60,21 @@ export function PhysicalFitnessTestSummary () {
         .single();
 
       if (fetchError) {
+        ('this 2');
         setIsBadRequest(true);
         return;
       }
 
       const finishedTests = existing[columnName]?.finishedTestIndex;
       if (!finishedTests) {
+        ('this 3');
         setIsBadRequest(true);
         return;
       }
 
       const max = finishedTests.length - 1;
       if (!finishedTests.includes(max)) {
+        ('this 4');
         setIsBadRequest(true);
       }
     }

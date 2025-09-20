@@ -29,7 +29,6 @@ export function PhysicalFitnessTestPage () {
   useEffect(() => {
     if (!userId) {
       setTeacherReady(false);
-      console.log('here');
       return;
     }
     const checkUserType = async () => {
