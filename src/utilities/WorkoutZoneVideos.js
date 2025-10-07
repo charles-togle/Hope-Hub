@@ -176,7 +176,7 @@ export const LowerBodyVideos = [
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail: 'https://i.ibb.co/G4Qgsp0v/lunges-Cover.jpg',
+    thumbnail: '',
     url: 'lunges',
     duration: '00:50',
     title: 'Lunges',
@@ -217,28 +217,6 @@ export const LowerBodyVideos = [
       ],
     },
     videoLink: 'https://youtube.com/embed/ckqDnz6149I?si=5mM1kl7gBWJ9c6IT',
-    uploadDate: '2025-07-23T14:00:00.000Z',
-  },
-  {
-    thumbnail: '',
-    url: 'calf-raises',
-    duration: '00:30',
-    title: 'Calf Raises',
-    description: {
-      howToDoIt:
-        'Stand upright with your feet hip-width apart. Slowly raise your heels off the ground, standing on your toes. Hold for a moment at the top. Lower your heels back down with control.',
-      do: [
-        'Keep your core tight and body tall.',
-        'Use slow, controlled motion.',
-        'Try doing them on a step for a fuller range of motion.',
-      ],
-      dont: [
-        "Don't bounce or rush through the reps.",
-        "Don't roll your ankles outward or inward.",
-        "Don't lean your body forward.",
-      ],
-    },
-    videoLink: '',
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
