@@ -26,18 +26,15 @@ export default function HeartRateCalculator () {
     'Target Heart Rate (THR) ranges calculated with the Karvonen method provide structured intensity zones from very light to very hard exercise. Population studies show that most adults achieve improvements in cardiovascular fitness, blood pressure, and overall endurance when training consistently within moderate to hard zones (≈40–85% HRR). Very light activity is statistically common in older adults or beginners, while vigorous activity is more common among trained or athletic individuals. Long-term population data confirm that maintaining activity within these ranges is strongly associated with reduced risk of cardiovascular disease and premature mortality.',
   );
   const [thrStatisticalInterpretation, setThrStatisticalInterpretation] =
-  useState(
-    "The Karvonen formula adjusts training intensity based on both resting and maximum heart rate, providing a more individualized target zone. Medical evidence indicates that exercising within moderate to vigorous zones supports heart health, blood sugar regulation, and weight control, while very light activity may be appropriate for recovery, older adults, or individuals with chronic conditions. Conversely, consistently training above 85% HRR may increase risk of injury, arrhythmia, or overtraining, particularly without medical clearance. These ranges are intended as general guidance; individual health status, medications (e.g., beta-blockers), and physician recommendations should always be considered when applying target heart rate zones."
-  );
+    useState(
+      'The Karvonen formula adjusts training intensity based on both resting and maximum heart rate, providing a more individualized target zone. Medical evidence indicates that exercising within moderate to vigorous zones supports heart health, blood sugar regulation, and weight control, while very light activity may be appropriate for recovery, older adults, or individuals with chronic conditions. Conversely, consistently training above 85% HRR may increase risk of injury, arrhythmia, or overtraining, particularly without medical clearance. These ranges are intended as general guidance; individual health status, medications (e.g., beta-blockers), and physician recommendations should always be considered when applying target heart rate zones.',
+    );
 
   const resultsRef = useRef(null);
   const isMobile = useMobile();
 
   const { THR } = highlightedData;
-  const {
-    description,
-    instructions,
-  } = THR;
+  const { description, instructions } = THR;
 
   const handleCalculate = () => {
     if (!age || !heartrate) {
@@ -45,18 +42,18 @@ export default function HeartRateCalculator () {
       return;
     }
 
-    const thr = getHeartRate(age,heartrate);
-    
+    const thr = getHeartRate(age, heartrate);
+
     setThrResult(thr);
     setThrMedicalInterpretation(THR.medicalInterpretation);
     setThrStatisticalInterpretation(THR.statisticalInterpretation);
 
     // Scroll to results on mobile after successful calculation
-    if (isMobile && resultsRef.current) {
+    if (resultsRef.current) {
       setTimeout(() => {
         resultsRef.current.scrollIntoView({
           behavior: 'smooth',
-          block: 'start',
+          block: 'center',
         });
       }, 100);
     }
@@ -66,10 +63,10 @@ export default function HeartRateCalculator () {
     setHeartrate(70);
     setAge();
     setThrMedicalInterpretation(
-      "Target Heart Rate (THR) ranges calculated with the Karvonen method provide structured intensity zones from very light to very hard exercise. Population studies show that most adults achieve improvements in cardiovascular fitness, blood pressure, and overall endurance when training consistently within moderate to hard zones (≈40–85% HRR). Very light activity is statistically common in older adults or beginners, while vigorous activity is more common among trained or athletic individuals. Long-term population data confirm that maintaining activity within these ranges is strongly associated with reduced risk of cardiovascular disease and premature mortality."
+      'Target Heart Rate (THR) ranges calculated with the Karvonen method provide structured intensity zones from very light to very hard exercise. Population studies show that most adults achieve improvements in cardiovascular fitness, blood pressure, and overall endurance when training consistently within moderate to hard zones (≈40–85% HRR). Very light activity is statistically common in older adults or beginners, while vigorous activity is more common among trained or athletic individuals. Long-term population data confirm that maintaining activity within these ranges is strongly associated with reduced risk of cardiovascular disease and premature mortality.',
     );
     setThrStatisticalInterpretation(
-      "The Karvonen formula adjusts training intensity based on both resting and maximum heart rate, providing a more individualized target zone. Medical evidence indicates that exercising within moderate to vigorous zones supports heart health, blood sugar regulation, and weight control, while very light activity may be appropriate for recovery, older adults, or individuals with chronic conditions. Conversely, consistently training above 85% HRR may increase risk of injury, arrhythmia, or overtraining, particularly without medical clearance. These ranges are intended as general guidance; individual health status, medications (e.g., beta-blockers), and physician recommendations should always be considered when applying target heart rate zones."
+      'The Karvonen formula adjusts training intensity based on both resting and maximum heart rate, providing a more individualized target zone. Medical evidence indicates that exercising within moderate to vigorous zones supports heart health, blood sugar regulation, and weight control, while very light activity may be appropriate for recovery, older adults, or individuals with chronic conditions. Conversely, consistently training above 85% HRR may increase risk of injury, arrhythmia, or overtraining, particularly without medical clearance. These ranges are intended as general guidance; individual health status, medications (e.g., beta-blockers), and physician recommendations should always be considered when applying target heart rate zones.',
     );
   };
 
@@ -92,7 +89,7 @@ export default function HeartRateCalculator () {
     },
   ];
 
-  console.log({thrResult});
+  console.log({ thrResult });
 
   return (
     <>
@@ -107,14 +104,21 @@ export default function HeartRateCalculator () {
           onClear={handleClear}
         >
           <div className='flex flex-col gap-3'>
-          <CalculatorInput label='Age' value={age} setValue={setAge} />
-          <CalculatorInput label='Heart Rate' value={heartrate} setValue={setHeartrate} />
+            <CalculatorInput label='Age' value={age} setValue={setAge} />
+            <CalculatorInput
+              label='Heart Rate'
+              value={heartrate}
+              setValue={setHeartrate}
+            />
           </div>{' '}
         </CalculatorContainer>
         <Container heading='Instructions'>
           <ol className='list-decimal text-justify font-content mx-2 mb-3 md:mb-5 text-xs md:text-base'>
             {instructions.map((instruction, index) => (
-              <li dangerouslySetInnerHTML={{ __html: instruction}} key={`Instruction ${index}`}/>
+              <li
+                dangerouslySetInnerHTML={{ __html: instruction }}
+                key={`Instruction ${index}`}
+              />
             ))}
           </ol>
         </Container>
@@ -127,43 +131,54 @@ export default function HeartRateCalculator () {
           <table className='justify-around content-around'>
             <thead>
               <th className='text-left align-bottom pr-5'>
-                <p className='mt-5 align-text-bottom text-red-400 font-content text-xs md:text-base'> Intensity </p>
+                <p className='mt-5 align-text-bottom text-red-400 font-content text-xs md:text-base'>
+                  {' '}
+                  Intensity{' '}
+                </p>
                 <div className='border-b-2 mb-3 border-primary-blue w-10 font-content' />
               </th>
               <th className='text-left align-bottom pr-10 md:pr-20 md:pl-20 font-content text-xs md:text-base'>
-                <p className='mt-5 text-primary-blue align-text-bottom'> Heart Rate Reserve </p>
+                <p className='mt-5 text-primary-blue align-text-bottom'>
+                  {' '}
+                  Heart Rate Reserve{' '}
+                </p>
                 <div className='border-b-2 mb-3 border-primary-yellow w-10 font-content' />
               </th>
               <th className='text-left align-bottom pr-5'>
-                <p className='mt-5 text-green-400 align-text-bottom font-content text-xs md:text-base'> Target Heart Rate </p>
+                <p className='mt-5 text-green-400 align-text-bottom font-content text-xs md:text-base'>
+                  {' '}
+                  Target Heart Rate{' '}
+                </p>
                 <div className='border-b-2 mb-3 border-primary-blue w-10 font-content' />
               </th>
             </thead>
             <tbody>
               <tr>
-              <td>
-                <li className='list-none font-content text-xs md:text-base'> 
-                <ol> Very Light </ol>
-                <ol> Light </ol>
-                <ol> Moderate </ol>
-                <ol> Hard </ol>
-                <ol> Very Hard </ol>
-                </li>
-              </td>
-              <td className='text-left mr-5 md:text-center md:pr-20 md:pl-20 font-content text-xs md:text-base'>
-                <ol> 19% & less </ol>
-                <ol> 20% - 39% </ol>
-                <ol> 40% - 59% </ol>
-                <ol> 60% - 84% </ol>
-                <ol> 85% & more </ol>
-              </td>
-              <td>
-                <p className='text-left font-content md:text-center text-xs md:text-base'> 
-                  {thrResult?.map((results, index) => (
-                  <li key={`${index}`} className='list-none'>{results}</li>
-                  ))}
-                </p>
-              </td>
+                <td>
+                  <li className='list-none font-content text-xs md:text-base'>
+                    <ol> Very Light </ol>
+                    <ol> Light </ol>
+                    <ol> Moderate </ol>
+                    <ol> Hard </ol>
+                    <ol> Very Hard </ol>
+                  </li>
+                </td>
+                <td className='text-left mr-5 md:text-center md:pr-20 md:pl-20 font-content text-xs md:text-base'>
+                  <ol> 19% & less </ol>
+                  <ol> 20% - 39% </ol>
+                  <ol> 40% - 59% </ol>
+                  <ol> 60% - 84% </ol>
+                  <ol> 85% & more </ol>
+                </td>
+                <td>
+                  <p className='text-left font-content md:text-center text-xs md:text-base'>
+                    {thrResult?.map((results, index) => (
+                      <li key={`${index}`} className='list-none'>
+                        {results}
+                      </li>
+                    ))}
+                  </p>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -180,7 +195,6 @@ export default function HeartRateCalculator () {
           title='Statistical Interpretation'
         />{' '}
         <Citation citations={citations} title='References' />
-
       </div>
     </>
   );

@@ -87,12 +87,12 @@ export default function WaterIntakeCalculator () {
     setWaterIntakeCategory(category);
     setIntakeMedicalInterpretation(interpretations.medical);
     setIntakeStatisticalInterpretation(interpretations.statistical);
-    
-    if (isMobile && resultsRef.current) {
+
+    if (resultsRef.current) {
       setTimeout(() => {
         resultsRef.current.scrollIntoView({
           behavior: 'smooth',
-          block: 'start',
+          block: 'center',
         });
       }, 100);
     }
@@ -169,7 +169,10 @@ export default function WaterIntakeCalculator () {
         <Container heading='Instructions'>
           <ol className='list-decimal text-justify font-content mx-2 mb-3 md:mb-5 text-xs md:text-base'>
             {instructions.map((instruction, index) => (
-              <li dangerouslySetInnerHTML={{ __html: instruction}} key={`Instruction ${index}`}/>
+              <li
+                dangerouslySetInnerHTML={{ __html: instruction }}
+                key={`Instruction ${index}`}
+              />
             ))}
           </ol>
         </Container>
@@ -178,7 +181,10 @@ export default function WaterIntakeCalculator () {
       <div className='mx-2 mb-3 md:mb-5 text-xs md:text-base font-content flex flex-row mt-10 justify-between self-center'>
         <Container heading='Results' ref={resultsRef}>
           <div className='right-0 border-b-2 border-primary-yellow w-25 absolute' />
-          <p className='mt-5 text-center text-xs md:text-base'> Estimated Water Intake: </p>
+          <p className='mt-5 text-center text-xs md:text-base'>
+            {' '}
+            Estimated Water Intake:{' '}
+          </p>
           <p className='mb-3 text-center text-xs md:text-base'>
             {' '}
             <p className={getIntakeCategoryColor(waterIntakeCategory)}>
