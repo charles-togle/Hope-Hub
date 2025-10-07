@@ -81,7 +81,7 @@ export const UpperBodyVideos = [
       do: ['Sit up tall.', 'Pull with your back muscles.'],
       dont: ["Don't lean back too far.", "Don't pull behind your head."],
     },
-    videoLink: 'https://www.youtube.com/embed/Vbzz344VUpM?si=A52Ghy2KprbX7hdk',
+    videoLink: 'https://www.youtube.com/embed/6maIaHYtLd4?si=UksueGMNKRf_mQ60',
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
@@ -102,7 +102,7 @@ export const UpperBodyVideos = [
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail: '',
+    thumbnail: 'https://i.ibb.co/Z6Nps4JD/bicep-curl-Cover.jpg',
     url: 'bicep-curl',
     duration: '00:40',
     title: 'Bicep Curl',
@@ -112,7 +112,7 @@ export const UpperBodyVideos = [
       do: ['Keep your elbows close to your body.', 'Lift slowly.'],
       dont: ["Don't swing your body.", "Don't use your shoulders."],
     },
-    videoLink: '',
+    videoLink: 'https://www.youtube.com/embed/C8uCppHWkH4?si=x4HUfRiRpPdifPxy',
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
@@ -194,7 +194,7 @@ export const LowerBodyVideos = [
         'Bounce off the back foot.',
       ],
     },
-    videoLink: '',
+    videoLink: 'https://youtube.com/embed/nxiV8yVo4Xc?si=f7zrBzpS32GVMA7j',
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
@@ -216,42 +216,20 @@ export const LowerBodyVideos = [
         'Rush the movement or lose balance.',
       ],
     },
-    videoLink: '',
+    videoLink: 'https://youtube.com/embed/ckqDnz6149I?si=5mM1kl7gBWJ9c6IT',
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
     thumbnail: '',
-    url: 'calf-raises',
-    duration: '00:30',
-    title: 'Calf Raises',
-    description: {
-      howToDoIt:
-        'Stand upright with your feet hip-width apart. Slowly raise your heels off the ground, standing on your toes. Hold for a moment at the top. Lower your heels back down with control.',
-      do: [
-        'Keep your core tight and body tall.',
-        'Use slow, controlled motion.',
-        'Try doing them on a step for a fuller range of motion.',
-      ],
-      dont: [
-        "Don't bounce or rush through the reps.",
-        "Don't roll your ankles outward or inward.",
-        "Don't lean your body forward.",
-      ],
-    },
-    videoLink: '',
-    uploadDate: '2025-07-23T14:00:00.000Z',
-  },
-  {
-    thumbnail: '',
-    url: 'kettle-bell-sumo-deadlift',
+    url: 'kettle-ball-sumo-deadlift',
     duration: '01:18',
-    title: 'Kettle Bell Sumo Deadlift',
+    title: 'Kettle Ball Sumo Deadlift',
     description: {
       howToDoIt: '',
       do: [''],
       dont: [''],
     },
-    videoLink: 'https://youtube.com/embed/v2Cj_Qhq6bk?si=l7u5roCaF1QUAZAl',
+    videoLink: 'https://youtube.com/embed/5iIP07NqnJQ?si=_p2pVHYQI7f_LTPe',
     uploadDate: '2025-08-28T14:02:00.000Z',
   },
 ];
