@@ -3,6 +3,10 @@ export const PhysicalFitnessTestList = [
   {
     title: 'BMI (Weight)',
     key: 'bmiWeight',
+    description: [
+      "**Body Composition** - is the body's relative amount of fat to fat-free mass.",
+      '**Weight** - the heaviness or lightness of a person.',
+    ],
     equipment: ['Weighing Scale'],
     instructionsForTester: [
       'Wear light clothing before weighing.',
@@ -19,8 +23,11 @@ export const PhysicalFitnessTestList = [
   },
   {
     title: 'BMI (Height)',
-
     key: 'bmiHeight',
+    description: [
+      "**Body Composition** - is the body's relative amount of fat to fat-free mass.",
+      '**Height** - the measurement of a person from head to foot.',
+    ],
     equipment: [
       'Tape measure laid flat to a concrete wall where zero points starts on the floor.',
       'L-square; and',
@@ -46,6 +53,10 @@ export const PhysicalFitnessTestList = [
     title: 'Zipper Test (Right hand)',
     key: 'zipperTestRight',
     equipment: ['Ruler'],
+    description: [
+      '**Flexibility** - is the ability of the joints and muscles to move through its full range of motion.',
+      '**Purpose** - to test the flexibility of the shoulder girdle.',
+    ],
     instructionsForTester: [
       'Stand erect.',
       'Raise your right arm, bend your elbow, and reach down across your back as far as possible.',
@@ -80,6 +91,10 @@ export const PhysicalFitnessTestList = [
   {
     title: 'Zipper Test (Left hand)',
     key: 'zipperTestLeft',
+    description: [
+      '**Flexibility** - is the ability of the joints and muscles to move through its full range of motion.',
+      '**Purpose** - to test the flexibility of the shoulder girdle.',
+    ],
     equipment: ['Ruler'],
     instructionsForTester: [
       'Stand erect.',
@@ -113,6 +128,10 @@ export const PhysicalFitnessTestList = [
   {
     title: 'Sit and Reach (First Attempt)',
     key: 'sitAndReachFirst',
+    description: [
+      '**Flexibility** - is the ability of the joints and muscles to move through its full range of motion.',
+      '**Purpose** - to test the flexibility of the lower extremities (particularly the trunk).',
+    ],
     equipment: ['Tape measure or meter stick'],
     instructionsForTester: [
       'Sit on the floor with back, head and shoulders flat on the wall. Feet are 12 inches apart.',
@@ -149,6 +168,10 @@ export const PhysicalFitnessTestList = [
   {
     title: 'Sit and Reach (Second Attempt)',
     key: 'sitAndReachSecond',
+    description: [
+      '**Flexibility** - is the ability of the joints and muscles to move through its full range of motion.',
+      '**Purpose** - to test the flexibility of the lower extremities (particularly the trunk).',
+    ],
     equipment: ['Tape measure or meter stick'],
     instructionsForTester: [
       'Sit on the floor with back, head and shoulders flat on the wall. Feet are 12 inches apart.',
@@ -185,6 +208,13 @@ export const PhysicalFitnessTestList = [
   {
     title: 'Pre 3-Minute Step Test',
     key: 'preStepTest',
+    description: [
+      `**Cardiovascular endurance** - is the ability of the heart, lungs and blood vessels to
+      deliver oxygen to working muscles and tissues, as well as the ability of those
+      muscles and tissues to utilize the oxygen. Endurance may also refer to the
+      ability of the muscle to do repeated work without fatigue.`,
+      '**Purpose** - Purpose - to measure cardiovascular endurance before the 3-minute step test.',
+    ],
     equipment: [
       'Stopwatch or timer',
       'Drum, clapper, clicker, metronome with speaker or any similar device',
@@ -210,6 +240,13 @@ export const PhysicalFitnessTestList = [
   {
     title: '3-Minute Step Test',
     key: 'stepTest',
+    description: [
+      `**Cardiovascular endurance** - is the ability of the heart, lungs and blood vessels to
+      deliver oxygen to working muscles and tissues, as well as the ability of those
+      muscles and tissues to utilize the oxygen. Endurance may also refer to the
+      ability of the muscle to do repeated work without fatigue.`,
+      '**Purpose** - Purpose - to measure cardiovascular endurance after the 3-minute step test.',
+    ],
     equipment: [
       'Step with a height of 12 inches for secondary and 8 inches for elementaries',
       'Stopwatch or timer',
@@ -243,6 +280,10 @@ export const PhysicalFitnessTestList = [
   {
     title: 'Push-Up',
     key: 'pushUp',
+    description: [
+      '**Strength** - is the ability of the muscle to generate force against physical objects.',
+      '**Purpose** - to measure strength of upper extremities',
+    ],
     equipment: ['Exercise mats of any clean mat'],
     instructionsForTester: [
       'Lie down on the mat; face down in standard push-up position: palms on the mat about shoulder width, fingers pointing forward, and legs straight, parallel, and slightly apart, with the toes supporting the feet.',
@@ -303,6 +344,10 @@ export const PhysicalFitnessTestList = [
   {
     title: 'Basic Plank',
     key: 'basicPlank',
+    description: [
+      '**Muscular Endurance** - is the ability of the muscle to perform continuous without fatigue.',
+      '**Purpose** - to measure strength/stability of the core muscles',
+    ],
     purpose: ['To measure strength/stability of the core muscles'],
     equipment: ['Exercise mats or any clean mat, stop watch/time piece'],
     instructionsForTester: [
