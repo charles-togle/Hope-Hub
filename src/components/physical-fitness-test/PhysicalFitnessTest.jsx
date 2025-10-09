@@ -22,9 +22,21 @@ const InstructionsGroup = memo(({ text, array, id }) => (
   <div id={id}>
     <h3 className='text-base font-semibold'>{text}</h3>
     <ol className='list-decimal ml-6'>
-      {array.map((item, index) => (
-        <li key={`${text} ${index}`}>{item}</li>
-      ))}
+      {array.map((item, index) => {
+        if (typeof item !== 'string') {
+          return <li key={`${text} ${index}`}>{item}</li>;
+        }
+        const segments = item.split(/(\*\*[^*]+\*\*)/g);
+
+        const content = segments.map((seg, segIndex) => {
+          if (seg.startsWith('**') && seg.endsWith('**')) {
+            return <strong key={segIndex}>{seg.slice(2, -2)}</strong>;
+          }
+          return <span key={segIndex}>{seg}</span>;
+        });
+
+        return <li key={`${text} ${index}`}>{content}</li>;
+      })}
     </ol>
   </div>
 ));
@@ -59,6 +71,7 @@ export default function PhysicalFitnessTest ({
 
   const {
     title,
+    description,
     equipment,
     instructionsForPartner,
     instructionsForTester,
@@ -396,7 +409,9 @@ export default function PhysicalFitnessTest ({
             allow='autoplay'
           ></iframe>
           <div id='instructions' className='col-span-2 text-sm font-medium'>
-            <h2 className='text-xl font-bold mb-3'>Instructions:</h2>
+            <h2 className='text-xl font-bold'>Description:</h2>
+            <InstructionsGroup text='' array={description} id='description' />
+            <h2 className='text-xl font-bold mt-3'>Instructions:</h2>
             <InstructionsGroup
               text='Equipment'
               array={equipment}

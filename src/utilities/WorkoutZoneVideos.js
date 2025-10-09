@@ -121,7 +121,12 @@ export const UpperBodyVideos = [
     duration: '00:33',
     title: 'Russian Twist',
     description: {
-      howToDoIt: '',
+      howToDoIt: `1. Sit on the floor with knees bent and feet flat or lifted.\n
+                  2. Lean back slightly, keeping your back straight.\n
+                  3. Clasp your hands or hold a weight, and rotate your torso to one side.\n
+                  4. Return to the center, then twist to the other side.\n
+                  5. Repeat, alternating sides.
+`,
       do: [''],
       dont: [''],
     },
