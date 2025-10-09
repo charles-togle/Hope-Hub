@@ -92,11 +92,11 @@ export default function BMICalculator () {
     setBmiStatisticalInterpretation(interpretations.statistical);
 
     // Scroll to results on mobile after successful calculation
-    if (isMobile && resultsRef.current) {
+    if (resultsRef.current) {
       setTimeout(() => {
         resultsRef.current.scrollIntoView({
           behavior: 'smooth',
-          block: 'start',
+          block: 'center',
         });
       }, 100);
     }
@@ -175,7 +175,10 @@ export default function BMICalculator () {
         <Container heading='Instructions'>
           <ol className='list-decimal text-justify font-content mx-2 mb-3 md:mb-5 text-xs md:text-base'>
             {instructions.map((instruction, index) => (
-              <li dangerouslySetInnerHTML={{ __html: instruction}} key={`Instruction ${index}`}/>
+              <li
+                dangerouslySetInnerHTML={{ __html: instruction }}
+                key={`Instruction ${index}`}
+              />
             ))}
           </ol>
         </Container>
@@ -211,7 +214,6 @@ export default function BMICalculator () {
           title='Statistical Interpretation'
         />{' '}
         <Citation citations={citations} title='References' />
-
       </div>
     </>
   );

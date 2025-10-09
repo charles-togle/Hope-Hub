@@ -47,11 +47,11 @@ export default function IBWCalculator () {
 
       setResults(result);
 
-      if (isMobile && resultsRef.current) {
+      if (resultsRef.current) {
         setTimeout(() => {
           resultsRef.current.scrollIntoView({
             behavior: 'smooth',
-            block: 'start',
+            block: 'center',
           });
         }, 100);
       }
@@ -125,7 +125,10 @@ export default function IBWCalculator () {
           <div className=''>
             <ol className='list-decimal text-justify font-content mx-2 mb-3 md:mb-5 text-xs md:text-base'>
               {instructions.map((instruction, index) => (
-                <li dangerouslySetInnerHTML={{ __html: instruction}} key={`Instruction ${index}`}/>
+                <li
+                  dangerouslySetInnerHTML={{ __html: instruction }}
+                  key={`Instruction ${index}`}
+                />
               ))}
             </ol>
           </div>
@@ -146,11 +149,17 @@ export default function IBWCalculator () {
             <thead>
               <tr>
                 <th className='text-left w-1/2'>
-                  <p className='mt-5 text-red-400 font-content text-xs md:text-base'> Formula </p>
+                  <p className='mt-5 text-red-400 font-content text-xs md:text-base'>
+                    {' '}
+                    Formula{' '}
+                  </p>
                   <div className='border-b-2 mb-3 border-primary-blue w-10 font-content' />
                 </th>
                 <th className='pl-3 text-left w-1/2'>
-                  <p className='mt-5 text-green-400 font-content text-xs md:text-base'> Ideal Weight </p>
+                  <p className='mt-5 text-green-400 font-content text-xs md:text-base'>
+                    {' '}
+                    Ideal Weight{' '}
+                  </p>
                   <div className='border-b-2 mb-3 border-primary-blue w-10 font-content' />
                 </th>
               </tr>
@@ -164,7 +173,9 @@ export default function IBWCalculator () {
                       <td className='pl-1 md:pl-3 text-xs md:text-base font-content border-r-2 border-primary-yellow'>
                         {formula}
                       </td>
-                      <td className='pl-5 md:pl-6 text-xs md:text-base'>{value} kg</td>
+                      <td className='pl-5 md:pl-6 text-xs md:text-base'>
+                        {value} kg
+                      </td>
                     </tr>
                   ))}
                 </>
@@ -195,7 +206,7 @@ export default function IBWCalculator () {
           content={ibwStatisticalInterpretation}
           title='Statistical Interpretation'
         />
-      <Citation citations={citations} title='References' />
+        <Citation citations={citations} title='References' />
       </div>
     </>
   );

@@ -113,11 +113,11 @@ export default function BodyFatPercentageCalculator () {
     setFatPercentageMedicalInterpretation(interpretations.medical);
     setFatPercentageStatisticalInterpretation(interpretations.statistical);
 
-    if (isMobile && resultsRef.current) {
+    if (resultsRef.current) {
       setTimeout(() => {
         resultsRef.current.scrollIntoView({
           behavior: 'smooth',
-          block: 'start',
+          block: 'center',
         });
       }, 100);
     }
@@ -227,7 +227,10 @@ export default function BodyFatPercentageCalculator () {
         <Container heading='Instructions'>
           <ol className='list-decimal text-justify mx-2 mb-3 md:mb-5 font-content text-xs md:text-base'>
             {instructions.map((instruction, index) => (
-              <li dangerouslySetInnerHTML={{ __html: instruction}} key={`Instruction ${index}`}/>
+              <li
+                dangerouslySetInnerHTML={{ __html: instruction }}
+                key={`Instruction ${index}`}
+              />
             ))}
           </ol>
         </Container>
@@ -280,8 +283,14 @@ export default function BodyFatPercentageCalculator () {
         <Container heading='Data Reference'>
           <div className='mx-2 mb-3 md:mb-5 w-auto font-content text-xs md:text-base'>
             <div className='relative grid grid-cols-2 fr gap-3 items-center'>
-              <span className='text-xs md:text-base font-bold'> Percentage </span>{' '}
-              <span className='text-xs md:text-base font-bold'> Bar Visualizer </span>
+              <span className='text-xs md:text-base font-bold'>
+                {' '}
+                Percentage{' '}
+              </span>{' '}
+              <span className='text-xs md:text-base font-bold'>
+                {' '}
+                Bar Visualizer{' '}
+              </span>
               <div className='border-b-2 border-primary-blue w-10 self-center' />{' '}
               <div className='border-b-2 border-primary-blue w-10 self-center' />
               <span className='flex  text-red-800'>

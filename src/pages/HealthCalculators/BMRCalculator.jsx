@@ -53,10 +53,7 @@ export default function BMRCalculator () {
   const isMobile = useMobile();
 
   const { BMR } = highlightedData;
-  const {
-    description,
-    instructions,
-  } = BMR;
+  const { description, instructions } = BMR;
   const formulaVariants = [
     'Mifflin St Jeor',
     'Revised Harris-Benedict',
@@ -126,11 +123,11 @@ export default function BMRCalculator () {
     setMaintainingCalories(calorieGoals.weightGain['Maintain Weight']);
 
     // Scroll to results on mobile after successful calculation
-    if (isMobile && resultsRef.current) {
+    if (resultsRef.current) {
       setTimeout(() => {
         resultsRef.current.scrollIntoView({
           behavior: 'smooth',
-          block: 'start',
+          block: 'center',
         });
       }, 100);
     }
@@ -168,7 +165,6 @@ export default function BMRCalculator () {
       link: 'https://doi.org/10.1093/ajcn/51.2.241',
     },
   ];
-
 
   return (
     <>
@@ -228,7 +224,10 @@ export default function BMRCalculator () {
         <Container heading='Instructions'>
           <ol className='list-decimal font-content mx-2 mb-3 md:mb-5 text-xs md:text-basetext-xs md:text-base text-justify'>
             {instructions.map((instruction, index) => (
-              <li dangerouslySetInnerHTML={{ __html: instruction}} key={`Instruction ${index}`}/>
+              <li
+                dangerouslySetInnerHTML={{ __html: instruction }}
+                key={`Instruction ${index}`}
+              />
             ))}
           </ol>
         </Container>
@@ -253,7 +252,7 @@ export default function BMRCalculator () {
             Calories / day
           </p>
         </Container>{' '}
-        <Container heading='BMR Caloric Levels' >
+        <Container heading='BMR Caloric Levels'>
           <table className='w-auto mx-2 mb-3 md:mb-5 border-collapse'>
             <thead>
               <tr className='border-b-2 border-primary-yellow'>
@@ -267,7 +266,7 @@ export default function BMRCalculator () {
             </thead>
             <tbody>
               {activityLevels.map((level, index) => (
-                <tr key={index} >
+                <tr key={index}>
                   <td className='py-2 pr-2 text-xs md:text-base font-content text-b border-r-2 border-primary-yellow'>
                     {level.label}
                   </td>
@@ -291,7 +290,7 @@ export default function BMRCalculator () {
           content='Statistically, BMR varies widely across the population and is influenced by biological and lifestyle factors. For example, younger individuals, males, and those with more muscle mass tend to have higher BMRs, while older adults or individuals with less lean mass typically have lower rates. There are no standard classification ranges (such as “low” or “high”) for BMR, since calorie requirements are personal and context-specific. Instead, your result should be viewed as a baseline estimate of how much energy your body needs before accounting for physical activity. When combined with your activity level, it helps determine your Total Daily Energy Expenditure (TDEE).'
           title='Statistical Interpretation'
         />
-      <Citation citations={citations} title='References' />
+        <Citation citations={citations} title='References' />
       </div>
     </>
   );
