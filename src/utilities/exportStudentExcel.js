@@ -34,7 +34,7 @@ function formatPFTTest (testData) {
   const score = testData.record !== undefined ? testData.record : 'N/A';
   const classification = testData.classification || 'N/A';
 
-  return `Score: ${score}\nClassification: ${classification}`;
+  return `Score: ${score}, Classification: ${classification}`;
 }
 
 /**
@@ -63,7 +63,7 @@ function formatBMI (heightData, weightData) {
     else classification = 'Obese';
   }
 
-  return `Height: ${height}cm\nWeight: ${weight}kg\nBMI: ${bmi}\nClassification: ${classification}`;
+  return `Height: ${height}cm, Weight: ${weight}kg, BMI: ${bmi}, Classification: ${classification}`;
 }
 
 /**
@@ -79,7 +79,7 @@ function formatStepTest (preStepData, stepData) {
   const after =
     stepData.record !== undefined ? `${stepData.record} BPM` : 'N/A';
 
-  return `Before: ${before}\nAfter: ${after}`;
+  return `Before: ${before} After: ${after}`;
 }
 
 /**
@@ -283,23 +283,6 @@ export function downloadExcel (workbookData, filename) {
     colWidths.push({ wch: Math.min(maxWidth + 2, 50) }); // cap at 50
   }
   ws['!cols'] = colWidths;
-
-  // Set row heights for cells with multi-line content
-  const rowHeights = [];
-  for (let R = range.s.r; R <= range.e.r; ++R) {
-    let maxLines = 1;
-    for (let C = range.s.c; C <= range.e.c; ++C) {
-      const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
-      const cell = ws[cellAddress];
-      if (cell && cell.v) {
-        const lines = cell.v.toString().split('\n').length;
-        maxLines = Math.max(maxLines, lines);
-      }
-    }
-    // Set row height based on number of lines (15 points per line)
-    rowHeights.push({ hpt: maxLines * 15 });
-  }
-  ws['!rows'] = rowHeights;
 
   // Apply styles to all cells
   for (let R = range.s.r; R <= range.e.r; ++R) {

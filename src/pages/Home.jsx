@@ -41,11 +41,8 @@ export default function Home () {
             </h1>
             <hr className='w-2/3 border-1 border-primary-yellow mt-2 mb-3' />
             <p className='text-xs lg:text-xl'>
-              “Great things come <br /> from hard work and <br /> perseverance.
-              No excuses.”
-            </p>
-            <p className='text-sm lg:text-xl font-semibold italic'>
-              --Kobe Bryant--
+              "Building a community of <br /> health, fitness, and <br />{' '}
+              lifelong learning."
             </p>
             <button
               className='py-1 px-2 text-sm mt-3 bg-secondary-dark-blue text-white mr-auto ml-auto rounded-lg hover:brightness-85 lg:text-base lg:px-6 lg:py-3  lg:mt-10 '

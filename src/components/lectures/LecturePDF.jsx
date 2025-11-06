@@ -1,5 +1,6 @@
 import { Timer } from '@/components/utilities/Timer';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export default function LecturePDF ({
   userID,
@@ -13,6 +14,7 @@ export default function LecturePDF ({
   onTimerEnd = () => {},
 }) {
   const navigate = useNavigate();
+  const [isPdfLoading, setIsPdfLoading] = useState(true);
 
   return (
     <div
@@ -27,10 +29,21 @@ export default function LecturePDF ({
         id='lecture-content'
         className='grid min-h-full w-full p-2 pt-5 pb-5 lg:p-10 bg-background lg:grid-cols-[65%_30%] lg:grid-row-2 lg:gap-x-10 md:grid-cols-[65%_30%] md:grid-row-2 md:gap-x-5'
       >
-        <iframe
-          src={pdfLink}
-          className='mt-5 row-start-2 h-150 rounded-lg w-full lg:h-full lg:row-span-2 lg:mt-0 md:row-span-2'
-        ></iframe>
+        <div className='mt-5 row-start-2 h-150 rounded-lg w-full lg:h-full lg:row-span-2 lg:mt-0 md:row-span-2 relative'>
+          {isPdfLoading && (
+            <div className='absolute inset-0 bg-gray-200 rounded-lg animate-pulse flex items-center justify-center'>
+              <div className='text-center'>
+                <div className='w-16 h-16 border-4 border-secondary-dark-blue border-t-transparent rounded-full animate-spin mx-auto mb-4'></div>
+                <p className='text-gray-600 font-content'>Loading PDF...</p>
+              </div>
+            </div>
+          )}
+          <iframe
+            src={pdfLink}
+            className='w-full h-full rounded-lg'
+            onLoad={() => setIsPdfLoading(false)}
+          ></iframe>
+        </div>
         <div
           id='lecture-description'
           className='w-full flex flex-col relative font-content'

@@ -3,7 +3,6 @@ import VideoHeading from '@/components/workout-zone/VideoHeading';
 import VideoList from '@/components/workout-zone/VideoList';
 import VideoPlayer from '@/components/workout-zone/VideoPlayer';
 import Footer from '@/components/Footer';
-import Content from '@/components/health-calculators/Content';
 import {
   WarmUpVideo,
   UpperBodyVideos,
