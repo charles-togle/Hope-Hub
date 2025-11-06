@@ -178,7 +178,7 @@ export default function AddClassCode ({ onAdd = () => {}, setModalShown }) {
           className='w-full h-full absolute top-0 bg-black opacity-40 -z-1'
         ></div>
         <div className='md:scale-90 scale-90 lg:scale-100'>
-          <FormContainer ref={formRef}>
+          <FormContainer ref={formRef} className='max-w-full! '>
             <FormHeading heading='Create a New Class'></FormHeading>{' '}
             <FormInput
               value={className}
