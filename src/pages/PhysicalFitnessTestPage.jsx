@@ -183,7 +183,7 @@ export function PhysicalFitnessTestPage () {
   }
 
   return (
-    <div id='physical-fitness-test-container'>
+    <div id='physical-fitness-test-container' className=''>
       <PageHeading text='Physical Fitness Test' />
       {isDataReady && (
         <div

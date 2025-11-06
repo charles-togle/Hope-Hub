@@ -12,6 +12,7 @@ import supabase from '@/client/supabase';
 import { useUserId } from '@/hooks/useUserId';
 import { memo } from 'react';
 import { useCallback } from 'react';
+import { useMobile } from '@/hooks/useMobile';
 
 const parseTime = timeString => {
   const [hours, minutes] = timeString.split(':').map(Number);
@@ -68,6 +69,13 @@ export default function PhysicalFitnessTest ({
   const navigate = useNavigate();
   const userId = useUserId();
   const isTeacher = userType === 'teacher';
+  const isMobile = useMobile();
+
+  const scrollToTop = useCallback(() => {
+    if (isMobile) {
+      window.dispatchEvent(new Event('scrollPFTContainerToTop'));
+    }
+  }, [isMobile]);
 
   const {
     title,
@@ -190,9 +198,10 @@ export default function PhysicalFitnessTest ({
 
   const handleBackForTeacher = useCallback(() => {
     if (userType === 'teacher' && Number(index) !== 0) {
+      scrollToTop();
       navigate(`/physical-fitness-test/test/${Number(index) - 1}`);
     }
-  });
+  }, [userType, index, scrollToTop, navigate]);
   const handleSubmit = useCallback(async () => {
     if (!userId) return;
     setCurrentTime(
@@ -284,6 +293,7 @@ export default function PhysicalFitnessTest ({
       return updatedPhysicalFitnessData;
     });
     if (physicalFitnessData.finishedTestIndex.length >= Number(index)) {
+      scrollToTop();
       navigate(`/physical-fitness-test/test/${Number(index) + 1}`);
       setTimerTime(1200);
       setTestResults({
@@ -304,6 +314,7 @@ export default function PhysicalFitnessTest ({
     navigate,
     currentTime,
     timerTime,
+    scrollToTop,
   ]);
 
   const handleNextExerciseTeacher = () => {
@@ -338,6 +349,7 @@ export default function PhysicalFitnessTest ({
       return updatedPhysicalFitnessData;
     });
     if (physicalFitnessData.finishedTestIndex.length >= Number(index)) {
+      scrollToTop();
       navigate(`/physical-fitness-test/test/${Number(index) + 1}`);
       setTimerTime(1200);
       setTestResults({
@@ -364,7 +376,7 @@ export default function PhysicalFitnessTest ({
   }, [handleSubmit]);
 
   return (
-    <div id='test-container' className='min-w-[100%]'>
+    <div id='test-container' className='min-w-[100%] h-full '>
       {showAlert && (
         <AlertMessage
           text={alertMessage}

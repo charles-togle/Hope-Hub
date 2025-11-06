@@ -58,15 +58,12 @@ export default function AddClassCode ({ onAdd = () => {}, setModalShown }) {
   const userID = useUserId();
 
   function generateClassCode () {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const numbers = '0123456789';
+    const CHARS =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
     let code = '';
-    for (let i = 0; i < 3; i++) {
-      code += letters.charAt(Math.floor(Math.random() * letters.length));
-    }
-    for (let i = 0; i < 3; i++) {
-      code += numbers.charAt(Math.floor(Math.random() * numbers.length));
+    for (let i = 0; i < 6; i++) {
+      code += CHARS.charAt(Math.floor(Math.random() * CHARS.length));
     }
     return code;
   }
