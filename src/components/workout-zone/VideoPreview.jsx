@@ -30,7 +30,7 @@ export default function VideoPreview ({
   return (
     <div
       id='video-preview'
-      className='aspect-video pb-5 lg:pb-0 lg:min-w-10 max-w-full hover:brightness-80 hover:rounded-none h-fit'
+      className='aspect-video pb-5 lg:pb-0 lg:min-w-10 lg:w-full w-80 hover:brightness-80 hover:rounded-none h-fit'
     >
       <div className='relative flex flex-1'>
         {loading ? (
