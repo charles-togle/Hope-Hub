@@ -32,19 +32,21 @@ export default function VideoPreview ({
       id='video-preview'
       className='aspect-video pb-5 lg:pb-0 lg:min-w-10 max-w-full hover:brightness-80 hover:rounded-none h-fit'
     >
-      <div className='relative w-fit'>
+      <div className='relative flex flex-1'>
         {loading ? (
           <div className='aspect-video lg:min-w-10 animate-pulse bg-gray-300 h-35 lg:h-50 rounded-lg'></div>
         ) : (
-          <img
-            src={thumbnail}
-            className=' rounded-lg hover:rounded-none aspect-video h-35 lg:h-50'
-            alt={title}
-          />
+          <div className='aspect-video rounded-lg'>
+            <img
+              src={thumbnail}
+              className='w-full h-full object-cover rounded-lg'
+              alt={title}
+            />
+            <p className='absolute right-2 bottom-2 z-1 text-white bg-black p-1 text-sm opacity-95 font-medium'>
+              {duration}
+            </p>
+          </div>
         )}
-        <p className='absolute bottom-2 right-2 z-1 text-white bg-black p-1 text-sm opacity-95 font-medium'>
-          {duration}
-        </p>
       </div>
       <div>
         <p className='font-content font-semibold'>{title}</p>

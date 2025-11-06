@@ -1,17 +1,7 @@
-// Exercise cover images
-import coverCloseGripLatPulldown from '@/assets/covers/exercises/cover_close_grip_lat_pulldown.jpg';
-import coverDeadlift from '@/assets/covers/exercises/cover_deadlift.jpg';
-import coverInclineChestPress from '@/assets/covers/exercises/cover_incline_chest_press.jpg';
-import coverShoulderPress from '@/assets/covers/exercises/cover_shoulder_press.jpg';
-import coverSquats from '@/assets/covers/exercises/cover_squats.jpg';
-import coverStandingDumbbellOverheadPress from '@/assets/covers/exercises/cover_standing_dumbbell_overhead_press.jpg';
-import coverTricepsPulldown from '@/assets/covers/exercises/cover_triceps_pulldown.jpg';
-import coverWarmUps from '@/assets/covers/exercises/cover_warm_ups.jpg';
-// ...existing code...
-
 export const WarmUpVideo = [
   {
-    thumbnail: 'https://i.ibb.co/xSxG7fmx/cover-warm-ups.jpg',
+    thumbnail:
+      'https://pcgsdfbkpnfgcvdopgzz.supabase.co/storage/v1/object/public/WorkoutZoneCovers/cover-warm-ups.jpg',
     url: 'warm-up',
     duration: '02:17',
     title: 'Warm Up',
@@ -28,7 +18,8 @@ export const WarmUpVideo = [
 
 export const UpperBodyVideos = [
   {
-    thumbnail: 'https://i.ibb.co/ynG7F3CB/cover-shoulder-press.jpg',
+    thumbnail:
+      'https://pcgsdfbkpnfgcvdopgzz.supabase.co/storage/v1/object/public/WorkoutZoneCovers/cover-shoulder-press.jpg',
     url: 'shoulder-press',
     duration: '00:44',
     title: 'Shoulder Press',
@@ -42,7 +33,8 @@ export const UpperBodyVideos = [
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail: 'https://i.ibb.co/DDHc47YS/cover-incline-chest-press.jpg',
+    thumbnail:
+      'https://pcgsdfbkpnfgcvdopgzz.supabase.co/storage/v1/object/public/WorkoutZoneCovers/cover-incline-chest-press.jpg',
     url: 'incline-chest-press',
     duration: '00:56',
     title: 'Incline Chest Press',
@@ -57,7 +49,7 @@ export const UpperBodyVideos = [
   },
   {
     thumbnail:
-      'https://i.ibb.co/CpcJmhdS/cover-standing-dumbbell-overhead-press.jpg',
+      'https://pcgsdfbkpnfgcvdopgzz.supabase.co/storage/v1/object/public/WorkoutZoneCovers/cover-standing-dumbbell-overhead-press.jpg',
     url: 'standing-dumbell-overhead',
     duration: '00:51',
     title: 'Standing Dumbbell Overhead Press',
@@ -71,7 +63,8 @@ export const UpperBodyVideos = [
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail: 'https://i.ibb.co/GYkDL0B/cover-close-grip-lat-pulldown.jpg',
+    thumbnail:
+      'https://pcgsdfbkpnfgcvdopgzz.supabase.co/storage/v1/object/public/WorkoutZoneCovers/cover-close-grip-lat-pulldown.jpg',
     url: 'close-grip-lat-pulldown',
     duration: '00:49',
     title: 'Close Grip Lat Pulldown',
@@ -85,7 +78,8 @@ export const UpperBodyVideos = [
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail: 'https://i.ibb.co/yBYtWMsK/cover-triceps-pulldown.jpg',
+    thumbnail:
+      'https://pcgsdfbkpnfgcvdopgzz.supabase.co/storage/v1/object/public/WorkoutZoneCovers/cover-triceps-pulldown.jpg',
     url: 'triceps-pulldown',
     duration: '00:33',
     title: 'Triceps Pulldown',
@@ -102,7 +96,8 @@ export const UpperBodyVideos = [
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail: 'https://i.ibb.co/Z6Nps4JD/bicep-curl-Cover.jpg',
+    thumbnail:
+      'https://pcgsdfbkpnfgcvdopgzz.supabase.co/storage/v1/object/public/WorkoutZoneCovers/cover-bicep-curl.jpg',
     url: 'bicep-curl',
     duration: '00:40',
     title: 'Bicep Curl',
@@ -116,7 +111,8 @@ export const UpperBodyVideos = [
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail: '',
+    thumbnail:
+      'https://pcgsdfbkpnfgcvdopgzz.supabase.co/storage/v1/object/public/WorkoutZoneCovers/cover-russian-twist.png',
     url: 'russian-twist',
     duration: '00:33',
     title: 'Russian Twist',
@@ -137,7 +133,8 @@ export const UpperBodyVideos = [
 
 export const LowerBodyVideos = [
   {
-    thumbnail: 'https://i.ibb.co/pkNrbDw/cover-deadlift.jpg',
+    thumbnail:
+      'https://pcgsdfbkpnfgcvdopgzz.supabase.co/storage/v1/object/public/WorkoutZoneCovers/cover-deadlift.jpg',
     url: 'deadlift',
     duration: '01:08',
     title: 'Deadlifts',
@@ -159,7 +156,8 @@ export const LowerBodyVideos = [
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail: 'https://i.ibb.co/5g2LSrx9/cover-squats.jpg',
+    thumbnail:
+      'https://pcgsdfbkpnfgcvdopgzz.supabase.co/storage/v1/object/public/WorkoutZoneCovers/cover-squats.jpg',
     url: 'squats',
     duration: '00:43',
     title: 'Squats',
@@ -181,7 +179,8 @@ export const LowerBodyVideos = [
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail: '',
+    thumbnail:
+      'https://pcgsdfbkpnfgcvdopgzz.supabase.co/storage/v1/object/public/WorkoutZoneCovers/cover-lunges.png',
     url: 'lunges',
     duration: '00:50',
     title: 'Lunges',
@@ -203,7 +202,8 @@ export const LowerBodyVideos = [
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail: '',
+    thumbnail:
+      'https://pcgsdfbkpnfgcvdopgzz.supabase.co/storage/v1/object/public/WorkoutZoneCovers/cover-split-squat.png',
     url: 'split-squats',
     duration: '00:48',
     title: 'Split Squats',
@@ -225,7 +225,8 @@ export const LowerBodyVideos = [
     uploadDate: '2025-07-23T14:00:00.000Z',
   },
   {
-    thumbnail: '',
+    thumbnail:
+      'https://pcgsdfbkpnfgcvdopgzz.supabase.co/storage/v1/object/public/WorkoutZoneCovers/cover-kettleball-sumo-deadlift.png',
     url: 'kettle-ball-sumo-deadlift',
     duration: '01:18',
     title: 'Kettle Ball Sumo Deadlift',

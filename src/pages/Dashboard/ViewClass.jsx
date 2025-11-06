@@ -10,6 +10,12 @@ import { useUserId } from '@/hooks/useUserId';
 import supabase from '@/client/supabase';
 import ErrorMessage from '@/components/utilities/ErrorMessage';
 import Loading from '@/components/Loading';
+import {
+  generateStudentExcel,
+  downloadExcel,
+  generateFilename,
+} from '@/utilities/exportStudentExcel';
+import { Download } from 'lucide-react';
 
 const transformDataLecture = data => {
   return data.map(item => ({
@@ -71,6 +77,7 @@ export default function ViewClass () {
   const [headings, setHeadings] = useState([]);
   const [isOwnershipChecked, setIsOwnershipChecked] = useState(false);
   const [hasOwnership, setHasOwnership] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const Filters = ['All', 'Lecture', 'Quiz'];
   const classCode = params.classCode;
 
@@ -141,6 +148,7 @@ export default function ViewClass () {
       setIsLoading(true);
       const allStudentData = await getStudentsByClassCode(classCode);
       const cleanedStudentData = cleanStudentData(allStudentData);
+      console.log('all student data:', allStudentData);
       setActiveStudentData(cleanedStudentData);
       setDefaultStudentData(cleanedStudentData);
     } catch (error) {
@@ -305,6 +313,25 @@ export default function ViewClass () {
     }
   };
 
+  const handleExportClass = async () => {
+    setIsExporting(true);
+    try {
+      const excelData = await generateStudentExcel(
+        defaultStudentData,
+        classCode,
+        lecturesData.length,
+        quizData.length,
+      );
+      const filename = generateFilename('class', classCode);
+      downloadExcel(excelData, filename);
+    } catch (error) {
+      console.error('Error exporting Excel:', error);
+      alert('Failed to export Excel file. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   if (isOwnershipChecked && !hasOwnership && !isLoading) {
     return <ErrorMessage text='Error 404' subText='Class Not Found' />;
   }
@@ -316,11 +343,23 @@ export default function ViewClass () {
   return (
     <section className='parent-container' id='view-class'>
       <div className='content-container w-[90%]!'>
-        <div className='self-start'>
-          <p className='font-heading-small text-3xl text-primary-blue self-start'>
-            Class Code: <span className='text-black'>{classCode}</span>
-          </p>
-          <hr className='h-0 w-50 mt-3 border-1 border-primary-yellow' />
+        <div className='self-start w-full'>
+          <div className='flex items-center justify-between flex-wrap gap-4'>
+            <div>
+              <p className='font-heading-small text-3xl text-primary-blue self-start'>
+                Class Code: <span className='text-black'>{classCode}</span>
+              </p>
+              <hr className='h-0 w-50 mt-3 border-1 border-primary-yellow' />
+            </div>
+            <button
+              onClick={handleExportClass}
+              disabled={isExporting || defaultStudentData.length === 0}
+              className='bg-primary-blue text-white px-6 py-2 rounded-md font-content text-sm flex items-center gap-2 hover:brightness-90 disabled:brightness-75 disabled:cursor-not-allowed transition-all'
+            >
+              <Download className='w-4 h-4' />
+              {isExporting ? 'Exporting...' : 'Export Class Data'}
+            </button>
+          </div>
         </div>{' '}
         <div
           className='self-start mt-5 flex w-full justify-between flex-col lg:flex-row gap-4'

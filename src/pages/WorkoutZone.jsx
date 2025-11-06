@@ -3,7 +3,6 @@ import VideoHeading from '@/components/workout-zone/VideoHeading';
 import VideoList from '@/components/workout-zone/VideoList';
 import VideoPlayer from '@/components/workout-zone/VideoPlayer';
 import Footer from '@/components/Footer';
-import Content from '@/components/health-calculators/Content';
 import {
   WarmUpVideo,
   UpperBodyVideos,
@@ -20,7 +19,11 @@ export default function WorkoutZone () {
   const navigate = useNavigate();
   const { videoUrl } = useParams();
 
-  const combinedVideos = [...UpperBodyVideos, ...LowerBodyVideos];
+  const combinedVideos = [
+    ...WarmUpVideo,
+    ...UpperBodyVideos,
+    ...LowerBodyVideos,
+  ];
 
   useEffect(() => {
     if (videoUrl) {

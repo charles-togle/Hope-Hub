@@ -4,7 +4,7 @@ import FormHeading from '@/components/auth/FormHeading';
 import FormInput from '@/components/auth/FormInput';
 import InputContainer from '../../components/auth/InputContainer';
 import FormButton from '../../components/auth/FormButton';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import supabase from '@/client/supabase';
 import { useNavigate } from 'react-router-dom';
 import useRateLimiter from '@/hooks/useRateLimiter';
@@ -18,9 +18,16 @@ export default function Login () {
   const navigate = useNavigate();
 
   const isRateLimited = useRateLimiter({ minIntervalMs: 5000, maxAttempts: 7 });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDebounced, setIsDebounced] = useState(false);
+  const debounceRef = useRef(null);
+  const errorTimeoutRef = useRef(null);
 
   const handleLogin = async () => {
+    if (isDebounced || isSubmitting) return; // ignore rapid clicks or duplicate submits
+
     setErrorMessage('');
+    setIsSubmitting(true);
 
     const rateLimited = isRateLimited().type;
 
@@ -28,6 +35,10 @@ export default function Login () {
       setErrorMessage(
         'Too many Login attempts. Please wait 5 minutes or try again in a few seconds.',
       );
+      setIsSubmitting(false);
+      // Clear error message after 5 minutes (300000ms)
+      clearTimeout(errorTimeoutRef.current);
+      errorTimeoutRef.current = setTimeout(() => setErrorMessage(''), 300000);
       return;
     }
 
@@ -35,8 +46,18 @@ export default function Login () {
       setErrorMessage(
         'You are attempting too fast. Please wait for 5 seconds and try again',
       );
+      setIsSubmitting(false);
+      // Clear error message after 5 seconds
+      clearTimeout(errorTimeoutRef.current);
+      errorTimeoutRef.current = setTimeout(() => setErrorMessage(''), 5000);
       return;
     }
+
+    // Set debounce after rate limit checks pass
+    setIsDebounced(true);
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => setIsDebounced(false), 1500);
+
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -53,6 +74,8 @@ export default function Login () {
       }
     } catch (err) {
       setErrorMessage('An unexpected error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
   return (
@@ -103,7 +126,11 @@ export default function Login () {
             Forgot Password?
           </button>
         </div>
-        <FormButton text='Login' onClick={handleLogin}></FormButton>
+        <FormButton
+          text={isSubmitting ? 'Logging in...' : 'Login'}
+          onClick={handleLogin}
+          disabled={isSubmitting || isDebounced}
+        ></FormButton>
       </FormContainer>
     </AuthContainer>
   );
