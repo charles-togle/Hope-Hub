@@ -9,6 +9,7 @@ export default function LecturePDF ({
   quizLink,
   pdfLink,
   isLectureDone = false,
+  isTeacher = false,
   onTimerEnd = () => {},
 }) {
   const navigate = useNavigate();
@@ -29,7 +30,6 @@ export default function LecturePDF ({
         <iframe
           src={pdfLink}
           className='mt-5 row-start-2 h-150 rounded-lg w-full lg:h-full lg:row-span-2 lg:mt-0 md:row-span-2'
-          
         ></iframe>
         <div
           id='lecture-description'
@@ -40,44 +40,48 @@ export default function LecturePDF ({
             className=' flex flex-row flex-wrap space-x-5 mb-3 justify-start lg:text-base'
           >
             <p>Introduction</p>
-            <Timer
-              className='flex flex-row items-center w-30 justify-between'
-              time={300}
-              onEnd={() => {
-                onTimerEnd();
-              }}
-              storageKey={`${userID?.substring(
-                0,
-                13,
-              )}-Lecture${lectureNumber}Timer`}
-            ></Timer>
+            {!isTeacher && (
+              <Timer
+                className='flex flex-row items-center w-30 justify-between'
+                time={300}
+                onEnd={() => {
+                  onTimerEnd();
+                }}
+                storageKey={`${userID?.substring(
+                  0,
+                  13,
+                )}-Lecture${lectureNumber}Timer`}
+              ></Timer>
+            )}
           </div>
           <ul className='pt-3 pb-5 text-sm lg:text-base'>
             <li className='ml-5 list-disc text-justify'>{introduction}</li>
           </ul>
         </div>
 
-        <div
-          id='button-group'
-          className='mt-10 font-content lg:col-start-2 md:col-start-2 flex justify-center items-center flex-col lg:mt-30 '
-        >
-          <p className='text-center mb-5 font-md '>
-            Finished Learning? Test your knowledge and take the quiz!
-          </p>
-          <button
-            onClick={() => {
-              if (!isLectureDone) {
-                navigate('not-found');
-                return;
-              }
-              navigate(quizLink);
-            }}
-            disabled={isLectureDone ? undefined : true}
-            className='w-[50%] py-2 text-lg text-white bg-secondary-dark-blue hover:brightness-90 disabled:brightness-50 lg:w-full md:w-full lg:py-5'
+        {!isTeacher && (
+          <div
+            id='button-group'
+            className='mt-10 font-content lg:col-start-2 md:col-start-2 flex justify-center items-center flex-col lg:mt-30 '
           >
-            TAKE QUIZ
-          </button>
-        </div>
+            <p className='text-center mb-5 font-md '>
+              Finished Learning? Test your knowledge and take the quiz!
+            </p>
+            <button
+              onClick={() => {
+                if (!isLectureDone) {
+                  navigate('not-found');
+                  return;
+                }
+                navigate(quizLink);
+              }}
+              disabled={isLectureDone ? undefined : true}
+              className='w-[50%] py-2 text-lg text-white bg-secondary-dark-blue hover:brightness-90 disabled:brightness-50 lg:w-full md:w-full lg:py-5'
+            >
+              TAKE QUIZ
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

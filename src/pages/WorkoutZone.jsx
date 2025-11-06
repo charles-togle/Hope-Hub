@@ -20,7 +20,11 @@ export default function WorkoutZone () {
   const navigate = useNavigate();
   const { videoUrl } = useParams();
 
-  const combinedVideos = [...UpperBodyVideos, ...LowerBodyVideos];
+  const combinedVideos = [
+    ...WarmUpVideo,
+    ...UpperBodyVideos,
+    ...LowerBodyVideos,
+  ];
 
   useEffect(() => {
     if (videoUrl) {

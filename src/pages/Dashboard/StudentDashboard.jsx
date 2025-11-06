@@ -266,11 +266,23 @@ export default function StudentDashboard () {
   };
 
   const handleJoinClass = async () => {
+    // Validate that the class code exists in the teacher's class_code table
+    const { count, error: fetchError } = await supabase
+      .from('teacher_class_code')
+      .select('*', { count: 'exact', head: true })
+      .eq('class_code', tempClassCode);
+
+    if (fetchError || count === 0) {
+      alert('Invalid class code. Please check and try again.');
+      return;
+    }
+
     const { error: joinClassError } = await supabase
       .from('student_class_code')
       .update({ class_code: tempClassCode })
       .eq('uuid', userID);
     if (joinClassError) {
+      alert('Error joining class. Please try again.');
       return;
     }
     setIsJoiningClass(false);
@@ -286,7 +298,6 @@ export default function StudentDashboard () {
     return <Loading />;
   }
   const handleLogout = async () => {
-
     supabase.auth.signOut().then(navigate('/auth/login'));
     localStorage.removeItem('lectureProgress');
     localStorage.removeItem('physicalFitnessData');

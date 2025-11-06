@@ -14,9 +14,28 @@ export default function Lectures () {
   const [activeLessons, setActiveLessons] = useState(Lessons);
   const [activeFilter, setActiveFilter] = useState('All');
   const [storedProgress, setStoredProgress] = useState(LectureProgress());
+  const [isTeacher, setIsTeacher] = useState(false);
+
   const LectureFilters = ['All', 'Done', 'Pending', 'Incomplete'];
   const userId = useUserId();
   const navigate = useNavigate();
+  useEffect(() => {
+    async function getType () {
+      if (!userId) {
+        return;
+      }
+      const { data, error: userTypeError } = await supabase
+        .from('profile')
+        .select('user_type')
+        .eq('uuid', userId)
+        .single();
+      if (userTypeError) {
+        return;
+      }
+      setIsTeacher(data.user_type === 'teacher');
+    }
+    getType();
+  }, [userId]);
   useEffect(() => {
     if (!userId) return;
     const fetchProgressFromDB = async () => {
@@ -87,35 +106,47 @@ export default function Lectures () {
             id='buttons-wrapper'
             className='sticky top-0 pt-[3%] pb-[2%] self-start w-full flex flex-col-reverse items-center justify-between flex-wrap bg-background z-10 lg:flex-nowrap lg:flex-row'
           >
-            {' '}
-            <div
-              id='buttons'
-              className='rounded-sm bg-secondary-dark-blue w-full h-fit flex justify-between flex-nowrap lg:w-fit'
-            >
-              {LectureFilters.map((filter, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleFilterChange(filter)}
-                  className={
-                    `text-white text-center font-content py-2 min-w-1/8 px-2 text-sm lg:w-auto lg:px-5 transition-colors ${
-                      index === 0 ? 'rounded-l-sm' : ''
-                    } ${
-                      index === LectureFilters.length - 1 ? 'rounded-r-sm' : ''
-                    } ` +
-                    (filter === activeFilter
-                      ? 'bg-primary-yellow text-secondary-dark-blue'
-                      : 'bg-secondary-dark-blue hover:bg-gray-700')
-                  }
-                >
-                  {filter}
-                </button>
-              ))}
-            </div>
-            <p className='font-content text-xs w-full text-wrap self-start mb-5 lg:text-base lg:w-6/10 lg:mb-0 lg:pl-5'>
-              <strong>Note:</strong> You can only take the quiz after reading or
-              watching the lecture. (Lecture will be automatically marked as
-              done after taking the quiz.)
-            </p>
+            {!isTeacher && (
+              <div
+                id='buttons'
+                className='rounded-sm bg-secondary-dark-blue w-full h-fit flex justify-between flex-nowrap lg:w-fit'
+              >
+                {LectureFilters.map((filter, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleFilterChange(filter)}
+                    className={
+                      `text-white text-center font-content py-2 min-w-1/8 px-2 text-sm lg:w-auto lg:px-5 transition-colors ${
+                        index === 0 ? 'rounded-l-sm' : ''
+                      } ${
+                        index === LectureFilters.length - 1
+                          ? 'rounded-r-sm'
+                          : ''
+                      } ` +
+                      (filter === activeFilter
+                        ? 'bg-primary-yellow text-secondary-dark-blue'
+                        : 'bg-secondary-dark-blue hover:bg-gray-700')
+                    }
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {!isTeacher ? (
+              <p className='font-content text-xs w-full text-wrap self-start mb-5 lg:text-base lg:w-6/10 lg:mb-0 lg:pl-5'>
+                <strong>Note:</strong> You can only take the quiz after reading
+                or watching the lecture. (Lecture will be automatically marked
+                as done after taking the quiz.)
+              </p>
+            ) : (
+              <p className='font-content text-xs w-full text-wrap self-start mb-5 lg:text-base lg:w-6/10 lg:mb-0 lg:pl-5'>
+                <strong>Note:</strong> You are using an <b>Admin</b> and is
+                viewing a simple version of the lectures. To access the full
+                features, please use a <b>Student Account</b>
+              </p>
+            )}
           </div>
           <div
             id='lecture-introductions'
@@ -131,7 +162,8 @@ export default function Lectures () {
                     title={lesson.title}
                     introduction={lesson.introduction}
                     status={lesson.status}
-                    onClick={() => navigate(`lecture/${lectureKey}/lecture`)}
+                    onClick={() => navigate(`lecture/${lectureKey}`)}
+                    isTeacher={isTeacher}
                   ></LectureIntroduction>
                 );
               })

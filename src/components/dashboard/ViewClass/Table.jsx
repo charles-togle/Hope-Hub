@@ -1,7 +1,15 @@
 import { useNavigate } from 'react-router-dom';
+import { Download } from 'lucide-react';
+import {
+  generateStudentExcel,
+  downloadExcel,
+  generateFilename,
+} from '@/utilities/exportStudentExcel';
+import { useState } from 'react';
 
 export default function Table ({ headings, content }) {
   const navigate = useNavigate();
+  const [exportingStudent, setExportingStudent] = useState(null);
   const handleViewTestRecord = (student, testType) => {
     if (!student || !student.uuid) {
       return;
@@ -11,6 +19,32 @@ export default function Table ({ headings, content }) {
     navigate(
       `/physical-fitness-test/summary/${summaryType}?student=${student.uuid}`,
     );
+  };
+
+  const handleExportStudent = async student => {
+    setExportingStudent(student.uuid);
+    try {
+      // Calculate lesson and quiz counts from headings
+      const lessonCount = headings.filter(h => h.startsWith('Lesson')).length;
+      const quizCount = headings.filter(h => h.startsWith('Quiz')).length;
+
+      const excelData = await generateStudentExcel(
+        [student],
+        null,
+        lessonCount,
+        quizCount,
+      );
+      const filename = generateFilename(
+        'student',
+        student.studentName.replace(/\s+/g, '-'),
+      );
+      downloadExcel(excelData, filename);
+    } catch (error) {
+      console.error('Error exporting student Excel:', error);
+      alert('Failed to export student data. Please try again.');
+    } finally {
+      setExportingStudent(null);
+    }
   };
   return (
     <>
@@ -24,13 +58,16 @@ export default function Table ({ headings, content }) {
                   index === 0
                     ? 'rounded-tl-lg'
                     : index === headings.length - 1
-                    ? 'rounded-tr-lg'
+                    ? ''
                     : ''
                 }`}
               >
                 {heading}
               </th>
             ))}
+            <th className='py-5 px-4 font-medium text-sm whitespace-nowrap rounded-tr-lg'>
+              Export
+            </th>
           </tr>
           {content.map((item, index) => (
             <tr
@@ -97,6 +134,17 @@ export default function Table ({ headings, content }) {
                   )}
                 </td>
               ))}
+              <td className='px-4 py-3 text-center'>
+                <button
+                  onClick={() => handleExportStudent(item)}
+                  disabled={exportingStudent === item.uuid}
+                  className='bg-green-600 text-white px-3 py-1 rounded text-xs hover:brightness-90 disabled:brightness-75 disabled:cursor-not-allowed transition-all flex items-center gap-1 mx-auto'
+                  title='Export student data'
+                >
+                  <Download className='w-3 h-3' />
+                  {exportingStudent === item.uuid ? 'Exporting...' : 'Export'}
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

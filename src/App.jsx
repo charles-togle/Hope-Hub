@@ -209,23 +209,17 @@ function App () {
               path='bodyfatpercentage'
               element={<BodyFatPercentageCalculator />}
             />
-            <Route path='heartrate' element={<HeartRateCalculator/>} />
+            <Route path='heartrate' element={<HeartRateCalculator />} />
           </Route>
           <Route path='lectures' element={<LectureWrapper />}>
             <Route index element={<Lectures />} />
-            <Route
-              path='lecture/:lessonNumber/:lectureType'
-              element={<LecturePage />}
-            />
+            <Route path='lecture/:lessonNumber/' element={<LecturePage />} />
           </Route>
           <Route
             path='workout-zone/:videoUrl'
-            element={<WorkoutZone/>}
+            element={<WorkoutZone />}
           ></Route>
-          <Route
-            path='workout-zone/'
-            element={<WorkoutZone/>}
-          ></Route>
+          <Route path='workout-zone/' element={<WorkoutZone />}></Route>
           <Route
             path='physical-fitness-test'
             element={<PhysicalFitnessWrapper />}

@@ -1,14 +1,3 @@
-// Exercise cover images
-import coverCloseGripLatPulldown from '@/assets/covers/exercises/cover_close_grip_lat_pulldown.jpg';
-import coverDeadlift from '@/assets/covers/exercises/cover_deadlift.jpg';
-import coverInclineChestPress from '@/assets/covers/exercises/cover_incline_chest_press.jpg';
-import coverShoulderPress from '@/assets/covers/exercises/cover_shoulder_press.jpg';
-import coverSquats from '@/assets/covers/exercises/cover_squats.jpg';
-import coverStandingDumbbellOverheadPress from '@/assets/covers/exercises/cover_standing_dumbbell_overhead_press.jpg';
-import coverTricepsPulldown from '@/assets/covers/exercises/cover_triceps_pulldown.jpg';
-import coverWarmUps from '@/assets/covers/exercises/cover_warm_ups.jpg';
-// ...existing code...
-
 export const WarmUpVideo = [
   {
     thumbnail: 'https://i.ibb.co/xSxG7fmx/cover-warm-ups.jpg',

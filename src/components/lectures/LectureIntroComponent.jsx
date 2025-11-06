@@ -6,6 +6,7 @@ export default function LectureIntroduction ({
   introduction,
   status,
   onClick = () => {},
+  isTeacher = false,
 }) {
   const getStatusClass = () => {
     if (status === 'Incomplete') return 'bg-red';
@@ -39,11 +40,13 @@ export default function LectureIntroduction ({
               Lecture #{lectureKey}:{' '}
               <span className='font-semibold text-white ml-3'>{title}</span>
             </p>
-            <p
-              className={`${getStatusClass()} ml-1.5 mr-1.5 font-content text-white w-[12%] min-w-fit text-center text-md py-1 font-medium px-2 lg:mr-5`}
-            >
-              {status}
-            </p>
+            {!isTeacher && (
+              <p
+                className={`${getStatusClass()} ml-1.5 mr-1.5 font-content text-white w-[12%] min-w-fit text-center text-md py-1 font-medium px-2 lg:mr-5`}
+              >
+                {status}
+              </p>
+            )}
           </div>
           <div
             id='introduction'

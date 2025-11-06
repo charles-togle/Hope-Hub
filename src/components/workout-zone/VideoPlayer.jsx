@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 
 export default function VideoPlayer ({ video }) {
   return (
@@ -10,10 +9,9 @@ export default function VideoPlayer ({ video }) {
             height='315'
             src={video.videoLink}
             title='YouTube video player'
-            frameborder='0'
             allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-            referrerpolicy='strict-origin-when-cross-origin'
-            allowfullscreen
+            referrerPolicy='strict-origin-when-cross-origin'
+            allowFullScreen
             className={`rounded-lg px-2 w-full lg:w-full lg:min-h-150`}
           ></iframe>
         </div>
