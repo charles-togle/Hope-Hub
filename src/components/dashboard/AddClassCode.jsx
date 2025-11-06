@@ -58,15 +58,12 @@ export default function AddClassCode ({ onAdd = () => {}, setModalShown }) {
   const userID = useUserId();
 
   function generateClassCode () {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const numbers = '0123456789';
+    const CHARS =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
     let code = '';
-    for (let i = 0; i < 3; i++) {
-      code += letters.charAt(Math.floor(Math.random() * letters.length));
-    }
-    for (let i = 0; i < 3; i++) {
-      code += numbers.charAt(Math.floor(Math.random() * numbers.length));
+    for (let i = 0; i < 6; i++) {
+      code += CHARS.charAt(Math.floor(Math.random() * CHARS.length));
     }
     return code;
   }
@@ -181,7 +178,7 @@ export default function AddClassCode ({ onAdd = () => {}, setModalShown }) {
           className='w-full h-full absolute top-0 bg-black opacity-40 -z-1'
         ></div>
         <div className='md:scale-90 scale-90 lg:scale-100'>
-          <FormContainer ref={formRef}>
+          <FormContainer ref={formRef} className='max-w-full! '>
             <FormHeading heading='Create a New Class'></FormHeading>{' '}
             <FormInput
               value={className}

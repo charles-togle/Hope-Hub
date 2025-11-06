@@ -8,8 +8,8 @@ export const WarmUpVideo = [
     description: {
       howToDoIt:
         'Sit or stand up straight with a weight in each hand at shoulder height. Push the weights straight up until your arms are straight, then lower them slowly back down.',
-      do: ['Keep your back straight.', 'Press the weights slowly.'],
-      dont: ["Don't arch your back.", "Don't lock your elbows."],
+      do: [],
+      dont: [],
     },
     videoLink: 'https://www.youtube.com/embed/WUY4QYFeuHU?si=kS4aVzRqr4BI7qY4',
     uploadDate: '2025-08-21T14:48:00.000Z',
@@ -41,8 +41,16 @@ export const UpperBodyVideos = [
     description: {
       howToDoIt:
         'Sit or stand up straight with a weight in each hand at shoulder height. Push the weights straight up until your arms are straight, then lower them slowly back down.',
-      do: ['Keep your back straight.', 'Press the weights slowly.'],
-      dont: ["Don't arch your back.", "Don't lock your elbows."],
+      do: [
+        'Adjust the seat so that the handles are aligned with your upper chest.',
+        'Keep your back and head supported against the pad.',
+        'Use slow, controlled movements.',
+      ],
+      dont: [
+        "Don't lock your elbows at the top.",
+        "Don't shrug your shoulders or lift them off the pad.",
+        "Don't allow the weights to slam down.",
+      ],
     },
     videoLink: 'https://www.youtube.com/embed/vPj-_ebcBZI?si=BZpZa4ygCXTPvHJY',
     uploadDate: '2025-07-23T14:00:00.000Z',
@@ -56,8 +64,16 @@ export const UpperBodyVideos = [
     description: {
       howToDoIt:
         'Sit or stand up straight with a weight in each hand at shoulder height. Push the weights straight up until your arms are straight, then lower them slowly back down.',
-      do: ['Keep your back straight.', 'Press the weights slowly.'],
-      dont: ["Don't arch your back.", "Don't lock your elbows."],
+      do: [
+        'Keep a neutral spine and brace your core.',
+        'Maintain control throughout the movement.',
+        'Exhale as you press, inhale as you lower.',
+      ],
+      dont: [
+        "Don't arch your back excessively.",
+        "Don't let the dumbbells drift too far forward or backward.",
+        "Don't use momentum or swing your body.",
+      ],
     },
     videoLink: 'https://www.youtube.com/embed/WhCL8oTIU_A?si=Z6G0AxL5SqBxDrew',
     uploadDate: '2025-07-23T14:00:00.000Z',
@@ -117,14 +133,16 @@ export const UpperBodyVideos = [
     duration: '00:33',
     title: 'Russian Twist',
     description: {
-      howToDoIt: `1. Sit on the floor with knees bent and feet flat or lifted.\n
-                  2. Lean back slightly, keeping your back straight.\n
-                  3. Clasp your hands or hold a weight, and rotate your torso to one side.\n
-                  4. Return to the center, then twist to the other side.\n
-                  5. Repeat, alternating sides.
-`,
-      do: [''],
-      dont: [''],
+      howToDoIt:
+        'Sit on the floor with knees bent and feet flat or lifted. Lean back slightly, keeping your back straight. Clasp your hands or hold a weight, and rotate your torso to one side. Return to the center, then twist to the other side. Repeat, alternating sides.',
+      do: [
+        'Keep your movements controlled and deliberate.',
+        'Engage your core throughout the movement.',
+      ],
+      dont: [
+        "Don't round your lower back.",
+        "Don't rush the twists \u2014 avoid using momentum.",
+      ],
     },
     videoLink: 'https://youtube.com/embed/NCaki3D-KB8?si=AnOOBCaXFnqXUgFd',
     uploadDate: '2025-08-28T14:02:00.000Z',
@@ -189,7 +207,7 @@ export const LowerBodyVideos = [
         'Stand upright with feet hip-width apart. Step forward with one leg, lowering your hips until both knees are bent at about 90 degrees. Push back up to the starting position and repeat on the other leg.',
       do: [
         'Keep your torso upright.',
-        'Step forward far enough to create a 90-degree angle.',
+        'Step forward far enough to create a 90-degree angle in both knees.',
         'Keep your front knee aligned with your ankle.',
       ],
       dont: [
@@ -231,9 +249,18 @@ export const LowerBodyVideos = [
     duration: '01:18',
     title: 'Kettle Ball Sumo Deadlift',
     description: {
-      howToDoIt: '',
-      do: [''],
-      dont: [''],
+      howToDoIt:
+        'Stand with feet wider than shoulder-width, toes slightly turned out. Place a kettlebell on the floor between your feet. Push your hips back and bend your knees to grip the kettlebell with both hands. Keep your back flat, chest lifted, and core braced. Drive through your heels to stand up tall, lifting the kettlebell to hip level. Lower it back down with control by hinging at the hips.',
+      do: [
+        'Keep the kettlebell close to your body.',
+        'Engage your glutes and hamstrings during the lift.',
+        'Maintain a neutral spine and tight core.',
+      ],
+      dont: [
+        "Don't round your back.",
+        "Don't jerk the weight off the floor.",
+        "Don't let your knees cave inward.",
+      ],
     },
     videoLink: 'https://youtube.com/embed/5iIP07NqnJQ?si=_p2pVHYQI7f_LTPe',
     uploadDate: '2025-08-28T14:02:00.000Z',

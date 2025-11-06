@@ -132,9 +132,27 @@ function SidebarLayout () {
 }
 
 const PhysicalFitnessWrapper = () => {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const handleScrollToTop = () => {
+      if (containerRef.current) {
+        containerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+
+    window.addEventListener('scrollPFTContainerToTop', handleScrollToTop);
+
+    return () => {
+      window.removeEventListener('scrollPFTContainerToTop', handleScrollToTop);
+    };
+  }, []);
+
   return (
     <PhysicalFitnessDataProvider>
-      <Outlet />
+      <div ref={containerRef} className='h-full overflow-y-auto'>
+        <Outlet />
+      </div>
     </PhysicalFitnessDataProvider>
   );
 };

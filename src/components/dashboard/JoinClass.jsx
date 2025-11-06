@@ -3,6 +3,7 @@ import FormHeading from '../auth/FormHeading';
 import FormInput from '../auth/FormInput';
 import FormButton from '../auth/FormButton';
 import { useState, useEffect, useRef } from 'react';
+import supabase from '@/client/supabase';
 
 export default function JoinClass ({
   tempClassCode,
@@ -17,9 +18,28 @@ export default function JoinClass ({
     return code.length === 6;
   }
 
-  const handleJoin = () => {
+  async function doesClassCodeExist (code) {
+    const { count, error: fetchError } = await supabase
+      .from('teacher_class_code')
+      .select('*', { count: 'exact', head: true })
+      .eq('class_code', code);
+
+    if (fetchError) {
+      setError('Error checking class code. Please try again.');
+      return false;
+    }
+
+    return count > 0;
+  }
+
+  const handleJoin = async () => {
     if (!isValidClassCode(tempClassCode)) {
       setError('A class code should contains 6 characters');
+      return;
+    }
+    const exists = await doesClassCodeExist(tempClassCode);
+    if (!exists) {
+      setError('Class code does not exist. Please check and try again.');
       return;
     }
     setError('');
