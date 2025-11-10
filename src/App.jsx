@@ -42,6 +42,7 @@ import ViewClass from './pages/Dashboard/ViewClass';
 import { useUserId } from './hooks/useUserId';
 import Loading from './components/Loading';
 import { useRef } from 'react';
+import { Toaster } from '@/components/ui/sonner';
 
 const HamburgerMenuComponent = memo(({ showMenu, onHamburgerClick }) => {
   return (
@@ -52,24 +53,24 @@ const HamburgerMenuComponent = memo(({ showMenu, onHamburgerClick }) => {
           : '-translate-y-full duration-600'
       }`}
     >
-      <div className='hamburger-menu pl-5 flex items-center top-0 w-screen h-20 md:h-15 bg-secondary-dark-blue mb-5 lg:hidden z-999 '>
+      <div className="hamburger-menu pl-5 flex items-center top-0 w-screen h-20 md:h-15 bg-secondary-dark-blue mb-5 lg:hidden z-999 ">
         <img
           src={HamburgerMenu}
-          className='w-10 md:w-7 pr-3 cursor-pointer'
+          className="w-10 md:w-7 pr-3 cursor-pointer"
           onClick={onHamburgerClick}
         />
-        <p className='text-white text-3xl md:text-2xl font-heading'>Hope Hub</p>
+        <p className="text-white text-3xl md:text-2xl font-heading">Hope Hub</p>
       </div>
     </div>
   );
 });
 
-function SidebarLayout () {
+function SidebarLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const handleHamburgerClick = useCallback(
-    () => setSidebarOpen(open => !open),
+    () => setSidebarOpen((open) => !open),
     [],
   );
   const containerRef = useRef(undefined);
@@ -109,19 +110,19 @@ function SidebarLayout () {
   }, [location]);
 
   return (
-    <div className='flex h-screen overflow-hidden'>
+    <div className="flex h-screen overflow-hidden">
       <Sidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         setShowMenu={setShowMenu}
       />
-      <div className='relative lg:pt-0 flex-1 h-[100dvh] overflow-x-hidden overflow-y-auto justify-center'>
+      <div className="relative lg:pt-0 flex-1 h-[100dvh] overflow-x-hidden overflow-y-auto justify-center">
         <HamburgerMenuComponent
           showMenu={showMenu}
           onHamburgerClick={handleHamburgerClick}
         />
         <div
-          className='pt-20 lg:pt-0  overflow-y-auto h-screen'
+          className="pt-20 lg:pt-0  overflow-y-auto h-screen"
           ref={containerRef}
         >
           <Outlet />
@@ -150,7 +151,7 @@ const PhysicalFitnessWrapper = () => {
 
   return (
     <PhysicalFitnessDataProvider>
-      <div ref={containerRef} className='h-full overflow-y-auto'>
+      <div ref={containerRef} className="h-full overflow-y-auto">
         <Outlet />
       </div>
     </PhysicalFitnessDataProvider>
@@ -175,7 +176,7 @@ const ProfileWrapper = () => {
   const userID = useUserId();
 
   useEffect(() => {
-    async function getType () {
+    async function getType() {
       if (!userID) {
         return;
       }
@@ -204,75 +205,76 @@ const ProfileWrapper = () => {
   }
 };
 
-function App () {
+function App() {
   return (
     <BrowserRouter>
+      <Toaster position="top-right" closeButton />
       <Routes>
-        <Route element={<SidebarLayout />} path='/'>
+        <Route element={<SidebarLayout />} path="/">
           <Route index element={<Home />}></Route>
-          <Route path='home' element={<Home />}></Route>
-          <Route path='about' element={<About />} />{' '}
-          <Route path='health-calculators' element={<HealthCalculator />}>
+          <Route path="home" element={<Home />}></Route>
+          <Route path="about" element={<About />} />{' '}
+          <Route path="health-calculators" element={<HealthCalculator />}>
             {' '}
           </Route>
           <Route
-            path='health-calculators'
+            path="health-calculators"
             element={<HealthCalculatorWrapper />}
           >
-            <Route path='bmi' element={<BMICalculator />} />
-            <Route path='bmr' element={<BMRCalculator />} />
-            <Route path='ibw' element={<IBWCalculator />} />
-            <Route path='waterintake' element={<WaterIntakeCalculator />} />
+            <Route path="bmi" element={<BMICalculator />} />
+            <Route path="bmr" element={<BMRCalculator />} />
+            <Route path="ibw" element={<IBWCalculator />} />
+            <Route path="waterintake" element={<WaterIntakeCalculator />} />
             <Route
-              path='bodyfatpercentage'
+              path="bodyfatpercentage"
               element={<BodyFatPercentageCalculator />}
             />
-            <Route path='heartrate' element={<HeartRateCalculator />} />
+            <Route path="heartrate" element={<HeartRateCalculator />} />
           </Route>
-          <Route path='lectures' element={<LectureWrapper />}>
+          <Route path="lectures" element={<LectureWrapper />}>
             <Route index element={<Lectures />} />
-            <Route path='lecture/:lessonNumber/' element={<LecturePage />} />
+            <Route path="lecture/:lessonNumber/" element={<LecturePage />} />
           </Route>
           <Route
-            path='workout-zone/:videoUrl'
+            path="workout-zone/:videoUrl"
             element={<WorkoutZone />}
           ></Route>
-          <Route path='workout-zone/' element={<WorkoutZone />}></Route>
+          <Route path="workout-zone/" element={<WorkoutZone />}></Route>
           <Route
-            path='physical-fitness-test'
+            path="physical-fitness-test"
             element={<PhysicalFitnessWrapper />}
           >
             <Route
-              path='parq'
+              path="parq"
               element={<PhysicalActivityReadinessQuestionnaire />}
             />
             <Route
-              path='test/:testIndex'
+              path="test/:testIndex"
               element={<PhysicalFitnessTestPage />}
             />
             <Route
-              path='summary/:testType'
+              path="summary/:testType"
               element={<PhysicalFitnessTestSummary />}
             ></Route>
           </Route>
-          <Route path='quizzes'>
+          <Route path="quizzes">
             <Route index element={<QuizDashboard />} />
-            <Route path='quiz/:quizId' element={<Quiz />} />
+            <Route path="quiz/:quizId" element={<Quiz />} />
           </Route>
-          <Route path='dashboard' element={<ProfileWrapper />}></Route>
+          <Route path="dashboard" element={<ProfileWrapper />}></Route>
           <Route
-            path='dashboard/view-class/:classCode'
+            path="dashboard/view-class/:classCode"
             element={<ViewClass />}
           ></Route>
-          <Route path='*' element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
-        <Route path='auth' element={<AuthWrapper />}>
-          <Route path='login' element={<Login />}></Route>
-          <Route path='register' element={<Register />}></Route>
-          <Route path='forgot-password' element={<ForgotPassword />}></Route>
-          <Route path='change-password' element={<ChangePassword />}></Route>
+        <Route path="auth" element={<AuthWrapper />}>
+          <Route path="login" element={<Login />}></Route>
+          <Route path="register" element={<Register />}></Route>
+          <Route path="forgot-password" element={<ForgotPassword />}></Route>
+          <Route path="change-password" element={<ChangePassword />}></Route>
           <Route
-            path='account-verification'
+            path="account-verification"
             element={<AccountVerification />}
           ></Route>
         </Route>

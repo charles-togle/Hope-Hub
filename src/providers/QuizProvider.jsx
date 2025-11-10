@@ -27,7 +27,8 @@ export default function QuizProvider({ children }) {
     async function fetchAndSetQuizQuestions(quizId) {
       const questions = await fetchQuizQuestions(quizId);
 
-      const extractedQuizState = extractQuizState(
+      const extractedQuizState = await extractQuizState(
+        quizId,
         await fetchQuizStateIfExists(quizId),
       );
 
