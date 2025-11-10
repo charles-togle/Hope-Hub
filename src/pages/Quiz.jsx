@@ -148,7 +148,9 @@ export function QuizPage() {
                 <div>
                   <h2 className="font-heading-small text-2xl lg:text-3xl text-primary-blue ">
                     {quizState.status === 'Pending'
-                      ? `Quiz #${quizId}: Lecture #${quizId}`
+                      ? quizId === 0
+                        ? `Quiz PFT`
+                        : `Quiz #${quizId}: Lecture #${quizId}`
                       : 'Results & Summary'}
                   </h2>
                   <hr className="w-[60%] border-1 border-primary-yellow mt-2 mb-3" />
