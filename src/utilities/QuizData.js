@@ -2,7 +2,7 @@ import supabase from '@/client/supabase';
 import { shuffleArray } from '@/utilities/utils';
 import { use } from 'react';
 
-async function fetchQuizzes () {
+async function fetchQuizzes() {
   const user = await getCurrentUser();
 
   const userData = await supabase
@@ -29,7 +29,7 @@ async function fetchQuizzes () {
   return data;
 }
 
-async function fetchQuizzesDefault () {
+async function fetchQuizzesDefault() {
   const { data, error } = await supabase
     .from('quiz')
     .select(
@@ -45,7 +45,33 @@ async function fetchQuizzesDefault () {
   return { data, error };
 }
 
-async function fetchQuizzesOfUser (user) {
+async function fetchQuizzesOfUser(user) {
+  let pftData = await supabase
+    .from('physical_fitness_test')
+    .select('*')
+    .eq('uuid', user.id)
+    .single();
+
+  pftData = pftData.data;
+  if (
+    pftData.pre_physical_fitness_test &&
+    pftData.post_physical_fitness_test &&
+    !pftData.post_physical_fitness_test.finishedTestIndex.includes(-1) &&
+    !pftData.pre_physical_fitness_test.finishedTestIndex.includes(-1)
+  ) {
+    let isQuizProgressExists = await supabase
+      .from('quiz_progress')
+      .select('*')
+      .eq('user_id', user.id)
+      .eq('quiz_id', 0);
+
+    if (isQuizProgressExists.data.length === 0) {
+      await supabase
+        .from('quiz_progress')
+        .insert([{ user_id: user.id, quiz_id: 0, status: 'Pending' }]);
+    }
+  }
+
   const { data, error } = await supabase
     .from('quiz')
     .select(
@@ -72,12 +98,29 @@ async function fetchQuizzesOfUser (user) {
   return { data, error };
 }
 
-function extractQuizDetails (quizData) {
+async function extractQuizDetails(quizData) {
+  const user = await getCurrentUser();
+
+  const userData = await supabase
+    .from('profile')
+    .select(
+      `
+    user_type
+    `,
+    )
+    .eq('uuid', user.id)
+    .single();
+
+  const userType = userData.data.user_type;
+
   if (!Array.isArray(quizData) || quizData.length === 0) return;
   quizData.map(async (quiz, index) => {
     let progress = (quiz.quiz_progress && quiz.quiz_progress[0]) || [];
     quiz.number = quiz.id;
-    quiz.status = (progress && progress.status) || 'Locked';
+    quiz.status =
+      userType === 'student'
+        ? (progress && progress.status) || 'Locked'
+        : 'Pending';
     quiz.details = !progress.date_taken
       ? {}
       : {
@@ -115,35 +158,45 @@ function extractQuizDetails (quizData) {
   return quizData;
 }
 
-async function fetchQuizQuestions (quizId) {
+async function fetchQuizQuestions(quizId) {
   const user = await getCurrentUser();
   let questions = await getQuestionsFromQuizProgressIfExists(quizId);
+
+  const userData = await supabase
+    .from('profile')
+    .select(
+      `
+    user_type
+    `,
+    )
+    .eq('uuid', user.id)
+    .single();
+
+  const userType = userData.data.user_type;
 
   if (!questions) {
     questions = shuffleQuizQuestionsAndChoices(
       await getQuestionsFromQuiz(quizId),
     );
 
-    const { data, error } = await supabase
-      .from('quiz_progress')
-      .update({
-        start_time: new Date().toISOString(),
-        questions_shuffled: questions,
-      })
-      .eq('user_id', user.id)
-      .eq('quiz_id', quizId);
-
-    if (error) {
-      // Handle error silently
+    if (userType === 'student') {
+      const { data, error } = await supabase
+        .from('quiz_progress')
+        .update({
+          start_time: new Date().toISOString(),
+          questions_shuffled: questions,
+        })
+        .eq('user_id', user.id)
+        .eq('quiz_id', quizId);
     }
   }
 
   return questions;
 }
 
-function shuffleQuizQuestionsAndChoices (questions) {
+function shuffleQuizQuestionsAndChoices(questions) {
   // shuffle questions
-  const shuffledQuestions = shuffleArray(questions).map(question => {
+  const shuffledQuestions = shuffleArray(questions).map((question) => {
     if (question.type === 'identification') return question; // skip identification questions
     return {
       ...question,
@@ -154,7 +207,7 @@ function shuffleQuizQuestionsAndChoices (questions) {
   return shuffledQuestions;
 }
 
-async function getQuestionsFromQuizProgressIfExists (quizId) {
+async function getQuestionsFromQuizProgressIfExists(quizId) {
   const user = await getCurrentUser();
   const { data, error } = await supabase
     .from('quiz_progress')
@@ -169,7 +222,7 @@ async function getQuestionsFromQuizProgressIfExists (quizId) {
   return data ? data.questions_shuffled : null;
 }
 
-async function getQuestionsFromQuiz (quizId) {
+async function getQuestionsFromQuiz(quizId) {
   const { data, error } = await supabase
     .from('quiz')
     .select(`questions`)
@@ -183,7 +236,7 @@ async function getQuestionsFromQuiz (quizId) {
   return data.questions.questions;
 }
 
-async function getCurrentUser () {
+async function getCurrentUser() {
   const {
     data: { user },
     error,
@@ -194,8 +247,9 @@ async function getCurrentUser () {
   return user;
 }
 
-async function fetchQuizStateIfExists (quizId) {
+async function fetchQuizStateIfExists(quizId) {
   const user = await getCurrentUser();
+
   const { data, error } = await supabase
     .from('quiz_progress')
     .select(
@@ -211,8 +265,34 @@ async function fetchQuizStateIfExists (quizId) {
   return data;
 }
 
-function extractQuizState (quizState) {
-  if (!quizState) return null;
+async function extractQuizState(quizId, quizState) {
+  const user = await getCurrentUser();
+
+  const userData = await supabase
+    .from('profile')
+    .select(
+      `
+    user_type
+    `,
+    )
+    .eq('uuid', user.id)
+    .single();
+
+  const userType = userData.data.user_type;
+
+  if (!quizState && userType === 'student') return null;
+  if (userType === 'teacher') {
+    return {
+      quizId: quizId,
+      questionIndex: 0,
+      score: 0,
+      points: 0,
+      currentQuestionPoints: 0,
+      status: 'Pending',
+      remainingTime: 0,
+      questionsAnswered: [],
+    };
+  }
 
   return {
     quizId: quizState.quiz_id,
@@ -220,13 +300,13 @@ function extractQuizState (quizState) {
     score: quizState.score || 0,
     points: quizState.points || 0,
     currentQuestionPoints: 0,
-    status: quizState.status,
+    status: quizState.status || 'Pending',
     remainingTime: quizState.remaining_time || 0,
     questionsAnswered: quizState.questions_answered || [],
   };
 }
 
-async function submitAnswer (quizState) {
+async function submitAnswer(quizState) {
   const {
     quizId,
     questionIndex,
@@ -237,24 +317,38 @@ async function submitAnswer (quizState) {
   } = quizState;
   const user = await getCurrentUser();
 
-  const { data, error } = await supabase
-    .from('quiz_progress')
-    .update({
-      question_index: questionIndex,
-      score: score,
-      points: points,
-      remaining_time: remainingTime,
-      questions_answered: questionsAnswered,
-    })
-    .eq('user_id', user.id)
-    .eq('quiz_id', quizId);
+  const userData = await supabase
+    .from('profile')
+    .select(
+      `
+    user_type
+    `,
+    )
+    .eq('uuid', user.id)
+    .single();
 
-  if (error) {
-    return error;
+  const userType = userData.data.user_type;
+
+  if (userType === 'student') {
+    const { data, error } = await supabase
+      .from('quiz_progress')
+      .update({
+        question_index: questionIndex,
+        score: score,
+        points: points,
+        remaining_time: remainingTime,
+        questions_answered: questionsAnswered,
+      })
+      .eq('user_id', user.id)
+      .eq('quiz_id', quizId);
+
+    if (error) {
+      return error;
+    }
   }
 }
 
-async function markQuizAsDone (quizState) {
+async function markQuizAsDone(quizState) {
   const { quizId, questionIndex, status } = quizState;
   const user = await getCurrentUser();
   const { data, error } = await supabase
@@ -274,7 +368,7 @@ async function markQuizAsDone (quizState) {
   }
 }
 
-async function updateRemainingTime (quizId, remainingTime) {
+async function updateRemainingTime(quizId, remainingTime) {
   const user = await getCurrentUser();
   const { data, error } = await supabase
     .from('quiz_progress')
@@ -289,7 +383,7 @@ async function updateRemainingTime (quizId, remainingTime) {
   }
 }
 
-async function getUserRanking (quizId) {
+async function getUserRanking(quizId) {
   const user = await getCurrentUser();
   const { data, error } = await supabase
     .from('quiz_progress')
@@ -309,12 +403,12 @@ async function getUserRanking (quizId) {
       score: item.score,
       rank: index + 1,
     }))
-    .find(item => item.user_id === user.id).rank;
+    .find((item) => item.user_id === user.id).rank;
 
   return userRanking;
 }
 
-async function fetchLeaderboard (quizId) {
+async function fetchLeaderboard(quizId) {
   const { data, error } = await supabase
     .from('quiz_progress')
     .select(
