@@ -59,16 +59,17 @@ export default function QuizDashboard() {
             <h2 className="font-heading-small text-2xl lg:text-3xl text-primary-blue border-primary-yellow border-b-3 pb-2">
               Dashboard
             </h2>{' '}
-            <ul className="flex mt-4 lg:mt-0 rounded-sm bg-secondary-dark-blue font-content text-sm lg:text-base">
-              {filters.map((filter, index) => {
-                return (
-                  <motion.li
-                    key={index}
-                    className={`${
-                      filter === activeFilter
-                        ? 'filter-active'
-                        : 'hover:bg-gray-700'
-                    }
+            {userType === 'student' ? (
+              <ul className="flex mt-4 lg:mt-0 rounded-sm bg-secondary-dark-blue font-content text-sm lg:text-base">
+                {filters.map((filter, index) => {
+                  return (
+                    <motion.li
+                      key={index}
+                      className={`${
+                        filter === activeFilter
+                          ? 'filter-active'
+                          : 'hover:bg-gray-700'
+                      }
                   ${
                     index === 0
                       ? 'rounded-l-sm'
@@ -77,13 +78,14 @@ export default function QuizDashboard() {
                       : ''
                   }
                     filter cursor-pointer py-2 w-fit`}
-                    onClick={() => setActiveFilter(filter)}
-                  >
-                    {filter}
-                  </motion.li>
-                );
-              })}
-            </ul>
+                      onClick={() => setActiveFilter(filter)}
+                    >
+                      {filter}
+                    </motion.li>
+                  );
+                })}
+              </ul>
+            ) : null}
           </div>
           <div
             id="quizzes"
@@ -159,7 +161,7 @@ function Card({ quiz, userType }) {
       </div>
       <div className="flex justify-between items-center py-4 pl-5 pr-2 lg:pl-10 lg:pr-15 w-full min-h-[20vh]">
         <Results
-          status={quiz.status}
+          status={userType === 'teacher' ? 'Demo' : quiz.status}
           details={quiz.details}
           lectureTitle={
             quiz.number === 0
@@ -221,6 +223,11 @@ function Results({ status, details, lectureTitle }) {
         </strong>
         <br />
         <i>(Finish the {lectureTitle} to Access)</i>
+      </h4>
+    ),
+    Demo: (
+      <h4>
+        <i>(This is a demo quiz for {lectureTitle})</i>
       </h4>
     ),
   };
